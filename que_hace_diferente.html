@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Qué Hace Diferente? — Soy Anormal</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Press Start 2P',cursive;background:#0A0A1B;color:#F0F0FF;padding:32px 24px;font-size:11px;line-height:2.4;}
+body::before{content:'';position:fixed;inset:0;z-index:999;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent,transparent 3px,rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px);}
+.stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(2px 2px at 30px 50px,#eee,transparent),radial-gradient(1px 1px at 180px 80px,#fff,transparent),radial-gradient(2px 2px at 350px 130px,#00D9FF,transparent),radial-gradient(1px 1px at 500px 70px,#fff,transparent);
+  background-size:600px 300px;animation:twinkle 4s steps(4,end) infinite;}
+@keyframes twinkle{0%,100%{opacity:.6}50%{opacity:1}}
+
+.wrapper{max-width:700px;margin:0 auto;background:#0A0A1B;border:4px solid #724CF9;box-shadow:6px 6px 0 rgba(114,76,249,.5);padding:32px;}
+
+h2{color:#00D9FF;font-size:16px;margin:0 0 24px 0;text-shadow:3px 3px 0 rgba(0,0,0,.8);text-align:center;border-bottom:3px solid #2A2A4A;padding-bottom:16px;line-height:2;}
+
+/* Pixel art estrella animada */
+.deco{text-align:center;margin:24px 0;}
+@keyframes girarEstrella{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes pulsarEstrella{0%,100%{filter:drop-shadow(0 0 4px #00D9FF)}50%{filter:drop-shadow(0 0 12px #724CF9)}}
+.estrella-pixel{animation:pulsarEstrella 2s steps(4,end) infinite;display:inline-block;}
+.deco-sub{color:#8080A0;font-size:7px;margin-top:8px;}
+
+p{color:#D0D0D0;margin-bottom:20px;font-size:10px;line-height:2.4;}
+
+.cuadro-gold{background:#050510;border:3px solid #F7B801;padding:20px;margin:24px 0;box-shadow:4px 4px 0 rgba(247,184,1,.3);}
+.cuadro-gold-title{color:#F7B801;font-size:11px;margin:0 0 12px 0;text-align:center;}
+.cuadro-gold p{text-align:center;}
+
+details{background:#050510;border:3px solid #00D9FF;margin:24px 0;padding:0;}
+details summary{cursor:pointer;padding:16px 20px;color:#00D9FF;font-size:11px;list-style:none;display:flex;align-items:center;justify-content:space-between;}
+details summary::-webkit-details-marker{display:none;}
+details summary:hover{filter:brightness(1.2);}
+.arrow{display:inline-block;font-size:14px;transition:transform .2s;}
+details[open] .arrow{transform:rotate(180deg);}
+.detail-content{padding:0 20px 20px;border-top:2px solid #2A2A4A;}
+.detail-content p{margin-top:16px;}
+
+.cuadro-final{background:rgba(114,76,249,.15);border:2px solid #724CF9;padding:16px;margin-top:24px;text-align:center;}
+.cuadro-final p{color:#00D9FF;font-size:10px;margin:0;}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="wrapper">
+
+  <h2>¿QUÉ HACE DIFERENTE<br>A ESTE CURSO?</h2>
+
+  <!-- Pixel art estrella animada -->
+  <div class="deco">
+    <div class="estrella-pixel">
+      <svg width="100" height="100" viewBox="0 0 24 24" style="image-rendering:pixelated;">
+        <!-- Estrella pixel art -->
+        <rect x="10" y="0" width="4" height="4" fill="#00D9FF"/>
+        <rect x="10" y="20" width="4" height="4" fill="#00D9FF"/>
+        <rect x="0" y="10" width="4" height="4" fill="#00D9FF"/>
+        <rect x="20" y="10" width="4" height="4" fill="#00D9FF"/>
+        <rect x="3" y="3" width="3" height="3" fill="#724CF9"/>
+        <rect x="18" y="3" width="3" height="3" fill="#724CF9"/>
+        <rect x="3" y="18" width="3" height="3" fill="#724CF9"/>
+        <rect x="18" y="18" width="3" height="3" fill="#724CF9"/>
+        <rect x="8" y="8" width="8" height="8" fill="#F7B801"/>
+        <rect x="10" y="6" width="4" height="2" fill="#F7B801"/>
+        <rect x="10" y="16" width="4" height="2" fill="#F7B801"/>
+        <rect x="6" y="10" width="2" height="4" fill="#F7B801"/>
+        <rect x="16" y="10" width="2" height="4" fill="#F7B801"/>
+        <rect x="10" y="10" width="4" height="4" fill="#FF3D81"/>
+      </svg>
+    </div>
+    <p class="deco-sub">Visión espiritual de la astrología</p>
+  </div>
+
+  <p>Tal vez este no sea tu primer acercamiento a la astrología. Si es así, es probable que ya conozcas algunos signos del zodiaco, sus planetas regentes o cualquier otra información básica que dan forma al lenguaje simbólico del quehacer astrológico.</p>
+
+  <div class="cuadro-gold">
+    <p class="cuadro-gold-title">⭐ NUESTRA DIFERENCIA ⭐</p>
+    <p>Sin importar tu nivel de principiante, además de ofrecerte los primeros pasos para aprender astrología, queremos sobre todo compartir contigo una <span style="color:#FF3D81;">visión y percepción de la astrología que es poco común</span>.</p>
+  </div>
+
+  <p>Para nuestra marca <span style="color:#FF3D81;">Soy Anormal</span>, es fundamental destacar esta visión en todos los contenidos que elaboramos para compartirte a través de nuestras redes sociales, así como en todos los productos de enseñanza-aprendizaje que estaremos ofertando para ti.</p>
+
+  <details id="acordeon">
+    <summary>
+      <span>▶ ¿QUÉ ES LA LÓGICA ESPIRITUAL?</span>
+      <span class="arrow">▼</span>
+    </summary>
+    <div class="detail-content">
+      <p>Nos referimos a una <span style="color:#F7B801;">visión de lógica espiritual</span> que hemos incorporado en la perspectiva de enseñanza para este curso básico.</p>
+      <p>Lo hacemos porque la cultura patriarcal en la que hoy solemos percibir la existencia y vivir nuestras experiencias, se caracteriza por generar información, contenidos académicos y conocimientos oficiales, en donde está fuera de la discusión el reconocimiento de la <span style="color:#FF3D81;">naturaleza espiritual</span> en la que está envuelta la experiencia humana.</p>
+    </div>
+  </details>
+
+  <div class="cuadro-final">
+    <p>✨ Aquí integramos lo espiritual con lo didáctico ✨</p>
+  </div>
+
+</div>
+
+<script>
+// Beep 8-bit al abrir el acordeón
+function playBeep(freq){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.type='square';osc.frequency.value=freq||800;
+    gain.gain.setValueAtTime(.15,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.12);
+    osc.start();osc.stop(ctx.currentTime+.12);
+  }catch(e){}
+}
+document.getElementById('acordeon').addEventListener('toggle',function(){
+  playBeep(this.open?880:440);
+});
+</script>
+</body>
+</html>

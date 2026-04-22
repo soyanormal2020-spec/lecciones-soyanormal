@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bienvenida - Astrología para Principiantes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: #0A0A1B;
+      padding: 20px;
+      font-family: 'Press Start 2P', cursive;
+      color: #F0F0FF;
+      line-height: 2.6;
+      font-size: 11px;
+    }
+
+    /* Animación de estrellita viajando */
+    @keyframes estrella-viaje {
+      0% { transform: translateX(-50px) translateY(0px) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      50% { transform: translateX(250px) translateY(-20px) rotate(180deg); opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateX(500px) translateY(0px) rotate(360deg); opacity: 0; }
+    }
+
+    /* Animación de parpadeo de texto */
+    @keyframes texto-glow {
+      0%, 100% { text-shadow: 3px 3px 0 rgba(0,0,0,.8); }
+      50% { text-shadow: 3px 3px 0 rgba(0,0,0,.8), 0 0 15px #F7B801; }
+    }
+
+    /* Animación de entrada del contenedor */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+   .estrella-animada {
+      animation: estrella-viaje 8s linear infinite;
+      display: inline-block;
+    }
+
+   .titulo-glow {
+      animation: texto-glow 3s ease-in-out infinite;
+    }
+
+   .contenedor {
+      animation: fadeInUp 1s ease-out;
+    }
+
+    details summary::-webkit-details-marker { display: none; }
+    details[open] summary span:last-child { transform: rotate(180deg); }
+    details summary:hover { filter: brightness(1.2); }
+  </style>
+</head>
+<body>
+
+  <div class="contenedor" style="background: #0A0A1B; color: #F0F0FF; padding: 32px; border: 4px solid #F7B801; box-shadow: 6px 6px 0 rgba(247,184,1,.5);">
+
+    <!-- Estrella animada arriba -->
+    <div style="text-align: center; margin: 0 0 28px 0; height: 40px; overflow: hidden; position: relative;">
+      <div class="estrella-animada" style="font-size: 24px; position: absolute; left: 0;">✨</div>
+    </div>
+
+    <!-- Título principal con glow -->
+    <h1 class="titulo-glow" style="color: #F7B801; font-size: 15px; margin: 0 0 28px 0; text-align: center; border-bottom: 3px solid #2A2A4A; padding-bottom: 16px;">
+      COMIENZA TU AVENTURA<br>DE APRENDIZAJE
+    </h1>
+
+    <!-- Pixel art: Portal cósmico -->
+    <div style="text-align: center; margin: 28px 0;">
+      <div style="display: inline-block; background: #050510; border: 4px solid #724CF9; box-shadow: 4px 4px 0 #724CF9; padding: 20px;">
+        <svg viewBox="0 0 120 100" style="width: 120px; height: 100px; image-rendering: pixelated;">
+          <rect width="120" height="100" fill="#050510"/>
+          <!-- Portal -->
+          <rect x="40" y="20" width="40" height="60" fill="#0A0A1B" stroke="#724CF9" stroke-width="4"/>
+          <rect x="44" y="24" width="32" height="52" fill="#724CF9" opacity="0.3"/>
+          <!-- Estrellas alrededor -->
+          <rect x="20" y="15" width="4" height="4" fill="#F7B801"/>
+          <rect x="90" y="25" width="4" height="4" fill="#00D9FF"/>
+          <rect x="30" y="70" width="4" height="4" fill="#FF3D81"/>
+          <rect x="85" y="65" width="4" height="4" fill="#F7B801"/>
+          <!-- Figura entrando -->
+          <rect x="56" y="50" width="8" height="8" fill="#F0F0FF"/>
+          <rect x="52" y="58" width="16" height="16" fill="#724CF9"/>
+        </svg>
+      </div>
+      <p style="color: #8080A0; font-size: 7px; margin-top: 12px;">Tu viaje comienza aquí</p>
+    </div>
+
+    <!-- Texto principal -->
+    <p style="color: #D0D0D0; margin-bottom: 20px; font-size: 10px;">
+      Ahora que ya tienes una idea general de cómo vas a aprender a observar los principios básicos de la astrología, no nos queda más que <span style="color: #F7B801;">reiterarte la bienvenida</span> invitándote a que comiences esta pequeña <span style="color: #00D9FF;">aventura de aprendizaje significativo</span> estudiando los cinco módulos que dan forma y contenido a este curso.
+    </p>
+
+    <p style="color: #D0D0D0; margin-bottom: 24px; font-size: 10px;">
+      Agradecemos de corazón que nos permitas compartir los contenidos y conocimientos en este curso <span style="color: #FF3D81;">Astrología para Principiantes</span>:
+    </p>
+
+    <!-- Caja destacada del curso -->
+    <div style="background: #050510; border: 3px solid #724CF9; padding: 24px; margin: 28px 0; box-shadow: 4px 4px 0 rgba(114,76,249,.3); text-align: center;">
+      <p style="color: #724CF9; font-size: 11px; margin: 0 0 16px 0;">
+        ✦ PRINCIPIOS BÁSICOS 1 ✦
+      </p>
+      <p style="color: #F7B801; font-size: 13px; margin: 0; text-shadow: 2px 2px 0 rgba(0,0,0,.8);">
+        UNA PERSPECTIVA ESPIRITUAL
+      </p>
+    </div>
+
+    <p style="color: #D0D0D0; margin-bottom: 24px; font-size: 10px;">
+      El cual diseñamos con mucha <span style="color: #FF3D81;">pasión</span> con el propósito de contribuir a tu <span style="color: #00D9FF;">desarrollo y bienestar espiritual</span>.
+    </p>
+
+    <!-- Firmas -->
+    <div style="text-align: center; margin: 32px 0 0 0; padding-top: 24px; border-top: 2px solid #2A2A4A;">
+      <p style="color: #8080A0; font-size: 9px; margin: 0 0 16px 0;">Sinceramente</p>
+      <p style="color: #F7B801; font-size: 12px; margin: 0 0 8px 0;">NORMA y OCTAVIO DEL RIO</p>
+
+      <!-- Pixel art firmas -->
+      <div style="margin-top: 20px;">
+        <svg viewBox="0 0 200 40" style="width: 200px; height: 40px; image-rendering: pixelated;">
+          <rect width="200" height="40" fill="#050510"/>
+          <!-- Firma pixel art -->
+          <rect x="40" y="15" width="20" height="4" fill="#F7B801"/>
+          <rect x="50" y="19" width="4" height="8" fill="#F7B801"/>
+          <rect x="45" y="27" width="14" height="4" fill="#F7B801"/>
+
+          <rect x="120" y="15" width="20" height="4" fill="#00D9FF"/>
+          <rect x="130" y="19" width="4" height="8" fill="#00D9FF"/>
+          <rect x="125" y="27" width="14" height="4" fill="#00D9FF"/>
+
+          <text x="100" y="20" fill="#724CF9" font-size="12" text-anchor="middle" font-family="monospace">&</text>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
