@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Astrología Matrix - Pixel Edition</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A1B;
+    --cyan: #00D9FF;
+    --yellow: #F7B801;
+    --purple: #724CF9;
+    --pink: #FF3D81;
+  }
+  
+  * {
+    font-family: 'Press Start 2P', cursive;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    background: var(--bg);
+    color: white;
+    overflow-x: hidden;
+  }
+
+  .pixel-border {
+    box-shadow: 
+      0 0 0 4px var(--bg),
+      0 0 0 8px var(--cyan),
+      0 0 0 12px var(--bg);
+  }
+
+  .pixel-border-yellow {
+    box-shadow: 
+      0 0 0 4px var(--bg),
+      0 0 0 8px var(--yellow),
+      0 0 0 12px var(--bg);
+  }
+
+  .pixel-border-purple {
+    box-shadow: 
+      0 0 0 4px var(--bg),
+      0 0 0 8px var(--purple),
+      0 0 0 12px var(--bg);
+  }
+
+  .pixel-border-pink {
+    box-shadow: 
+      0 0 0 4px var(--bg),
+      0 0 0 8px var(--pink),
+      0 0 0 12px var(--bg);
+  }
+
+  .btn-option {
+    transition: all 0.15s steps(3);
+    cursor: pointer;
+  }
+
+  .btn-option:hover {
+    transform: translate(4px, 4px);
+    box-shadow: 
+      0 0 0 4px var(--bg),
+      0 0 0 8px var(--purple),
+      4px 4px 0 8px var(--bg) !important;
+  }
+
+  .btn-option:active {
+    transform: translate(6px, 6px);
+  }
+
+  .btn-correct {
+    background: var(--yellow) !important;
+    color: var(--bg) !important;
+    animation: correctPulse 0.5s steps(4);
+  }
+
+  .btn-incorrect {
+    background: var(--pink) !important;
+    color: white !important;
+    animation: shake 0.3s steps(4);
+  }
+
+  @keyframes correctPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .slide-in {
+    animation: slideIn 0.4s steps(5);
+  }
+
+  @keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  .blink {
+    animation: blink 1s steps(2) infinite;
+  }
+
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .content-wrapper {
+    position: relative;
+    z-index: 1;
+  }
+
+  .progress-bar {
+    height: 24px;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan), var(--purple));
+    transition: width 0.3s steps(8);
+  }
+
+  .score-display {
+    text-shadow: 4px 4px 0 var(--purple);
+  }
+
+  @media (max-width: 640px) {
+    * {
+      font-size: 10px;
+    }
+    .title-text {
+      font-size: 14px !important;
+    }
+  }
+</style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+<canvas id="starsCanvas"></canvas>
+
+<div class="content-wrapper w-full max-w-3xl">
+  <!-- Start Screen -->
+  <div id="startScreen" class="slide-in">
+    <div class="bg-[#0A0A1B] pixel-border p-6 sm:p-10 text-center">
+      <h1 class="title-text text-2xl sm:text-3xl mb-6 text-[#00D9FF] leading-relaxed">
+        ASTROLOGIA<br/>MATRIX<br/>QUIZ
+      </h1>
+      <div class="my-8 flex justify-center">
+        <div class="w-16 h-16 bg-[#F7B801] pixel-border-yellow"></div>
+      </div>
+      <p class="text-xs sm:text-sm mb-8 leading-loose text-[#724CF9]">
+        Prueba tu conocimiento sobre<br/>los conceptos de<br/>Arquetipos y Despertar<br/>Espiritual
+      </p>
+      <button id="startBtn" class="bg-[#FF3D81] text-white px-8 py-4 pixel-border-pink hover:bg-[#00D9FF] hover:text-[#0A0A1B] transition-all text-sm sm:text-base">
+        INICIAR
+      </button>
+      <p class="mt-8 text-[8px] text-[#00D9FF]">10 PREGUNTAS</p>
+    </div>
+  </div>
+
+  <!-- Quiz Screen -->
+  <div id="quizScreen" class="hidden">
+    <!-- Header -->
+    <div class="mb-6 bg-[#0A0A1B] pixel-border p-4">
+      <div class="flex justify-between items-center mb-4 text-xs sm:text-sm">
+        <div class="text-[#F7B801]">
+          PUNTOS: <span id="score" class="score-display text-[#00D9FF]">0</span>
+        </div>
+        <div class="text-[#FF3D81]">
+          <span id="currentQ">1</span>/10
+        </div>
+      </div>
+      <div class="progress-bar pixel-border">
+        <div id="progressBar" class="progress-fill" style="width: 10%"></div>
+      </div>
+    </div>
+
+    <!-- Question Card -->
+    <div id="questionCard" class="bg-[#0A0A1B] pixel-border p-6 sm:p-8 slide-in">
+      <div id="categoryBadge" class="inline-block mb-4 px-3 py-2 bg-[#724CF9] text-[8px] sm:text-[10px]"></div>
+      <h2 id="questionText" class="text-sm sm:text-base mb-8 leading-relaxed text-[#00D9FF]"></h2>
+      <div id="optionsContainer" class="space-y-4"></div>
+    </div>
+
+    <!-- Feedback Card -->
+    <div id="feedbackCard" class="hidden mt-6 bg-[#0A0A1B] pixel-border p-6 sm:p-8 slide-in">
+      <div id="feedbackIcon" class="text-4xl mb-4 text-center"></div>
+      <h3 id="feedbackTitle" class="text-sm sm:text-base mb-4 text-center"></h3>
+      <p id="feedbackText" class="text-[10px] sm:text-xs leading-loose mb-6"></p>
+      <button id="nextBtn" class="w-full bg-[#00D9FF] text-[#0A0A1B] px-6 py-4 pixel-border hover:bg-[#F7B801] transition-all text-xs sm:text-sm">
+        SIGUIENTE <span class="blink">></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Results Screen -->
+  <div id="resultsScreen" class="hidden">
+    <div class="bg-[#0A0A1B] pixel-border p-6 sm:p-10 text-center slide-in">
+      <h1 class="text-xl sm:text-2xl mb-6 text-[#F7B801]">MISION COMPLETA</h1>
+      <div class="my-8">
+        <div class="text-5xl sm:text-6xl mb-4" id="resultEmoji"></div>
+        <div class="text-4xl sm:text-5xl score-display text-[#00D9FF] mb-2">
+          <span id="finalScore">0</span>/10
+        </div>
+        <p id="resultMessage" class="text-xs sm:text-sm text-[#724CF9] mb-8"></p>
+      </div>
+      
+      <div id="weakAreas" class="mb-8 text-left bg-[#0A0A1B] pixel-border-yellow p-4 sm:p-6 hidden">
+        <h3 class="text-xs sm:text-sm mb-4 text-[#FF3D81]">REPASAR:</h3>
+        <ul id="weakAreasList" class="text-[8px] sm:text-[10px] space-y-2 leading-relaxed"></ul>
+      </div>
+
+      <button id="restartBtn" class="bg-[#FF3D81] text-white px-8 py-4 pixel-border-pink hover:bg-[#00D9FF] hover:text-[#0A0A1B] transition-all text-sm sm:text-base">
+        REINICIAR
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    category: "Astrología Matrix",
+    question: "¿Qué representa la 'Matrix' en el contexto de la Astrología Matrix?",
+    options: [
+      "El sistema de creencias y condicionamientos que nos limita",
+      "Un software de astrología predictiva",
+      "El mapa natal tradicional",
+      "Una técnica de compatibilidad"
+    ],
+    correct: 0,
+    explanation: "La Astrología Matrix entiende la 'Matrix' como el conjunto de programas, creencias y condicionamientos heredados que nos mantienen en piloto automático, alejados de nuestra esencia arquetípica.",
+    concept: "Astrología Matrix"
+  },
+  {
+    category: "Arquetipo",
+    question: "¿Qué es un arquetipo según este marco conceptual?",
+    options: [
+      "Un signo zodiacal específico",
+      "Un patrón energético universal que habita en el inconsciente colectivo",
+      "El ascendente de la carta natal",
+      "Una predicción de futuro"
+    ],
+    correct: 1,
+    explanation: "Los arquetipos son patrones primordiales de energía y consciencia que existen en el inconsciente colectivo. No son el signo, sino la fuerza viva detrás de él.",
+    concept: "Arquetipo"
+  },
+  {
+    category: "Características elevadas",
+    question: "¿Cómo se manifiesta una característica elevada?",
+    options: [
+      "Cuando actuamos desde el miedo y la carencia",
+      "Cuando expresamos el arquetipo desde la consciencia y el amor",
+      "Cuando evitamos los desafíos",
+      "Cuando nos comparamos con otros"
+    ],
+    correct: 1,
+    explanation: "Las características elevadas surgen cuando integramos y expresamos el arquetipo desde la consciencia, el amor propio y la conexión con el propósito, trascendiendo el ego.",
+    concept: "Características elevadas"
+  },
+  {
+    category: "Características de sobrevivencia",
+    question: "¿Qué activa las características de sobrevivencia?",
+    options: [
+      "La meditación diaria",
+      "El miedo, trauma o heridas no sanadas del arquetipo",
+      "Leer sobre astrología",
+      "Tener Venus en Piscis"
+    ],
+    correct: 1,
+    explanation: "Las características de sobrevivencia son mecanismos de defensa que el arquetipo desarrolla cuando operamos desde el miedo, heridas de infancia o traumas no integrados.",
+    concept: "Características de sobrevivencia"
+  },
+  {
+    category: "Despertar Espiritual",
+    question: "¿Cuál es una señal del despertar espiritual?",
+    options: [
+      "Querer predecir el futuro constantemente",
+      "Cuestionar las creencias impuestas y buscar la verdad interna",
+      "Acumular cursos de astrología",
+      "Culpar a los planetas de todo"
+    ],
+    correct: 1,
+    explanation: "El despertar espiritual comienza cuando empezamos a cuestionar los programas de la Matrix, observamos nuestros patrones y buscamos reconectar con nuestra esencia auténtica.",
+    concept: "Despertar Espiritual"
+  },
+  {
+    category: "Espiritualidad",
+    question: "Según este marco, ¿qué es la espiritualidad?",
+    options: [
+      "Seguir dogmas religiosos sin cuestionar",
+      "Un camino de autoconocimiento y reconexión con la Fuente",
+      "Solo hacer rituales de luna llena",
+      "Abandonar la vida material completamente"
+    ],
+    correct: 1,
+    explanation: "La espiritualidad aquí se entiende como el viaje de recordar quiénes somos más allá de la personalidad: un proceso de integración, consciencia y conexión con el Todo.",
+    concept: "Espiritualidad"
+  },
+  {
+    category: "Trabajo personal",
+    question: "¿Cuál es el objetivo del trabajo personal?",
+    options: [
+      "Eliminar el ego por completo",
+      "Integrar las sombras y elevar la vibración del arquetipo",
+      "Culpar a la infancia de todo",
+      "Cambiar la carta natal"
+    ],
+    correct: 1,
+    explanation: "El trabajo personal implica hacer consciente lo inconsciente: observar, aceptar e integrar nuestras sombras para expresar el arquetipo desde su versión más elevada.",
+    concept: "Trabajo personal"
+  },
+  {
+    category: "Arquetipo",
+    question: "¿Cuál es la diferencia entre vivir el arquetipo vs ser el arquetipo?",
+    options: [
+      "No hay diferencia",
+      "Vivir el arquetipo es actuarlo conscientemente, ser el arquetipo es identificarte y quedar atrapado en él",
+      "Ser el arquetipo es mejor",
+      "Depende del signo lunar"
+    ],
+    correct: 1,
+    explanation: "Cuando 'somos' el arquetipo, nos fusionamos con él y perdemos libertad. Cuando lo 'vivimos', lo usamos como herramienta de expresión consciente sin perder nuestro centro.",
+    concept: "Arquetipo"
+  },
+  {
+    category: "Astrología Matrix",
+    question: "¿Qué busca la Astrología Matrix versus la astrología tradicional?",
+    options: [
+      "Predecir eventos exactos",
+      "Liberar la consciencia del programa en lugar de definir el destino",
+      "Solo hablar de compatibilidad",
+      "Eliminar los tránsitos"
+    ],
+    correct: 1,
+    explanation: "La Astrología Matrix no busca predecir sino liberar: usa la carta como mapa para identificar programas limitantes y elegir conscientemente cómo expresar la energía.",
+    concept: "Astrología Matrix"
+  },
+  {
+    category: "Despertar Espiritual",
+    question: "¿Qué NO es el despertar espiritual?",
+    options: [
+      "Un proceso gradual de autoobservación",
+      "La solución mágica a todos los problemas sin trabajo interno",
+      "Una invitación a la responsabilidad personal",
+      "Un camino de sanación"
+    ],
+    correct: 1,
+    explanation: "El despertar no es una píldora mágica ni un escape. Es un camino que requiere compromiso, autoobservación y disposición a enfrentar las sombras con compasión.",
+    concept: "Despertar Espiritual"
+  }
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+let weakConcepts = {};
+
+const startScreen = document.getElementById('startScreen');
+const quizScreen = document.getElementById('quizScreen');
+const resultsScreen = document.getElementById('resultsScreen');
+const startBtn = document.getElementById('startBtn');
+const restartBtn = document.getElementById('restartBtn');
+const nextBtn = document.getElementById('nextBtn');
+const questionCard = document.getElementById('questionCard');
+const feedbackCard = document.getElementById('feedbackCard');
+
+function initGame() {
+  currentQuestion = 0;
+  score = 0;
+  answered = false;
+  weakConcepts = {};
+  updateScore();
+  startScreen.classList.remove('hidden');
+  quizScreen.classList.add('hidden');
+  resultsScreen.classList.add('hidden');
+}
+
+function startQuiz() {
+  startScreen.classList.add('hidden');
+  quizScreen.classList.remove('hidden');
+  loadQuestion();
+}
+
+function loadQuestion() {
+  answered = false;
+  const q = questions[currentQuestion];
+  
+  document.getElementById('currentQ').textContent = currentQuestion + 1;
+  document.getElementById('progressBar').style.width = ((currentQuestion + 1) / questions.length * 100) + '%';
+  document.getElementById('categoryBadge').textContent = q.category;
+  document.getElementById('questionText').textContent = q.question;
+  
+  const optionsContainer = document.getElementById('optionsContainer');
+  optionsContainer.innerHTML = '';
+  
+  q.options.forEach((option, index) => {
+    const btn = document.createElement('button');
+    btn.className = 'btn-option w-full text-left bg-[#724CF9] text-white px-4 py-4 pixel-border-purple text-[10px] sm:text-xs leading-relaxed';
+    btn.textContent = option;
+    btn.onclick = () => selectAnswer(index);
+    optionsContainer.appendChild(btn);
+  });
+  
+  questionCard.classList.remove('hidden');
+  feedbackCard.classList.add('hidden');
+  
+  // Trigger animation
+  questionCard.classList.remove('slide-in');
+  void questionCard.offsetWidth;
+  questionCard.classList.add('slide-in');
+}
+
+function selectAnswer(selectedIndex) {
+  if (answered) return;
+  answered = true;
+  
+  const q = questions[currentQuestion];
+  const buttons = document.querySelectorAll('.btn-option');
+  
+  buttons.forEach((btn, index) => {
+    btn.disabled = true;
+    if (index === q.correct) {
+      btn.classList.add('btn-correct');
+    } else if (index === selectedIndex) {
+      btn.classList.add('btn-incorrect');
+    }
+  });
+  
+  const isCorrect = selectedIndex === q.correct;
+  if (isCorrect) {
+    score++;
+    updateScore();
+  } else {
+    // Track weak concepts
+    weakConcepts[q.concept] = (weakConcepts[q.concept] || 0) + 1;
+  }
+  
+  showFeedback(isCorrect, q.explanation);
+}
+
+function showFeedback(isCorrect, explanation) {
+  feedbackCard.classList.remove('hidden');
+  questionCard.classList.add('hidden');
+  
+  const feedbackIcon = document.getElementById('feedbackIcon');
+  const feedbackTitle = document.getElementById('feedbackTitle');
+  
+  if (isCorrect) {
+    feedbackIcon.textContent = '★';
+    feedbackIcon.className = 'text-4xl mb-4 text-center text-[#F7B801]';
+    feedbackTitle.textContent = 'CORRECTO!';
+    feedbackTitle.className = 'text-sm sm:text-base mb-4 text-center text-[#00D9FF]';
+  } else {
+    feedbackIcon.textContent = '✖';
+    feedbackIcon.className = 'text-4xl mb-4 text-center text-[#FF3D81]';
+    feedbackTitle.textContent = 'INCORRECTO';
+    feedbackTitle.className = 'text-sm sm:text-base mb-4 text-center text-[#FF3D81]';
+  }
+  
+  document.getElementById('feedbackText').textContent = explanation;
+}
+
+function nextQuestion() {
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    loadQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function updateScore() {
+  document.getElementById('score').textContent = score;
+}
+
+function showResults() {
+  quizScreen.classList.add('hidden');
+  resultsScreen.classList.remove('hidden');
+  
+  document.getElementById('finalScore').textContent = score;
+  
+  const resultEmoji = document.getElementById('resultEmoji');
+  const resultMessage = document.getElementById('resultMessage');
+  
+  if (score === 10) {
+    resultEmoji.textContent = '◆';
+    resultMessage.textContent = 'DESPERTAR TOTAL! DOMINAS LA MATRIX';
+  } else if (score >= 8) {
+    resultEmoji.textContent = '★';
+    resultMessage.textContent = 'EXCELENTE! CASI DESPIERTO';
+  } else if (score >= 6) {
+    resultEmoji.textContent = '▲';
+    resultMessage.textContent = 'BUEN TRABAJO! SIGUES DESPERTANDO';
+  } else if (score >= 4) {
+    resultEmoji.textContent = '■';
+    resultMessage.textContent = 'EN PROCESO! CONTINUA EL TRABAJO INTERNO';
+  } else {
+    resultEmoji.textContent = '▼';
+    resultMessage.textContent = 'INICIO DEL CAMINO! HAY MUCHO POR DESCUBRIR';
+  }
+  
+  // Show weak areas
+  const weakAreas = document.getElementById('weakAreas');
+  const weakAreasList = document.getElementById('weakAreasList');
+  
+  if (Object.keys(weakConcepts).length > 0) {
+    weakAreas.classList.remove('hidden');
+    weakAreasList.innerHTML = '';
+    Object.keys(weakConcepts).forEach(concept => {
+      const li = document.createElement('li');
+      li.textContent = '• ' + concept;
+      li.className = 'text-[#00D9FF]';
+      weakAreasList.appendChild(li);
+    });
+  } else {
+    weakAreas.classList.add('hidden');
+  }
+}
+
+function restartQuiz() {
+  initGame();
+}
+
+// Event Listeners
+startBtn.addEventListener('click', startQuiz);
+restartBtn.addEventListener('click', restartQuiz);
+nextBtn.addEventListener('click', nextQuestion);
+
+// Star Animation
+const canvas = document.getElementById('starsCanvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function createStar() {
+  return {
+    x: Math.random() * canvas.width,
+    y: -10,
+    size: Math.floor(Math.random() * 3) + 2,
+    speed: Math.random() * 2 + 1,
+    color: ['#00D9FF', '#F7B801', '#724CF9', '#FF3D81'][Math.floor(Math.random() * 4)]
+  };
+}
+
+function initStars() {
+  stars = [];
+  for (let i = 0; i < 50; i++) {
+    const star = createStar();
+    star.y = Math.random() * canvas.height;
+    stars.push(star);
+  }
+}
+
+function updateStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  stars.forEach((star, index) => {
+    star.y += star.speed;
+    
+    if (star.y > canvas.height) {
+      stars[index] = createStar();
+    }
+    
+    ctx.fillStyle = star.color;
+    ctx.fillRect(Math.floor(star.x), Math.floor(star.y), star.size, star.size);
+  });
+  
+  requestAnimationFrame(updateStars);
+}
+
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  initStars();
+});
+
+// Init
+resizeCanvas();
+initStars();
+updateStars();
+initGame();
+</script>
+</body>
+</html>

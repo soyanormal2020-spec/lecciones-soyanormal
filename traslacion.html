@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Traslación - 4 Estaciones + 12 Signos</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    
+    * {
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #0A0E27;
+      font-family: 'Press Start 2P', cursive;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .screen {
+      background: #050510;
+      border: 6px solid #FF3D81;
+      box-shadow: 
+        0 0 0 4px #0A0E27, 
+        0 0 0 8px #00D9FF,
+        0 12px 0 8px rgba(0,0,0,0.7);
+      max-width: 850px;
+      padding: 28px;
+      color: #E0E0FF;
+      line-height: 2.2;
+      font-size: 9px;
+      position: relative;
+    }
+    
+    .scanlines {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 3px);
+      pointer-events: none;
+      z-index: 10;
+    }
+    
+    h1 {
+      font-size: 14px;
+      text-align: center;
+      margin: 0 0 20px 0;
+      color: #FF3D81;
+      text-shadow: 3px 3px 0 rgba(0,0,0,.9);
+      border-bottom: 4px double #00D9FF;
+      padding-bottom: 12px;
+    }
+    
+    .orbit-container {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin: 24px auto;
+    }
+    
+    /* Línea de órbita */
+    .orbit-path {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 240px;
+      height: 240px;
+      border: 3px dashed #00D9FF;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.4;
+    }
+    
+    .sun-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 40px;
+      z-index: 5;
+      text-shadow: 0 0 20px #F7B801;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.1); }
+    }
+    
+    /* Tierra orbitando */
+    .earth-orbit {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 28px;
+      height: 28px;
+      font-size: 24px;
+      transform-origin: -120px 0;
+      animation: orbit 12s linear infinite;
+      z-index: 6;
+      filter: drop-shadow(0 0 8px #00D9FF);
+    }
+    
+    @keyframes orbit {
+      0% { transform: rotate(0deg) translateX(120px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(120px) rotate(-360deg); }
+    }
+    
+    /* 4 ESTACIONES en cuadrantes */
+    .season-icon {
+      position: absolute;
+      font-size: 32px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 50%;
+      left: 50%;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+    }
+    
+    /* Primavera - Arriba derecha (0-90°) */
+    .primavera { 
+      transform: rotate(-45deg) translateX(170px) rotate(45deg);
+    }
+    
+    /* Verano - Abajo derecha (90-180°) */
+    .verano { 
+      transform: rotate(45deg) translateX(170px) rotate(-45deg);
+    }
+    
+    /* Otoño - Abajo izquierda (180-270°) */
+    .otono { 
+      transform: rotate(135deg) translateX(170px) rotate(-135deg);
+    }
+    
+    /* Invierno - Arriba izquierda (270-360°) */
+    .invierno { 
+      transform: rotate(225deg) translateX(170px) rotate(-225deg);
+    }
+    
+    /* 12 SIGNOS del zodiaco */
+    .zodiac-sign {
+      position: absolute;
+      font-size: 12px;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 50%;
+      left: 50%;
+      color: #F7B801;
+      opacity: 0.7;
+    }
+    
+    .aries { transform: rotate(-90deg) translateX(130px) rotate(90deg); }
+    .tauro { transform: rotate(-60deg) translateX(130px) rotate(60deg); }
+    .geminis { transform: rotate(-30deg) translateX(130px) rotate(30deg); }
+    .cancer { transform: rotate(0deg) translateX(130px) rotate(0deg); }
+    .leo { transform: rotate(30deg) translateX(130px) rotate(-30deg); }
+    .virgo { transform: rotate(60deg) translateX(130px) rotate(-60deg); }
+    .libra { transform: rotate(90deg) translateX(130px) rotate(-90deg); }
+    .escorpio { transform: rotate(120deg) translateX(130px) rotate(-120deg); }
+    .sagitario { transform: rotate(150deg) translateX(130px) rotate(-150deg); }
+    .capricornio { transform: rotate(180deg) translateX(130px) rotate(-180deg); }
+    .acuario { transform: rotate(210deg) translateX(130px) rotate(-210deg); }
+    .piscis { transform: rotate(240deg) translateX(130px) rotate(-240deg); }
+    
+    .season-display {
+      background: rgba(255,61,129,0.2);
+      border-left: 4px solid #FF3D81;
+      padding: 16px;
+      margin: 20px 0;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+      text-align: center;
+    }
+    
+    .season-text {
+      color: #00D9FF;
+      font-size: 10px;
+      margin: 8px 0;
+    }
+    
+    .season-text::after {
+      content: "PRIMAVERA 🌸 ARIES";
+      animation: seasonChange 12s linear infinite;
+    }
+    
+    @keyframes seasonChange {
+      0%, 24.9% { content: "PRIMAVERA 🌸 ARIES-TAURO-GÉMINIS"; }
+      25%, 49.9% { content: "VERANO ☀️ CÁNCER-LEO-VIRGO"; }
+      50%, 74.9% { content: "OTOÑO 🍂 LIBRA-ESCORPIO-SAGITARIO"; }
+      75%, 100% { content: "INVIERNO ❄️ CAPRICORNIO-ACUARIO-PISCIS"; }
+    }
+    
+    .stat-box {
+      background: rgba(255,255,255,0.05);
+      border-left: 4px solid #FF3D81;
+      padding: 12px;
+      margin: 12px 0;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+      font-size: 8px;
+    }
+    
+    .highlight { 
+      color: #F7B801; 
+      text-shadow: 1px 1px 0 rgba(0,0,0,.8);
+    }
+    
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin: 16px 0;
+      font-size: 7px;
+    }
+    
+    .legend-item {
+      background: rgba(0,217,255,0.1);
+      border: 2px solid #2A2A4A;
+      padding: 8px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen">
+    <div class="scanlines"></div>
+    <h1>► TRASLACIÓN: 4 ESTACIONES + 12 SIGNOS ◄</h1>
+    
+    <div class="orbit-container">
+      <div class="orbit-path"></div>
+      <div class="sun-center">☀️</div>
+      <div class="earth-orbit">🌍</div>
+      
+      <!-- 4 Estaciones en cuadrantes -->
+      <div class="season-icon primavera">🌸</div>
+      <div class="season-icon verano">☀️</div>
+      <div class="season-icon otono">🍂</div>
+      <div class="season-icon invierno">❄️</div>
+      
+      <!-- 12 Signos -->
+      <div class="zodiac-sign aries">♈</div>
+      <div class="zodiac-sign tauro">♉</div>
+      <div class="zodiac-sign geminis">♊</div>
+      <div class="zodiac-sign cancer">♋</div>
+      <div class="zodiac-sign leo">♌</div>
+      <div class="zodiac-sign virgo">♍</div>
+      <div class="zodiac-sign libra">♎</div>
+      <div class="zodiac-sign escorpio">♏</div>
+      <div class="zodiac-sign sagitario">♐</div>
+      <div class="zodiac-sign capricornio">♑</div>
+      <div class="zodiac-sign acuario">♒</div>
+      <div class="zodiac-sign piscis">♓</div>
+    </div>
+    
+    <div class="season-display">
+      <div style="color: #8080A0; font-size: 7px; margin-bottom: 8px;">POSICIÓN ACTUAL:</div>
+      <div class="season-text"></div>
+    </div>
+    
+    <div class="legend">
+      <div class="legend-item">🌸 PRIMAVERA<br>Mar-May</div>
+      <div class="legend-item">☀️ VERANO<br>Jun-Ago</div>
+      <div class="legend-item">🍂 OTOÑO<br>Sep-Nov</div>
+      <div class="legend-item">❄️ INVIERNO<br>Dic-Feb</div>
+    </div>
+    
+    <div class="stat-box">
+      <span class="highlight">ÓRBITA:</span> 365 DÍAS ALREDEDOR DEL SOL<br>
+      <span class="highlight">4 ESTACIONES:</span> 1 POR CUADRANTE (~90 DÍAS)<br>
+      <span class="highlight">12 SIGNOS:</span> 1 CADA 30 DÍAS (30°)
+    </div>
+    
+    <p style="font-size: 8px; color: #C0C0FF; margin: 16px 0;">
+      La <span class="highlight">TIERRA 🌍</span> gira alrededor del Sol ☀️ pasando por 4 cuadrantes estacionales. Cada cuadrante tiene 3 signos zodiacales. El ciclo completo de 12s simula 1 año.
+    </p>
+  </div>
+</body>
+</html>

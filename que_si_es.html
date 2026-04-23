@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⭐ INTRODUCCIÓN A LA ASTROLOGÍA ⭐</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --white: #F0F0F0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* Stars Background */
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  /* Scanlines Effect */
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  /* CRT Glow */
+  .crt-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 100px rgba(0, 217, 255, 0.1);
+  }
+
+  /* Meteorites */
+  .meteorite {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(-100px) translateX(0) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(calc(100vh + 100px)) translateX(100px) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  /* Container */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Title with Glitch */
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(16px, 4vw, 28px);
+    color: var(--cyan);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--pink), -2px -2px 0 var(--purple);
+    animation: glitch 3s infinite;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  /* XP Bar */
+  .xp-container {
+    background: #1a1a2e;
+    border: 4px solid var(--purple);
+    padding: 16px;
+    margin: 30px 0;
+    box-shadow: 0 0 20px rgba(114, 76, 249, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .xp-label {
+    color: var(--gold);
+    font-size: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .xp-bar-bg {
+    background: #0A0A1B;
+    border: 3px solid var(--cyan);
+    height: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .xp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green) 0%, var(--cyan) 100%);
+    width: 25%;
+    box-shadow: 0 0 10px var(--green);
+    animation: pulse-bar 2s infinite;
+    position: relative;
+  }
+
+  .xp-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shine 2s infinite;
+  }
+
+  @keyframes pulse-bar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
+
+  @keyframes shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .xp-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--white);
+    font-size: 8px;
+    text-shadow: 2px 2px 0 #000;
+    z-index: 1;
+  }
+
+  /* Content Boxes */
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .box.purple {
+    background: #1a1a2e;
+    border-color: var(--purple);
+    box-shadow: 8px 8px 0 rgba(114, 76, 249, 0.3), 0 0 20px rgba(114, 76, 249, 0.2);
+  }
+
+  .box.gold {
+    background: #2e2416;
+    border-color: var(--gold);
+    box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.3), 0 0 20px rgba(247, 184, 1, 0.2);
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .box.purple .box-title {
+    color: var(--cyan);
+  }
+
+  .box.gold .box-title {
+    color: var(--gold);
+  }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+  }
+
+  .box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .highlight {
+    color: var(--pink);
+    text-shadow: 0 0 5px var(--pink);
+  }
+
+  .highlight-cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 5px var(--cyan);
+  }
+
+  .highlight-gold {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+  .highlight-green {
+    color: var(--green);
+    text-shadow: 0 0 5px var(--green);
+  }
+
+  /* Video Section */
+  .video-section {
+    margin: 40px 0;
+  }
+
+  .section-title {
+    font-size: 14px;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 24px;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  @media (min-width: 768px) {
+    .video-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .video-card {
+    background: #1a1a2e;
+    border: 4px solid var(--cyan);
+    padding: 16px;
+    transition: all 0.3s;
+    box-shadow: 8px 8px 0 rgba(0, 217, 255, 0.3);
+  }
+
+  .video-card:nth-child(2) {
+    border-color: var(--pink);
+    box-shadow: 8px 8px 0 rgba(255, 61, 129, 0.3);
+  }
+
+  .video-card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 rgba(0, 217, 255, 0.4);
+  }
+
+  .video-card:nth-child(2):hover {
+    box-shadow: 12px 12px 0 rgba(255, 61, 129, 0.4);
+  }
+
+  .video-thumbnail {
+    width: 100%;
+    aspect-ratio: 16/9;
+    margin-bottom: 12px;
+    border: 3px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .video-title {
+    font-size: 8px;
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 12px;
+    line-height: 1.8;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    background: var(--gold);
+    color: var(--bg-dark);
+    border: 3px solid var(--bg-dark);
+    padding: 12px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 9px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+    transition: all 0.1s;
+  }
+
+  .btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  /* Floating Stars Decoration */
+  .floating-star {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+
+  /* Divider */
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--purple), var(--cyan), var(--purple), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--cyan);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .container {
+      padding: 12px;
+    }
+    
+    .box {
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .box p {
+      font-size: 8px;
+    }
+
+    .box-title {
+      font-size: 10px;
+    }
+  }
+</style>
+
+<style>
+/* Animación difuminado para sección NO ES */
+@keyframes fadeBlurIn {
+  0% { opacity: 0; filter: blur(8px); transform: translateY(20px); }
+  100% { opacity: 1; filter: blur(0px); transform: translateY(0); }
+}
+.box.purple {
+  animation: fadeBlurIn 1.5s ease-out forwards;
+}
+
+/* Brillo cíclico para sección SÍ ES cada 8s */
+@keyframes glowCycle {
+  0%, 15% { 
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.2);
+    border-color: rgba(255, 215, 0, 0.5);
+  }
+  7% { 
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), 0 0 50px rgba(255, 215, 0, 0.5);
+    border-color: rgba(255, 215, 0, 1);
+  }
+  85%, 100% { 
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.2);
+    border-color: rgba(255, 215, 0, 0.5);
+  }
+}
+.box.gold {
+  animation: glowCycle 8s ease-in-out infinite;
+  border: 2px solid rgba(255, 215, 0, 0.5);
+}
+
+/* Highlights con pulso cada 8s */
+@keyframes highlightPulse {
+  0%, 15%, 85%, 100% { filter: brightness(1); }
+  7% { filter: brightness(1.4) saturate(1.3); }
+}
+.box.gold .highlight-gold { 
+  background: linear-gradient(90deg, #FFD700, #FFA500); 
+  color: #1a1a1a;
+  padding: 0 4px;
+  animation: highlightPulse 8s infinite;
+}
+.box.gold .highlight-cyan { 
+  background: #00FFFF; 
+  color: #1a1a1a;
+  padding: 0 4px;
+  animation: highlightPulse 8s infinite 0.2s;
+}
+.box.gold .highlight-green { 
+  background: #00FF00; 
+  color: #1a1a1a;
+  padding: 0 4px;
+  animation: highlightPulse 8s infinite 0.4s;
+}
+.box.gold .highlight { 
+  background: #FF00FF; 
+  color: #1a1a1a;
+  padding: 0 4px;
+  animation: highlightPulse 8s infinite 0.6s;
+}
+
+/* Elementos pixel art flotando */
+.element-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.pixel-element {
+  position: absolute;
+  opacity: 0;
+  animation: elementFloat 10s ease-in-out infinite;
+  image-rendering: pixelated;
+  width: 32px;
+  height: 32px;
+}
+
+@keyframes elementFloat {
+  0% { opacity: 0; transform: translateY(100vh) scale(1); }
+  10% { opacity: 0.6; }
+  50% { opacity: 0.8; transform: translateY(40vh) scale(1.2); }
+  90% { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-20vh) scale(0.8); }
+}
+
+* {
+  image-rendering: pixelated;
+}
+</style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <!-- Floating Decorative Stars -->
+  <svg class="floating-star" style="top: 15%; left: 5%; width: 24px; height: 24px; animation-delay: 0s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#F7B801"/>
+  </svg>
+  <svg class="floating-star" style="top: 60%; right: 8%; width: 20px; height: 20px; animation-delay: 1s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#00D9FF"/>
+  </svg>
+  <svg class="floating-star" style="top: 40%; left: 10%; width: 18px; height: 18px; animation-delay: 2s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#FF3D81"/>
+  </svg>
+
+  <!-- Meteorites -->
+  <svg class="meteorite" style="left: 10%; width: 16px; height: 16px; animation-duration: 8s; animation-delay: 0s;" viewBox="0 0 16 16">
+    <rect x="6" y="0" width="4" height="4" fill="#724CF9"/>
+    <rect x="4" y="4" width="8" height="4" fill="#00D9FF"/>
+    <rect x="6" y="8" width="4" height="8" fill="#724CF9"/>
+  </svg>
+  <svg class="meteorite" style="left: 70%; width: 20px; height: 20px; animation-duration: 10s; animation-delay: 2s;" viewBox="0 0 16 16">
+    <rect x="6" y="0" width="4" height="4" fill="#FF3D81"/>
+    <rect x="4" y="4" width="8" height="4" fill="#F7B801"/>
+    <rect x="6" y="8" width="4" height="8" fill="#FF3D81"/>
+  </svg>
+  <svg class="meteorite" style="left: 45%; width: 14px; height: 14px; animation-duration: 12s; animation-delay: 4s;" viewBox="0 0 16 16">
+    <rect x="6" y="0" width="4" height="4" fill="#39FF88"/>
+    <rect x="4" y="4" width="8" height="4" fill="#00D9FF"/>
+    <rect x="6" y="8" width="4" height="8" fill="#39FF88"/>
+  </svg>
+
+  <div class="container">
+    <h1 class="glitch-title">⭐ INTRODUCCIÓN A LA ASTROLOGÍA ⭐</h1>
+
+    <!-- XP Bar -->
+    <div class="xp-container">
+      <div class="xp-label">MÓDULO 1 - EN PROGRESO</div>
+      <div class="xp-bar-bg">
+        <div class="xp-bar-fill"></div>
+        <div class="xp-text">25% XP</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Main Content Section -->
+    <div class="box purple">
+      <h2 class="box-title">QUÉ SÍ ES Y QUÉ NO ES LA ASTROLOGÍA</h2>
+      
+      <p>
+        La astrología <span class="highlight-cyan">NO ES</span> fatalismo ni determinismo rígido. No es una sentencia que te encierra en un destino inamovible.
+      </p>
+
+      <p>
+        <span class="highlight-green">Tampoco es</span> verse atado a transitar la vida mirando siempre hacia arriba, esperando señales del cielo sin tomar acción. No es quedarnos pasivos, dejando que "los astros decidan por nosotros".
+      </p>
+
+      <p>
+        <span class="highlight">Mucho menos es</span> vivir echando culpas a otros, al universo o a los planetas por lo que nos sucede. La astrología no es una excusa para no hacernos cargo de nuestras elecciones.
+      </p>
+    </div>
+
+    <div class="box gold">
+      <p>
+        La astrología <span class="highlight-gold">SÍ ES</span> un lenguaje simbólico, una herramienta de autoconocimiento que nos ayuda a comprender los ciclos de la vida, los momentos de oportunidad y los desafíos que se presentan.
+      </p>
+
+      <p>
+        <span class="highlight-cyan">SÍ ES</span> un mapa que nos permite entender nuestras energías internas, nuestras tendencias, nuestras luces y sombras. Nos muestra potenciales, no sentencias.
+      </p>
+
+      <p>
+        <span class="highlight-green">SÍ ES</span> una vía de observación y trabajo personal. Nos invita a dialogar con nosotros mismos, a reconocer patrones, a integrar aspectos de nuestra psique y a evolucionar de manera consciente.
+      </p>
+
+      <p>
+        <span class="highlight">SÍ ES</span> una herramienta que nos empodera: cuando la usamos con responsabilidad, nos ayuda a tomar decisiones más alineadas, a desarrollar compasión por nuestros procesos y a vivir con mayor presencia y sentido.
+      </p>
+
+      <p>
+        En definitiva, la astrología no predice un futuro escrito en piedra, sino que nos ofrece un <span class="highlight-gold">lenguaje para leernos a nosotros mismos</span>, para comprender el movimiento de la vida y para asumir con mayor claridad el poder de nuestras propias decisiones.
+      </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Video Section -->
+    <div class="video-section">
+      <h2 class="section-title">▶ DESCÚBRELO EN VIDEO ◀</h2>
+      
+      <div class="video-grid">
+        <!-- Video Card 1 -->
+        <div class="video-card">
+          <svg class="video-thumbnail" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background Grid -->
+            <defs>
+              <pattern id="grid1" width="20" height="20" patternUnits="userSpaceOnUse">
+                <rect width="20" height="20" fill="#0A0A1B"/>
+                <rect width="1" height="20" fill="#724CF9" opacity="0.3"/>
+                <rect width="20" height="1" fill="#724CF9" opacity="0.3"/>
+              </pattern>
+            </defs>
+            <rect width="320" height="180" fill="url(#grid1)"/>
+            
+            <!-- Decorative Elements -->
+            <circle cx="40" cy="40" r="3" fill="#F7B801"/>
+            <circle cx="280" cy="50" r="2" fill="#00D9FF"/>
+            <circle cx="60" cy="140" r="2" fill="#FF3D81"/>
+            <rect x="250" y="130" width="4" height="4" fill="#39FF88"/>
+            <rect x="30" y="100" width="3" height="3" fill="#F7B801"/>
+            
+            <!-- Play Button Background -->
+            <rect x="120" y="60" width="80" height="60" fill="#F7B801" opacity="0.9"/>
+            <rect x="125" y="65" width="70" height="50" fill="#0A0A1B"/>
+            
+            <!-- Play Icon -->
+            <polygon points="145,80 145,100 170,90" fill="#F7B801"/>
+          </svg>
+          <div class="video-title">
+            UNA MIRADA DIFERENTE PARA COMPRENDER LA ASTROLOGÍA
+          </div>
+          <a href="https://youtu.be/HC06ZAyZYEI" target="_blank" class="btn">
+            VER VIDEO
+          </a>
+        </div>
+
+        <!-- Video Card 2 -->
+        <div class="video-card">
+          <svg class="video-thumbnail" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background Grid -->
+            <defs>
+              <pattern id="grid2" width="20" height="20" patternUnits="userSpaceOnUse">
+                <rect width="20" height="20" fill="#0A0A1B"/>
+                <rect width="1" height="20" fill="#FF3D81" opacity="0.3"/>
+                <rect width="20" height="1" fill="#FF3D81" opacity="0.3"/>
+              </pattern>
+            </defs>
+            <rect width="320" height="180" fill="url(#grid2)"/>
+            
+            <!-- Decorative Elements -->
+            <circle cx="50" cy="30" r="2" fill="#00D9FF"/>
+            <circle cx="270" cy="40" r="3" fill="#F7B801"/>
+            <circle cx="200" cy="150" r="2" fill="#39FF88"/>
+            <rect x="40" y="120" width="4" height="4" fill="#FF3D81"/>
+            <rect x="280" y="110" width="3" height="3" fill="#724CF9"/>
+            <polygon points="30,60 35,70 25,70" fill="#F7B801"/>
+            
+            <!-- Play Button Background -->
+            <rect x="120" y="60" width="80" height="60" fill="#FF3D81" opacity="0.9"/>
+            <rect x="125" y="65" width="70" height="50" fill="#0A0A1B"/>
+            
+            <!-- Play Icon -->
+            <polygon points="145,80 145,100 170,90" fill="#FF3D81"/>
+          </svg>
+          <div class="video-title">
+         ¿QUÉ ES LA ASTROLOGÍA?
+          </div>
+          <a href="https://youtu.be/IdiUg8YoYqo?si=H1eFGa06c81LL03Q" target="_blank" class="btn">
+            VER VIDEO
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+  </div>
+
+  <script>
+    // Generate random stars
+    const starsContainer = document.getElementById('stars');
+    const starCount = 100;
+    
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      
+      // Random star color
+      const colors = ['#FFFFFF', '#00D9FF', '#F7B801', '#FF3D81'];
+      star.style.background = colors[Math.floor(Math.random() * colors.length)];
+      
+      // Random size
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      
+      starsContainer.appendChild(star);
+    }
+
+    // Add interactivity to buttons
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        // Create pixel explosion effect
+        const rect = this.getBoundingClientRect();
+        const particles = 8;
+        
+        for (let i = 0; i < particles; i++) {
+          const particle = document.createElement('div');
+          particle.style.position = 'fixed';
+          particle.style.left = rect.left + rect.width / 2 + 'px';
+          particle.style.top = rect.top + rect.height / 2 + 'px';
+          particle.style.width = '4px';
+          particle.style.height = '4px';
+          particle.style.background = '#F7B801';
+          particle.style.pointerEvents = 'none';
+          particle.style.zIndex = '9999';
+          particle.style.transition = 'all 0.6s ease-out';
+          document.body.appendChild(particle);
+          
+          setTimeout(() => {
+            const angle = (i / particles) * Math.PI * 2;
+            const distance = 50;
+            particle.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
+            particle.style.opacity = '0';
+          }, 10);
+          
+          setTimeout(() => particle.remove(), 600);
+        }
+      });
+    });
+  </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const elementContainer = document.createElement('div');
+  elementContainer.className = 'element-bg';
+  document.body.appendChild(elementContainer);
+  
+  const elements = [
+    'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0zIDZoMnYxaC0xeiIgZmlsbD0iI0ZGRjAwMCIvPjxwYXRoIGQ9Ik0yIDVoM3YxaC0yeiIgZmlsbD0iI0ZGNzAwMCIvPjxwYXRoIGQ9Ik0zIDRoMnYxaC0xeiIgZmlsbD0iI0ZGRDAwMCIvPjxwYXRoIGQ9Ik0zIDNoMnYxaC0xeiIgZmlsbD0iI0ZGRkYwMCIvPjxwYXRoIGQ9Ik00IDJoMXYxaC0xeiIgZmlsbD0iI0ZGRkYwMCIvPjwvc3ZnPg==',
+    'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik00IDJoMXYxaC0xeiIgZmlsbD0iIzAwQkZGRiIvPjxwYXRoIGQ9Ik0zIDNoM3YxaC0yeiIgZmlsbD0iIzAwODBGQiIvPjxwYXRoIGQ9Ik0yIDRoaDV2MWgtNHoiIGZpbGw9IiMwMDgwRkYiLz48cGF0aCBkPSJNMzIgNWgydjFoLTF6IiBmaWxsPSIjMDBDRkZGIi8+PHBhdGggZD0iTTMgNmgydjFoLTF6IiBmaWxsPSIjMDBDRkZGIi8+PC9zdmc+',
+    'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0yIDRoaDR2MWgtM3oiIGZpbGw9IiNEQ0RDREM0Ii8+PHBhdGggZD0iTTEgNWg2djFoLTV6IiBmaWxsPSIjRkZGRkZGIi8+PHBhdGggZD0iTTMgM2gydjFoLTF6IiBmaWxsPSIjRkZGRkZGIi8+PC9zdmc+',
+    'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0wIDZoOHYyaC04eiIgZmlsbD0iIzY1NEE0MCIvPjxwYXRoIGQ9Ik0xIDVoMnYxaC0xeiIgZmlsbD0iIzAwODAwMCIvPjxwYXRoIGQ9Ik0zIDRoM3YxaC0yeiIgZmlsbD0iIzAwODAwMCIvPjxwYXRoIGQ9Ik01IDNoMXYxaC0xeiIgZmlsbD0iIzAwRkYwMCIvPjxwYXRoIGQ9Ik0yIDNoMXYxaC0xeiIgZmlsbD0iIzAwRkYwMCIvPjwvc3ZnPg=='
+  ];
+  
+  function createPixelElement() {
+    const el = document.createElement('img');
+    el.className = 'pixel-element';
+    el.src = elements[Math.floor(Math.random() * elements.length)];
+    el.style.left = Math.random() * 100 + '%';
+    el.style.animationDelay = Math.random() * 3 + 's';
+    el.style.animationDuration = (8 + Math.random() * 6) + 's';
+    elementContainer.appendChild(el);
+    setTimeout(() => el.remove(), 16000);
+  }
+  
+  setInterval(createPixelElement, 3000);
+  for(let i = 0; i < 4; i++) setTimeout(createPixelElement, i * 800);
+});
+</script>
+</body>
+</html>

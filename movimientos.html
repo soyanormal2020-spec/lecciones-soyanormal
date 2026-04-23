@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movimientos Cíclicos de la Tierra</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+    :root {
+        --bg-dark: #0A0A1B;
+        --neon-purple: #724CF9;
+        --neon-pink: #FF3D81;
+        --neon-cyan: #00F5FF;
+        --text-light: #E0E0FF;
+        --border-glow: 0 0 10px #724CF9, 0 0 20px #724CF9;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Press Start 2P', cursive;
+        background-color: var(--bg-dark);
+        color: var(--text-light);
+        margin: 0;
+        padding: 0;
+        line-height: 1.8;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    canvas#stars, canvas#matrix {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+    }
+
+    canvas#matrix {
+        z-index: -1;
+        opacity: 0.15;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    h1 {
+        color: var(--neon-pink);
+        text-shadow: 0 0 5px var(--neon-pink), 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink);
+        font-size: clamp(1.2rem, 4vw, 2.5rem);
+        text-align: center;
+        margin-bottom: 3rem;
+        animation: flicker 2s infinite alternate;
+        letter-spacing: 2px;
+    }
+
+    h2 {
+        color: var(--neon-cyan);
+        text-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan);
+        font-size: clamp(0.8rem, 2.5vw, 1.3rem);
+        margin-top: 2.5rem;
+        margin-bottom: 1.5rem;
+        padding-left: 1rem;
+        border-left: 4px solid var(--neon-purple);
+    }
+
+    h3 {
+        color: var(--neon-pink);
+        font-size: clamp(0.65rem, 2vw, 1rem);
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    p, li {
+        font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+        margin-bottom: 1.2rem;
+        text-align: justify;
+    }
+
+    .neon-box {
+        background: rgba(10, 10, 27, 0.8);
+        border: 2px solid var(--neon-purple);
+        box-shadow: var(--border-glow), inset 0 0 20px rgba(114, 76, 249, 0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        backdrop-filter: blur(4px);
+        transition: all 0.3s ease;
+        clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+    }
+
+    .neon-box:hover {
+        box-shadow: 0 0 15px #724CF9, 0 0 30px #724CF9, 0 0 50px #724CF9, inset 0 0 30px rgba(114, 76, 249, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .neon-box::before {
+        content: '>';
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        color: var(--neon-pink);
+        animation: blink 1s infinite;
+    }
+
+    .grid-layout {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+    }
+
+    .card {
+        background: linear-gradient(135deg, rgba(114, 76, 249, 0.1), rgba(255, 61, 129, 0.05));
+        border: 2px solid var(--neon-cyan);
+        box-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card:hover {
+        transform: scale(1.03) rotate(-0.5deg);
+        box-shadow: 0 0 20px rgba(0, 245, 255, 0.8), 0 0 40px rgba(0, 245, 255, 0.4);
+    }
+
+    .card::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transform: rotate(45deg);
+        transition: all 0.5s;
+        opacity: 0;
+    }
+
+    .card:hover::after {
+        animation: shine 0.5s ease-in-out;
+    }
+
+    .divider {
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--neon-purple), var(--neon-pink), var(--neon-purple), transparent);
+        margin: 3rem 0;
+        box-shadow: 0 0 10px var(--neon-purple);
+    }
+
+    ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    ul li {
+        padding-left: 2rem;
+        position: relative;
+        margin-bottom: 1rem;
+    }
+
+    ul li::before {
+        content: '>>';
+        position: absolute;
+        left: 0;
+        color: var(--neon-cyan);
+        animation: blink 1.5s infinite;
+    }
+
+    .highlight {
+        color: var(--neon-pink);
+        text-shadow: 0 0 5px var(--neon-pink);
+    }
+
+    .btn-neon {
+        background: transparent;
+        border: 2px solid var(--neon-pink);
+        color: var(--neon-pink);
+        padding: 1rem 2rem;
+        font-family: 'Press Start 2P', cursive;
+        font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 10px var(--neon-pink);
+        text-shadow: 0 0 5px var(--neon-pink);
+        margin: 1rem 0.5rem;
+    }
+
+    .btn-neon:hover {
+        background: var(--neon-pink);
+        color: var(--bg-dark);
+        box-shadow: 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink);
+        text-shadow: none;
+    }
+
+    .stats-box {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .stat {
+        text-align: center;
+        padding: 1.5rem;
+        border: 2px solid var(--neon-purple);
+        background: rgba(114, 76, 249, 0.1);
+        box-shadow: 0 0 10px var(--neon-purple);
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .stat-value {
+        font-size: clamp(1rem, 3vw, 1.5rem);
+        color: var(--neon-cyan);
+        text-shadow: 0 0 10px var(--neon-cyan);
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: clamp(0.5rem, 1.2vw, 0.65rem);
+        color: var(--text-light);
+    }
+
+    #orbit-animation {
+        width: 100%;
+        height: 300px;
+        position: relative;
+        margin: 2rem 0;
+        border: 2px solid var(--neon-purple);
+        box-shadow: var(--border-glow);
+        background: radial-gradient(ellipse at center, rgba(114, 76, 249, 0.1), transparent);
+        overflow: hidden;
+    }
+
+    .sun {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        background: var(--neon-pink);
+        border-radius: 50%;
+        box-shadow: 0 0 30px var(--neon-pink), 0 0 60px var(--neon-pink);
+        animation: pulse 2s infinite;
+    }
+
+    .earth-orbit {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 200px;
+        height: 200px;
+        margin-top: -100px;
+        margin-left: -100px;
+        border: 1px dashed var(--neon-cyan);
+        border-radius: 50%;
+        animation: rotate 20s linear infinite;
+    }
+
+    .earth {
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 20px;
+        background: var(--neon-cyan);
+        border-radius: 50%;
+        box-shadow: 0 0 15px var(--neon-cyan);
+    }
+
+    @keyframes flicker {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.8; }
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+
+    @keyframes shine {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+        50% { opacity: 1; }
+        100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: translate(-50%, -50%) scale(1); }
+        50% { transform: translate(-50%, -50%) scale(1.1); }
+    }
+
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+        .neon-box {
+            padding: 1.5rem 1rem;
+        }
+        .grid-layout {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        h1 {
+            letter-spacing: 1px;
+        }
+    }
+</style>
+</head>
+<body>
+    <canvas id="stars"></canvas>
+    <canvas id="matrix"></canvas>
+
+    <div class="container">
+        <h1>MOVIMIENTOS CÍCLICOS DE LA TIERRA</h1>
+
+        <div class="neon-box">
+            <p>Nuestro planeta no está quieto. La Tierra ejecuta <span class="highlight">múltiples movimientos</span> en el espacio que determinan el clima, las estaciones, la duración de los días y la evolución geológica. Estos ciclos son la base del tiempo y la vida.</p>
+            
+            <div id="orbit-animation">
+                <div class="sun"></div>
+                <div class="earth-orbit">
+                    <div class="earth"></div>
+                </div>
+            </div>
+
+            <div class="stats-box">
+                <div class="stat">
+                    <span class="stat-value" id="rotation-speed">1670</span>
+                    <span class="stat-label">KM/H ROTACIÓN ECUADOR</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="orbit-speed">107000</span>
+                    <span class="stat-label">KM/H TRASLACIÓN</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">23.5°</span>
+                    <span class="stat-label">INCLINACIÓN AXIAL</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2>01. MOVIMIENTOS PRINCIPALES</h2>
+
+        <div class="grid-layout">
+            <div class="card" data-info="rotation">
+                <h3>ROTACIÓN</h3>
+                <p>Giro sobre su propio eje de oeste a este.</p>
+                <ul>
+                    <li>Duración: 23h 56min 4s</li>
+                    <li>Efecto: Día y noche</li>
+                    <li>Fuerza de Coriolis</li>
+                </ul>
+            </div>
+
+            <div class="card" data-info="orbit">
+                <h3>TRASLACIÓN</h3>
+                <p>Órbita elíptica alrededor del Sol.</p>
+                <ul>
+                    <li>Duración: 365.25 días</li>
+                    <li>Efecto: Estaciones</li>
+                    <li>Perihelio y Afelio</li>
+                </ul>
+            </div>
+
+            <div class="card" data-info="precession">
+                <h3>PRECESIÓN</h3>
+                <p>Bamboleo del eje terrestre.</p>
+                <ul>
+                    <li>Ciclo: ~26,000 años</li>
+                    <li>Efecto: Cambio Polaris</li>
+                    <li>Año sidéreo vs trópico</li>
+                </ul>
+            </div>
+
+            <div class="card" data-info="nutation">
+                <h3>NUTACIÓN</h3>
+                <p>Oscilación del eje de rotación.</p>
+                <ul>
+                    <li>Ciclo: 18.6 años</li>
+                    <li>Amplitud: 9.2 segundos</li>
+                    <li>Causado por la Luna</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2>02. CICLOS DE MILANKOVITCH</h2>
+
+        <div class="neon-box">
+            <p>Los <span class="highlight">Ciclos de Milankovitch</span> son variaciones orbitales que controlan los períodos glaciales e interglaciales en la Tierra. Son la "firma cósmica" en nuestro clima.</p>
+
+            <h3>[A] EXCENTRICIDAD</h3>
+            <p>Cambio en la forma de la órbita terrestre de circular a elíptica. Ciclos de <span class="highlight">100,000 y 413,000 años</span>. Modifica la distancia Tierra-Sol y la severidad de estaciones.</p>
+
+            <h3>[B] OBLICUIDAD</h3>
+            <p>Variación del ángulo de inclinación del eje entre <span class="highlight">22.1° y 24.5°</span>. Ciclo de 41,000 años. Mayor inclinación = estaciones más extremas.</p>
+
+            <h3>[C] PRECESIÓN CLIMÁTICA</h3>
+            <p>Cambio en la orientación del eje con ciclos de <span class="highlight">19,000 a 23,000 años</span>. Determina si el verano ocurre en perihelio o afelio, afectando la intensidad estacional.</p>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn-neon" id="activate-cycles">VISUALIZAR CICLOS</button>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2>03. CONSECUENCIAS CÓSMICAS</h2>
+
+        <div class="neon-box">
+            <ul>
+                <li><span class="highlight">SUCESIÓN DÍA/NOCHE:</span> La rotación genera el ritmo circadiano que regula toda vida en el planeta.</li>
+                <li><span class="highlight">ESTACIONES DEL AÑO:</span> La traslación + inclinación axial crea primavera, verano, otoño e invierno.</li>
+                <li><span class="highlight">ZONAS CLIMÁTICAS:</span> La curvatura terrestre y los movimientos crean trópicos, zonas templadas y polares.</li>
+                <li><span class="highlight">CORRIENTES OCEÁNICAS:</span> La fuerza de Coriolis por rotación desvía vientos y corrientes marinas.</li>
+                <li><span class="highlight">ERAS GLACIALES:</span> Los ciclos de Milankovitch han disparado 10 glaciaciones en el último millón de años.</li>
+                <li><span class="highlight">CALENDARIOS:</span> Todas las civilizaciones han basado su medición del tiempo en estos ciclos.</li>
+            </ul>
+        </div>
+
+        <div class="neon-box" style="text-align: center; margin-top: 3rem;">
+            <p style="text-align: center; font-size: 0.65rem;">"LA TIERRA ES UNA NAVE ESPACIAL EN MOVIMIENTO PERPETUO"</p>
+            <p style="text-align: center; color: var(--neon-cyan); margin-top: 1rem;">SYNC_COMPLETED // TIMELINE_STATUS: STABLE</p>
+        </div>
+    </div>
+
+<script>
+    // Estrellas de fondo
+    const starsCanvas = document.getElementById('stars');
+    const starsCtx = starsCanvas.getContext('2d');
+    let stars = [];
+
+    function resizeStars() {
+        starsCanvas.width = window.innerWidth;
+        starsCanvas.height = window.innerHeight;
+        initStars();
+    }
+
+    function initStars() {
+        stars = [];
+        const starCount = Math.floor((starsCanvas.width * starsCanvas.height) / 8000);
+        for (let i = 0; i < starCount; i++) {
+            stars.push({
+                x: Math.random() * starsCanvas.width,
+                y: Math.random() * starsCanvas.height,
+                radius: Math.random() * 1.5,
+                opacity: Math.random(),
+                speed: Math.random() * 0.5 + 0.1
+            });
+        }
+    }
+
+    function drawStars() {
+        starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
+        starsCtx.fillStyle = '#724CF9';
+        stars.forEach(star => {
+            starsCtx.globalAlpha = star.opacity;
+            starsCtx.beginPath();
+            starsCtx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            starsCtx.fill();
+            
+            star.opacity += (Math.random() - 0.5) * 0.05;
+            star.opacity = Math.max(0.1, Math.min(1, star.opacity));
+            
+            star.y += star.speed;
+            if (star.y > starsCanvas.height) {
+                star.y = 0;
+                star.x = Math.random() * starsCanvas.width;
+            }
+        });
+        starsCtx.globalAlpha = 1;
+        requestAnimationFrame(drawStars);
+    }
+
+    // Efecto Matrix
+    const matrixCanvas = document.getElementById('matrix');
+    const matrixCtx = matrixCanvas.getContext('2d');
+    let matrixDrops = [];
+    const matrixChars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+
+    function resizeMatrix() {
+        matrixCanvas.width = window.innerWidth;
+        matrixCanvas.height = window.innerHeight;
+        const columns = Math.floor(matrixCanvas.width / 20);
+        matrixDrops = Array(columns).fill(1);
+    }
+
+    function drawMatrix() {
+        matrixCtx.fillStyle = 'rgba(10, 10, 27, 0.05)';
+        matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+        matrixCtx.fillStyle = '#FF3D81';
+        matrixCtx.font = '15px monospace';
+
+        matrixDrops.forEach((y, index) => {
+            const text = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+            matrixCtx.fillText(text, index * 20, y * 20);
+            if (y * 20 > matrixCanvas.height && Math.random() > 0.975) {
+                matrixDrops[index] = 0;
+            }
+            matrixDrops[index]++;
+        });
+    }
+
+    // Interactividad
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', function() {
+            const info = this.getAttribute('data-info');
+            this.style.boxShadow = '0 0 30px rgba(255, 61, 129, 0.9)';
+            setTimeout(() => {
+                this.style.boxShadow = '0 0 10px rgba(0, 245, 255, 0.5)';
+            }, 300);
+        });
+    });
+
+    document.getElementById('activate-cycles').addEventListener('click', function() {
+        this.textContent = 'CICLOS_ACTIVADOS';
+        this.style.background = 'var(--neon-pink)';
+        this.style.color = 'var(--bg-dark)';
+        
+        // Efecto de "escaneo"
+        const scanLine = document.createElement('div');
+        scanLine.style.position = 'fixed';
+        scanLine.style.top = '0';
+        scanLine.style.left = '0';
+        scanLine.style.width = '100%';
+        scanLine.style.height = '2px';
+        scanLine.style.background = 'var(--neon-cyan)';
+        scanLine.style.boxShadow = '0 0 10px var(--neon-cyan)';
+        scanLine.style.zIndex = '9999';
+        scanLine.style.animation = 'scan 2s linear';
+        document.body.appendChild(scanLine);
+        
+        setTimeout(() => {
+            scanLine.remove();
+            this.textContent = 'VISUALIZAR CICLOS';
+            this.style.background = 'transparent';
+            this.style.color = 'var(--neon-pink)';
+        }, 2000);
+    });
+
+    // Animación de números
+    function animateValue(id, start, end, duration) {
+        const obj = document.getElementById(id);
+        if (!obj) return;
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            obj.textContent = Math.floor(progress * (end - start) + start).toLocaleString();
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+
+    // Inicialización
+    window.addEventListener('load', () => {
+        resizeStars();
+        resizeMatrix();
+        drawStars();
+        setInterval(drawMatrix, 50);
+        animateValue('rotation-speed', 0, 1670, 2000);
+        animateValue('orbit-speed', 0, 107000, 2500);
+    });
+
+    window.addEventListener('resize', () => {
+        resizeStars();
+        resizeMatrix();
+    });
+
+    // Keyframe para animación de escaneo
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = `
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+    `;
+    document.head.appendChild(styleSheet);
+</script>
+</body>
+</html>
