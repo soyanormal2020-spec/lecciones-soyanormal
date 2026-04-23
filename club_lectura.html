@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Club de Lectura — Soy Anormal</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Press Start 2P',cursive;background:#0A0A1B;color:#F0F0FF;padding:32px 24px;font-size:11px;line-height:2.4;}
+body::before{content:'';position:fixed;inset:0;z-index:999;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent,transparent 3px,rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px);}
+.stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(2px 2px at 40px 50px,#eee,transparent),radial-gradient(1px 1px at 150px 80px,#fff,transparent),radial-gradient(2px 2px at 300px 150px,#F7B801,transparent),radial-gradient(1px 1px at 450px 60px,#fff,transparent);
+  background-size:500px 250px;animation:twinkle 4s steps(4,end) infinite;}
+@keyframes twinkle{0%,100%{opacity:.6}50%{opacity:1}}
+
+.wrapper{max-width:700px;margin:0 auto;background:#0A0A1B;border:4px solid #724CF9;box-shadow:6px 6px 0 rgba(114,76,249,.5);padding:32px;}
+
+h2{color:#F7B801;font-size:16px;margin:0 0 28px 0;text-shadow:3px 3px 0 rgba(0,0,0,.8);text-align:center;border-bottom:3px solid #2A2A4A;padding-bottom:16px;line-height:2;}
+
+.icon-box{text-align:center;margin:28px 0;}
+.icon-inner{display:inline-block;background:#050510;border:4px solid #F7B801;box-shadow:4px 4px 0 #F7B801;padding:20px;font-size:28px;line-height:1;
+  animation:flotarLibro 2s steps(4,end) infinite;}
+@keyframes flotarLibro{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.icon-sub{color:#8080A0;font-size:7px;margin-top:12px;}
+
+p{color:#D0D0D0;margin-bottom:24px;font-size:10px;line-height:2.4;}
+
+.cuadro-cyan{background:#050510;border:3px solid #00D9FF;padding:24px;margin:28px 0;box-shadow:4px 4px 0 rgba(0,217,255,.3);}
+.cuadro-cyan-title{color:#00D9FF;font-size:12px;margin:0 0 20px 0;text-align:center;}
+
+.item{margin-bottom:16px;}
+.item-label{color:#F7B801;font-size:10px;margin:0 0 8px 0;}
+.item-desc{color:#D0D0D0;font-size:9px;margin:0 0 0 16px;line-height:2.2;}
+
+.cuadro-cta{background:rgba(255,61,129,.1);border:3px solid #FF3D81;padding:24px;margin:28px 0;text-align:center;box-shadow:4px 4px 0 rgba(255,61,129,.3);}
+.cuadro-cta-title{color:#FF3D81;font-size:11px;margin:0 0 16px 0;}
+.cuadro-cta-desc{color:#D0D0D0;font-size:10px;margin:0 0 20px 0;}
+
+.btn{display:inline-block;font-family:'Press Start 2P',cursive;font-size:9px;background:transparent;border:3px solid;box-shadow:4px 4px 0;padding:14px 20px;text-decoration:none;margin:8px;text-transform:uppercase;transition:background .1s,color .1s;}
+.btn-wa{color:#00D9FF;border-color:#00D9FF;box-shadow:4px 4px 0 #00D9FF;}
+.btn-wa:hover{background:#00D9FF;color:#050510;}
+.btn-tg{color:#724CF9;border-color:#724CF9;box-shadow:4px 4px 0 #724CF9;}
+.btn-tg:hover{background:#724CF9;color:#F0F0FF;}
+
+.nota-final{background:#050510;border:2px solid #2A2A4A;padding:16px;margin-top:24px;text-align:center;}
+.nota-final p{color:#8080A0;font-size:8px;margin:0;line-height:2.2;}
+
+/* Animación de libros volando en pixel art */
+.libros-anim{text-align:center;margin:20px 0;}
+@keyframes volarLibro1{0%{transform:translateX(0) rotate(0deg)}50%{transform:translateX(20px) rotate(5deg)}100%{transform:translateX(0) rotate(0deg)}}
+@keyframes volarLibro2{0%{transform:translateX(0) rotate(0deg)}50%{transform:translateX(-15px) rotate(-5deg)}100%{transform:translateX(0) rotate(0deg)}}
+.libro1{animation:volarLibro1 3s steps(6,end) infinite;display:inline-block;}
+.libro2{animation:volarLibro2 3.5s steps(6,end) infinite;display:inline-block;margin-left:8px;}
+
+    /* Animaciones para cuadro-cyan */
+    .cuadro-cyan {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    
+      100% { background-position: 200% 0%; }
+    }
+    
+    /* Burbujas de texto flotantes */
+    .bubble {
+      position: absolute;
+      background: rgba(0, 217, 255, 0.15);
+      border: 1px solid #00D9FF;
+      border-radius: 12px;
+      padding: 4px 8px;
+      font-size: 8px;
+      color: #00D9FF;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      animation: bubbleFloat 8s ease-in-out infinite;
+    }
+    
+    .bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 10px;
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 4px solid #00D9FF;
+    }
+    
+    @keyframes bubbleFloat {
+      0%, 10% { opacity: 0; transform: translateY(20px) scale(0.8); }
+      15%, 85% { opacity: 0.9; transform: translateY(0) scale(1); }
+      90%, 100% { opacity: 0; transform: translateY(-20px) scale(0.8); }
+    }
+    
+    /* Puntos de colores que se iluminan */
+    .glow-dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      opacity: 0;
+      animation: dotGlow 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes dotGlow {
+      0%, 100% { opacity: 0; transform: scale(0.5); box-shadow: 0 0 0 currentColor; }
+      50% { opacity: 1; transform: scale(1.5); box-shadow: 0 0 12px currentColor; }
+    }
+    
+    /* Lluvia de páginas */
+    .pages-rain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0.4;
+    }
+    
+    .page {
+      position: absolute;
+      width: 12px;
+      height: 16px;
+      background: linear-gradient(135deg, #F0F0FF 0%, #D0D0D0 100%);
+      border: 1px solid #8080A0;
+      opacity: 0;
+      animation: pageFall linear infinite;
+    }
+    
+    .page::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      right: 2px;
+      height: 1px;
+      background: #8080A0;
+      box-shadow: 0 2px 0 #8080A0, 0 4px 0 #8080A0;
+    }
+    
+    @keyframes pageFall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(400px) rotate(360deg); opacity: 0; }
+    }
+    
+    /* Libros que aparecen y desaparecen */
+    .book-icon {
+      position: absolute;
+      font-size: 20px;
+      opacity: 0;
+      animation: bookPop 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes bookPop {
+      0%, 15% { opacity: 0; transform: scale(0) rotate(-180deg); }
+      20%, 35% { opacity: 0.8; transform: scale(1) rotate(0deg); }
+      40%, 100% { opacity: 0; transform: scale(0) rotate(180deg); }
+    }
+
+  
+    /* Contenedor de animaciones globales */
+    .global-animations {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      overflow: hidden;
+    }
+    
+    /* Asegurar que el contenido principal esté debajo */
+    .scanlines, .container {
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Burbujas de texto globales */
+    .bubble-global {
+      position: absolute;
+      background: rgba(0, 217, 255, 0.2);
+      border: 1px solid #00D9FF;
+      border-radius: 12px;
+      padding: 4px 8px;
+      font-size: 9px;
+      color: #00D9FF;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      animation: bubbleFloatGlobal 10s ease-in-out infinite;
+      backdrop-filter: blur(2px);
+    }
+    
+    .bubble-global::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 10px;
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 4px solid #00D9FF;
+    }
+    
+    @keyframes bubbleFloatGlobal {
+      0%, 8% { opacity: 0; transform: translateY(30px) scale(0.8); }
+      12%, 88% { opacity: 0.95; transform: translateY(0) scale(1); }
+      92%, 100% { opacity: 0; transform: translateY(-30px) scale(0.8); }
+    }
+    
+    /* Puntos de colores globales */
+    .glow-dot-global {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      opacity: 0;
+      animation: dotGlowGlobal 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes dotGlowGlobal {
+      0%, 100% { opacity: 0; transform: scale(0.5); box-shadow: 0 0 0 currentColor; }
+      50% { opacity: 1; transform: scale(2); box-shadow: 0 0 20px currentColor, 0 0 40px currentColor; }
+    }
+    
+    /* Lluvia de páginas global */
+    .pages-rain-global {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    
+    .page-global {
+      position: absolute;
+      width: 14px;
+      height: 18px;
+      background: linear-gradient(135deg, #F0F0FF 0%, #D0D0D0 100%);
+      border: 1px solid #8080A0;
+      opacity: 0;
+      animation: pageFallGlobal linear infinite;
+    }
+    
+    .page-global::before {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 2px;
+      right: 2px;
+      height: 1px;
+      background: #8080A0;
+      box-shadow: 0 3px 0 #8080A0, 0 6px 0 #8080A0;
+    }
+    
+    @keyframes pageFallGlobal {
+      0% { transform: translateY(-30px) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.7; }
+      90% { opacity: 0.7; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+    
+    /* Libros flotantes globales */
+    .book-icon-global {
+      position: absolute;
+      font-size: 24px;
+      opacity: 0;
+      animation: bookPopGlobal 8s ease-in-out infinite;
+      pointer-events: none;
+      filter: drop-shadow(0 0 8px rgba(0,217,255,0.5));
+    }
+    
+    @keyframes bookPopGlobal {
+      0%, 10% { opacity: 0; transform: scale(0) rotate(-180deg) translateY(0); }
+      15%, 30% { opacity: 0.9; transform: scale(1.2) rotate(0deg) translateY(-10px); }
+      35%, 100% { opacity: 0; transform: scale(0) rotate(180deg) translateY(-20px); }
+    }
+
+  
+    /* Borde animado conectándose para cuadro-cyan */
+    .cuadro-cyan {
+      position: relative;
+      border: 3px solid transparent !important;
+      background-clip: padding-box;
+    }
+    
+    .cuadro-cyan::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: inherit;
+      padding: 3px;
+      background: linear-gradient(
+        90deg,
+        #00D9FF 0%,
+        #724CF9 25%,
+        #F7B801 50%,
+        #FF3D81 75%,
+        #00D9FF 100%
+      );
+      background-size: 300% 100%;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: borderConnect 4s linear infinite, borderGlow 2s ease-in-out infinite;
+    }
+    
+    .cuadro-cyan::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: inherit;
+      background: linear-gradient(
+        90deg,
+        #00D9FF,
+        #724CF9,
+        #F7B801,
+        #FF3D81,
+        #00D9FF
+      );
+      background-size: 300% 100%;
+      filter: blur(8px);
+      opacity: 0;
+      z-index: -1;
+      animation: borderConnect 4s linear infinite, borderPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes borderConnect {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+    
+    @keyframes borderGlow {
+      0%, 100% { filter: brightness(1) drop-shadow(0 0 4px #00D9FF); }
+      25% { filter: brightness(1.3) drop-shadow(0 0 8px #724CF9); }
+      50% { filter: brightness(1.5) drop-shadow(0 0 12px #F7B801); }
+      75% { filter: brightness(1.3) drop-shadow(0 0 8px #FF3D81); }
+    }
+    
+    @keyframes borderPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.7; }
+    }
+    
+    /* Partículas de conexión en las esquinas */
+    .connection-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #00D9FF;
+      box-shadow: 0 0 10px currentColor;
+      animation: dotTravel 4s linear infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes dotTravel {
+      0% { top: -4px; left: -4px; background: #00D9FF; }
+      25% { top: -4px; left: calc(100% - 4px); background: #724CF9; }
+      50% { top: calc(100% - 4px); left: calc(100% - 4px); background: #F7B801; }
+      75% { top: calc(100% - 4px); left: -4px; background: #FF3D81; }
+      100% { top: -4px; left: -4px; background: #00D9FF; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Animaciones globales de fondo -->
+  <div class="global-animations">
+    <!-- Lluvia de páginas global -->
+    <div class="pages-rain-global" id="pagesRainGlobal"></div>
+    
+    <!-- Libros flotantes globales -->
+    <div class="book-icon-global" style="top: 15%; left: 5%; animation-delay: 0s;">📖</div>
+    <div class="book-icon-global" style="top: 40%; right: 8%; animation-delay: 2s;">📚</div>
+    <div class="book-icon-global" style="top: 70%; left: 10%; animation-delay: 4s;">📕</div>
+    <div class="book-icon-global" style="bottom: 20%; right: 12%; animation-delay: 6s;">📗</div>
+    
+    <!-- Burbujas de texto globales -->
+    <div class="bubble-global" style="top: 20%; left: 8%; animation-delay: 0s;">¿Qué opinas?</div>
+    <div class="bubble-global" style="top: 35%; right: 10%; animation-delay: 2.5s;">Me encanta</div>
+    <div class="bubble-global" style="top: 55%; left: 12%; animation-delay: 5s;">Aprendí mucho</div>
+    <div class="bubble-global" style="top: 75%; right: 15%; animation-delay: 7.5s;">Gracias!</div>
+    <div class="bubble-global" style="bottom: 25%; left: 15%; animation-delay: 10s;">Conectemos</div>
+    
+    <!-- Puntos de colores globales -->
+    <div class="glow-dot-global" style="top: 25%; left: 20%; background: #00D9FF; color: #00D9FF; animation-delay: 0s;"></div>
+    <div class="glow-dot-global" style="top: 45%; right: 25%; background: #724CF9; color: #724CF9; animation-delay: 1s;"></div>
+    <div class="glow-dot-global" style="top: 65%; left: 30%; background: #F7B801; color: #F7B801; animation-delay: 2s;"></div>
+    <div class="glow-dot-global" style="bottom: 35%; right: 20%; background: #FF3D81; color: #FF3D81; animation-delay: 3s;"></div>
+    <div class="glow-dot-global" style="bottom: 15%; left: 25%; background: #00D9FF; color: #00D9FF; animation-delay: 4s;"></div>
+  </div>
+
+<div class="stars"></div>
+<div class="wrapper">
+
+  <h2>📚 CLUB DE LECTURA 📚</h2>
+
+  <div class="icon-box">
+    <div class="icon-inner">♓︎</div>
+    <p class="icon-sub">Comunidad astrológica</p>
+  </div>
+
+  <!-- Libros pixel art animados -->
+  <div class="libros-anim">
+    <span class="libro1">
+      <svg width="32" height="40" viewBox="0 0 8 10" style="image-rendering:pixelated;">
+        <rect width="8" height="10" fill="#F7B801"/>
+        <rect x="1" y="1" width="6" height="8" fill="#050510"/>
+        <rect x="2" y="2" width="4" height="1" fill="#F7B801"/>
+        <rect x="2" y="4" width="4" height="1" fill="#F7B801"/>
+        <rect x="2" y="6" width="3" height="1" fill="#F7B801"/>
+      </svg>
+    </span>
+    <span class="libro2">
+      <svg width="32" height="40" viewBox="0 0 8 10" style="image-rendering:pixelated;">
+        <rect width="8" height="10" fill="#724CF9"/>
+        <rect x="1" y="1" width="6" height="8" fill="#050510"/>
+        <rect x="2" y="2" width="4" height="1" fill="#00D9FF"/>
+        <rect x="2" y="4" width="4" height="1" fill="#00D9FF"/>
+        <rect x="2" y="6" width="3" height="1" fill="#00D9FF"/>
+      </svg>
+    </span>
+    <span class="libro1">
+      <svg width="32" height="40" viewBox="0 0 8 10" style="image-rendering:pixelated;">
+        <rect width="8" height="10" fill="#FF3D81"/>
+        <rect x="1" y="1" width="6" height="8" fill="#050510"/>
+        <rect x="2" y="2" width="4" height="1" fill="#FF3D81"/>
+        <rect x="2" y="4" width="4" height="1" fill="#FF3D81"/>
+        <rect x="2" y="6" width="3" height="1" fill="#FF3D81"/>
+      </svg>
+    </span>
+  </div>
+
+  <p style="text-align:center;">Si deseas descubrir a fondo los <span style="color:#00D9FF;">conocimientos ancestrales</span> que nos ofrece la Astrología, te invitamos a nuestro nuevo club de lectura donde generaremos entre todos los participantes un <span style="color:#FF3D81;">espacio seguro</span> para compartir libros fascinantes y discusiones enriquecedoras.</p>
+
+  <div class="cuadro-cyan">
+    <div class="connection-dot"></div>
+    <p class="cuadro-cyan-title">▶ ¿QUÉ PUEDES ESPERAR? ◀</p>
+    <div class="item">
+      <p class="item-label">▶ LECTURAS</p>
+      <p class="item-desc">Que te permitan ampliar tus conocimientos astrológicos.</p>
+    </div>
+    <div class="item">
+      <p class="item-label">▶ ESPACIO SEGURO</p>
+      <p class="item-desc">Donde podamos compartir nuestras vivencias y experiencias libres de prejuicios y señalamientos.</p>
+    </div>
+    <div class="item">
+      <p class="item-label">▶ CONVERSACIONES</p>
+      <p class="item-desc">Profundas sobre temas astrológicos y la necesidad de incorporar nuevas perspectivas.</p>
+    </div>
+    <div class="item" style="margin-bottom:0;">
+      <p class="item-label">▶ CONEXIONES</p>
+      <p class="item-desc">Compartir con otras personas conocimiento astrológico y generar conexiones sociales.</p>
+    </div>
+  </div>
+
+  <div class="cuadro-cta">
+    <p class="cuadro-cta-title">✨ ¡NO NECESITAS SER UN EXPERTO! ✨</p>
+    <p class="cuadro-cta-desc">Con tu curiosidad y tus ganas de aprender es más que suficiente</p>
+    <a href="#" target="_blank" class="btn btn-wa">WHATSAPP ▶</a>
+    <a href="#" target="_blank" class="btn btn-tg">TELEGRAM ▶</a>
+  </div>
+
+  <div class="nota-final">
+    <p>Al ingresar a los grupos encontrarás mayor información así como las actividades que estaremos dejando en la semana</p>
+  </div>
+
+</div>
+
+  
+  <script>
+    // Generar lluvia de páginas global
+    const pagesRainGlobal = document.getElementById('pagesRainGlobal');
+    if (pagesRainGlobal) {
+      for (let i = 0; i < 20; i++) {
+        const page = document.createElement('div');
+        page.className = 'page-global';
+        page.style.left = Math.random() * 100 + '%';
+        page.style.animationDuration = (Math.random() * 4 + 5) + 's';
+        page.style.animationDelay = Math.random() * 8 + 's';
+        pagesRainGlobal.appendChild(page);
+      }
+    }
+  </script>
+
+
+</body>
+</html>
