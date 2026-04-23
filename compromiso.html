@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compromiso de Aprendizaje — Soy Anormal</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0A1B; --bg2:#050510; --text:#F0F0FF;
+  --cyan:#00D9FF; --pink:#FF3D81; --purple:#724CF9;
+  --gold:#F7B801; --green:#39FF88; --border:#2A2A4A;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Press Start 2P',cursive;background:var(--bg);color:var(--text);padding:0;font-size:11px;line-height:2.4;overflow-x:hidden;}
+
+/* Scanline */
+body::before{content:'';position:fixed;inset:0;z-index:998;pointer-events:none;
+  background:repeating-linear-gradient(to bottom,transparent,transparent 3px,rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px);}
+
+/* ── ESTRELLAS ── */
+.stars,.stars2{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none;background-repeat:repeat;}
+.stars{background-image:radial-gradient(2px 2px at 20px 30px,#eee,transparent),radial-gradient(2px 2px at 80px 60px,#fff,transparent),radial-gradient(1px 1px at 200px 90px,#ddd,transparent),radial-gradient(2px 2px at 350px 40px,#fff,transparent),radial-gradient(1px 1px at 500px 150px,#eee,transparent);background-size:600px 300px;animation:twinkle 4s steps(4,end) infinite;}
+.stars2{background-image:radial-gradient(1px 1px at 100px 50px,#fff,transparent),radial-gradient(2px 2px at 250px 120px,#ddd,transparent),radial-gradient(1px 1px at 450px 80px,#fff,transparent);background-size:500px 250px;animation:twinkle2 6s steps(6,end) infinite;}
+@keyframes twinkle{0%,100%{opacity:.7}50%{opacity:1}}
+@keyframes twinkle2{0%,100%{opacity:.4}50%{opacity:.9}}
+
+/* ── WRAPPER ── */
+.wrapper{max-width:760px;margin:0 auto;padding:32px 24px;}
+
+/* ── TÍTULO GLITCH ── */
+.titulo-glitch{
+  color:var(--gold);font-size:15px;text-align:center;
+  margin:0 0 32px 0;padding-bottom:20px;
+  border-bottom:3px solid var(--border);line-height:2;
+  text-shadow:3px 3px 0 rgba(0,0,0,.8);
+  animation:glitch 3s steps(2,end) infinite;
+}
+@keyframes glitch{
+  0%,93%,100%{text-shadow:3px 3px 0 rgba(0,0,0,.8);transform:translateX(0)}
+  94%{text-shadow:-3px 0 var(--pink),3px 0 var(--cyan);transform:translateX(3px)}
+  96%{text-shadow:3px 0 var(--purple),-3px 0 var(--gold);transform:translateX(-2px)}
+}
+
+/* ── PERSONAJE PIXEL ART CAMINANDO ── */
+.personaje-wrapper{
+  text-align:center;margin:0 0 32px 0;
+  position:relative;height:80px;overflow:hidden;
+  background:var(--bg2);border:3px solid var(--border);
+}
+.personaje{
+  position:absolute;bottom:8px;left:-60px;
+  animation:caminar 8s linear infinite;
+}
+@keyframes caminar{0%{left:-60px}100%{left:110%}}
+@keyframes patas{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.paso{animation:patas .4s steps(2,end) infinite;}
+
+/* Sendero de puntos */
+.sendero{
+  position:absolute;bottom:12px;left:0;right:0;
+  height:2px;
+  background:repeating-linear-gradient(90deg,var(--gold) 0,var(--gold) 6px,transparent 6px,transparent 14px);
+}
+
+/* ── XP BAR ── */
+.xp-section{margin:0 0 32px 0;}
+.xp-label{color:var(--cyan);font-size:9px;margin:0 0 8px 0;text-align:center;}
+.xp-bar{
+  height:24px;background:var(--bg2);border:3px solid var(--cyan);
+  box-shadow:4px 4px 0 rgba(0,217,255,.3);position:relative;overflow:hidden;
+}
+.xp-fill{
+  height:100%;width:0%;
+  background:repeating-linear-gradient(90deg,var(--cyan),var(--cyan) 8px,var(--purple) 8px,var(--purple) 16px);
+  animation:llenarXP 3s steps(20,end) forwards;
+}
+@keyframes llenarXP{0%{width:0%}100%{width:75%}}
+.xp-text{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:8px;color:var(--text);text-shadow:1px 1px 0 #000;white-space:nowrap;
+}
+
+/* ── BLOQUES DE TEXTO ── */
+p.parrafo{color:#D0D0D0;font-size:10px;margin:0 0 20px 0;line-height:2.4;}
+span.dest-pink{color:var(--pink);}
+span.dest-cyan{color:var(--cyan);}
+span.dest-gold{color:var(--gold);}
+span.dest-green{color:var(--green);}
+span.dest-purple{color:var(--purple);}
+
+/* ── CUADRO DESTACADO ── */
+.cuadro{padding:20px;margin:28px 0;}
+.cuadro.purple{background:var(--bg2);border:3px solid var(--purple);box-shadow:4px 4px 0 rgba(114,76,249,.3);}
+.cuadro.gold{background:var(--bg2);border:3px solid var(--gold);box-shadow:4px 4px 0 rgba(247,184,1,.3);}
+.cuadro.pink{background:rgba(255,61,129,.08);border:3px solid var(--pink);box-shadow:4px 4px 0 rgba(255,61,129,.3);}
+.cuadro.green{background:rgba(57,255,136,.08);border:3px solid var(--green);box-shadow:4px 4px 0 rgba(57,255,136,.3);}
+.cuadro-title{font-size:11px;text-align:center;margin:0 0 14px 0;}
+.cuadro.purple .cuadro-title{color:var(--purple);}
+.cuadro.gold .cuadro-title{color:var(--gold);}
+.cuadro.pink .cuadro-title{color:var(--pink);}
+.cuadro.green .cuadro-title{color:var(--green);}
+.cuadro p{color:#D0D0D0;font-size:10px;margin:0;line-height:2.4;}
+
+/* ── CHECKLIST ANIMADA ── */
+.checklist{list-style:none;margin:20px 0;padding:0;}
+.checklist li{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 0;border-bottom:1px solid var(--border);
+  font-size:9px;color:#D0D0D0;line-height:2;cursor:pointer;
+}
+.checklist li:last-child{border-bottom:none;}
+.check-box{
+  width:16px;height:16px;flex-shrink:0;
+  border:2px solid var(--gold);background:var(--bg2);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .1s;margin-top:4px;
+}
+.checklist li.marcado .check-box{background:var(--gold);}
+.checklist li.marcado .check-box::after{content:'✓';color:var(--bg2);font-size:10px;}
+.checklist li.marcado{color:var(--gold);}
+
+/* ── ACORDEÓN COMPROMISOS ── */
+details.comp{background:var(--bg2);border:3px solid var(--purple);margin:12px 0;padding:0;}
+details.comp summary{cursor:pointer;padding:14px 16px;color:var(--purple);font-size:10px;list-style:none;display:flex;align-items:center;justify-content:space-between;}
+details.comp summary::-webkit-details-marker{display:none;}
+details.comp summary:hover{filter:brightness(1.3);}
+.arrow{display:inline-block;transition:transform .2s;}
+details.comp[open] .arrow{transform:rotate(180deg);}
+details.comp .dc{padding:0 16px 16px;border-top:2px solid var(--border);}
+details.comp .dc p{color:#D0D0D0;font-size:9px;margin:12px 0 0;line-height:2.2;}
+
+/* ── TIMER CUENTA REGRESIVA (decorativo) ── */
+.timer-wrapper{
+  text-align:center;margin:28px 0;
+  background:var(--bg2);border:3px solid var(--pink);
+  padding:20px;box-shadow:4px 4px 0 rgba(255,61,129,.3);
+}
+.timer-label{color:var(--pink);font-size:10px;margin:0 0 16px 0;}
+.timer-display{
+  display:flex;justify-content:center;gap:16px;
+  font-size:20px;color:var(--text);
+}
+.timer-unit{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.timer-num{
+  background:var(--bg);border:3px solid var(--pink);
+  padding:8px 12px;min-width:52px;text-align:center;
+  box-shadow:3px 3px 0 var(--pink);
+  animation:parpadeaTimer 1s steps(1,end) infinite;
+}
+@keyframes parpadeaTimer{0%,100%{opacity:1}50%{opacity:.6}}
+.timer-unit span{font-size:7px;color:#8080A0;}
+.timer-sep{font-size:20px;color:var(--pink);align-self:flex-start;padding-top:8px;}
+
+/* ── ESTRELLAS FLOTANTES DECORATIVAS ── */
+.estrellas-flotantes{
+  display:flex;justify-content:center;gap:16px;margin:24px 0;
+}
+.estrella-f{
+  display:inline-block;
+  animation:flotarEstrella 2s steps(4,end) infinite;
+}
+.estrella-f:nth-child(2){animation-delay:.3s;}
+.estrella-f:nth-child(3){animation-delay:.6s;}
+.estrella-f:nth-child(4){animation-delay:.9s;}
+.estrella-f:nth-child(5){animation-delay:1.2s;}
+@keyframes flotarEstrella{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* ── FIRMA FINAL ── */
+.firma{
+  text-align:center;margin:32px 0 0 0;
+  padding:24px;border:3px solid var(--border);
+  background:var(--bg2);position:relative;overflow:hidden;
+}
+.firma::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(114,76,249,.05) 10px,rgba(114,76,249,.05) 20px);
+}
+.firma-text{color:#8080A0;font-size:8px;line-height:2.4;position:relative;z-index:1;}
+.firma-nombre{color:var(--pink);font-size:10px;margin-top:12px;position:relative;z-index:1;}
+@keyframes aparecerFirma{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.firma{animation:aparecerFirma 1s steps(4,end) forwards;}
+
+/* ── BOTÓN FIRMAR ── */
+.btn-firmar{
+  font-family:'Press Start 2P',cursive;font-size:9px;
+  padding:14px 24px;background:transparent;
+  border:3px solid var(--green);color:var(--green);
+  box-shadow:4px 4px 0 var(--green);cursor:pointer;
+  display:block;margin:24px auto 0;
+  transition:background .1s,color .1s,transform .1s steps(2,end);
+}
+.btn-firmar:hover{background:var(--green);color:var(--bg2);transform:translate(-2px,-2px);}
+.btn-firmar:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--green);}
+
+/* ── CONFETTI cuando firma ── */
+.confetti-piece{
+  position:fixed;width:8px;height:8px;z-index:999;
+  animation:caerConfetti 2s steps(12,end) forwards;
+  pointer-events:none;display:none;
+}
+@keyframes caerConfetti{
+  0%{transform:translateY(-20px) rotate(0deg);opacity:1}
+  100%{transform:translateY(100vh) rotate(720deg);opacity:0}
+}
+
+/* progreso módulo */
+.progreso-modulo{margin:28px 0;}
+.prog-label{color:var(--green);font-size:9px;margin:0 0 10px 0;}
+.prog-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;}
+.prog-item{
+  background:var(--bg2);border:2px solid;
+  padding:8px;font-size:7px;text-align:center;
+  line-height:1.8;
+}
+.prog-item.done{border-color:var(--green);color:var(--green);}
+.prog-item.done::before{content:'✓ ';}
+.prog-item.current{border-color:var(--gold);color:var(--gold);animation:parpadeaTimer 1.5s steps(2,end) infinite;}
+.prog-item.lock{border-color:var(--border);color:#4A4A6A;}
+.prog-item.lock::before{content:'🔒 ';}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="stars2"></div>
+
+<div class="wrapper">
+
+  <!-- Título -->
+  <h2 class="titulo-glitch">⭐ COMPROMISO<br>DE APRENDIZAJE ⭐</h2>
+
+  <!-- Personaje caminando por el sendero -->
+  <div class="personaje-wrapper">
+    <div class="sendero"></div>
+    <div class="personaje paso">
+      <svg width="24" height="32" viewBox="0 0 6 8" style="image-rendering:pixelated;">
+        <!-- Cabeza -->
+        <rect x="2" y="0" width="2" height="2" fill="#F0F0FF"/>
+        <!-- Cuerpo -->
+        <rect x="1" y="2" width="4" height="3" fill="#FF3D81"/>
+        <!-- Mochila -->
+        <rect x="4" y="2" width="2" height="2" fill="#724CF9"/>
+        <!-- Brazo con libro -->
+        <rect x="0" y="3" width="1" height="2" fill="#F0F0FF"/>
+        <rect x="0" y="2" width="2" height="1" fill="#F7B801"/>
+        <!-- Piernas alternando -->
+        <rect x="1" y="5" width="2" height="2" fill="#00D9FF"/>
+        <rect x="3" y="5" width="2" height="2" fill="#00D9FF"/>
+        <!-- Estrella sobre cabeza -->
+        <rect x="2" y="0" width="1" height="1" fill="#F7B801"/>
+      </svg>
+    </div>
+    <div style="position:absolute;right:12px;bottom:20px;">
+      <svg width="32" height="32" viewBox="0 0 8 8" style="image-rendering:pixelated;">
+        <!-- Meta / bandera -->
+        <rect x="3" y="0" width="1" height="7" fill="#F0F0FF"/>
+        <rect x="4" y="0" width="3" height="3" fill="#FF3D81"/>
+        <rect x="3" y="7" width="5" height="1" fill="#F0F0FF"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- XP Bar -->
+  <div class="xp-section">
+    <p class="xp-label">✦ MÓDULO A — PROGRESO ✦</p>
+    <div class="xp-bar">
+      <div class="xp-fill"></div>
+      <span class="xp-text">75% COMPLETADO</span>
+    </div>
+  </div>
+
+  <!-- Progreso del módulo -->
+  <div class="progreso-modulo">
+    <p class="prog-label">▶ LECCIONES DEL MÓDULO A:</p>
+    <div class="prog-items">
+      <div class="prog-item done">BIENVENIDA</div>
+      <div class="prog-item done">QUÉ HACE DIFERENTE</div>
+      <div class="prog-item done">CULTURA QUE NIEGA</div>
+      <div class="prog-item done">VOCABULARIO</div>
+      <div class="prog-item done">MOVIMIENTOS</div>
+      <div class="prog-item done">ALFABETO</div>
+      <div class="prog-item current">COMPROMISO ← TÚ AQUÍ</div>
+      <div class="prog-item lock">MÓDULO B</div>
+    </div>
+  </div>
+
+  <!-- Párrafo 1 -->
+  <p class="parrafo">Para finalizar este primer módulo <span class="dest-gold">"A"</span>, sólo queremos exhortarte a que asumas un <span class="dest-pink">compromiso de aprendizaje</span> que sea realmente honesto contigo mism@.</p>
+
+  <!-- Cuadro: qué depende de ti -->
+  <div class="cuadro purple">
+    <p class="cuadro-title">🎮 EL APRENDIZAJE DEPENDE DE TI</p>
+    <p>Aprender es una responsabilidad totalmente tuya que depende de tu <span class="dest-gold">actitud comprometida</span>, de la <span class="dest-cyan">disciplina</span> que seas capaz de ejercer con voluntad persistente y de la <span class="dest-pink">pasión</span> que sientas por esta hermosa disciplina espiritual.</p>
+  </div>
+
+  <!-- Estrellas flotantes decorativas -->
+  <div class="estrellas-flotantes">
+    <span class="estrella-f">
+      <svg width="16" height="16" viewBox="0 0 4 4" style="image-rendering:pixelated;">
+        <rect x="1" y="0" width="2" height="1" fill="#F7B801"/>
+        <rect x="0" y="1" width="4" height="2" fill="#F7B801"/>
+        <rect x="1" y="3" width="2" height="1" fill="#F7B801"/>
+        <rect x="1" y="1" width="2" height="2" fill="#FFD700"/>
+      </svg>
+    </span>
+    <span class="estrella-f">
+      <svg width="16" height="16" viewBox="0 0 4 4" style="image-rendering:pixelated;">
+        <rect x="1" y="0" width="2" height="1" fill="#FF3D81"/>
+        <rect x="0" y="1" width="4" height="2" fill="#FF3D81"/>
+        <rect x="1" y="3" width="2" height="1" fill="#FF3D81"/>
+      </svg>
+    </span>
+    <span class="estrella-f">
+      <svg width="16" height="16" viewBox="0 0 4 4" style="image-rendering:pixelated;">
+        <rect x="1" y="0" width="2" height="1" fill="#00D9FF"/>
+        <rect x="0" y="1" width="4" height="2" fill="#00D9FF"/>
+        <rect x="1" y="3" width="2" height="1" fill="#00D9FF"/>
+      </svg>
+    </span>
+    <span class="estrella-f">
+      <svg width="16" height="16" viewBox="0 0 4 4" style="image-rendering:pixelated;">
+        <rect x="1" y="0" width="2" height="1" fill="#724CF9"/>
+        <rect x="0" y="1" width="4" height="2" fill="#724CF9"/>
+        <rect x="1" y="3" width="2" height="1" fill="#724CF9"/>
+      </svg>
+    </span>
+    <span class="estrella-f">
+      <svg width="16" height="16" viewBox="0 0 4 4" style="image-rendering:pixelated;">
+        <rect x="1" y="0" width="2" height="1" fill="#39FF88"/>
+        <rect x="0" y="1" width="4" height="2" fill="#39FF88"/>
+        <rect x="1" y="3" width="2" height="1" fill="#39FF88"/>
+      </svg>
+    </span>
+  </div>
+
+  <!-- Párrafo compromiso de Soy Anormal -->
+  <p class="parrafo">Así mismo, en <span class="dest-pink">Soy Anormal</span> también asumimos un auténtico compromiso de enseñanza, al brindarte de forma <span class="dest-green">gratuita</span> los conocimientos organizados que aquí te compartimos.</p>
+
+  <div class="cuadro gold">
+    <p class="cuadro-title">✦ NUESTRO COMPROMISO ✦</p>
+    <p>Nuestra marca está comprometida por elaborar el conocimiento astrológico desde una <span class="dest-cyan">perspectiva de lógica espiritual</span> que, como irás descubriendo, se ha ido perdiendo dentro de la comunidad astrológica.</p>
+  </div>
+
+  <!-- Timer decorativo: 3 meses de acceso -->
+  <div class="timer-wrapper">
+    <p class="timer-label">⏳ ACCESO AL AULA DISPONIBLE POR:</p>
+    <div class="timer-display">
+      <div class="timer-unit">
+        <div class="timer-num" id="dias">89</div>
+        <span>DÍAS</span>
+      </div>
+      <div class="timer-sep">:</div>
+      <div class="timer-unit">
+        <div class="timer-num" id="horas">23</div>
+        <span>HORAS</span>
+      </div>
+      <div class="timer-sep">:</div>
+      <div class="timer-unit">
+        <div class="timer-num" id="mins">59</div>
+        <span>MINUTOS</span>
+      </div>
+    </div>
+    <p style="color:#8080A0;font-size:7px;margin-top:14px;line-height:2;">El aula estará abierta <span style="color:var(--gold);">3 meses</span> — tiempo suficiente<br>para asimilar el conocimiento si te comprometes.</p>
+  </div>
+
+  <!-- Párrafo importancia de memorizar -->
+  <p class="parrafo">Al iniciar en este sendero del conocimiento astrológico, lo primero que necesitas asimilar es que es de suma importancia <span class="dest-gold">memorizar todos los símbolos y datos</span> que dan estructura al lenguaje simbólico que configura la ciencia astrológica.</p>
+
+  <!-- Acordeones de compromisos -->
+  <details class="comp" open>
+    <summary><span>🎯 ¿POR QUÉ ES SIMBÓLICA?</span><span class="arrow">▼</span></summary>
+    <div class="dc">
+      <p>La astrología es una ciencia espiritual que <span class="dest-pink">no puede ser asimilada desde una percepción lineal</span> de la realidad. Su lenguaje es ante todo y esencialmente simbólico, por lo que, para poder aprender a acceder a la información que cada símbolo tiene para comunicarte, se hace fundamental hacer un primer esfuerzo por memorizar todo lo que te estamos compartiendo.</p>
+    </div>
+  </details>
+
+  <details class="comp">
+    <summary><span>📚 ¿QUÉ APRENDERÁS DESPUÉS?</span><span class="arrow">▼</span></summary>
+    <div class="dc">
+      <p>Este curso fue titulado <span class="dest-gold">PRINCIPIOS BÁSICOS I</span> porque el objetivo es que puedas conocer todos los componentes simbólicos del abecedario astrológico. Sin este requisito va a ser muy difícil que puedas pasar a la siguiente fase donde te enseñaremos a <span class="dest-cyan">pensar de forma simbólica</span>, para que con el tiempo seas capaz de descifrar los mensajes que los símbolos astrológicos poseen en cada carta natal.</p>
+    </div>
+  </details>
+
+  <details class="comp">
+    <summary><span>🌟 ¿QUÉ ES EL CLUB DE LECTURA?</span><span class="arrow">▼</span></summary>
+    <div class="dc">
+      <p>Nuestro compromiso en Soy Anormal es brindarte conocimientos y guía a través de nuestros programas de acompañamiento — que en el caso de este curso es el <span class="dest-pink">Club de Lectura</span> — para que puedas aprender a usar el pensamiento simbólico y la lógica espiritual que deseamos transmitirte en la práctica astrológica.</p>
+    </div>
+  </details>
+
+  <!-- Checklist interactiva -->
+  <div class="cuadro pink" style="margin-top:32px;">
+    <p class="cuadro-title">✅ MI COMPROMISO PERSONAL</p>
+    <p style="font-size:8px;margin-bottom:16px;">Haz click en cada punto para marcarlo:</p>
+    <ul class="checklist" id="checklist">
+      <li onclick="marcar(this)"><div class="check-box"></div><span>Me comprometo a estudiar con actitud disciplinada</span></li>
+      <li onclick="marcar(this)"><div class="check-box"></div><span>Memorizar los símbolos del abecedario astrológico</span></li>
+      <li onclick="marcar(this)"><div class="check-box"></div><span>Participar activamente en el Club de Lectura</span></li>
+      <li onclick="marcar(this)"><div class="check-box"></div><span>Aprovechar los 3 meses de acceso al máximo</span></li>
+      <li onclick="marcar(this)"><div class="check-box"></div><span>Disfrutar el proceso de aprendizaje con pasión</span></li>
+    </ul>
+  </div>
+
+  <!-- Mensaje final -->
+  <div class="cuadro green" style="margin-top:28px;">
+    <p class="cuadro-title">💫 DESEOS PARA TI</p>
+    <p>Deseamos que tu <span class="dest-gold">voluntad para aprender sea robusta</span> y te animamos para que hagas un esfuerzo por ejercer una actitud disciplinada en este sendero del aprendizaje astrológico. Deseamos de corazón que <span class="dest-pink">disfrutes mucho</span> todo lo que aquí te compartimos y que hemos diseñado con cariño para ti.</p>
+  </div>
+
+  <!-- Firma con botón -->
+  <div class="firma" id="firmaBox">
+    <p class="firma-text">Sinceramente,</p>
+    <p class="firma-nombre">✦ El Equipo de Soy Anormal ✦</p>
+    <button class="btn-firmar" id="btnFirmar" onclick="firmar()">
+      ★ ACEPTO EL COMPROMISO ★
+    </button>
+  </div>
+
+</div><!-- fin wrapper -->
+
+<script>
+// Checklist
+function marcar(el){
+  el.classList.toggle('marcado');
+  playBeep(el.classList.contains('marcado') ? 880 : 440);
+  verificarTodo();
+}
+
+function verificarTodo(){
+  const items = document.querySelectorAll('.checklist li');
+  const todos = [...items].every(i => i.classList.contains('marcado'));
+  if(todos){
+    document.getElementById('btnFirmar').style.animation = 'parpadeaTimer .5s steps(2,end) infinite';
+    document.getElementById('btnFirmar').textContent = '🎉 ★ ACEPTO EL COMPROMISO ★ 🎉';
+  }
+}
+
+// Botón firmar
+function firmar(){
+  playBeep(1046);
+  setTimeout(()=>playBeep(1318),120);
+  setTimeout(()=>playBeep(1568),240);
+  lanzarConfetti();
+  document.getElementById('btnFirmar').textContent = '✦ ¡COMPROMISO FIRMADO! ✦';
+  document.getElementById('btnFirmar').style.borderColor = 'var(--gold)';
+  document.getElementById('btnFirmar').style.color = 'var(--gold)';
+  document.getElementById('btnFirmar').style.boxShadow = '4px 4px 0 var(--gold)';
+  document.getElementById('btnFirmar').disabled = true;
+}
+
+// Confetti pixel
+function lanzarConfetti(){
+  const colores = ['#FF3D81','#00D9FF','#724CF9','#F7B801','#39FF88'];
+  for(let i=0;i<30;i++){
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.left = Math.random()*100+'vw';
+    c.style.top = '-20px';
+    c.style.background = colores[Math.floor(Math.random()*colores.length)];
+    c.style.display = 'block';
+    c.style.animationDelay = Math.random()*1+'s';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 3000);
+  }
+}
+
+// Beep 8-bit
+function playBeep(freq){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const osc=ctx.createOscillator();const gain=ctx.createGain();
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.type='square';osc.frequency.value=freq||660;
+    gain.gain.setValueAtTime(.1,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.12);
+    osc.start();osc.stop(ctx.currentTime+.12);
+  }catch(e){}
+}
+
+// Acordeones con beep
+document.querySelectorAll('details.comp').forEach(d=>{
+  d.addEventListener('toggle',function(){
+    playBeep(this.open?700:500);
+  });
+});
+
+// Timer cuenta regresiva (decorativo, empieza en 89 días)
+(function(){
+  let total = 89*24*60*60;
+  function actualizar(){
+    const d=Math.floor(total/86400);
+    const h=Math.floor((total%86400)/3600);
+    const m=Math.floor((total%3600)/60);
+    document.getElementById('dias').textContent=String(d).padStart(2,'0');
+    document.getElementById('horas').textContent=String(h).padStart(2,'0');
+    document.getElementById('mins').textContent=String(m).padStart(2,'0');
+    total--;
+    if(total<0)total=89*24*60*60;
+  }
+  actualizar();
+  setInterval(actualizar,1000);
+})();
+</script>
+</body>
+</html>

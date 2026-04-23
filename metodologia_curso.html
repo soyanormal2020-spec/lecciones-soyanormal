@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metodología de Trabajo — Soy Anormal</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    font-family:'Press Start 2P',cursive;
+    background:#0A0A1B;
+    color:#F0F0FF;
+    padding:32px 24px;
+    font-size:10px;
+    line-height:2.4;
+    overflow-x:hidden;
+}
+
+/* Línea de escaneo CRT */
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    z-index:999;
+    pointer-events:none;
+    background:repeating-linear-gradient(
+        to bottom,transparent,transparent 3px,
+        rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px
+    );
+}
+
+/* Estrellas de fondo animadas */
+.stars{
+    position:fixed;top:0;left:0;
+    width:100%;height:100%;
+    z-index:-1;pointer-events:none;
+    background-image:
+        radial-gradient(2px 2px at 20px 30px,#eee,transparent),
+        radial-gradient(1px 1px at 100px 80px,#fff,transparent),
+        radial-gradient(2px 2px at 280px 120px,#F7B801,transparent),
+        radial-gradient(1px 1px at 430px 60px,#fff,transparent),
+        radial-gradient(2px 2px at 550px 180px,#00D9FF,transparent),
+        radial-gradient(1px 1px at 150px 250px,#FF3D81,transparent);
+    background-size:600px 300px;
+    animation:twinkle 5s steps(4,end) infinite;
+}
+@keyframes twinkle{0%,100%{opacity:.6}50%{opacity:1}}
+
+/* Contenedor principal */
+.wrapper{
+    max-width:900px;
+    margin:0 auto;
+    background:#0A0A1B;
+    border:4px solid #724CF9;
+    box-shadow:6px 6px 0 rgba(114,76,249,.5);
+    padding:32px;
+    position:relative;
+}
+
+/* Títulos */
+h1{
+    color:#F7B801;
+    font-size:18px;
+    margin:0 0 28px 0;
+    text-shadow:3px 3px 0 rgba(0,0,0,.8);
+    text-align:center;
+    border-bottom:3px solid #2A2A4A;
+    padding-bottom:16px;
+    line-height:1.8;
+    animation:glow 2s ease-in-out infinite alternate;
+}
+@keyframes glow{
+    from{text-shadow:3px 3px 0 rgba(0,0,0,.8), 0 0 5px #F7B801;}
+    to{text-shadow:3px 3px 0 rgba(0,0,0,.8), 0 0 15px #F7B801, 0 0 20px #F7B801;}
+}
+
+h2{
+    color:#00D9FF;
+    font-size:14px;
+    margin:32px 0 16px 0;
+    text-shadow:2px 2px 0 rgba(0,0,0,.8);
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+/* Cajas de contenido con hover animado */
+.card{
+    background:#1A1A3A;
+    border:3px solid #2A2A4A;
+    padding:20px;
+    margin:20px 0;
+    position:relative;
+    transition:all 0.3s steps(3);
+}
+.card:hover{
+    border-color:#FF3D81;
+    box-shadow:4px 4px 0 rgba(255,61,129,.6);
+    transform:translate(-2px,-2px);
+}
+
+/* Iconos pixel art */
+.pixel-icon{
+    display:inline-block;
+    width:24px;height:24px;
+    background:#F7B801;
+    image-rendering:pixelated;
+    box-shadow:2px 2px 0 rgba(0,0,0,.8);
+    animation:float 3s ease-in-out infinite;
+}
+@keyframes float{
+    0%,100%{transform:translateY(0px);}
+    50%{transform:translateY(-4px);}
+}
+
+.star{clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+.heart{clip-path:path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');}
+.book{background:linear-gradient(to right,#724CF9 0%,#724CF9 70%,#5A3AC7 70%,#5A3AC7 100%);}
+.clock{border-radius:50%;position:relative;}
+.clock::after{
+    content:'';
+    position:absolute;
+    top:50%;left:50%;
+    width:2px;height:8px;
+    background:#0A0A1B;
+    transform-origin:bottom;
+    animation:tick 60s steps(60) infinite;
+}
+@keyframes tick{to{transform:rotate(360deg);}}
+
+/* Lista con bullets pixel */
+ul{list-style:none;padding-left:0;}
+li{
+    margin:16px 0;
+    padding-left:32px;
+    position:relative;
+}
+li::before{
+    content:'►';
+    position:absolute;
+    left:0;
+    color:#FF3D81;
+    animation:blink 1.5s steps(2) infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+/* Destacados */
+.highlight{
+    color:#F7B801;
+    text-shadow:1px 1px 0 rgba(0,0,0,.8);
+}
+.warning{
+    color:#FF3D81;
+    animation:pulse 1s steps(2) infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.6;}}
+
+/* Separador animado */
+.divider{
+    height:4px;
+    background:repeating-linear-gradient(
+        90deg,
+        #724CF9 0px,#724CF9 8px,
+        transparent 8px,transparent 16px
+    );
+    margin:32px 0;
+    animation:slide 2s linear infinite;
+}
+@keyframes slide{
+    from{background-position:0 0;}
+    to{background-position:16px 0;}
+}
+
+/* Planeta pixel girando */
+.pixel-planet{
+    width:40px;height:40px;
+    margin:20px auto;
+    background:#00D9FF;
+    border-radius:50%;
+    box-shadow:inset -8px -4px 0 rgba(0,0,0,.3);
+    position:relative;
+    animation:spin 8s linear infinite;
+}
+.pixel-planet::after{
+    content:'';
+    position:absolute;
+    width:50px;height:8px;
+    background:#724CF9;
+    top:16px;left:-5px;
+    border-radius:50%;
+    transform:rotate(-20deg);
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* Footer */
+footer{
+    text-align:center;
+    margin-top:40px;
+    padding-top:20px;
+    border-top:3px solid #2A2A4A;
+    font-size:8px;
+    color:#724CF9;
+}
+
+/* Meteoritos pixel flotando */
+.space-decorations {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.meteor {
+    position: absolute;
+    width: 8px; height: 8px;
+    background: #F7B801;
+    box-shadow: 2px 2px 0 rgba(0,0,0,.8);
+    transform: rotate(45deg);
+    animation: fall 6s linear infinite;
+}
+
+.meteor::after {
+    content: '';
+    position: absolute;
+    width: 16px; height: 2px;
+    background: linear-gradient(90deg, #F7B801, transparent);
+    top: 3px; left: -16px;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-100px) translateX(0) rotate(45deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(100vh) translateX(100px) rotate(45deg); opacity: 0; }
+}
+
+/* Planetas pixel extra */
+.planet-container {
+    position: absolute;
+    top: 20%; left: 15%;
+}
+
+.pixel-planet-2 {
+    width: 32px; height: 32px;
+    background: #FF3D81;
+    border-radius: 50%;
+    box-shadow: inset -6px -3px 0 rgba(0,0,0,.3);
+    position: relative;
+    animation: orbit 12s linear infinite;
+}
+
+.pixel-planet-2::after {
+    content: '';
+    position: absolute;
+    width: 40px; height: 6px;
+    background: #F7B801;
+    top: 13px; left: -4px;
+    border-radius: 50%;
+    transform: rotate(-15deg);
+}
+
+.pixel-planet-3 {
+    width: 24px; height: 24px;
+    background: #724CF9;
+    border-radius: 50%;
+    box-shadow: inset -4px -2px 0 rgba(0,0,0,.3);
+    animation: orbit-reverse 15s linear infinite;
+}
+
+@keyframes orbit {
+    from { transform: rotate(0deg) translateX(60px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(60px) rotate(-360deg); }
+}
+
+@keyframes orbit-reverse {
+    from { transform: rotate(360deg) translateX(80px) rotate(-360deg); }
+    to { transform: rotate(0deg) translateX(80px) rotate(0deg); }
+}
+
+</style>
+</head>
+<body>
+<div class="stars"></div>
+
+<div class="space-decorations">
+    <!-- Meteoritos -->
+    <div class="meteor" style="left:10%; animation-delay:0s; animation-duration:5s;"></div>
+    <div class="meteor" style="left:30%; animation-delay:2s; animation-duration:7s;"></div>
+    <div class="meteor" style="left:55%; animation-delay:4s; animation-duration:6s;"></div>
+    <div class="meteor" style="left:75%; animation-delay:1s; animation-duration:8s;"></div>
+    <div class="meteor" style="left:90%; animation-delay:3s; animation-duration:5.5s;"></div>
+    
+    <!-- Planetas extra -->
+    <div class="planet-container">
+        <div class="pixel-planet-2"></div>
+    </div>
+    <div class="planet-container" style="top:65%; left:82%;">
+        <div class="pixel-planet-3"></div>
+    </div>
+    <div class="planet-container" style="top:45%; left:5%;">
+        <div class="pixel-planet-3" style="background:#00D9FF; animation-duration:20s;"></div>
+    </div>
+</div>
+
+
+<div class="wrapper">
+    <h1>METODOLOGÍA DE TRABAJO<br>CURSO DE ASTROLOGÍA</h1>
+    
+    <div class="pixel-planet"></div>
+
+    <div class="card">
+        <p>Para <span class="highlight">Soy Anormal</span> es muy importante que nuestros estudiantes puedan realmente aprovechar los conocimientos que compartimos de manera que verdaderamente logren adquirir aprendizajes significativos en el tema que les interesa.</p>
+        <br>
+        <p>Es por esto que nos gusta informar desde el inicio del proceso de enseñanza cuáles son los pasos que es necesario considerar para que las horas que dediques a tus estudios tengan realmente un <span class="highlight">resultado satisfactorio para ti</span>.</p>
+        <br>
+        <p>A este paso a paso, con los elementos que lo configuran, es a lo que solemos llamar <span class="highlight">método o metodología de trabajo</span>.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2><span class="pixel-icon star"></span>MÉTODO AUTODIDACTA</h2>
+    <div class="card">
+        <p>El curso está diseñado para promover tus <span class="highlight">habilidades autodidactas</span>. Esto significa que tú eres el único responsable de generar tu proceso de aprendizaje.</p>
+        <ul>
+            <li>En soy anormal promovemos los procesos de aprendizaje autodidactas con el fin de fomentar la <span class="highlight">soberanía de las personas</span>.</li>
+            <li>No olvides que tenemos el Club de Lectura. Si deseas participar comunícate con nosotros a través de nuestros grupos o redes sociales.</li>
+        </ul>
+    </div>
+
+    <h2><span class="pixel-icon book"></span>CONTENIDO DEL CURSO</h2>
+    <div class="card">
+        <ul>
+            <li>Este curso está diseñado en <span class="highlight">5 módulos</span>.</li>
+            <li>Cada módulo contiene lecciones que se desarrollan con contenidos coherentes con el tema del módulo.</li>
+            <li>Al final de cada módulo encontrarás una <span class="highlight">herramienta de autoevaluación</span>.</li>
+        </ul>
+    </div>
+
+    <h2><span class="pixel-icon clock"></span>DURACIÓN Y RITMO</h2>
+    <div class="card">
+        <p><span class="warning">IMPORTANTE:</span> Solo tendrás acceso durante <span class="highlight">3 meses</span> a partir de las fechas publicadas en el tablón de anuncios.</p>
+        <br>
+        <ul>
+            <li>El ritmo para estudiar las lecciones lo decides tú.</li>
+            <li>Te sugerimos dedicar al menos <span class="highlight">5 horas a la semana</span>, las cuales puedes distribuir a tu conveniencia.</li>
+            <li>Si no logras terminar, puedes retomar tus estudios cuando se abra una nueva convocatoria.</li>
+        </ul>
+    </div>
+
+    <h2><span class="pixel-icon heart"></span>CLUB DE LECTURA</h2>
+    <div class="card">
+        <p>Diseñamos el club de lectura para este curso que te ofrecemos.</p>
+        <ul>
+            <li>Accederás a lecturas que te permitan <span class="highlight">ampliar tus conocimientos astrológicos</span>.</li>
+            <li>Conversaciones profundas sobre temas de astrología para incorporar nuevas perspectivas.</li>
+            <li>Es un <span class="highlight">espacio seguro</span> donde podrás compartir tus vivencias libre de prejuicios con otros compañeros.</li>
+        </ul>
+    </div>
+
+    <h2><span class="pixel-icon star"></span>AUTOEVALUACIÓN</h2>
+    <div class="card">
+        <p>Al finalizar cada módulo tendrás acceso a un ejercicio de autoevaluación con <span class="highlight">tres oportunidades para aprobar</span>.</p>
+        <p>El propósito es que puedas medir por ti mism@ el avance de tu aprendizaje.</p>
+    </div>
+
+    <h2><span class="pixel-icon book"></span>MATERIAL DIDÁCTICO</h2>
+    <div class="card">
+        <ul>
+            <li>En algunos módulos puedes acceder a material didáctico que diseñamos para facilitar tu aprendizaje.</li>
+            <li>Te sugerimos adquirir una <span class="highlight">libreta</span> para apuntes y ejercicios que se te indicarán.</li>
+        </ul>
+    </div>
+
+    <h2><span class="pixel-icon star"></span>CONSTANCIA DE APROBACIÓN</h2>
+    <div class="card">
+        <p><span class="warning">El acceso es opcional.</span> Para obtenerla necesitas:</p>
+        <ul>
+            <li>Terminar el curso completo.</li>
+            <li>Aprobar en un <span class="highlight">90% las evaluaciones</span> de los cinco módulos.</li>
+            <li>Aprobar el 90% de una evaluación final de conocimientos generales.</li>
+        </ul>
+        <p>Una vez aprobada se te enviará tu constancia al correo registrado en máximo <span class="highlight">8 días</span>.</p>
+    </div>
+
+    <footer>
+        SOY ANORMAL © 2026 — APRENDIZAJE CON SOBERANÍA ✦
+    </footer>
+</div>
+</body>
+</html>
