@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>♈ ARIES - El Carnero ♈</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #E63946;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --red: #E63946;
+    --white: #F0F0F0;
+  }
+
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateX(120vw) translateY(50px) rotate(-15deg); opacity: 0; }
+  }
+
+  10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateX(120vw) translateY(80px) rotate(-20deg); opacity: 0; }
+  }
+
+  10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateX(120vw) translateY(30px) rotate(-10deg); opacity: 0; }
+  }
+
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  .crt-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 100px rgba(230, 57, 70, 0.1);
+  }
+
+  .floating-star {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 24px);
+    color: var(--red);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--gold), -2px -2px 0 var(--purple);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  .aries-symbol {
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+  }
+
+  .symbol-circle {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+    border: 4px solid var(--red);
+    border-radius: 50%;
+    background: radial-gradient(circle, #3a0a0f 0%, #0A0A1B 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px var(--red), inset 0 0 20px rgba(230, 57, 70, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 30px var(--red), inset 0 0 20px rgba(230, 57, 70, 0.3); }
+    50% { box-shadow: 0 0 50px var(--red), inset 0 0 30px rgba(230, 57, 70, 0.5); }
+  }
+
+  .symbol-text {
+    font-size: 60px;
+    color: var(--red);
+    text-shadow: 0 0 20px var(--red);
+  }
+
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .box.gold {
+    background: #2e2416;
+    border-color: var(--gold);
+    box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.3), 0 0 20px rgba(247, 184, 1, 0.2);
+  }
+
+  .box.cyan {
+    background: #0f1a2e;
+    border-color: var(--red);
+    box-shadow: 8px 8px 0 rgba(230, 57, 70, 0.3), 0 0 20px rgba(230, 57, 70, 0.2);
+  }
+
+  .box.pink {
+    background: #2e1620;
+    border-color: var(--pink);
+    box-shadow: 8px 8px 0 rgba(255, 61, 129, 0.3), 0 0 20px rgba(255, 61, 129, 0.2);
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .box.gold .box-title {
+    color: var(--gold);
+  }
+
+  .box.cyan .box-title {
+    color: var(--red);
+  }
+
+  .box.pink .box-title {
+    color: var(--pink);
+  }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+  }
+
+  .box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .data-item {
+    font-size: 8px;
+    padding: 8px;
+    border: 2px solid var(--red);
+    background: rgba(230, 57, 70, 0.1);
+  }
+
+  .data-label {
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .data-value {
+    color: var(--white);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .tag {
+    font-size: 7px;
+    padding: 6px 10px;
+    border: 2px solid;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .tag.elevado {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .tag.no-elevado {
+    border-color: var(--pink);
+    color: var(--pink);
+  }
+
+  .highlight {
+    color: var(--red);
+    text-shadow: 0 0 5px var(--red);
+  }
+
+  .highlight-cyan {
+    color: var(--red);
+    text-shadow: 0 0 5px var(--red);
+  }
+
+  .highlight-gold {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--red), var(--gold), var(--red), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--red);
+  }
+
+  @media (max-width: 640px) {
+    .container {
+      padding: 12px;
+    }
+    
+    .box {
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .box p {
+      font-size: 8px;
+    }
+
+    .box-title {
+      font-size: 10px;
+    }
+
+    .data-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tag {
+      font-size: 6px;
+      padding: 4px 8px;
+    }
+  }
+
+  /* Símbolo de Marte cayendo */
+  .mars-fall {
+    position: fixed;
+    pointer-events: none;
+    z-index: 3;
+    font-size: 32px;
+    color: var(--red);
+    text-shadow: 0 0 15px var(--red), 0 0 30px var(--red);
+    opacity: 0;
+    animation: marsDrop 6s linear infinite;
+  }
+  
+  .mars-fall:nth-child(1) { left: 15%; animation-delay: 0s; }
+  .mars-fall:nth-child(2) { left: 45%; animation-delay: 2s; font-size: 24px; }
+  .mars-fall:nth-child(3) { left: 75%; animation-delay: 4s; font-size: 28px; }
+  
+  @keyframes marsDrop {
+    0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+  
+  /* Estallido de energía / chispas */
+  .energy-burst {
+    position: fixed;
+    pointer-events: none;
+    z-index: 2;
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--gold), 0 0 20px var(--gold);
+    animation: spark 3s ease-out infinite;
+  }
+  
+  @keyframes spark {
+    0% { transform: translate(0, 0) scale(0); opacity: 1; }
+    50% { opacity: 1; }
+    100% { 
+      transform: translate(var(--tx), var(--ty)) scale(0); 
+      opacity: 0; 
+    }
+  }
+  
+  /* Pulso de energía central */
+  .energy-core {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    background: var(--red);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px var(--red);
+    animation: pulseCore 2s ease-in-out infinite;
+    z-index: 1;
+    opacity: 0.6;
+  }
+  
+  @keyframes pulseCore {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 20px var(--red); }
+    50% { transform: translate(-50%, -50%) scale(3); box-shadow: 0 0 60px var(--red), 0 0 100px var(--red); }
+  }
+
+
+  /* ===== CARNERO RECORRIENDO EL DISEÑO ===== */
+  .ram-roamer {
+    position: fixed;
+    pointer-events: none;
+    z-index: 4;
+    font-size: 28px;
+    opacity: 0;
+    filter: drop-shadow(0 0 10px var(--red));
+    animation: roamDesign 20s linear infinite;
+  }
+  
+  @keyframes roamDesign {
+    /* Empieza arriba izquierda */
+    0% { top: 10%; left: -50px; opacity: 0; transform: scaleX(1) rotate(0deg); }
+    5% { opacity: 1; }
+    
+    /* Cruza arriba hacia derecha */
+    20% { top: 15%; left: 30%; transform: scaleX(1) rotate(5deg); }
+    25% { top: 12%; left: 60%; transform: scaleX(1) rotate(-5deg); }
+    
+    /* Baja por la derecha */
+    35% { top: 40%; left: 85%; transform: scaleX(1) rotate(90deg); }
+    45% { top: 70%; left: 80%; transform: scaleX(1) rotate(95deg); }
+    
+    /* Cruza abajo hacia izquierda */
+    55% { top: 85%; left: 50%; transform: scaleX(-1) rotate(180deg); }
+    65% { top: 80%; left: 20%; transform: scaleX(-1) rotate(175deg); }
+    
+    /* Sube por la izquierda */
+    75% { top: 50%; left: 10%; transform: scaleX(-1) rotate(270deg); }
+    85% { top: 20%; left: 15%; transform: scaleX(-1) rotate(265deg); }
+    
+    /* Vuelve al inicio */
+    95% { top: 10%; left: -50px; opacity: 1; transform: scaleX(1) rotate(360deg); }
+    100% { top: 10%; left: -50px; opacity: 0; transform: scaleX(1) rotate(360deg); }
+  }
+  
+  /* CHISPAS EXPLOSIVAS DESDE EL SÍMBOLO */
+  .spark-burst {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    background: var(--red);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+  }
+  
+  .spark1 { animation: burst1 2.5s ease-out infinite; background: var(--red); }
+  .spark2 { animation: burst2 2.5s ease-out infinite 0.3s; background: var(--gold); }
+  .spark3 { animation: burst3 2.5s ease-out infinite 0.6s; background: var(--red); }
+  .spark4 { animation: burst4 2.5s ease-out infinite 0.9s; background: var(--gold); }
+  .spark5 { animation: burst5 2.5s ease-out infinite 1.2s; background: var(--red); }
+  .spark6 { animation: burst6 2.5s ease-out infinite 1.5s; background: var(--gold); }
+  
+  @keyframes burst1 {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; box-shadow: 0 0 10px var(--red); }
+    100% { transform: translate(-50%, -50%) translate(120px, -80px) scale(0); opacity: 0; }
+  }
+  @keyframes burst2 {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; box-shadow: 0 0 10px var(--gold); }
+    100% { transform: translate(-50%, -50%) translate(-100px, -90px) scale(0); opacity: 0; }
+  }
+  @keyframes burst3 {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; box-shadow: 0 0 10px var(--red); }
+    100% { transform: translate(-50%, -50%) translate(90px, 100px) scale(0); opacity: 0; }
+  }
+  @keyframes burst4 {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; box-shadow: 0 0 10px var(--gold); }
+    100% { transform: translate(-50%, -50%) translate(-110px, 70px) scale(0); opacity: 0; }
+  }
+  @keyframes burst5 {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; box-shadow: 0 0 10px var(--red); }
+    100% { transform: translate(-50%, -50%) translate(130px, 0px) scale(0); opacity: 0; }
+  }
+  @keyframes burst6 {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; box-shadow: 0 0 10px var(--gold); }
+    100% { transform: translate(-50%, -50%) translate(-120px, 0px) scale(0); opacity: 0; }
+  }
+  /* ===== FIN ANIMACIONES ARIES ===== */
+
+
+  /* ===== MARTE EXPLOSIVO + CARNERO EMBISTIENDO ===== */
+  
+  /* 1. SÍMBOLOS DE MARTE QUE EXPLOTAN */
+  .mars-symbol {
+    position: fixed;
+    font-size: 28px;
+    color: var(--red);
+    text-shadow: 0 0 20px var(--red), 0 0 40px var(--gold);
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+  }
+  
+  .mars1 { top: 15%; left: 20%; animation: marsAppear 8s ease-in-out infinite; }
+  .mars2 { top: 25%; right: 15%; animation: marsAppear 8s ease-in-out infinite 2s; }
+  .mars3 { top: 45%; left: 10%; animation: marsAppear 8s ease-in-out infinite 4s; }
+  .mars4 { top: 60%; right: 25%; animation: marsAppear 8s ease-in-out infinite 6s; }
+  .mars5 { top: 35%; left: 50%; animation: marsAppear 8s ease-in-out infinite 1s; }
+  
+  @keyframes marsAppear {
+    0%, 30% { opacity: 0; transform: scale(0) rotate(0deg); }
+    35% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+    40% { transform: scale(1) rotate(360deg); }
+    60% { opacity: 1; transform: scale(1.3) rotate(360deg); } /* explota */
+    65% { opacity: 0; transform: scale(3) rotate(360deg); }
+    100% { opacity: 0; transform: scale(0); }
+  }
+  
+  /* Chispas de fuego al explotar */
+  .fire-spark {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--red);
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .mars1 .spark1 { top: 0; left: 0; animation: sparkFly1 1s ease-out infinite 4.8s; }
+  .mars1 .spark2 { top: 0; left: 0; animation: sparkFly2 1s ease-out infinite 4.8s; }
+  .mars1 .spark3 { top: 0; left: 0; animation: sparkFly3 1s ease-out infinite 4.8s; }
+  .mars1 .spark4 { top: 0; left: 0; animation: sparkFly4 1s ease-out infinite 4.8s; }
+  
+  .mars2 .spark1 { top: 0; left: 0; animation: sparkFly1 1s ease-out infinite 6.8s; }
+  .mars2 .spark2 { top: 0; left: 0; animation: sparkFly2 1s ease-out infinite 6.8s; }
+  .mars2 .spark3 { top: 0; left: 0; animation: sparkFly3 1s ease-out infinite 6.8s; }
+  .mars2 .spark4 { top: 0; left: 0; animation: sparkFly4 1s ease-out infinite 6.8s; }
+  
+  .mars3 .spark1 { top: 0; left: 0; animation: sparkFly1 1s ease-out infinite 8.8s; }
+  .mars3 .spark2 { top: 0; left: 0; animation: sparkFly2 1s ease-out infinite 8.8s; }
+  .mars3 .spark3 { top: 0; left: 0; animation: sparkFly3 1s ease-out infinite 8.8s; }
+  .mars3 .spark4 { top: 0; left: 0; animation: sparkFly4 1s ease-out infinite 8.8s; }
+  
+  .mars4 .spark1 { top: 0; left: 0; animation: sparkFly1 1s ease-out infinite 10.8s; }
+  .mars4 .spark2 { top: 0; left: 0; animation: sparkFly2 1s ease-out infinite 10.8s; }
+  .mars4 .spark3 { top: 0; left: 0; animation: sparkFly3 1s ease-out infinite 10.8s; }
+  .mars4 .spark4 { top: 0; left: 0; animation: sparkFly4 1s ease-out infinite 10.8s; }
+  
+  .mars5 .spark1 { top: 0; left: 0; animation: sparkFly1 1s ease-out infinite 5.8s; }
+  .mars5 .spark2 { top: 0; left: 0; animation: sparkFly2 1s ease-out infinite 5.8s; }
+  .mars5 .spark3 { top: 0; left: 0; animation: sparkFly3 1s ease-out infinite 5.8s; }
+  .mars5 .spark4 { top: 0; left: 0; animation: sparkFly4 1s ease-out infinite 5.8s; }
+  
+  @keyframes sparkFly1 {
+    0% { opacity: 0; transform: translate(0, 0); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-40px, -40px); }
+  }
+  @keyframes sparkFly2 {
+    0% { opacity: 0; transform: translate(0, 0); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: translate(40px, -40px); }
+  }
+  @keyframes sparkFly3 {
+    0% { opacity: 0; transform: translate(0, 0); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-40px, 40px); }
+  }
+  @keyframes sparkFly4 {
+    0% { opacity: 0; transform: translate(0, 0); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: translate(40px, 40px); }
+  }
+  
+  /* 2. CARNERO EMBISTIENDO */
+  .ram-charger {
+    position: fixed;
+    font-size: 48px;
+    pointer-events: none;
+    z-index: 4;
+    filter: drop-shadow(0 0 15px var(--red));
+    animation: ramCharge 12s ease-in-out infinite;
+  }
+  
+  @keyframes ramCharge {
+    0%, 100% { 
+      left: -100px; 
+      top: 30%; 
+      opacity: 0; 
+      transform: scaleX(1) rotate(0deg); 
+    }
+    5% { opacity: 1; }
+    15% { 
+      left: 15%; 
+      top: 32%; 
+      transform: scaleX(1) rotate(-10deg); 
+    }
+    20% { /* embiste caja 1 */
+      left: 25%; 
+      top: 35%; 
+      transform: scaleX(1) rotate(0deg) scale(1.2); 
+    }
+    25% { 
+      left: 20%; 
+      top: 33%; 
+      transform: scaleX(1) rotate(5deg); 
+    }
+    40% { 
+      left: 50%; 
+      top: 50%; 
+      transform: scaleX(1) rotate(-5deg); 
+    }
+    45% { /* embiste caja 2 */
+      left: 60%; 
+      top: 52%; 
+      transform: scaleX(1) rotate(0deg) scale(1.2); 
+    }
+    50% { 
+      left: 55%; 
+      top: 51%; 
+      transform: scaleX(1) rotate(10deg); 
+    }
+    70% { 
+      left: 80%; 
+      top: 70%; 
+      transform: scaleX(1) rotate(-5deg); 
+    }
+    75% { /* embiste caja 3 */
+      left: 90%; 
+      top: 72%; 
+      transform: scaleX(1) rotate(0deg) scale(1.2); 
+    }
+    80% { opacity: 1; }
+    85% { 
+      left: 110%; 
+      opacity: 0; 
+    }
+  }
+  
+  /* Efecto de impacto en las cajas */
+  .box {
+    transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+  }
+  
+  .box.hit {
+    animation: boxHit 0.3s ease-out;
+  }
+  
+  @keyframes boxHit {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(5px, -5px); box-shadow: 15px 15px 0 rgba(230, 57, 70, 0.5) !important; }
+  }
+  /* ===== FIN MARTE Y CARNERO ===== */
+
+</style>
+</head>
+<body>
+  <!-- SÍMBOLOS DE MARTE EXPLOSIVOS -->
+  <div class="mars-symbol mars1">
+    ♂
+    <div class="fire-spark spark1"></div>
+    <div class="fire-spark spark2"></div>
+    <div class="fire-spark spark3"></div>
+    <div class="fire-spark spark4"></div>
+  </div>
+  <div class="mars-symbol mars2">
+    ♂
+    <div class="fire-spark spark1"></div>
+    <div class="fire-spark spark2"></div>
+    <div class="fire-spark spark3"></div>
+    <div class="fire-spark spark4"></div>
+  </div>
+  <div class="mars-symbol mars3">
+    ♂
+    <div class="fire-spark spark1"></div>
+    <div class="fire-spark spark2"></div>
+    <div class="fire-spark spark3"></div>
+    <div class="fire-spark spark4"></div>
+  </div>
+  <div class="mars-symbol mars4">
+    ♂
+    <div class="fire-spark spark1"></div>
+    <div class="fire-spark spark2"></div>
+    <div class="fire-spark spark3"></div>
+    <div class="fire-spark spark4"></div>
+  </div>
+  <div class="mars-symbol mars5">
+    ♂
+    <div class="fire-spark spark1"></div>
+    <div class="fire-spark spark2"></div>
+    <div class="fire-spark spark3"></div>
+    <div class="fire-spark spark4"></div>
+  </div>
+  
+  <!-- CARNERO EMBISTIENDO -->
+  <div class="ram-charger">🐏</div>
+
+  <!-- CARNERO RECORRIENDO EL DISEÑO -->
+  <div class="ram-roamer">🐏</div>
+
+  <div class="mars-fall">♂</div>
+  <div class="mars-fall">♂</div>
+  <div class="mars-fall">♂</div>
+  <div class="energy-core"></div>
+
+  <div class="stars" id="stars"></div>
+
+
+<div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <svg class="floating-star" style="top: 15%; left: 5%; width: 24px; height: 24px; animation-delay: 0s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#E63946"/>
+  </svg>
+  <svg class="floating-star" style="top: 60%; right: 8%; width: 20px; height: 20px; animation-delay: 1s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#F7B801"/>
+  </svg>
+  <svg class="floating-star" style="top: 40%; left: 10%; width: 18px; height: 18px; animation-delay: 2s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#E63946"/>
+  </svg>
+
+  <div class="container">
+    <h1 class="glitch-title">♈ ARIES ♈<br>EL CARNERO</h1>
+
+    <div class="aries-symbol">
+      <div class="symbol-circle">
+        <div class="spark-burst spark1"></div><div class="spark-burst spark2"></div><div class="spark-burst spark3"></div><div class="spark-burst spark4"></div><div class="spark-burst spark5"></div><div class="spark-burst spark6"></div><div class="symbol-text">♈</div>
+      </div>
+    </div>
+
+    <div class="box cyan" id="box1">
+      <div class="box-title">◈ ESENCIA DE ARIES ◈</div>
+      <p>Aries es el <span class="highlight">primer signo del zodiaco</span> y representa el inicio, el impulso puro de la vida. Su energía es la chispa que enciende el fuego de la existencia.</p>
+      <p>Regido por <span class="highlight-gold">Marte</span>, planeta de la acción, Aries encarna la <span class="highlight">voluntad de ser</span> y el coraje para lanzarse a lo desconocido sin mirar atrás.</p>
+    </div>
+
+    <div class="box gold" id="box2">
+      <div class="box-title">◆ DATOS CLAVE ◆</div>
+      <div class="data-grid">
+        <div class="data-item">
+          <span class="data-label">ELEMENTO:</span>
+          <span class="data-value">Fuego</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">CUALIDAD:</span>
+          <span class="data-value">Cardinal</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PRINCIPIO:</span>
+          <span class="data-value">Activo</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">REGENTE:</span>
+          <span class="data-value">Marte</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FRASE CLAVE:</span>
+          <span class="data-value">Yo soy</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PALABRA CLAVE:</span>
+          <span class="data-value">Actividad</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">SIGNO DE:</span>
+          <span class="data-value">Primera casa</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FECHAS:</span>
+          <span class="data-value">21 Mar - 20 Abr</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box cyan">
+      <div class="box-title">★ CARACTERÍSTICAS GENERALES ★</div>
+      <p><span class="highlight-cyan">Signo Opuesto:</span> Libra</p>
+      <p><span class="highlight-cyan">Regencia anatómica:</span> Cabeza, ojos, centros nerviosos, encéfalo, huesos del cráneo</p>
+      
+      <p style="margin-top: 20px;"><span class="highlight-gold">RASGOS ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag elevado">Franco</span>
+        <span class="tag elevado">Dinámico</span>
+        <span class="tag elevado">Audaz</span>
+        <span class="tag elevado">Iniciador</span>
+        <span class="tag elevado">Luchador</span>
+        <span class="tag elevado">Rápido</span>
+        <span class="tag elevado">Valiente</span>
+        <span class="tag elevado">Sincero</span>
+        <span class="tag elevado">Deportista</span>
+      </div>
+
+      <p style="margin-top: 20px;"><span class="highlight">RASGOS NO ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag no-elevado">Agresivo</span>
+        <span class="tag no-elevado">Impaciente</span>
+        <span class="tag no-elevado">Impulsivo</span>
+        <span class="tag no-elevado">Irritable</span>
+        <span class="tag no-elevado">Brusco</span>
+        <span class="tag no-elevado">Abusivo</span>
+        <span class="tag no-elevado">Temerario</span>
+        <span class="tag no-elevado">Colérico</span>
+        <span class="tag no-elevado">Impositivo</span>
+        <span class="tag no-elevado">Intolerante</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="box pink" id="box3">
+      <div class="box-title">✦ ARQUETIPO DEL PIONERO ✦</div>
+      <p>Como <span class="highlight-cyan">signo de Fuego Cardinal</span>, Aries inicia. No espera permiso, no planea en exceso: <span class="highlight">actúa</span>. Su impulso es conquistar, abrir camino, ser el primero.</p>
+      <p>La <span class="highlight">Primera Casa</span> que rige representa la identidad, el cuerpo físico y cómo nos lanzamos al mundo. Aries dice: "Aquí estoy, este soy yo".</p>
+      <p>La frase clave <span class="highlight">"Yo soy"</span> resume toda la esencia ariana: es autoafirmación pura, existencia sin filtros. Su palabra clave <span class="highlight">Actividad</span> nos recuerda que este signo vino a moverse, a hacer, a experimentar.</p>
+    </div>
+  </div>
+
+  <script>
+    const starsContainer = document.getElementById('stars');
+    const starCount = 100;
+    
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      
+      const colors = ['#FFFFFF', '#E63946', '#F7B801', '#E63946'];
+      star.style.background = colors[Math.floor(Math.random() * colors.length)];
+      
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      
+      starsContainer.appendChild(star);
+    }
+  
+    // Generar chispas de energía aleatorias
+    const sparkContainer = document.body;
+    for (let i = 0; i < 15; i++) {
+      const spark = document.createElement('div');
+      spark.className = 'energy-burst';
+      spark.style.left = Math.random() * 100 + '%';
+      spark.style.top = Math.random() * 100 + '%';
+      spark.style.setProperty('--tx', (Math.random() * 200 - 100) + 'px');
+      spark.style.setProperty('--ty', (Math.random() * 200 - 100) + 'px');
+      spark.style.animationDelay = Math.random() * 3 + 's';
+      spark.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      const sparkColors = ['#F7B801', '#E63946', '#39FF88'];
+      spark.style.background = sparkColors[Math.floor(Math.random() * sparkColors.length)];
+      sparkContainer.appendChild(spark);
+    }
+
+  </script>
+
+  <script>
+    // Impacto del carnero en las cajas
+    setTimeout(() => {
+      const boxes = ['box1', 'box2', 'box3'];
+      const hitTimes = [2400, 5400, 9000]; // ms del ciclo de 12s
+      
+      function hitBox(index) {
+        const box = document.getElementById(boxes[index]);
+        if (box) {
+          box.classList.add('hit');
+          setTimeout(() => box.classList.remove('hit'), 300);
+        }
+      }
+      
+      // Loop infinito
+      setInterval(() => {
+        hitTimes.forEach((time, idx) => {
+          setTimeout(() => hitBox(idx), time);
+        });
+      }, 12000);
+    }, 100);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>♊ GÉMINIS - Los Gemelos ♊</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --gemini-yellow: #FFEB3B;
+    --air-blue: #B3E5FC;
+    --white: #F0F0F0;
+  }
+
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  .thought-bubble {
+    position: fixed;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0;
+  }
+
+  .bubble-main {
+    width: 32px;
+    height: 28px;
+    background: var(--air-blue);
+    border: 2px solid var(--white);
+    position: relative;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .bubble-main::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 8px;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 8px solid var(--air-blue);
+  }
+
+  .bubble-main::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 6px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 10px solid var(--white);
+    z-index: -1;
+  }
+
+  .bubble-dot1 {
+    position: absolute;
+    bottom: -20px;
+    left: 12px;
+    width: 6px;
+    height: 6px;
+    background: var(--air-blue);
+    border: 2px solid var(--white);
+  }
+
+  .bubble-dot2 {
+    position: absolute;
+    bottom: -28px;
+    left: 14px;
+    width: 4px;
+    height: 4px;
+    background: var(--air-blue);
+    border: 2px solid var(--white);
+  }
+
+  .thought1 {
+    top: 80%;
+    left: 15%;
+    animation: floatThought1 9s ease-in-out infinite;
+  }
+
+  .thought2 {
+    top: 85%;
+    left: 50%;
+    transform: scale(0.8);
+    animation: floatThought2 11s ease-in-out infinite;
+    animation-delay: 3s;
+  }
+
+  .thought3 {
+    top: 75%;
+    right: 20%;
+    transform: scale(1.1);
+    animation: floatThought3 10s ease-in-out infinite;
+    animation-delay: 6s;
+  }
+
+  @keyframes floatThought1 {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    10% { opacity: 0.8; }
+    50% { transform: translateY(-200px) translateX(30px); opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(-400px) translateX(-20px); opacity: 0; }
+  }
+
+  @keyframes floatThought2 {
+    0% { transform: translateY(0) translateX(0) scale(0.8); opacity: 0; }
+    10% { opacity: 0.7; }
+    50% { transform: translateY(-250px) translateX(-40px) scale(0.8); opacity: 0.7; }
+    90% { opacity: 0.7; }
+    100% { transform: translateY(-450px) translateX(20px) scale(0.8); opacity: 0; }
+  }
+
+  @keyframes floatThought3 {
+    0% { transform: translateY(0) translateX(0) scale(1.1); opacity: 0; }
+    10% { opacity: 0.9; }
+    50% { transform: translateY(-220px) translateX(50px) scale(1.1); opacity: 0.9; }
+    90% { opacity: 0.9; }
+    100% { transform: translateY(-420px) translateX(-30px) scale(1.1); opacity: 0; }
+  }
+
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  .crt-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 100px rgba(255, 235, 59, 0.1);
+  }
+
+  .floating-star {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 24px);
+    color: var(--gemini-yellow);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--air-blue), -2px -2px 0 var(--purple);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  .gemini-symbol {
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+  }
+
+  .symbol-circle {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+    border: 4px solid var(--gemini-yellow);
+    border-radius: 50%;
+    background: radial-gradient(circle, #3a3a1a 0%, #0A0A1B 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px var(--gemini-yellow), inset 0 0 20px rgba(255, 235, 59, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 30px var(--gemini-yellow), inset 0 0 20px rgba(255, 235, 59, 0.3); }
+    50% { box-shadow: 0 0 50px var(--gemini-yellow), inset 0 0 30px rgba(255, 235, 59, 0.5); }
+  }
+
+  .symbol-text {
+    font-size: 60px;
+    color: var(--gemini-yellow);
+    text-shadow: 0 0 20px var(--gemini-yellow);
+  }
+
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .box.yellow {
+    background: #2e2e1a;
+    border-color: var(--gemini-yellow);
+    box-shadow: 8px 8px 0 rgba(255, 235, 59, 0.3), 0 0 20px rgba(255, 235, 59, 0.2);
+  }
+
+  .box.gold {
+    background: #2e2416;
+    border-color: var(--gold);
+    box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.3), 0 0 20px rgba(247, 184, 1, 0.2);
+  }
+
+  .box.cyan {
+    background: #0f1a2e;
+    border-color: var(--cyan);
+    box-shadow: 8px 8px 0 rgba(0, 217, 255, 0.3), 0 0 20px rgba(0, 217, 255, 0.2);
+  }
+
+  .box.pink {
+    background: #2e1620;
+    border-color: var(--pink);
+    box-shadow: 8px 8px 0 rgba(255, 61, 129, 0.3), 0 0 20px rgba(255, 61, 129, 0.2);
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .box.yellow .box-title {
+    color: var(--gemini-yellow);
+  }
+
+  .box.gold .box-title {
+    color: var(--gold);
+  }
+
+  .box.cyan .box-title {
+    color: var(--cyan);
+  }
+
+  .box.pink .box-title {
+    color: var(--pink);
+  }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+  }
+
+  .box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .data-item {
+    font-size: 8px;
+    padding: 8px;
+    border: 2px solid var(--gemini-yellow);
+    background: rgba(255, 235, 59, 0.1);
+  }
+
+  .data-label {
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .data-value {
+    color: var(--white);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .tag {
+    font-size: 7px;
+    padding: 6px 10px;
+    border: 2px solid;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .tag.elevado {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .tag.no-elevado {
+    border-color: var(--pink);
+    color: var(--pink);
+  }
+
+  .highlight {
+    color: var(--gemini-yellow);
+    text-shadow: 0 0 5px var(--gemini-yellow);
+  }
+
+  .highlight-cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 5px var(--cyan);
+  }
+
+  .highlight-gold {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--gemini-yellow), var(--air-blue), var(--gemini-yellow), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--gemini-yellow);
+  }
+
+  @media (max-width: 640px) {
+    .container {
+      padding: 12px;
+    }
+    
+    .box {
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .box p {
+      font-size: 8px;
+    }
+
+    .box-title {
+      font-size: 10px;
+    }
+
+    .data-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tag {
+      font-size: 6px;
+      padding: 4px 8px;
+    }
+  }
+
+  /* Lluvia de Mercurio ☿ */
+  .mercury-rain {
+    position: fixed;
+    pointer-events: none;
+    z-index: 4;
+    font-size: 22px;
+    color: var(--gemini-yellow);
+    text-shadow: 0 0 12px var(--gemini-yellow), 0 0 24px var(--gemini-yellow);
+    opacity: 0;
+    animation: mercuryFall 6s linear infinite;
+  }
+  
+  @keyframes mercuryFall {
+    0% { transform: translateY(-100px) rotate(0deg) scale(0.8); opacity: 0; }
+    5% { opacity: 0.9; }
+    95% { opacity: 0.9; }
+    100% { transform: translateY(110vh) rotate(360deg) scale(1.2); opacity: 0; }
+  }
+  
+  /* Puente que se construye entre ideas */
+  .idea-bridge {
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60px;
+    z-index: 3;
+    pointer-events: none;
+  }
+  
+  .bridge-segment {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--gemini-yellow);
+    box-shadow: 0 0 10px var(--gemini-yellow);
+    opacity: 0;
+    animation: buildBridge 4s ease-in-out infinite;
+  }
+  
+  @keyframes buildBridge {
+    0% { opacity: 0; transform: scale(0); }
+    10% { opacity: 1; transform: scale(1); }
+    90% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0); }
+  }
+  
+  /* Nodos de ideas a los lados */
+  .idea-node {
+    position: fixed;
+    top: 45%;
+    width: 40px;
+    height: 40px;
+    background: var(--gemini-yellow);
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--gemini-yellow), inset 0 0 10px rgba(255, 235, 59, 0.5);
+    z-index: 3;
+    pointer-events: none;
+    animation: nodePulse 2s ease-in-out infinite;
+  }
+  
+  .idea-node.left { left: 18%; }
+  .idea-node.right { right: 18%; }
+  
+  @keyframes nodePulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 20px var(--gemini-yellow); }
+    50% { transform: scale(1.1); box-shadow: 0 0 35px var(--gemini-yellow), 0 0 50px var(--gemini-yellow); }
+  }
+  
+  .idea-node::before {
+    content: '💭';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+  }
+
+
+  /* Nodos de información en las esquinas */
+  .info-corner {
+    position: fixed;
+    width: 80px;
+    height: 40px;
+    background: rgba(255, 235, 59, 0.1);
+    border: 2px solid var(--gemini-yellow);
+    box-shadow: 0 0 15px var(--gemini-yellow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7px;
+    color: var(--gemini-yellow);
+    text-shadow: 0 0 8px var(--gemini-yellow);
+    z-index: 3;
+    pointer-events: none;
+    animation: cornerPulse 3s ease-in-out infinite;
+  }
+  
+  .corner-tl { top: 10%; left: 5%; animation-delay: 0s; }
+  .corner-tr { top: 10%; right: 5%; animation-delay: 0.75s; }
+  .corner-bl { bottom: 15%; left: 5%; animation-delay: 1.5s; }
+  .corner-br { bottom: 15%; right: 5%; animation-delay: 2.25s; }
+  
+  @keyframes cornerPulse {
+    0%, 100% { box-shadow: 0 0 15px var(--gemini-yellow); transform: scale(1); }
+    50% { box-shadow: 0 0 30px var(--gemini-yellow), 0 0 50px var(--gemini-yellow); transform: scale(1.05); }
+  }
+  
+  /* Estelas de luz que viajan entre esquinas */
+  .light-trail {
+    position: fixed;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gemini-yellow), var(--cyan), transparent);
+    box-shadow: 0 0 15px var(--cyan);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+  }
+  
+  .trail-1 {
+    top: calc(10% + 20px);
+    left: calc(5% + 80px);
+    animation: trailMove1 4s linear infinite;
+  }
+  
+  .trail-2 {
+    top: calc(10% + 20px);
+    right: calc(5% + 80px);
+    animation: trailMove2 4s linear infinite;
+    animation-delay: 1s;
+  }
+  
+  .trail-3 {
+    bottom: calc(15% + 20px);
+    left: calc(5% + 80px);
+    animation: trailMove3 4s linear infinite;
+    animation-delay: 2s;
+  }
+  
+  .trail-4 {
+    bottom: calc(15% + 20px);
+    right: calc(5% + 80px);
+    animation: trailMove4 4s linear infinite;
+    animation-delay: 3s;
+  }
+  
+  @keyframes trailMove1 {
+    0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 0; width: 0; }
+    10% { opacity: 1; width: 60px; }
+    25% { transform: translateX(40vw) translateY(0) rotate(0deg); }
+    50% { transform: translateX(40vw) translateY(35vh) rotate(90deg); }
+    75% { transform: translateX(0) translateY(35vh) rotate(180deg); }
+    90% { opacity: 1; width: 60px; }
+    100% { transform: translateX(0) translateY(0) rotate(180deg); opacity: 0; width: 0; }
+  }
+  
+  @keyframes trailMove2 {
+    0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 0; width: 0; }
+    10% { opacity: 1; width: 60px; }
+    25% { transform: translateX(-40vw) translateY(0) rotate(0deg); }
+    50% { transform: translateX(-40vw) translateY(35vh) rotate(-90deg); }
+    75% { transform: translateX(0) translateY(35vh) rotate(-180deg); }
+    90% { opacity: 1; width: 60px; }
+    100% { transform: translateX(0) translateY(0) rotate(-180deg); opacity: 0; width: 0; }
+  }
+  
+  @keyframes trailMove3 {
+    0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 0; width: 0; }
+    10% { opacity: 1; width: 60px; }
+    25% { transform: translateX(40vw) translateY(0) rotate(0deg); }
+    50% { transform: translateX(40vw) translateY(-35vh) rotate(-90deg); }
+    75% { transform: translateX(0) translateY(-35vh) rotate(-180deg); }
+    90% { opacity: 1; width: 60px; }
+    100% { transform: translateX(0) translateY(0) rotate(-180deg); opacity: 0; width: 0; }
+  }
+  
+  @keyframes trailMove4 {
+    0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 0; width: 0; }
+    10% { opacity: 1; width: 60px; }
+    25% { transform: translateX(-40vw) translateY(0) rotate(0deg); }
+    50% { transform: translateX(-40vw) translateY(-35vh) rotate(90deg); }
+    75% { transform: translateX(0) translateY(-35vh) rotate(180deg); }
+    90% { opacity: 1; width: 60px; }
+    100% { transform: translateX(0) translateY(0) rotate(180deg); opacity: 0; width: 0; }
+  }
+  
+  /* Partículas de información en las estelas */
+  .info-particle {
+    position: absolute;
+    font-size: 6px;
+    color: var(--cyan);
+    text-shadow: 0 0 5px var(--cyan);
+    animation: particleGlow 1s ease-in-out infinite;
+  }
+  
+  @keyframes particleGlow {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+
+  /* Marco de palabras fijo - sin animación de pulso */
+  .frame-word {
+    position: fixed;
+    width: 90px;
+    height: 45px;
+    background: rgba(255, 235, 59, 0.15);
+    border: 3px solid var(--gemini-yellow);
+    box-shadow: 0 0 20px var(--gemini-yellow), inset 0 0 10px rgba(255, 235, 59, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    color: var(--gemini-yellow);
+    text-shadow: 0 0 10px var(--gemini-yellow);
+    z-index: 3;
+    pointer-events: none;
+  }
+  
+  .word-idea { top: 8%; left: 5%; }
+  .word-dato { top: 8%; right: 5%; }
+  .word-pensar { bottom: 12%; left: 5%; }
+  .word-hablar { bottom: 12%; right: 5%; }
+  
+  /* Líneas del marco conectando las palabras */
+  .frame-line {
+    position: fixed;
+    background: linear-gradient(90deg, var(--gemini-yellow), var(--cyan), var(--gemini-yellow));
+    box-shadow: 0 0 15px var(--cyan);
+    z-index: 2;
+    pointer-events: none;
+    animation: frameFlow 3s linear infinite;
+  }
+  
+  .line-top {
+    top: calc(8% + 22px);
+    left: calc(5% + 90px);
+    right: calc(5% + 90px);
+    height: 3px;
+  }
+  
+  .line-bottom {
+    bottom: calc(12% + 22px);
+    left: calc(5% + 90px);
+    right: calc(5% + 90px);
+    height: 3px;
+    animation-delay: 1.5s;
+  }
+  
+  .line-left {
+    left: calc(5% + 45px);
+    top: calc(8% + 45px);
+    bottom: calc(12% + 45px);
+    width: 3px;
+    background: linear-gradient(180deg, var(--gemini-yellow), var(--cyan), var(--gemini-yellow));
+    animation-delay: 0.75s;
+  }
+  
+  .line-right {
+    right: calc(5% + 45px);
+    top: calc(8% + 45px);
+    bottom: calc(12% + 45px);
+    width: 3px;
+    background: linear-gradient(180deg, var(--gemini-yellow), var(--cyan), var(--gemini-yellow));
+    animation-delay: 2.25s;
+  }
+  
+  @keyframes frameFlow {
+    0%, 100% { opacity: 0.6; filter: brightness(1); }
+    50% { opacity: 1; filter: brightness(1.5); }
+  }
+  
+  /* Pulso de información viajando por el marco */
+  
+  /* Pulso de información con texto viajando - ahora atrás */
+  .info-pulse {
+    position: absolute;
+    min-width: 50px;
+    height: 20px;
+    background: rgba(0, 217, 255, 0.2);
+    border: 1px solid var(--cyan);
+    border-radius: 10px;
+    box-shadow: 0 0 15px var(--cyan), 0 0 30px var(--cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 6px;
+    color: var(--cyan);
+    text-shadow: 0 0 8px var(--cyan);
+    animation: pulseTravel 8s linear infinite;
+    z-index: 1;
+    backdrop-filter: blur(2px);
+  }
+  
+  @keyframes pulseTravel {
+    0% { left: 0%; top: 0%; opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    5% { opacity: 0.9; transform: translate(-50%, -50%) scale(1); }
+    25% { left: 100%; top: 0%; }
+    50% { left: 100%; top: 100%; }
+    75% { left: 0%; top: 100%; }
+    95% { opacity: 0.9; transform: translate(-50%, -50%) scale(1); }
+    100% { left: 0%; top: 0%; opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  }
+  
+  /* Asegurar que el contenido principal esté encima */
+  .container {
+    position: relative;
+    z-index: 5;
+  }
+  
+  .frame-word {
+    z-index: 4;
+  }
+  
+  .frame-line {
+    z-index: 2;
+  }
+
+    5% { opacity: 1; }
+    25% { left: 100%; top: 0%; }
+    50% { left: 100%; top: 100%; }
+    75% { left: 0%; top: 100%; }
+    95% { opacity: 1; }
+    100% { left: 0%; top: 0%; opacity: 0; }
+  }
+
+</style>
+</head>
+<body>
+  <!-- Marco fijo de palabras -->
+  <div class="frame-word word-idea">IDEA</div>
+  <div class="frame-word word-dato">DATO</div>
+  <div class="frame-word word-pensar">PENSAR</div>
+  <div class="frame-word word-hablar">HABLAR</div>
+  
+  <!-- Líneas del marco -->
+  <div class="frame-line line-top"></div>
+  <div class="frame-line line-bottom"></div>
+  <div class="frame-line line-left"></div>
+  <div class="frame-line line-right"></div>
+  
+  <!-- Pulso de información viajando -->
+  
+  <!-- Pulsos con texto viajando por el marco -->
+  <div class="frame-line line-top">
+    <div class="info-pulse" style="animation-delay: 0s;">IDEA</div>
+    <div class="info-pulse" style="animation-delay: 2s;">DATO</div>
+    <div class="info-pulse" style="animation-delay: 4s;">PENSAR</div>
+    <div class="info-pulse" style="animation-delay: 6s;">HABLAR</div>
+  </div>
+
+
+  <!-- Esquinas con palabras compartiendo información -->
+  <!-- Estelas de luz conectando -->
+  <!-- Lluvia de Mercurio -->
+  <div class="mercury-rain" style="left: 12%; animation-delay: 0s; animation-duration: 5s;">☿</div>
+  <div class="mercury-rain" style="left: 28%; animation-delay: 0.8s; animation-duration: 6s; font-size: 18px;">☿</div>
+  <div class="mercury-rain" style="left: 44%; animation-delay: 1.6s; animation-duration: 5.5s;">☿</div>
+  <div class="mercury-rain" style="left: 60%; animation-delay: 0.4s; animation-duration: 6.5s; font-size: 20px;">☿</div>
+  <div class="mercury-rain" style="left: 76%; animation-delay: 1.2s; animation-duration: 5.8s;">☿</div>
+  <div class="mercury-rain" style="left: 88%; animation-delay: 2s; animation-duration: 6.2s; font-size: 24px;">☿</div>
+  
+  <!-- Puente de ideas -->
+  <div class="idea-node left"></div>
+  <div class="idea-node right"></div>
+  <div class="idea-bridge" id="bridge"></div>
+
+  <div class="stars" id="stars"></div>
+  <div class="thought-bubble thought1">
+    <div class="bubble-main"></div>
+    <div class="bubble-dot1"></div>
+    <div class="bubble-dot2"></div>
+  </div>
+  <div class="thought-bubble thought2">
+    <div class="bubble-main"></div>
+    <div class="bubble-dot1"></div>
+    <div class="bubble-dot2"></div>
+  </div>
+  <div class="thought-bubble thought3">
+    <div class="bubble-main"></div>
+    <div class="bubble-dot1"></div>
+    <div class="bubble-dot2"></div>
+  </div>
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <svg class="floating-star" style="top: 15%; left: 5%; width: 24px; height: 24px; animation-delay: 0s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#FFEB3B"/>
+  </svg>
+  <svg class="floating-star" style="top: 60%; right: 8%; width: 20px; height: 20px; animation-delay: 1s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#F7B801"/>
+  </svg>
+  <svg class="floating-star" style="top: 40%; left: 10%; width: 18px; height: 18px; animation-delay: 2s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#00D9FF"/>
+  </svg>
+
+  <div class="container">
+    <h1 class="glitch-title">♊ GÉMINIS ♊<br>LOS GEMELOS</h1>
+
+    <div class="gemini-symbol">
+      <div class="symbol-circle">
+        <div class="symbol-text">♊</div>
+      </div>
+    </div>
+
+    <div class="box yellow">
+      <div class="box-title">◈ ESENCIA DE GÉMINIS ◈</div>
+      <p>Géminis es el <span class="highlight">tercer signo del zodiaco</span> y representa la mente curiosa, la comunicación y la dualidad. Su energía es el viento que conecta todo.</p>
+      <p>Regido por <span class="highlight-gold">Mercurio</span>, planeta del pensamiento y la palabra, Géminis encarna la <span class="highlight">voluntad de conocer</span> y la habilidad de adaptarse a cualquier situación.</p>
+    </div>
+
+    <div class="box gold">
+      <div class="box-title">◆ DATOS CLAVE ◆</div>
+      <div class="data-grid">
+        <div class="data-item">
+          <span class="data-label">ELEMENTO:</span>
+          <span class="data-value">Aire</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">CUALIDAD:</span>
+          <span class="data-value">Mutable</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PRINCIPIO:</span>
+          <span class="data-value">Activo</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">REGENTE:</span>
+          <span class="data-value">Mercurio</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FRASE CLAVE:</span>
+          <span class="data-value">Yo pienso</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PALABRA CLAVE:</span>
+          <span class="data-value">Versatilidad</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">SIGNO DE:</span>
+          <span class="data-value">Tercera casa</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FECHAS:</span>
+          <span class="data-value">21 May - 20 Jun</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box cyan">
+      <div class="box-title">★ CARACTERÍSTICAS GENERALES ★</div>
+      <p><span class="highlight-cyan">Signo Opuesto:</span> Sagitario</p>
+      <p><span class="highlight-cyan">Regencia anatómica:</span> Brazos, hombros, clavícula, húmero, omóplatos, pulmones, sistema respiratorio, bronquios</p>
+      
+      <p style="margin-top: 20px;"><span class="highlight-gold">RASGOS ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag elevado">Comunicativo</span>
+        <span class="tag elevado">Curioso</span>
+        <span class="tag elevado">Hábil</span>
+        <span class="tag elevado">Adaptable</span>
+        <span class="tag elevado">Ingenioso</span>
+        <span class="tag elevado">Móvil</span>
+        <span class="tag elevado">Inteligente</span>
+        <span class="tag elevado">Versátil</span>
+        <span class="tag elevado">Estudioso</span>
+        <span class="tag elevado">Sociable</span>
+      </div>
+
+      <p style="margin-top: 20px;"><span class="highlight">RASGOS NO ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag no-elevado">Exagerado</span>
+        <span class="tag no-elevado">Chismoso</span>
+        <span class="tag no-elevado">Cambiante</span>
+        <span class="tag no-elevado">Inquieto</span>
+        <span class="tag no-elevado">Despreocupado</span>
+        <span class="tag no-elevado">Distraído</span>
+        <span class="tag no-elevado">Inconstante</span>
+        <span class="tag no-elevado">Superficial</span>
+        <span class="tag no-elevado">Mentiroso</span>
+        <span class="tag no-elevado">Dubitativo</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="box pink">
+      <div class="box-title">✦ ARQUETIPO DEL MENSAJERO ✦</div>
+      <p>Como <span class="highlight-cyan">signo de Aire Mutable</span>, Géminis conecta. No se queda quieto, pregunta, explora, comunica: <span class="highlight">fluye</span>. Su impulso es intercambiar ideas, moverse entre mundos, ser puente.</p>
+      <p>La <span class="highlight">Tercera Casa</span> que rige representa la mente, los hermanos, los viajes cortos y la comunicación. Géminis dice: "Esto pienso, esto aprendo, esto comparto".</p>
+      <p>La frase clave <span class="highlight">"Yo pienso"</span> resume su esencia: es curiosidad mental, agilidad intelectual. Su palabra clave <span class="highlight">Versatilidad</span> nos recuerda que este signo vino a adaptarse, a conectar, a multiplicar perspectivas.</p>
+    </div>
+  </div>
+
+  <script>
+    const starsContainer = document.getElementById('stars');
+    const starCount = 100;
+    
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      
+      const colors = ['#FFFFFF', '#FFEB3B', '#F7B801', '#00D9FF'];
+      star.style.background = colors[Math.floor(Math.random() * colors.length)];
+      
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      
+      starsContainer.appendChild(star);
+    }
+  
+    // Construir puente entre ideas pixel por pixel
+    const bridge = document.getElementById('bridge');
+    const segments = 30;
+    for (let i = 0; i < segments; i++) {
+      const seg = document.createElement('div');
+      seg.className = 'bridge-segment';
+      seg.style.left = (i * (100 / segments)) + '%';
+      seg.style.top = '50%';
+      seg.style.animationDelay = (i * 0.1) + 's';
+      bridge.appendChild(seg);
+    }
+
+  </script>
+</body>
+</html>

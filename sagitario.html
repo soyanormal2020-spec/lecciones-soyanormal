@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>♐ SAGITARIO - El Arquero ♐</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --sagitarius-blue: #3F51B5;
+    --jupiter-orange: #FF9800;
+    --fire-red: #E63946;
+    --arrow-silver: #CFD8DC;
+    --horse-brown: #8D6E63;
+    --white: #F0F0F0;
+  }
+
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  .jupiter-symbol {
+    position: fixed;
+    pointer-events: none;
+    z-index: 3;
+    font-size: 26px;
+    color: var(--jupiter-orange);
+    text-shadow: 0 0 15px var(--jupiter-orange), 0 0 30px var(--sagitarius-blue);
+    opacity: 0;
+    font-weight: bold;
+  }
+
+  .jupiter1 {
+    left: 15%;
+    top: -60px;
+    animation: jupiterFall1 9s linear infinite;
+  }
+
+  .jupiter2 {
+    left: 40%;
+    top: -60px;
+    transform: scale(0.85);
+    animation: jupiterFall2 11s linear infinite;
+    animation-delay: 2s;
+  }
+
+  .jupiter3 {
+    left: 65%;
+    top: -60px;
+    transform: scale(1.15);
+    animation: jupiterFall3 10s linear infinite;
+    animation-delay: 4.5s;
+  }
+
+  .jupiter4 {
+    left: 85%;
+    top: -60px;
+    transform: scale(0.9);
+    animation: jupiterFall4 12s linear infinite;
+    animation-delay: 6.5s;
+  }
+
+  @keyframes jupiterFall1 {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.9; }
+    90% { opacity: 0.9; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  @keyframes jupiterFall2 {
+    0% { transform: translateY(0) rotate(0deg) scale(0.85); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(110vh) rotate(-360deg) scale(0.85); opacity: 0; }
+  }
+
+  @keyframes jupiterFall3 {
+    0% { transform: translateY(0) rotate(0deg) scale(1.15); opacity: 0; }
+    10% { opacity: 0.95; }
+    90% { opacity: 0.95; }
+    100% { transform: translateY(110vh) rotate(360deg) scale(1.15); opacity: 0; }
+  }
+
+  @keyframes jupiterFall4 {
+    0% { transform: translateY(0) rotate(0deg) scale(0.9); opacity: 0; }
+    10% { opacity: 0.85; }
+    90% { opacity: 0.85; }
+    100% { transform: translateY(110vh) rotate(-360deg) scale(0.9); opacity: 0; }
+  }
+
+  .horse-track {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  .track1 { bottom: 15%; }
+  .track2 { bottom: 25%; }
+
+  .horse-container {
+    position: absolute;
+    width: 80px;
+    height: 64px;
+  }
+
+  .horse-right {
+    left: -100px;
+    animation: horseGallopRight 12s linear infinite;
+  }
+
+  .horse-left {
+    right: -100px;
+    animation: horseGallopLeft 14s linear infinite;
+    animation-delay: 3s;
+    transform: scaleX(-1);
+  }
+
+  .horse-frame {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+  }
+
+  .horse-right .frame1, .horse-left .frame1 { animation: horseFrame 0.8s steps(1) infinite; }
+  .horse-right .frame2, .horse-left .frame2 { animation: horseFrame 0.8s steps(1) infinite; animation-delay: 0.2s; }
+  .horse-right .frame3, .horse-left .frame3 { animation: horseFrame 0.8s steps(1) infinite; animation-delay: 0.4s; }
+  .horse-right .frame4, .horse-left .frame4 { animation: horseFrame 0.8s steps(1) infinite; animation-delay: 0.6s; }
+
+  @keyframes horseFrame {
+    0%, 24% { opacity: 1; }
+    25%, 100% { opacity: 0; }
+  }
+
+  @keyframes horseGallopRight {
+    0% { left: -100px; }
+    100% { left: calc(100% + 100px); }
+  }
+
+  @keyframes horseGallopLeft {
+    0% { right: -100px; }
+    100% { right: calc(100% + 100px); }
+  }
+
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  .crt-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 100px rgba(63, 81, 181, 0.12);
+  }
+
+  .floating-star {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 24px);
+    color: var(--sagitarius-blue);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--jupiter-orange), -2px -2px 0 var(--fire-red);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  .sagitarius-symbol {
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+  }
+
+  .symbol-circle {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+    border: 4px solid var(--sagitarius-blue);
+    border-radius: 50%;
+    background: radial-gradient(circle, #1a1a3a 0%, #0A0A1B 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px var(--sagitarius-blue), inset 0 0 20px rgba(63, 81, 181, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 30px var(--sagitarius-blue), inset 0 0 20px rgba(63, 81, 181, 0.3); }
+    50% { box-shadow: 0 0 50px var(--sagitarius-blue), inset 0 0 30px rgba(63, 81, 181, 0.5); }
+  }
+
+  .symbol-text {
+    font-size: 60px;
+    color: var(--sagitarius-blue);
+    text-shadow: 0 0 20px var(--sagitarius-blue);
+  }
+
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .box.blue {
+    background: #1a1a3a;
+    border-color: var(--sagitarius-blue);
+    box-shadow: 8px 8px 0 rgba(63, 81, 181, 0.3), 0 0 20px rgba(63, 81, 181, 0.2);
+  }
+
+  .box.gold {
+    background: #2e2416;
+    border-color: var(--gold);
+    box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.3), 0 0 20px rgba(247, 184, 1, 0.2);
+  }
+
+  .box.cyan {
+    background: #0f1a2e;
+    border-color: var(--cyan);
+    box-shadow: 8px 8px 0 rgba(0, 217, 255, 0.3), 0 0 20px rgba(0, 217, 255, 0.2);
+  }
+
+  .box.pink {
+    background: #2e1620;
+    border-color: var(--pink);
+    box-shadow: 8px 8px 0 rgba(255, 61, 129, 0.3), 0 0 20px rgba(255, 61, 129, 0.2);
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .box.blue .box-title {
+    color: var(--sagitarius-blue);
+  }
+
+  .box.gold .box-title {
+    color: var(--gold);
+  }
+
+  .box.cyan .box-title {
+    color: var(--cyan);
+  }
+
+  .box.pink .box-title {
+    color: var(--pink);
+  }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+  }
+
+  .box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .data-item {
+    font-size: 8px;
+    padding: 8px;
+    border: 2px solid var(--sagitarius-blue);
+    background: rgba(63, 81, 181, 0.1);
+  }
+
+  .data-label {
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .data-value {
+    color: var(--white);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .tag {
+    font-size: 7px;
+    padding: 6px 10px;
+    border: 2px solid;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .tag.elevado {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .tag.no-elevado {
+    border-color: var(--pink);
+    color: var(--pink);
+  }
+
+  .highlight {
+    color: var(--sagitarius-blue);
+    text-shadow: 0 0 5px var(--sagitarius-blue);
+  }
+
+  .highlight-cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 5px var(--cyan);
+  }
+
+  .highlight-gold {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--sagitarius-blue), var(--jupiter-orange), var(--sagitarius-blue), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--sagitarius-blue);
+  }
+
+  @media (max-width: 640px) {
+    .container {
+      padding: 12px;
+    }
+    
+    .box {
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .box p {
+      font-size: 8px;
+    }
+
+    .box-title {
+      font-size: 10px;
+    }
+
+    .data-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tag {
+      font-size: 6px;
+      padding: 4px 8px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  
+  <!-- CABALLO 1: Va de izquierda a derecha -->
+  <div class="horse-track track1">
+    <div class="horse-container horse-right">
+      <!-- Frame 1 -->
+      <svg class="horse-frame frame1" viewBox="0 0 80 64">
+        <rect x="24" y="32" width="24" height="12" fill="#8D6E63"/>
+        <rect x="28" y="28" width="16" height="4" fill="#8D6E63"/>
+        <rect x="44" y="20" width="8" height="12" fill="#8D6E63"/>
+        <rect x="48" y="16" width="8" height="8" fill="#8D6E63"/>
+        <rect x="52" y="18" width="6" height="2" fill="#5D4037"/>
+        <rect x="20" y="28" width="4" height="16" fill="#6D4C41"/>
+        <rect x="16" y="32" width="4" height="12" fill="#6D4C41"/>
+        <rect x="26" y="44" width="4" height="12" fill="#8D6E63"/>
+        <rect x="34" y="44" width="4" height="8" fill="#8D6E63"/>
+        <rect x="38" y="44" width="4" height="12" fill="#8D6E63"/>
+        <rect x="30" y="44" width="4" height="8" fill="#8D6E63"/>
+      </svg>
+      <!-- Frame 2 -->
+      <svg class="horse-frame frame2" viewBox="0 0 80 64">
+        <rect x="24" y="32" width="24" height="12" fill="#8D6E63"/>
+        <rect x="28" y="28" width="16" height="4" fill="#8D6E63"/>
+        <rect x="44" y="20" width="8" height="12" fill="#8D6E63"/>
+        <rect x="48" y="16" width="8" height="8" fill="#8D6E63"/>
+        <rect x="52" y="18" width="6" height="2" fill="#5D4037"/>
+        <rect x="20" y="28" width="4" height="16" fill="#6D4C41"/>
+        <rect x="16" y="32" width="4" height="12" fill="#6D4C41"/>
+        <rect x="26" y="44" width="4" height="8" fill="#8D6E63"/>
+        <rect x="34" y="44" width="4" height="12" fill="#8D6E63"/>
+        <rect x="38" y="44" width="4" height="8" fill="#8D6E63"/>
+        <rect x="30" y="44" width="4" height="12" fill="#8D6E63"/>
+      </svg>
+      <!-- Frame 3 -->
+      <svg class="horse-frame frame3" viewBox="0 0 80 64">
+        <rect x="24" y="30" width="24" height="12" fill="#8D6E63"/>
+        <rect x="28" y="26" width="16" height="4" fill="#8D6E63"/>
+        <rect x="44" y="18" width="8" height="12" fill="#8D6E63"/>
+        <rect x="48" y="14" width="8" height="8" fill="#8D6E63"/>
+        <rect x="52" y="16" width="6" height="2" fill="#5D4037"/>
+        <rect x="20" y="26" width="4" height="16" fill="#6D4C41"/>
+        <rect x="16" y="30" width="4" height="12" fill="#6D4C41"/>
+        <rect x="26" y="42" width="4" height="6" fill="#8D6E63"/>
+        <rect x="34" y="42" width="4" height="6" fill="#8D6E63"/>
+        <rect x="38" y="42" width="4" height="6" fill="#8D6E63"/>
+        <rect x="30" y="42" width="4" height="6" fill="#8D6E63"/>
+      </svg>
+      <!-- Frame 4 -->
+      <svg class="horse-frame frame4" viewBox="0 0 80 64">
+        <rect x="24" y="32" width="24" height="12" fill="#8D6E63"/>
+        <rect x="28" y="28" width="16" height="4" fill="#8D6E63"/>
+        <rect x="44" y="20" width="8" height="12" fill="#8D6E63"/>
+        <rect x="48" y="16" width="8" height="8" fill="#8D6E63"/>
+        <rect x="52" y="18" width="6" height="2" fill="#5D4037"/>
+        <rect x="20" y="28" width="4" height="16" fill="#6D4C41"/>
+        <rect x="16" y="32" width="4" height="12" fill="#6D4C41"/>
+        <rect x="26" y="44" width="4" height="10" fill="#8D6E63"/>
+        <rect x="34" y="44" width="4" height="10" fill="#8D6E63"/>
+        <rect x="38" y="44" width="4" height="10" fill="#8D6E63"/>
+        <rect x="30" y="44" width="4" height="10" fill="#8D6E63"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- CABALLO 2: Va de derecha a izquierda -->
+  <div class="horse-track track2">
+    <div class="horse-container horse-left">
+      <svg class="horse-frame frame1" viewBox="0 0 80 64">
+        <rect x="24" y="32" width="24" height="12" fill="#A1887F"/>
+        <rect x="28" y="28" width="16" height="4" fill="#A1887F"/>
+        <rect x="44" y="20" width="8" height="12" fill="#A1887F"/>
+        <rect x="48" y="16" width="8" height="8" fill="#A1887F"/>
+        <rect x="52" y="18" width="6" height="2" fill="#6D4C41"/>
+        <rect x="20" y="28" width="4" height="16" fill="#8D6E63"/>
+        <rect x="16" y="32" width="4" height="12" fill="#8D6E63"/>
+        <rect x="26" y="44" width="4" height="12" fill="#A1887F"/>
+        <rect x="34" y="44" width="4" height="8" fill="#A1887F"/>
+        <rect x="38" y="44" width="4" height="12" fill="#A1887F"/>
+        <rect x="30" y="44" width="4" height="8" fill="#A1887F"/>
+      </svg>
+      <svg class="horse-frame frame2" viewBox="0 0 80 64">
+        <rect x="24" y="32" width="24" height="12" fill="#A1887F"/>
+        <rect x="28" y="28" width="16" height="4" fill="#A1887F"/>
+        <rect x="44" y="20" width="8" height="12" fill="#A1887F"/>
+        <rect x="48" y="16" width="8" height="8" fill="#A1887F"/>
+        <rect x="52" y="18" width="6" height="2" fill="#6D4C41"/>
+        <rect x="20" y="28" width="4" height="16" fill="#8D6E63"/>
+        <rect x="16" y="32" width="4" height="12" fill="#8D6E63"/>
+        <rect x="26" y="44" width="4" height="8" fill="#A1887F"/>
+        <rect x="34" y="44" width="4" height="12" fill="#A1887F"/>
+        <rect x="38" y="44" width="4" height="8" fill="#A1887F"/>
+        <rect x="30" y="44" width="4" height="12" fill="#A1887F"/>
+      </svg>
+      <svg class="horse-frame frame3" viewBox="0 0 80 64">
+        <rect x="24" y="30" width="24" height="12" fill="#A1887F"/>
+        <rect x="28" y="26" width="16" height="4" fill="#A1887F"/>
+        <rect x="44" y="18" width="8" height="12" fill="#A1887F"/>
+        <rect x="48" y="14" width="8" height="8" fill="#A1887F"/>
+        <rect x="52" y="16" width="6" height="2" fill="#6D4C41"/>
+        <rect x="20" y="26" width="4" height="16" fill="#8D6E63"/>
+        <rect x="16" y="30" width="4" height="12" fill="#8D6E63"/>
+        <rect x="26" y="42" width="4" height="6" fill="#A1887F"/>
+        <rect x="34" y="42" width="4" height="6" fill="#A1887F"/>
+        <rect x="38" y="42" width="4" height="6" fill="#A1887F"/>
+        <rect x="30" y="42" width="4" height="6" fill="#A1887F"/>
+      </svg>
+      <svg class="horse-frame frame4" viewBox="0 0 80 64">
+        <rect x="24" y="32" width="24" height="12" fill="#A1887F"/>
+        <rect x="28" y="28" width="16" height="4" fill="#A1887F"/>
+        <rect x="44" y="20" width="8" height="12" fill="#A1887F"/>
+        <rect x="48" y="16" width="8" height="8" fill="#A1887F"/>
+        <rect x="52" y="18" width="6" height="2" fill="#6D4C41"/>
+        <rect x="20" y="28" width="4" height="16" fill="#8D6E63"/>
+        <rect x="16" y="32" width="4" height="12" fill="#8D6E63"/>
+        <rect x="26" y="44" width="4" height="10" fill="#A1887F"/>
+        <rect x="34" y="44" width="4" height="10" fill="#A1887F"/>
+        <rect x="38" y="44" width="4" height="10" fill="#A1887F"/>
+        <rect x="30" y="44" width="4" height="10" fill="#A1887F"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="jupiter-symbol jupiter1">♃</div>
+  <div class="jupiter-symbol jupiter2">♃</div>
+  <div class="jupiter-symbol jupiter3">♃</div>
+  <div class="jupiter-symbol jupiter4">♃</div>
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <svg class="floating-star" style="top: 15%; left: 5%; width: 24px; height: 24px; animation-delay: 0s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#3F51B5"/>
+  </svg>
+  <svg class="floating-star" style="top: 60%; right: 8%; width: 20px; height: 20px; animation-delay: 1s;" viewBox="0 0 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#F7B801"/>
+  </svg>
+  <svg class="floating-star" style="top: 40%; left: 10%; width: 18px; height: 18px; animation-delay: 2s;" viewBox="0 0 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#FF9800"/>
+  </svg>
+
+  <div class="container">
+    <h1 class="glitch-title">♐ SAGITARIO ♐<br>EL ARQUERO</h1>
+
+    <div class="sagitarius-symbol">
+      <div class="symbol-circle">
+        <div class="symbol-text">♐</div>
+      </div>
+    </div>
+
+    <div class="box blue">
+      <div class="box-title">◈ ESENCIA DE SAGITARIO ◈</div>
+      <p>Sagitario es el <span class="highlight">noveno signo del zodiaco</span> y representa la búsqueda de verdad, la expansión y la aventura. Su energía es el fuego que explora y ilumina horizontes.</p>
+      <p>Regido por <span class="highlight-gold">Júpiter</span>, planeta de la abundancia y la sabiduría, Sagitario encarna la <span class="highlight">voluntad de comprender</span> y la necesidad de visualizar un mundo más grande.</p>
+    </div>
+
+    <div class="box gold">
+      <div class="box-title">◆ DATOS CLAVE ◆</div>
+      <div class="data-grid">
+        <div class="data-item">
+          <span class="data-label">ELEMENTO:</span>
+          <span class="data-value">Fuego</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">CUALIDAD:</span>
+          <span class="data-value">Mutable</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PRINCIPIO:</span>
+          <span class="data-value">Activo</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">REGENTE:</span>
+          <span class="data-value">Júpiter</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FRASE CLAVE:</span>
+          <span class="data-value">Yo comprendo</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PALABRA CLAVE:</span>
+          <span class="data-value">Visualización</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">SIGNO DE:</span>
+          <span class="data-value">Novena casa</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FECHAS:</span>
+          <span class="data-value">23 Nov - 21 Dic</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box cyan">
+      <div class="box-title">★ CARACTERÍSTICAS GENERALES ★</div>
+      <p><span class="highlight-cyan">Signo Opuesto:</span> Géminis</p>
+      <p><span class="highlight-cyan">Regencia anatómica:</span> Muslos, arterias, venas femorales, nervio ciático, fémur</p>
+      
+      <p style="margin-top: 20px;"><span class="highlight-gold">RASGOS ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag elevado">Optimista</span>
+        <span class="tag elevado">Erudito</span>
+        <span class="tag elevado">Entusiasta</span>
+        <span class="tag elevado">Filósofo</span>
+        <span class="tag elevado">Benévolo</span>
+        <span class="tag elevado">Jerárquico</span>
+        <span class="tag elevado">Emprendedor</span>

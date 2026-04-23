@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>♏ ESCORPIO - El Escorpión ♏</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --scorpio-magenta: #C2185B;
+    --scorpio-purple: #6A1B9A;
+    --mars-red: #D32F2F;
+    --pluto-dark: #311B92;
+    --phoenix-orange: #FF6D00;
+    --eagle-silver: #B0BEC5;
+    --white: #F0F0F0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  .planet-symbol {
+    position: fixed;
+    pointer-events: none;
+    z-index: 3;
+    font-size: 24px;
+    font-weight: bold;
+    opacity: 0;
+  }
+
+  .planet-mars {
+    color: var(--mars-red);
+    text-shadow: 0 0 15px var(--mars-red), 0 0 30px var(--scorpio-magenta);
+  }
+
+  .planet-pluto {
+    color: var(--pluto-dark);
+    text-shadow: 0 0 15px var(--pluto-dark), 0 0 30px var(--scorpio-purple);
+  }
+
+  .planet1 {
+    left: 20%;
+    top: -50px;
+    animation: planetFall1 10s linear infinite;
+  }
+
+  .planet2 {
+    left: 75%;
+    top: -50px;
+    animation: planetFall2 12s linear infinite;
+    animation-delay: 3s;
+  }
+
+  .planet3 {
+    left: 45%;
+    top: -50px;
+    animation: planetFall3 11s linear infinite;
+    animation-delay: 6s;
+  }
+
+  @keyframes planetFall1 {
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
+    10% { opacity: 0.9; }
+    90% { opacity: 0.9; }
+    100% { transform: translateY(110vh) rotate(720deg) scale(1.2); opacity: 0; }
+  }
+
+  @keyframes planetFall2 {
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
+    10% { opacity: 0.85; }
+    90% { opacity: 0.85; }
+    100% { transform: translateY(110vh) rotate(-720deg) scale(1.3); opacity: 0; }
+  }
+
+  @keyframes planetFall3 {
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
+    10% { opacity: 0.9; }
+    90% { opacity: 0.9; }
+    100% { transform: translateY(110vh) rotate(720deg) scale(1.1); opacity: 0; }
+  }
+
+  .transformation-track {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 4;
+    overflow: hidden;
+  }
+
+  .archetype {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  .archetype.pop-up {
+    animation: popUpScorpio 2.5s ease-out forwards;
+  }
+
+  @keyframes popUpScorpio {
+    0% { 
+      opacity: 0; 
+      transform: scale(0) rotate(0deg);
+      filter: brightness(3) drop-shadow(0 0 20px var(--scorpio-magenta));
+    }
+    15% { 
+      opacity: 1; 
+      transform: scale(1.3) rotate(180deg);
+      filter: brightness(2) drop-shadow(0 0 15px var(--phoenix-orange));
+    }
+    30% { 
+      transform: scale(1) rotate(360deg);
+      filter: brightness(1) drop-shadow(0 0 10px var(--scorpio-magenta));
+    }
+    80% { 
+      opacity: 1; 
+      transform: scale(1) rotate(360deg);
+    }
+    100% { 
+      opacity: 0; 
+      transform: scale(0) rotate(720deg);
+      filter: brightness(3) drop-shadow(0 0 25px var(--cyan));
+    }
+  }
+
+  .stinger-flash {
+    position: fixed;
+    pointer-events: none;
+    z-index: 5;
+    font-size: 40px;
+    color: var(--mars-red);
+    text-shadow: 0 0 20px var(--mars-red), 0 0 40px var(--scorpio-magenta);
+    opacity: 0;
+  }
+
+  .stinger-flash.active {
+    animation: stingerAttack 0.6s ease-out;
+  }
+
+  @keyframes stingerAttack {
+    0% { opacity: 0; transform: scale(0.5) translateY(20px); }
+    20% { opacity: 1; transform: scale(1.5) translateY(0); }
+    40% { opacity: 1; transform: scale(1) translateY(-10px); }
+    100% { opacity: 0; transform: scale(0.3) translateY(-30px); }
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .glitch-title {
+    font-size: 24px;
+    text-align: center;
+    margin: 40px 0;
+    color: var(--scorpio-magenta);
+    text-shadow: 0 0 10px var(--scorpio-magenta), 0 0 20px var(--scorpio-magenta);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  .scorpio-symbol {
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+  }
+
+  .symbol-circle {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+    border: 4px solid var(--scorpio-magenta);
+    border-radius: 50%;
+    background: radial-gradient(circle, #2a0a1a 0%, #0A0A1B 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px var(--scorpio-magenta), inset 0 0 20px rgba(194, 24, 91, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 30px var(--scorpio-magenta), inset 0 0 20px rgba(194, 24, 91, 0.3); }
+    50% { box-shadow: 0 0 50px var(--scorpio-magenta), inset 0 0 30px rgba(194, 24, 91, 0.5); }
+  }
+
+  .symbol-text {
+    font-size: 60px;
+    color: var(--scorpio-magenta);
+    text-shadow: 0 0 20px var(--scorpio-magenta);
+  }
+
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .box.magenta {
+    background: #1f0a15;
+    border-color: var(--scorpio-magenta);
+    box-shadow: 8px 0 rgba(194, 24, 91, 0.3), 0 0 20px rgba(194, 24, 91, 0.2);
+  }
+
+  .box.gold {
+    background: #2e2416;
+    border-color: var(--gold);
+    box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.3), 0 0 20px rgba(247, 184, 1, 0.2);
+  }
+
+  .box.cyan {
+    background: #0f1a2e;
+    border-color: var(--cyan);
+    box-shadow: 8px 8px 0 rgba(0, 217, 255, 0.3), 0 0 20px rgba(0, 217, 255, 0.2);
+  }
+
+  .box.pink {
+    background: #2e1620;
+    border-color: var(--pink);
+    box-shadow: 8px 8px 0 rgba(255, 61, 129, 0.3), 0 0 20px rgba(255, 61, 129, 0.2);
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .box.magenta .box-title {
+    color: var(--scorpio-magenta);
+  }
+
+  .box.gold .box-title {
+    color: var(--gold);
+  }
+
+  .box.cyan .box-title {
+    color: var(--cyan);
+  }
+
+  .box.pink .box-title {
+    color: var(--pink);
+  }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+  }
+
+  .box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .data-item {
+    font-size: 8px;
+    padding: 8px;
+    border: 2px solid var(--scorpio-magenta);
+    background: rgba(194, 24, 91, 0.1);
+  }
+
+  .data-label {
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .data-value {
+    color: var(--white);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .tag {
+    font-size: 7px;
+    padding: 6px 10px;
+    border: 2px solid;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .tag.elevado {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .tag.no-elevado {
+    border-color: var(--pink);
+    color: var(--pink);
+  }
+
+  .highlight {
+    color: var(--scorpio-magenta);
+    text-shadow: 0 0 5px var(--scorpio-magenta);
+  }
+
+  .highlight-cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 5px var(--cyan);
+  }
+
+  .highlight-gold {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--scorpio-magenta), var(--phoenix-orange), var(--scorpio-magenta), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--scorpio-magenta);
+  }
+
+  @media (max-width: 640px) {
+    .container {
+      padding: 12px;
+    }
+    
+    .box {
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .box p {
+      font-size: 8px;
+    }
+
+    .box-title {
+      font-size: 10px;
+    }
+
+    .data-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tag {
+      font-size: 6px;
+      padding: 4px 8px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  <div class="transformation-track">
+    <!-- ESCORPIÓN PIXEL ART -->
+    <svg class="archetype scorpion" viewBox="0 0 64 64">
+      <rect x="40" y="8" width="4" height="4" fill="#6A1B9A"/>
+      <rect x="44" y="12" width="4" height="4" fill="#6A1B9A"/>
+      <rect x="48" y="16" width="4" height="4" fill="#6A1B9A"/>
+      <rect x="52" y="20" width="4" height="4" fill="#6A1B9A"/>
+      <rect x="56" y="24" width="4" height="4" fill="#C2185B"/>
+      <rect x="28" y="28" width="12" height="12" fill="#6A1B9A"/>
+      <rect x="24" y="32" width="20" height="8" fill="#6A1B9A"/>
+      <rect x="12" y="32" width="8" height="8" fill="#6A1B9A"/>
+      <rect x="8" y="36" width="8" height="4" fill="#6A1B9A"/>
+      <rect x="44" y="32" width="8" height="8" fill="#6A1B9A"/>
+      <rect x="48" y="36" width="8" height="4" fill="#6A1B9A"/>
+      <rect x="20" y="44" width="4" height="8" fill="#6A1B9A"/>
+      <rect x="28" y="44" width="4" height="8" fill="#6A1B9A"/>
+      <rect x="36" y="44" width="4" height="8" fill="#6A1B9A"/>
+      <rect x="44" y="44" width="4" height="8" fill="#6A1B9A"/>
+    </svg>
+    
+    <!-- ÁGUILA PIXEL ART -->
+    <svg class="archetype eagle" viewBox="0 0 64 64">
+      <rect x="28" y="20" width="8" height="16" fill="#B0BEC5"/>
+      <rect x="24" y="24" width="16" height="8" fill="#B0BEC5"/>
+      <rect x="12" y="28" width="16" height="4" fill="#90A4AE"/>
+      <rect x="36" y="28" width="16" height="4" fill="#90A4AE"/>
+      <rect x="8" y="32" width="12" height="4" fill="#78909C"/>
+      <rect x="44" y="32" width="12" height="4" fill="#78909C"/>
+      <rect x="30" y="16" width="4" height="4" fill="#F7B801"/>
+      <rect x="28" y="20" width="4" height="4" fill="#000000"/>
+    </svg>
+    
+    <!-- FÉNIX PIXEL ART -->
+    <svg class="archetype phoenix" viewBox="0 0 64 64">
+      <rect x="28" y="20" width="8" height="16" fill="#FF6D00"/>
+      <rect x="24" y="24" width="16" height="8" fill="#FF6D00"/>
+      <rect x="12" y="28" width="16" height="4" fill="#FF3D00"/>
+      <rect x="36" y="28" width="16" height="4" fill="#FF3D00"/>
+      <rect x="8" y="32" width="12" height="4" fill="#F7B801"/>
+      <rect x="44" y="32" width="12" height="4" fill="#F7B801"/>
+      <rect x="20" y="36" width="8" height="8" fill="#FF6D00"/>
+      <rect x="36" y="36" width="8" height="8" fill="#FF6D00"/>
+      <rect x="28" y="44" width="8" height="8" fill="#D32F2F"/>
+      <rect x="20" y="48" width="24" height="4" fill="#E65100"/>
+    </svg>
+  </div>
+  <div class="planet-symbol planet-mars planet1">♂</div>
+  <div class="planet-symbol planet-pluto planet2">♇</div>
+  <div class="planet-symbol planet-mars planet3">♂</div>
+
+  <div class="container">
+    <h1 class="glitch-title">♏ ESCORPIO ♏<br>EL ESCORPIÓN</h1>
+
+    <div class="scorpio-symbol">
+      <div class="symbol-circle">
+        <div class="symbol-text">♏</div>
+      </div>
+    </div>
+
+    <div class="box magenta">
+      <div class="box-title">◈ ESENCIA DE ESCORPIO ◈</div>
+      <p>Escorpio es el <span class="highlight">octavo signo del zodiaco</span> y representa la transformación, el poder y los misterios profundos. Su energía es el agua intensa que purifica y regenera.</p>
+      <p>Regido por <span class="highlight-gold">Plutón y Marte</span>, planetas del poder y la guerra, Escorpio encarna la <span class="highlight">voluntad de desear</span> y la capacidad de morir y renacer desde las cenizas.</p>
+    </div>
+
+    <div class="box gold">
+      <div class="box-title">◆ DATOS CLAVE ◆</div>
+      <div class="data-grid">
+        <div class="data-item">
+          <span class="data-label">ELEMENTO:</span>
+          <span class="data-value">Agua</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">MODALIDAD:</span>
+          <span class="data-value">Fija</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">REGENTE:</span>
+          <span class="data-value">Plutón, Marte</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">CASA:</span>
+          <span class="data-value">Octava</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box cyan">
+      <div class="box-title">✦ RASGOS ELEVADOS ✦</div>
+      <div class="tag-list">
+        <span class="tag elevado">Magnético</span>
+        <span class="tag elevado">Estratégico</span>
+        <span class="tag elevado">Leal</span>
+        <span class="tag elevado">Transformador</span>
+        <span class="tag elevado">Intuitivo</span>
+        <span class="tag elevado">Profundo</span>
+        <span class="tag elevado">Místico</span>
+        <span class="tag elevado">Ejecutivo</span>
+        <span class="tag elevado">Controlado</span>
+        <span class="tag elevado">Concentrado</span>
+        <span class="tag elevado">Esotérico</span>
+        <span class="tag elevado">Motivador</span>
+        <span class="tag elevado">Reservado</span>
+        <span class="tag elevado">Investigador</span>
+        <span class="tag elevado">Persistente</span>
+        <span class="tag elevado">Resoluto</span>
+      </div>
+
+      <p style="margin-top: 20px;"><span class="highlight">RASGOS NO ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag no-elevado">Pasional</span>
+        <span class="tag no-elevado">Envidioso</span>
+        <span class="tag no-elevado">Satírico</span>
+        <span class="tag no-elevado">Sexual</span>
+        <span class="tag no-elevado">Destructivo</span>
+        <span class="tag no-elevado">Sarcástico</span>
+        <span class="tag no-elevado">Competitivo</span>
+        <span class="tag no-elevado">Cruel</span>
+        <span class="tag no-elevado">Extremista</span>
+        <span class="tag no-elevado">Rencoroso</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="box pink">
+      <div class="box-title">✦ ARQUETIPO DEL FÉNIX ✦</div>
+      <p>Como <span class="highlight-cyan">signo de Agua Fija</span>, Escorpio profundiza. No se queda en la superficie, investiga, transforma, muere: <span class="highlight">renace</span>. Su impulso es ir al fondo, develar secretos, transmutar el dolor en poder.</p>
+      <p>La <span class="highlight">Octava Casa</span> que rige representa la muerte, el sexo, los recursos compartidos y la transformación. Escorpio dice: "Esto deseo, esto poseo, esto transmuto".</p>
+      <p>La frase clave <span class="highlight">"Yo deseo"</span> resume su esencia: es intensidad magnética, voluntad indomable. Su palabra clave <span class="highlight">Intensidad</span> nos recuerda que este signo vino a sentir profundo, a morir y renacer, a ser <span class="highlight">Escorpión, Águila y Fénix</span> en una vida.</p>
+    </div>
+  </div>
+
+  <script>
+    const starsContainer = document.getElementById('stars');
+    const starCount = 100;
+    
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      
+      const colors = ['#FFFFFF', '#C2185B', '#F7B801', '#FF6D00'];
+      star.style.background = colors[Math.floor(Math.random() * colors.length)];
+      
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      
+      starsContainer.appendChild(star);
+    }
+
+    const archetypes = [
+      { selector: '.scorpion', color: '#6A1B9A' },
+      { selector: '.eagle', color: '#B0BEC5' },
+      { selector: '.phoenix', color: '#FF6D00' }
+    ];
+
+    function spawnArchetype() {
+      const type = archetypes[Math.floor(Math.random() * archetypes.length)];
+      const el = document.querySelector(type.selector);
+      const clone = el.cloneNode(true);
+      
+      clone.style.left = (Math.random() * 80 + 10) + '%';
+      clone.style.top = (Math.random() * 70 + 15) + '%';
+      clone.classList.add('pop-up');
+      
+      document.querySelector('.transformation-track').appendChild(clone);
+      
+      setTimeout(() => clone.remove(), 2500);
+    }
+
+    setInterval(spawnArchetype, Math.random() * 2000 + 3000);
+
+    function stingerStrike() {
+      const stinger = document.createElement('div');
+      stinger.className = 'stinger-flash';
+      stinger.textContent = '⚡';
+      stinger.style.left = (Math.random() * 90 + 5) + '%';
+      stinger.style.top = (Math.random() * 80 + 10) + '%';
+      
+      document.body.appendChild(stinger);
+      
+      setTimeout(() => stinger.classList.add('active'), 50);
+      setTimeout(() => stinger.remove(), 700);
+    }
+
+    setInterval(stingerStrike, Math.random() * 3000 + 4000);
+  </script>
+</body>
+</html>

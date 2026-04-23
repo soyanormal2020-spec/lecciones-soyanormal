@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>♎ LIBRA - La Balanza ♎</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --libra-green: #26A69A;
+    --air-blue: #B2EBF2;
+    --venus-pink: #F48FB1;
+    --deep-green: #004D40;
+    --white: #F0F0F0;
+  }
+
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  .scale-object {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    width: 32px;
+    height: 24px;
+  }
+
+  .scale-base {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 12px;
+    background: var(--gold);
+    border: 1px solid var(--white);
+  }
+
+  .scale-beam {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 2px;
+    background: var(--gold);
+    border: 1px solid var(--white);
+  }
+
+  .scale-pan-left {
+    position: absolute;
+    top: 10px;
+    left: 2px;
+    width: 8px;
+    height: 6px;
+    background: var(--air-blue);
+    border: 1px solid var(--white);
+    box-shadow: 0 0 8px var(--libra-green);
+  }
+
+  .scale-pan-right {
+    position: absolute;
+    top: 10px;
+    right: 2px;
+    width: 8px;
+    height: 6px;
+    background: var(--air-blue);
+    border: 1px solid var(--white);
+    box-shadow: 0 0 8px var(--libra-green);
+  }
+
+  .venus-symbol {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    font-size: 22px;
+    color: var(--venus-pink);
+    text-shadow: 0 0 10px var(--venus-pink), 0 0 20px var(--libra-green);
+    opacity: 0;
+    font-weight: bold;
+  }
+
+  .scale1 {
+    left: 8%;
+    top: -60px;
+    animation: scaleFall1 10s linear infinite;
+  }
+
+  .scale2 {
+    left: 28%;
+    top: -60px;
+    transform: scale(0.85);
+    animation: scaleFall2 12s linear infinite;
+    animation-delay: 2.5s;
+  }
+
+  .scale3 {
+    left: 48%;
+    top: -60px;
+    transform: scale(1.15);
+    animation: scaleFall3 9s linear infinite;
+    animation-delay: 5s;
+  }
+
+  .scale4 {
+    left: 68%;
+    top: -60px;
+    transform: scale(0.9);
+    animation: scaleFall4 11s linear infinite;
+    animation-delay: 1.5s;
+  }
+
+  .scale5 {
+    left: 85%;
+    top: -60px;
+    transform: scale(0.75);
+    animation: scaleFall5 13s linear infinite;
+    animation-delay: 6.5s;
+  }
+
+  .venus1 {
+    left: 15%;
+    top: -50px;
+    animation: venusFall1 8s linear infinite;
+    animation-delay: 1s;
+  }
+
+  .venus2 {
+    left: 38%;
+    top: -50px;
+    transform: scale(0.8);
+    animation: venusFall2 9.5s linear infinite;
+    animation-delay: 3.5s;
+  }
+
+  .venus3 {
+    left: 62%;
+    top: -50px;
+    transform: scale(1.1);
+    animation: venusFall3 8.5s linear infinite;
+    animation-delay: 5.5s;
+  }
+
+  .venus4 {
+    left: 80%;
+    top: -50px;
+    transform: scale(0.9);
+    animation: venusFall4 10s linear infinite;
+    animation-delay: 7s;
+  }
+
+  @keyframes scaleFall1 {
+    0% { transform: translateY(0) rotate(-5deg); opacity: 0; }
+    10% { opacity: 0.9; }
+    50% { transform: translateY(50vh) rotate(5deg); }
+    90% { opacity: 0.9; }
+    100% { transform: translateY(110vh) rotate(-5deg); opacity: 0; }
+  }
+
+  @keyframes scaleFall2 {
+    0% { transform: translateY(0) rotate(5deg) scale(0.85); opacity: 0; }
+    10% { opacity: 0.8; }
+    50% { transform: translateY(50vh) rotate(-5deg) scale(0.85); }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(110vh) rotate(5deg) scale(0.85); opacity: 0; }
+  }
+
+  @keyframes scaleFall3 {
+    0% { transform: translateY(0) rotate(-5deg) scale(1.15); opacity: 0; }
+    10% { opacity: 0.95; }
+    50% { transform: translateY(50vh) rotate(5deg) scale(1.15); }
+    90% { opacity: 0.95; }
+    100% { transform: translateY(110vh) rotate(-5deg) scale(1.15); opacity: 0; }
+  }
+
+  @keyframes scaleFall4 {
+    0% { transform: translateY(0) rotate(5deg) scale(0.9); opacity: 0; }
+    10% { opacity: 0.85; }
+    50% { transform: translateY(50vh) rotate(-5deg) scale(0.9); }
+    90% { opacity: 0.85; }
+    100% { transform: translateY(110vh) rotate(5deg) scale(0.9); opacity: 0; }
+  }
+
+  @keyframes scaleFall5 {
+    0% { transform: translateY(0) rotate(-5deg) scale(0.75); opacity: 0; }
+    10% { opacity: 0.75; }
+    50% { transform: translateY(50vh) rotate(5deg) scale(0.75); }
+    90% { opacity: 0.75; }
+    100% { transform: translateY(110vh) rotate(-5deg) scale(0.75); opacity: 0; }
+  }
+
+  @keyframes venusFall1 {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    10% { opacity: 0.9; }
+    50% { transform: translateY(50vh) translateX(20px); }
+    90% { opacity: 0.9; }
+    100% { transform: translateY(110vh) translateX(-10px); opacity: 0; }
+  }
+
+  @keyframes venusFall2 {
+    0% { transform: translateY(0) translateX(0) scale(0.8); opacity: 0; }
+    10% { opacity: 0.8; }
+    50% { transform: translateY(50vh) translateX(-25px) scale(0.8); }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(110vh) translateX(15px) scale(0.8); opacity: 0; }
+  }
+
+  @keyframes venusFall3 {
+    0% { transform: translateY(0) translateX(0) scale(1.1); opacity: 0; }
+    10% { opacity: 0.95; }
+    50% { transform: translateY(50vh) translateX(30px) scale(1.1); }
+    90% { opacity: 0.95; }
+    100% { transform: translateY(110vh) translateX(-20px) scale(1.1); opacity: 0; }
+  }
+
+  @keyframes venusFall4 {
+    0% { transform: translateY(0) translateX(0) scale(0.9); opacity: 0; }
+    10% { opacity: 0.85; }
+    50% { transform: translateY(50vh) translateX(-15px) scale(0.9); }
+    90% { opacity: 0.85; }
+    100% { transform: translateY(110vh) translateX(25px) scale(0.9); opacity: 0; }
+  }
+
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  .crt-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 100px rgba(38, 166, 154, 0.12);
+  }
+
+  .floating-star {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 24px);
+    color: var(--libra-green);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--air-blue), -2px -2px 0 var(--deep-green);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  .libra-symbol {
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+  }
+
+  .symbol-circle {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+    border: 4px solid var(--libra-green);
+    border-radius: 50%;
+    background: radial-gradient(circle, #1a3a2a 0%, #0A0A1B 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px var(--libra-green), inset 0 0 20px rgba(38, 166, 154, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 30px var(--libra-green), inset 0 0 20px rgba(38, 166, 154, 0.3); }
+    50% { box-shadow: 0 0 50px var(--libra-green), inset 0 0 30px rgba(38, 166, 154, 0.5); }
+  }
+
+  .symbol-text {
+    font-size: 60px;
+    color: var(--libra-green);
+    text-shadow: 0 0 20px var(--libra-green);
+  }
+
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .box.green {
+    background: #0f2e1f;
+    border-color: var(--libra-green);
+    box-shadow: 8px 8px 0 rgba(38, 166, 154, 0.3), 0 0 20px rgba(38, 166, 154, 0.2);
+  }
+
+  .box.gold {
+    background: #2e2416;
+    border-color: var(--gold);
+    box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.3), 0 0 20px rgba(247, 184, 1, 0.2);
+  }
+
+  .box.cyan {
+    background: #0f1a2e;
+    border-color: var(--cyan);
+    box-shadow: 8px 8px 0 rgba(0, 217, 255, 0.3), 0 0 20px rgba(0, 217, 255, 0.2);
+  }
+
+  .box.pink {
+    background: #2e1620;
+    border-color: var(--pink);
+    box-shadow: 8px 8px 0 rgba(255, 61, 129, 0.3), 0 0 20px rgba(255, 61, 129, 0.2);
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .box.green .box-title {
+    color: var(--libra-green);
+  }
+
+  .box.gold .box-title {
+    color: var(--gold);
+  }
+
+  .box.cyan .box-title {
+    color: var(--cyan);
+  }
+
+  .box.pink .box-title {
+    color: var(--pink);
+  }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+  }
+
+  .box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .data-item {
+    font-size: 8px;
+    padding: 8px;
+    border: 2px solid var(--libra-green);
+    background: rgba(38, 166, 154, 0.1);
+  }
+
+  .data-label {
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .data-value {
+    color: var(--white);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .tag {
+    font-size: 7px;
+    padding: 6px 10px;
+    border: 2px solid;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .tag.elevado {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .tag.no-elevado {
+    border-color: var(--pink);
+    color: var(--pink);
+  }
+
+  .highlight {
+    color: var(--libra-green);
+    text-shadow: 0 0 5px var(--libra-green);
+  }
+
+  .highlight-cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 5px var(--cyan);
+  }
+
+  .highlight-gold {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--libra-green), var(--air-blue), var(--libra-green), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--libra-green);
+  }
+
+  @media (max-width: 640px) {
+    .container {
+      padding: 12px;
+    }
+    
+    .box {
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .box p {
+      font-size: 8px;
+    }
+
+    .box-title {
+      font-size: 10px;
+    }
+
+    .data-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tag {
+      font-size: 6px;
+      padding: 4px 8px;
+    }
+  }
+
+  /* ===== COLUMNAS GEMELAS DE LIBRA ===== */
+  
+  .twin-columns {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 320px;
+    pointer-events: none;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .libra-column {
+    width: 120px;
+    height: 280px;
+    background: linear-gradient(to bottom, 
+      rgba(38, 166, 154, 0.1) 0%, 
+      rgba(38, 166, 154, 0.3) 50%, 
+      rgba(38, 166, 154, 0.1) 100%);
+    border: 3px solid var(--libra-green);
+    box-shadow: 0 0 30px var(--libra-green), inset 0 0 20px rgba(38, 166, 154, 0.2);
+    position: relative;
+    animation: columnPulse 4s ease-in-out infinite;
+  }
+  
+  .column-left { animation-delay: 0s; }
+  .column-right { animation-delay: 2s; }
+  
+  @keyframes columnPulse {
+    0%, 100% { 
+      box-shadow: 0 0 30px var(--libra-green), inset 0 0 20px rgba(38, 166, 154, 0.2);
+      transform: scaleY(1);
+    }
+    50% { 
+      box-shadow: 0 0 50px var(--air-blue), inset 0 0 30px rgba(178, 235, 242, 0.3);
+      transform: scaleY(1.05);
+    }
+  }
+  
+  .column-header {
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    color: var(--gold);
+    text-shadow: 0 0 10px var(--gold);
+    font-family: 'Press Start 2P', cursive;
+    white-space: nowrap;
+  }
+  
+  /* Etiquetas flotando dentro de las columnas */
+  .column-tag {
+    position: absolute;
+    font-size: 6px;
+    padding: 6px 8px;
+    background: rgba(0,0,0,0.8);
+    border: 2px solid var(--gold);
+    color: var(--white);
+    font-family: 'Press Start 2P', cursive;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 0 10px var(--libra-green);
+  }
+  
+  .tag-l1 { left: 10px; animation: floatTag 8s ease-in-out infinite; }
+  .tag-l2 { left: 15px; animation: floatTag 8s ease-in-out infinite 2s; }
+  .tag-l3 { left: 12px; animation: floatTag 8s ease-in-out infinite 4s; }
+  
+  .tag-r1 { right: 10px; animation: floatTag 8s ease-in-out infinite 1s; }
+  .tag-r2 { right: 15px; animation: floatTag 8s ease-in-out infinite 3s; }
+  .tag-r3 { right: 12px; animation: floatTag 8s ease-in-out infinite 5s; }
+  
+  @keyframes floatTag {
+    0%, 10% { top: -40px; opacity: 0; transform: translateX(0); }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    90%, 100% { top: 250px; opacity: 0; transform: translateX(0); }
+  }
+  
+  /* Monitos en las columnas */
+  .column-figure {
+    position: absolute;
+    font-size: 16px;
+    animation: figureFloat 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 8px var(--white));
+  }
+  
+  .fig-l1 { bottom: 40px; left: 50%; transform: translateX(-50%); animation-delay: 0s; }
+  .fig-l2 { bottom: 100px; left: 50%; transform: translateX(-50%); animation-delay: 0.7s; }
+  .fig-r1 { bottom: 40px; left: 50%; transform: translateX(-50%); animation-delay: 0.3s; }
+  .fig-r2 { bottom: 100px; left: 50%; transform: translateX(-50%); animation-delay: 1s; }
+  
+  @keyframes figureFloat {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-8px); }
+  }
+  
+  /* Burbujas de diálogo entre columnas */
+  .dialog-bridge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 6px;
+    color: var(--cyan);
+    text-shadow: 0 0 10px var(--cyan);
+    font-family: 'Press Start 2P', cursive;
+    opacity: 0;
+    animation: bridgePulse 6s ease-in-out infinite;
+    white-space: nowrap;
+  }
+  
+  @keyframes bridgePulse {
+    0%, 40%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+    50%, 60% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+  
+  /* Línea de conexión */
+  .connection-line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 260px;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      var(--air-blue) 20%, 
+      var(--libra-green) 50%, 
+      var(--air-blue) 80%, 
+      transparent 100%);
+    opacity: 0;
+    animation: lineGlow 4s ease-in-out infinite;
+    box-shadow: 0 0 15px var(--air-blue);
+  }
+  
+  @keyframes lineGlow {
+    0%, 30%, 70%, 100% { opacity: 0; }
+    50% { opacity: 0.6; }
+  }
+  
+  /* Partículas de aire con Venus */
+  .venus-particle {
+    position: fixed;
+    font-size: 18px;
+    color: var(--venus-pink);
+    text-shadow: 0 0 15px var(--venus-pink), 0 0 25px var(--libra-green);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    animation: venusFloat 15s ease-in-out infinite;
+  }
+  
+  .vp1 { left: 10%; animation-delay: 0s; }
+  .vp2 { left: 25%; animation-delay: 3s; }
+  .vp3 { left: 40%; animation-delay: 6s; }
+  .vp4 { left: 60%; animation-delay: 9s; }
+  .vp5 { left: 75%; animation-delay: 12s; }
+  .vp6 { left: 90%; animation-delay: 2s; }
+  .vp7 { left: 50%; animation-delay: 5s; }
+  .vp8 { left: 35%; animation-delay: 8s; }
+  
+  @keyframes venusFloat {
+    0% { 
+      bottom: -50px; 
+      opacity: 0; 
+      transform: translateX(0) rotate(0deg) scale(0.8); 
+    }
+    10% { opacity: 0.7; }
+    50% { 
+      transform: translateX(30px) rotate(180deg) scale(1.1); 
+    }
+    90% { opacity: 0.7; }
+    100% { 
+      bottom: 110vh; 
+      opacity: 0; 
+      transform: translateX(-20px) rotate(360deg) scale(0.9); 
+    }
+  }
+  
+  /* Estela de aire detrás de Venus */
+  .venus-particle::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 2px;
+    height: 30px;
+    background: linear-gradient(to bottom, var(--air-blue), transparent);
+    transform: translateX(-50%);
+    opacity: 0.4;
+  }
+
+  /* ===== FIN COLUMNAS GEMELAS ===== */
+
+</style>
+</head>
+<body>
+  <!-- PARTÍCULAS DE AIRE CON VENUS -->
+  <div class="venus-particle vp1">♀</div>
+  <div class="venus-particle vp2">♀</div>
+  <div class="venus-particle vp3">♀</div>
+  <div class="venus-particle vp4">♀</div>
+  <div class="venus-particle vp5">♀</div>
+  <div class="venus-particle vp6">♀</div>
+  <div class="venus-particle vp7">♀</div>
+  <div class="venus-particle vp8">♀</div>
+
+  <div class="stars" id="stars"></div>
+  
+  <!-- COLUMNAS GEMELAS DE LIBRA -->
+  <div class="twin-columns">
+    <div class="libra-column column-left">
+      <div class="column-header">PERSONAL</div>
+      <div class="column-tag tag-l1">AMISTAD</div>
+      <div class="column-tag tag-l2">FAMILIA</div>
+      <div class="column-tag tag-l3">AMOR</div>
+      <div class="column-figure fig-l1">🧑</div>
+      <div class="column-figure fig-l2">👥</div>
+    </div>
+    
+    <div class="connection-line"></div>
+    <div class="dialog-bridge">ARMONÍA</div>
+    
+    <div class="libra-column column-right">
+      <div class="column-header">SOCIAL</div>
+      <div class="column-tag tag-r1">TRABAJO</div>
+      <div class="column-tag tag-r2">JUSTICIA</div>
+      <div class="column-tag tag-r3">BELLEZA</div>
+      <div class="column-figure fig-r1">👤</div>
+      <div class="column-figure fig-r2">🤝</div>
+    </div>
+  </div>
+
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <svg class="floating-star" style="top: 15%; left: 5%; width: 24px; height: 24px; animation-delay: 0s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#26A69A"/>
+  </svg>
+  <svg class="floating-star" style="top: 60%; right: 8%; width: 20px; height: 20px; animation-delay: 1s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#F7B801"/>
+  </svg>
+  <svg class="floating-star" style="top: 40%; left: 10%; width: 18px; height: 18px; animation-delay: 2s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#F48FB1"/>
+  </svg>
+
+  <div class="container">
+    <h1 class="glitch-title">♎ LIBRA ♎<br>LA BALANZA</h1>
+
+    <div class="libra-symbol">
+      <div class="symbol-circle">
+        <div class="symbol-text">♎</div>
+      </div>
+    </div>
+
+    <div class="box green">
+      <div class="box-title">◈ ESENCIA DE LIBRA ◈</div>
+      <p>Libra es el <span class="highlight">séptimo signo del zodiaco</span> y representa la justicia, la armonía y el equilibrio en las relaciones. Su energía es el aire que busca mediar y balancear.</p>
+      <p>Regido por <span class="highlight-gold">Venus</span>, planeta del amor y la belleza, Libra encarna la <span class="highlight">voluntad de mantener el equilibrio</span> y la necesidad de crear armonía estética y social.</p>
+    </div>
+
+    <div class="box gold">
+      <div class="box-title">◆ DATOS CLAVE ◆</div>
+      <div class="data-grid">
+        <div class="data-item">
+          <span class="data-label">ELEMENTO:</span>
+          <span class="data-value">Aire</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">CUALIDAD:</span>
+          <span class="data-value">Cardinal</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PRINCIPIO:</span>
+          <span class="data-value">Activo</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">REGENTE:</span>
+          <span class="data-value">Venus</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FRASE CLAVE:</span>
+          <span class="data-value">Yo mantengo el equilibrio</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PALABRA CLAVE:</span>
+          <span class="data-value">Armonía</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">SIGNO DE:</span>
+          <span class="data-value">Séptima casa</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FECHAS:</span>
+          <span class="data-value">21 Sep - 22 Oct</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box cyan">
+      <div class="box-title">★ CARACTERÍSTICAS GENERALES ★</div>
+      <p><span class="highlight-cyan">Signo Opuesto:</span> Aries</p>
+      <p><span class="highlight-cyan">Regencia anatómica:</span> Riñones, órganos genitales internos, columna vertebral [región lumbar], eliminación de líquidos</p>
+      
+      <p style="margin-top: 20px;"><span class="highlight-gold">RASGOS ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag elevado">Justo</span>
+        <span class="tag elevado">Equilibrado</span>
+        <span class="tag elevado">Persuasivo</span>
+        <span class="tag elevado">Pacifista</span>
+        <span class="tag elevado">Afable</span>
+        <span class="tag elevado">Refinado</span>
+        <span class="tag elevado">Prudente</span>
+        <span class="tag elevado">Diplomático</span>
+        <span class="tag elevado">Accesible</span>
+        <span class="tag elevado">Gentil</span>
+      </div>
+
+      <p style="margin-top: 20px;"><span class="highlight">RASGOS NO ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag no-elevado">Inconstante</span>
+        <span class="tag no-elevado">Quejumbroso</span>
+        <span class="tag no-elevado">Pasivo</span>
+        <span class="tag no-elevado">Intrigante</span>
+        <span class="tag no-elevado">Disuadible</span>
+        <span class="tag no-elevado">Indeciso</span>
+        <span class="tag no-elevado">Negligente</span>
+        <span class="tag no-elevado">Superficial</span>
+        <span class="tag no-elevado">Iluso</span>
+        <span class="tag no-elevado">Mentiroso</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="box pink">
+      <div class="box-title">✦ ARQUETIPO DEL DIPLOMÁTICO ✦</div>
+      <p>Como <span class="highlight-cyan">signo de Aire Cardinal</span>, Libra inicia desde la relación. No se impone, negocia, armoniza: <span class="highlight">equilibra</span>. Su impulso es unir opuestos, crear belleza, buscar justicia.</p>
+      <p>La <span class="highlight">Séptima Casa</span> que rige representa las sociedades, el matrimonio, los enemigos declarados y los contratos. Libra dice: "Esto peso, esto concilio, esto armonizo".</p>
+      <p>La frase clave <span class="highlight">"Yo mantengo el equilibrio"</span> resume su esencia: es diplomacia, estética, búsqueda de paz. Su palabra clave <span class="highlight">Armonía</span> nos recuerda que este signo vino a mediar, a embellecer, a hacer que la balanza quede perfecta.</p>
+    </div>
+  </div>
+
+  <script>
+    const starsContainer = document.getElementById('stars');
+    const starCount = 100;
+    
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      
+      const colors = ['#FFFFFF', '#26A69A', '#F7B801', '#F48FB1'];
+      star.style.background = colors[Math.floor(Math.random() * colors.length)];
+      
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      
+      starsContainer.appendChild(star);
+    }
+  </script>
+</body>
+</html>

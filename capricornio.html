@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>♑ CAPRICORNIO - Macho Cabrío ♑</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --capricorn-green: #2E7D32;
+    --earth-dark: #1B5E20;
+    --saturn-grey: #607D8B;
+    --mountain-brown: #4E342E;
+    --rock-grey: #37474F;
+    --snow-white: #ECEFF1;
+    --white: #F0F0F0;
+  }
+
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  .saturn-symbol {
+    position: fixed;
+    pointer-events: none;
+    z-index: 3;
+    font-size: 28px;
+    color: var(--saturn-grey);
+    text-shadow: 0 0 15px var(--saturn-grey), 0 0 30px var(--capricorn-green);
+    opacity: 0;
+    font-weight: bold;
+  }
+
+  .saturn1 {
+    left: 18%;
+    top: -60px;
+    animation: saturnFall1 10s linear infinite;
+  }
+
+  .saturn2 {
+    left: 42%;
+    top: -60px;
+    transform: scale(0.8);
+    animation: saturnFall2 12s linear infinite;
+    animation-delay: 2.5s;
+  }
+
+  .saturn3 {
+    left: 68%;
+    top: -60px;
+    transform: scale(1.1);
+    animation: saturnFall3 11s linear infinite;
+    animation-delay: 5s;
+  }
+
+  .saturn4 {
+    left: 88%;
+    top: -60px;
+    transform: scale(0.9);
+    animation: saturnFall4 13s linear infinite;
+    animation-delay: 7s;
+  }
+
+  @keyframes saturnFall1 {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.9; }
+    90% { opacity: 0.9; }
+    100% { transform: translateY(110vh) rotate(180deg); opacity: 0; }
+  }
+
+  @keyframes saturnFall2 {
+    0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(110vh) rotate(-180deg) scale(0.8); opacity: 0; }
+  }
+
+  @keyframes saturnFall3 {
+    0% { transform: translateY(0) rotate(0deg) scale(1.1); opacity: 0; }
+    10% { opacity: 0.95; }
+    90% { opacity: 0.95; }
+    100% { transform: translateY(110vh) rotate(180deg) scale(1.1); opacity: 0; }
+  }
+
+  @keyframes saturnFall4 {
+    0% { transform: translateY(0) rotate(0deg) scale(0.9); opacity: 0; }
+    10% { opacity: 0.85; }
+    90% { opacity: 0.85; }
+    100% { transform: translateY(110vh) rotate(-180deg) scale(0.9); opacity: 0; }
+  }
+
+  .mountain-container {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    height: 300px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .mountain {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 140px solid transparent;
+    border-right: 140px solid transparent;
+    border-bottom: 0px solid var(--mountain-brown);
+    animation: mountainGrow 25s ease-in-out infinite;
+  }
+
+  .mountain-peak {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
+    border-bottom: 0px solid var(--snow-white);
+    animation: peakGrow 25s ease-in-out infinite;
+    animation-delay: 3s;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+
+  @keyframes mountainGrow {
+    0%, 10% { border-bottom-width: 0px; }
+    50% { border-bottom-width: 280px; }
+    90%, 100% { border-bottom-width: 280px; }
+  }
+
+  @keyframes peakGrow {
+    0%, 20% { border-bottom-width: 0px; bottom: 0px; }
+    60% { border-bottom-width: 60px; bottom: 220px; }
+    90%, 100% { border-bottom-width: 60px; bottom: 220px; }
+  }
+
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  .crt-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 100px rgba(46, 125, 50, 0.12);
+  }
+
+  .floating-star {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 24px);
+    color: var(--capricorn-green);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--mountain-brown), -2px -2px 0 var(--earth-dark);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  .capricorn-symbol {
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+  }
+
+  .symbol-circle {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+    border: 4px solid var(--capricorn-green);
+    border-radius: 50%;
+    background: radial-gradient(circle, #0a1a0a 0%, #0A0A1B 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px var(--capricorn-green), inset 0 0 20px rgba(46, 125, 50, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 30px var(--capricorn-green), inset 0 0 20px rgba(46, 125, 50, 0.3); }
+    50% { box-shadow: 0 0 50px var(--capricorn-green), inset 0 0 30px rgba(46, 125, 50, 0.5); }
+  }
+
+  .symbol-text {
+    font-size: 60px;
+    color: var(--capricorn-green);
+    text-shadow: 0 0 20px var(--capricorn-green);
+  }
+
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .box.green {
+    background: #0a1f0a;
+    border-color: var(--capricorn-green);
+    box-shadow: 8px 8px 0 rgba(46, 125, 50, 0.3), 0 0 20px rgba(46, 125, 50, 0.2);
+  }
+
+  .box.gold {
+    background: #2e2416;
+    border-color: var(--gold);
+    box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.3), 0 0 20px rgba(247, 184, 1, 0.2);
+  }
+
+  .box.cyan {
+    background: #0f1a2e;
+    border-color: var(--cyan);
+    box-shadow: 8px 8px 0 rgba(0, 217, 255, 0.3), 0 0 20px rgba(0, 217, 255, 0.2);
+  }
+
+  .box.pink {
+    background: #2e1620;
+    border-color: var(--pink);
+    box-shadow: 8px 8px 0 rgba(255, 61, 129, 0.3), 0 0 20px rgba(255, 61, 129, 0.2);
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .box.green .box-title {
+    color: var(--capricorn-green);
+  }
+
+  .box.gold .box-title {
+    color: var(--gold);
+  }
+
+  .box.cyan .box-title {
+    color: var(--cyan);
+  }
+
+  .box.pink .box-title {
+    color: var(--pink);
+  }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+  }
+
+  .box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .data-item {
+    font-size: 8px;
+    padding: 8px;
+    border: 2px solid var(--capricorn-green);
+    background: rgba(46, 125, 50, 0.1);
+  }
+
+  .data-label {
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .data-value {
+    color: var(--white);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .tag {
+    font-size: 7px;
+    padding: 6px 10px;
+    border: 2px solid;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .tag.elevado {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .tag.no-elevado {
+    border-color: var(--pink);
+    color: var(--pink);
+  }
+
+  .highlight {
+    color: var(--capricorn-green);
+    text-shadow: 0 0 5px var(--capricorn-green);
+  }
+
+  .highlight-cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 5px var(--cyan);
+  }
+
+  .highlight-gold {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--capricorn-green), var(--mountain-brown), var(--capricorn-green), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--capricorn-green);
+  }
+
+  @media (max-width: 640px) {
+    .container {
+      padding: 12px;
+    }
+    
+    .box {
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .box p {
+      font-size: 8px;
+    }
+
+    .box-title {
+      font-size: 10px;
+    }
+
+    .data-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tag {
+      font-size: 6px;
+      padding: 4px 8px;
+    }
+  }
+
+  /* ===== ANIMACIONES CAPRICORNIO: CABRAS, ROCAS Y ANILLOS ===== */
+  
+  /* 1. CABRAS ESCALANDO */
+  .goat-climber {
+    position: fixed;
+    pointer-events: none;
+    z-index: 4;
+    font-size: 24px;
+    opacity: 0;
+  }
+  
+  .goat1 { left: 20%; bottom: -40px; animation: climbGoat1 18s linear infinite; }
+  .goat2 { left: 75%; bottom: -40px; animation: climbGoat2 22s linear infinite 6s; }
+  
+  @keyframes climbGoat1 {
+    0% { transform: translateY(0) translateX(0) scaleX(1); opacity: 0; }
+    5% { opacity: 0.9; }
+    25% { transform: translateY(-25vh) translateX(10px) scaleX(1); }
+    50% { transform: translateY(-50vh) translateX(-5px) scaleX(-1); }
+    75% { transform: translateY(-75vh) translateX(15px) scaleX(1); }
+    95% { transform: translateY(-95vh) translateX(0) scaleX(1); opacity: 0.9; }
+    100% { transform: translateY(-100vh) translateX(0) scaleX(1); opacity: 0; }
+  }
+  
+  @keyframes climbGoat2 {
+    0% { transform: translateY(0) translateX(0) scaleX(-1); opacity: 0; }
+    5% { opacity: 0.8; }
+    30% { transform: translateY(-30vh) translateX(-15px) scaleX(-1); }
+    60% { transform: translateY(-60vh) translateX(10px) scaleX(1); }
+    90% { transform: translateY(-90vh) translateX(-5px) scaleX(-1); opacity: 0.8; }
+    100% { transform: translateY(-100vh) translateX(0) scaleX(-1); opacity: 0; }
+  }
+  
+  /* 2. ROCAS/POLVO CAYENDO DE LA MONTAÑA */
+  .rock-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 3;
+    width: 6px;
+    height: 6px;
+    background: var(--rock-grey);
+    box-shadow: 0 0 4px var(--mountain-brown);
+    opacity: 0;
+  }
+  
+  .rock1 { left: 48%; top: 30%; animation: fallRock 5s ease-in infinite; }
+  .rock2 { left: 52%; top: 35%; animation: fallRock 6s ease-in infinite 1.5s; width: 4px; height: 4px; }
+  .rock3 { left: 50%; top: 32%; animation: fallRock 4.5s ease-in infinite 3s; background: var(--mountain-brown); }
+  .rock4 { left: 46%; top: 38%; animation: fallRock 5.5s ease-in infinite 2s; width: 5px; height: 5px; }
+  
+  @keyframes fallRock {
+    0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.7; }
+    100% { transform: translateY(60vh) translateX(var(--drift, 20px)) rotate(360deg); opacity: 0; }
+  }
+  
+  /* 3. ANILLOS DE SATURNO GIRANDO EN EL SÍMBOLO */
+  .saturn-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 2px solid var(--saturn-grey);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  
+  .ring1 {
+    width: 220px;
+    height: 60px;
+    margin-left: -110px;
+    margin-top: -30px;
+    animation: rotateRing 8s linear infinite;
+    box-shadow: 0 0 15px var(--saturn-grey);
+  }
+  
+  .ring2 {
+    width: 260px;
+    height: 70px;
+    margin-left: -130px;
+    margin-top: -35px;
+    animation: rotateRing 12s linear infinite reverse;
+    opacity: 0.4;
+    border-width: 1px;
+  }
+  
+  @keyframes rotateRing {
+    0% { transform: rotateX(75deg) rotateZ(0deg); }
+    100% { transform: rotateX(75deg) rotateZ(360deg); }
+  }
+  /* ===== FIN ANIMACIONES CAPRICORNIO ===== */
+
+
+  /* ===== NUEVAS ANIMACIONES: PÉNDULO Y GRIETAS ===== */
+  
+  /* PÉNDULO DE RELOJ - Disciplina de Saturno */
+  .pendulum {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 140px;
+    background: linear-gradient(to bottom, var(--saturn-grey), var(--rock-grey));
+    transform-origin: top center;
+    animation: swing 4s ease-in-out infinite;
+    opacity: 0.25;
+    z-index: 1;
+    pointer-events: none;
+  }
+  
+  .pendulum::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    background: var(--saturn-grey);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--saturn-grey);
+  }
+  
+  @keyframes swing {
+    0%, 100% { transform: rotate(18deg); }
+    50% { transform: rotate(-18deg); }
+  }
+  
+  /* GRIETAS DE TIERRA QUE SUBEN - Ambición que rompe */
+  .earth-crack {
+    position: fixed;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to top, var(--earth-dark), var(--mountain-brown));
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+    box-shadow: 0 0 6px var(--earth-dark);
+  }
+  
+  .crack1 { left: 25%; animation: crackUp1 10s linear infinite; }
+  .crack2 { left: 45%; animation: crackUp2 12s linear infinite 3s; }
+  .crack3 { left: 70%; animation: crackUp3 11s linear infinite 6s; }
+  
+  @keyframes crackUp1 {
+    0% { height: 0; opacity: 0; }
+    8% { opacity: 0.5; }
+    85% { opacity: 0.5; }
+    100% { height: 75vh; opacity: 0; }
+  }
+  
+  @keyframes crackUp2 {
+    0% { height: 0; opacity: 0; }
+    8% { opacity: 0.4; }
+    85% { opacity: 0.4; }
+    100% { height: 65vh; opacity: 0; }
+  }
+  
+  @keyframes crackUp3 {
+    0% { height: 0; opacity: 0; }
+    8% { opacity: 0.5; }
+    85% { opacity: 0.5; }
+    100% { height: 80vh; opacity: 0; }
+  }
+  /* ===== FIN PÉNDULO Y GRIETAS ===== */
+
+</style>
+</head>
+<body>
+  <!-- PÉNDULO DE SATURNO -->
+  <div class="pendulum"></div>
+  
+  <!-- GRIETAS DE TIERRA -->
+  <div class="earth-crack crack1"></div>
+  <div class="earth-crack crack2"></div>
+  <div class="earth-crack crack3"></div>
+
+  <!-- CABRAS ESCALANDO -->
+  <div class="goat-climber goat1">🐐</div>
+  <div class="goat-climber goat2">🐐</div>
+  
+  <!-- ROCAS CAYENDO -->
+  <div class="rock-particle rock1"></div>
+  <div class="rock-particle rock2"></div>
+  <div class="rock-particle rock3"></div>
+  <div class="rock-particle rock4"></div>
+
+  <div class="stars" id="stars"></div>
+  <div class="mountain-container">
+    <div class="mountain"></div>
+    <div class="mountain-peak"></div>
+  </div>
+  <div class="saturn-symbol saturn1">♄</div>
+  <div class="saturn-symbol saturn2">♄</div>
+  <div class="saturn-symbol saturn3">♄</div>
+  <div class="saturn-symbol saturn4">♄</div>
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <svg class="floating-star" style="top: 15%; left: 5%; width: 24px; height: 24px; animation-delay: 0s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#2E7D32"/>
+  </svg>
+  <svg class="floating-star" style="top: 60%; right: 8%; width: 20px; height: 20px; animation-delay: 1s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#F7B801"/>
+  </svg>
+  <svg class="floating-star" style="top: 40%; left: 10%; width: 18px; height: 18px; animation-delay: 2s;" viewBox="0 0 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#607D8B"/>
+  </svg>
+
+  <div class="container">
+    <h1 class="glitch-title">♑ CAPRICORNIO ♑<br>MACHO CABRÍO</h1>
+
+    <div class="capricorn-symbol">
+      <div class="symbol-circle">
+        <div class="saturn-ring ring1"></div><div class="saturn-ring ring2"></div><div class="symbol-text">♑</div>
+      </div>
+    </div>
+
+    <div class="box green">
+      <div class="box-title">◈ ESENCIA DE CAPRICORNIO ◈</div>
+      <p>Capricornio es el <span class="highlight">décimo signo del zodiaco</span> y representa la ambición, la estructura y el logro material. Su energía es la tierra que construye y escala.</p>
+      <p>Regido por <span class="highlight-gold">Saturno</span>, planeta del tiempo y la disciplina, Capricornio encarna la <span class="highlight">voluntad de utilizar</span> y la necesidad de construir imperios que perduren.</p>
+    </div>
+
+    <div class="box gold">
+      <div class="box-title">◆ DATOS CLAVE ◆</div>
+      <div class="data-grid">
+        <div class="data-item">
+          <span class="data-label">ELEMENTO:</span>
+          <span class="data-value">Tierra</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">CUALIDAD:</span>
+          <span class="data-value">Cardinal</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PRINCIPIO:</span>
+          <span class="data-value">Pasivo</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">REGENTE:</span>
+          <span class="data-value">Saturno</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FRASE CLAVE:</span>
+          <span class="data-value">Yo utilizo</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PALABRA CLAVE:</span>
+          <span class="data-value">Ambición</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">SIGNO DE:</span>
+          <span class="data-value">Décima casa</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FECHAS:</span>
+          <span class="data-value">22 Dic - 20 Ene</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box cyan">
+      <div class="box-title">★ CARACTERÍSTICAS GENERALES ★</div>
+      <p><span class="highlight-cyan">Signo Opuesto:</span> Cáncer</p>
+      <p><span class="highlight-cyan">Regencia anatómica:</span> Rodilla, tejidos cartilaginosos, rótula, piel</p>
+      
+      <p style="margin-top: 20px;"><span class="highlight-gold">RASGOS ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag elevado">Diplomático</span>
+        <span class="tag elevado">Disciplinado</span>
+        <span class="tag elevado">Práctico</span>
+        <span class="tag elevado">Responsable</span>
+        <span class="tag elevado">Reflexivo</span>
+        <span class="tag elevado">Cauto</span>
+        <span class="tag elevado">Previsivo</span>
+        <span class="tag elevado">Escrupuloso</span>
+        <span class="tag elevado">Serio</span>
+        <span class="tag elevado">Convencional</span>
+      </div>
+
+      <p style="margin-top: 20px;"><span class="highlight">RASGOS NO ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag no-elevado">Ambicioso</span>
+        <span class="tag no-elevado">Melancólico</span>
+        <span class="tag no-elevado">Amargado</span>
+        <span class="tag no-elevado">Egoísta</span>
+        <span class="tag no-elevado">Fatalista</span>
+        <span class="tag no-elevado">Represivo</span>
+        <span class="tag no-elevado">Manipulador</span>
+        <span class="tag no-elevado">Utilitarista</span>
+        <span class="tag no-elevado">Receloso</span>
+        <span class="tag no-elevado">Avaro</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="box pink">
+      <div class="box-title">✦ ARQUETIPO DE LA CABRA MONTAÑESA ✦</div>
+      <p>Como <span class="highlight-cyan">signo de Tierra Cardinal</span>, Capricornio inicia desde la estructura. No sueña sin plan, construye, escala, gobierna: <span class="highlight">utiliza</span>. Su impulso es alcanzar la cima, dominar el tiempo, dejar legado.</p>
+      <p>La <span class="highlight">Décima Casa</span> que rige representa la carrera, el estatus, la reputación y la figura paterna. Capricornio dice: "Esto utilizo, esto construyo, esto gobierno".</p>
+      <p>La frase clave <span class="highlight">"Yo utilizo"</span> resume su esencia: es ambición estructurada, paciencia de roca. Su palabra clave <span class="highlight">Ambición</span> nos recuerda que este signo vino a escalar, a conquistar, a ser la <span class="highlight">cabra que llega a la montaña más alta</span>.</p>
+    </div>
+  </div>
+
+  <script>
+    const starsContainer = document.getElementById('stars');
+    const starCount = 100;
+    
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      
+      const colors = ['#FFFFFF', '#2E7D32', '#F7B801', '#607D8B'];
+      star.style.background = colors[Math.floor(Math.random() * colors.length)];
+      
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      
+      starsContainer.appendChild(star);
+    }
+  </script>
+</body>
+</html>

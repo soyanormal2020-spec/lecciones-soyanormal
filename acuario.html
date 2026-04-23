@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>♒ ACUARIO - El Aguador ♒</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --aquarius-cyan: #00BCD4;
+    --electric-blue: #18FFFF;
+    --urano-purple: #7C4DFF;
+    --water-blue: #29B6F6;
+    --network-cyan: #00E5FF;
+    --white: #F0F0F0;
+  }
+
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+.network {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+.network-node {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--network-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--network-cyan);
+    animation: pulseNode 3s infinite;
+  }
+
+  @keyframes pulseNode {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.8); }
+  }
+
+.network-line {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--network-cyan), transparent);
+    transform-origin: left center;
+    opacity: 0.3;
+    animation: dataFlow 4s linear infinite;
+  }
+
+  @keyframes dataFlow {
+    0% { opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { opacity: 0; }
+  }
+
+.urano-symbol {
+    position: fixed;
+    pointer-events: none;
+    z-index: 3;
+    font-size: 30px;
+    color: var(--urano-purple);
+    text-shadow: 0 0 15px var(--urano-purple), 0 0 30px var(--electric-blue);
+    opacity: 0;
+    font-weight: bold;
+  }
+
+.urano1 {
+    left: 12%;
+    top: -60px;
+    animation: uranoFall1 9s linear infinite;
+  }
+
+.urano2 {
+    left: 38%;
+    top: -60px;
+    transform: scale(0.85);
+    animation: uranoFall2 11s linear infinite;
+    animation-delay: 2s;
+  }
+
+.urano3 {
+    left: 62%;
+    top: -60px;
+    transform: scale(1.15);
+    animation: uranoFall3 10s linear infinite;
+    animation-delay: 4.5s;
+  }
+
+.urano4 {
+    left: 82%;
+    top: -60px;
+    transform: scale(0.9);
+    animation: uranoFall4 12s linear infinite;
+    animation-delay: 6.5s;
+  }
+
+  @keyframes uranoFall1 {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.9; }
+    90% { opacity: 0.9; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  @keyframes uranoFall2 {
+    0% { transform: translateY(0) rotate(0deg) scale(0.85); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(110vh) rotate(-720deg) scale(0.85); opacity: 0; }
+  }
+
+  @keyframes uranoFall3 {
+    0% { transform: translateY(0) rotate(0deg) scale(1.15); opacity: 0; }
+    10% { opacity: 0.95; }
+    90% { opacity: 0.95; }
+    100% { transform: translateY(110vh) rotate(720deg) scale(1.15); opacity: 0; }
+  }
+
+  @keyframes uranoFall4 {
+    0% { transform: translateY(0) rotate(0deg) scale(0.9); opacity: 0; }
+    10% { opacity: 0.85; }
+    90% { opacity: 0.85; }
+    100% { transform: translateY(110vh) rotate(-720deg) scale(0.9); opacity: 0; }
+  }
+
+.cantaro {
+    position: fixed;
+    top: 6%;
+    left: 4%;
+    width: 60px;
+    height: 70px;
+    pointer-events: none;
+    z-index: 4;
+    transform: rotate(180deg);
+  }
+
+.water-stream {
+    position: fixed;
+    top: calc(6% + 68px);
+    left: calc(4% + 27px);
+    width: 8px;
+    height: 0;
+    background: linear-gradient(180deg, var(--water-blue), var(--aquarius-cyan), var(--electric-blue));
+    opacity: 0;
+    animation: waterFall 3s ease-in infinite;
+    z-index: 3;
+    filter: blur(0.3px);
+    box-shadow: 0 0 20px var(--water-blue), 0 0 40px var(--aquarius-cyan);
+    border-radius: 0 0 4px 4px;
+  }
+
+  @keyframes waterFall {
+    0% { height: 0; opacity: 0; }
+    15% { height: 100vh; opacity: 1; }
+    85% { height: 100vh; opacity: 1; }
+    100% { height: 0; opacity: 0; }
+  }
+
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+.crt-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 100px rgba(0, 188, 212, 0.15);
+  }
+
+.floating-star {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+.glitch-title {
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 24px);
+    color: var(--aquarius-cyan);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--electric-blue), -2px -2px 0 var(--urano-purple);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+.aquarius-symbol {
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+  }
+
+.symbol-circle {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+    border: 4px solid var(--aquarius-cyan);
+    border-radius: 50%;
+    background: radial-gradient(circle, #0a1a2a 0%, #0A0A1B 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px var(--aquarius-cyan), inset 0 0 20px rgba(0, 188, 212, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 30px var(--aquarius-cyan), inset 0 0 20px rgba(0, 188, 212, 0.3); }
+    50% { box-shadow: 0 0 50px var(--aquarius-cyan), inset 0 0 30px rgba(0, 188, 212, 0.5); }
+  }
+
+.symbol-text {
+    font-size: 60px;
+    color: var(--aquarius-cyan);
+    text-shadow: 0 0 20px var(--aquarius-cyan);
+  }
+
+.box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+.box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+.box.cyan {
+    background: #0a1a2a;
+    border-color: var(--aquarius-cyan);
+    box-shadow: 8px 8px 0 rgba(0, 188, 212, 0.3), 0 0 20px rgba(0, 188, 212, 0.2);
+  }
+
+.box.gold {
+    background: #2e2416;
+    border-color: var(--gold);
+    box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.3), 0 0 20px rgba(247, 184, 1, 0.2);
+  }
+
+.box.blue {
+    background: #0f1a2e;
+    border-color: var(--electric-blue);
+    box-shadow: 8px 8px 0 rgba(24, 255, 255, 0.3), 0 0 20px rgba(24, 255, 255, 0.2);
+  }
+
+.box.pink {
+    background: #2e1620;
+    border-color: var(--pink);
+    box-shadow: 8px 8px 0 rgba(255, 61, 129, 0.3), 0 0 20px rgba(255, 61, 129, 0.2);
+  }
+
+.box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+.box.cyan.box-title {
+    color: var(--aquarius-cyan);
+  }
+
+.box.gold.box-title {
+    color: var(--gold);
+  }
+
+.box.blue.box-title {
+    color: var(--electric-blue);
+  }
+
+.box.pink.box-title {
+    color: var(--pink);
+  }
+
+.box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+  }
+
+.box p:last-child {
+    margin-bottom: 0;
+  }
+
+.data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+.data-item {
+    font-size: 8px;
+    padding: 8px;
+    border: 2px solid var(--aquarius-cyan);
+    background: rgba(0, 188, 212, 0.1);
+  }
+
+.data-label {
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+.data-value {
+    color: var(--white);
+  }
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+.tag {
+    font-size: 7px;
+    padding: 6px 10px;
+    border: 2px solid;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+.tag.elevado {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+.tag.no-elevado {
+    border-color: var(--pink);
+    color: var(--pink);
+  }
+
+.highlight {
+    color: var(--aquarius-cyan);
+    text-shadow: 0 0 5px var(--aquarius-cyan);
+  }
+
+.highlight-cyan {
+    color: var(--electric-blue);
+    text-shadow: 0 0 5px var(--electric-blue);
+  }
+
+.highlight-gold {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+.divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--aquarius-cyan), var(--electric-blue), var(--aquarius-cyan), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--aquarius-cyan);
+  }
+
+  @media (max-width: 640px) {
+.container {
+      padding: 12px;
+    }
+    
+.box {
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+.box p {
+      font-size: 8px;
+    }
+
+.box-title {
+      font-size: 10px;
+    }
+
+.data-grid {
+      grid-template-columns: 1fr;
+    }
+
+.tag {
+      font-size: 6px;
+      padding: 4px 8px;
+    }
+  }
+
+    /* Nuevas animaciones: aliens y naves estelares */
+    .alien {
+        position: absolute;
+        font-size: 40px;
+        pointer-events: none;
+        z-index: 15;
+        animation: alienFloat 4s ease-in-out forwards;
+        filter: drop-shadow(0 0 8px #0f0);
+    }
+    
+    @keyframes alienFloat {
+        0% { 
+            transform: translateY(0px) rotate(0deg) scale(0); 
+            opacity: 0; 
+        }
+        10% { 
+            transform: translateY(-10px) rotate(10deg) scale(1); 
+            opacity: 1; 
+        }
+        90% { 
+            transform: translateY(-100px) rotate(-10deg) scale(1); 
+            opacity: 1; 
+        }
+        100% { 
+            transform: translateY(-150px) rotate(0deg) scale(0); 
+            opacity: 0; 
+        }
+    }
+    
+    .starship {
+        position: absolute;
+        font-size: 35px;
+        pointer-events: none;
+        z-index: 12;
+        animation: starshipPass 3s linear forwards;
+        filter: drop-shadow(0 0 10px #00ffff);
+    }
+    
+    @keyframes starshipPass {
+        0% { 
+            transform: translateX(-100px) rotate(-5deg); 
+            opacity: 0; 
+        }
+        10% { 
+            opacity: 1; 
+        }
+        90% { 
+            opacity: 1; 
+        }
+        100% { 
+            transform: translateX(calc(100vw + 100px)) rotate(5deg); 
+            opacity: 0; 
+        }
+    }
+
+    </style>
+
+<style>
+/* Animación de naves estelares */
+.nave {
+    position: fixed;
+    width: 60px;
+    height: 30px;
+    background: linear-gradient(45deg, #c0c0c0, #808080);
+    border-radius: 50% 10px 10px 50%;
+    z-index: 9998;
+    opacity: 0;
+    pointer-events: none;
+}
+.nave::before {
+    content: '';
+    position: absolute;
+    right: -15px;
+    top: 10px;
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 15px solid #ff6b35;
+    filter: blur(2px);
+}
+.nave::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    width: 8px;
+    height: 8px;
+    background: #00d9ff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00d9ff;
+}
+
+@keyframes volarNave1 {
+    0% { left: -100px; top: 20%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: 110%; top: 25%; opacity: 0; }
+}
+
+@keyframes volarNave2 {
+    0% { left: 110%; top: 60%; opacity: 0; transform: scaleX(-1); }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { left: -100px; top: 50%; opacity: 0; transform: scaleX(-1); }
+}
+
+/* Alien que aparece de repente */
+.alien {
+    position: fixed;
+    font-size: 50px;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    filter: drop-shadow(0 0 8px #39ff14);
+}
+
+@keyframes aparecerAlien {
+    0% { opacity: 0; transform: scale(0) rotate(0deg); }
+    10% { opacity: 1; transform: scale(1.2) rotate(10deg); }
+    20% { opacity: 1; transform: scale(1) rotate(-5deg); }
+    80% { opacity: 1; transform: scale(1) rotate(5deg); }
+    90% { opacity: 1; transform: scale(1.1) rotate(0deg); }
+    100% { opacity: 0; transform: scale(0) rotate(0deg); }
+}
+
+.nave1 { animation: volarNave1 12s linear infinite; animation-delay: 2s; }
+.nave2 { animation: volarNave2 15s linear infinite; animation-delay: 8s; }
+.alien1 { 
+    top: 40%; 
+    left: 70%; 
+    animation: aparecerAlien 4s ease-in-out infinite; 
+    animation-delay: 18s; 
+}
+
+    /* Nuevas animaciones: aliens y naves estelares */
+    .alien {
+        position: absolute;
+        font-size: 40px;
+        pointer-events: none;
+        z-index: 15;
+        animation: alienFloat 4s ease-in-out forwards;
+        filter: drop-shadow(0 0 8px #0f0);
+    }
+    
+    @keyframes alienFloat {
+        0% { 
+            transform: translateY(0px) rotate(0deg) scale(0); 
+            opacity: 0; 
+        }
+        10% { 
+            transform: translateY(-10px) rotate(10deg) scale(1); 
+            opacity: 1; 
+        }
+        90% { 
+            transform: translateY(-100px) rotate(-10deg) scale(1); 
+            opacity: 1; 
+        }
+        100% { 
+            transform: translateY(-150px) rotate(0deg) scale(0); 
+            opacity: 0; 
+        }
+    }
+    
+    .starship {
+        position: absolute;
+        font-size: 35px;
+        pointer-events: none;
+        z-index: 12;
+        animation: starshipPass 3s linear forwards;
+        filter: drop-shadow(0 0 10px #00ffff);
+    }
+    
+    @keyframes starshipPass {
+        0% { 
+            transform: translateX(-100px) rotate(-5deg); 
+            opacity: 0; 
+        }
+        10% { 
+            opacity: 1; 
+        }
+        90% { 
+            opacity: 1; 
+        }
+        100% { 
+            transform: translateX(calc(100vw + 100px)) rotate(5deg); 
+            opacity: 0; 
+        }
+    }
+
+    </style>
+</head>
+<body>
+<!-- Elementos de animación espacial -->
+<div class="nave nave1"></div>
+<div class="nave nave2"></div>
+<div class="alien alien1">👽</div>
+
+  <div class="stars" id="stars"></div>
+  <div class="network" id="network"></div>
+  
+  <!-- CÁNTARO BOCA ABAJO A LA IZQUIERDA -->
+  <svg class="cantaro" viewBox="0 0 60 70">
+    <!-- Base ahora es arriba -->
+    <rect x="18" y="5" width="24" height="5" fill="#5D4037"/>
+    <!-- Cuerpo del cántaro -->
+    <rect x="15" y="10" width="30" height="35" fill="#8D6E63"/>
+    <rect x="12" y="15" width="3" height="25" fill="#8D6E63"/>
+    <rect x="45" y="15" width="3" height="25" fill="#8D6E63"/>
+    <!-- Boca ahora es abajo -->
+    <rect x="10" y="45" width="40" height="5" fill="#6D4C41"/>
+    <rect x="8" y="50" width="44" height="2" fill="#6D4C41"/>
+    <!-- Asa invertida -->
+    <rect x="48" y="22" width="8" height="3" fill="#6D4C41"/>
+    <rect x="53" y="9" width="3" height="15" fill="#6D4C41"/>
+    <rect x="48" y="7" width="8" height="3" fill="#6D4C41"/>
+  </svg>
+  <div class="water-stream"></div>
+  
+  <div class="urano-symbol urano1">♅</div>
+  <div class="urano-symbol urano2">♅</div>
+  <div class="urano-symbol urano3">♅</div>
+  <div class="urano-symbol urano4">♅</div>
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <svg class="floating-star" style="top: 15%; left: 5%; width: 24px; height: 24px; animation-delay: 0s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#00BCD4"/>
+  </svg>
+  <svg class="floating-star" style="top: 60%; right: 8%; width: 20px; height: 20px; animation-delay: 1s;" viewBox="0 0 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#F7B801"/>
+  </svg>
+  <svg class="floating-star" style="top: 40%; left: 10%; width: 18px; height: 18px; animation-delay: 2s;" viewBox="0 0 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#18FFFF"/>
+  </svg>
+
+  <div class="container">
+    <h1 class="glitch-title">♒ ACUARIO ♒<br>EL AGUADOR</h1>
+
+    <div class="aquarius-symbol">
+      <div class="symbol-circle">
+        <div class="symbol-text">♒</div>
+      </div>
+    </div>
+
+    <div class="box cyan">
+      <div class="box-title">◈ ESENCIA DE ACUARIO ◈</div>
+      <p>Acuario es el <span class="highlight">undécimo signo del zodiaco</span> y representa la innovación, la libertad y la visión del futuro. Su energía es el aire eléctrico que conecta mentes.</p>
+      <p>Regido por <span class="highlight-gold">Urano</span>, planeta de la revolución y el genio, Acuario encarna la <span class="highlight">voluntad de saber</span> y la necesidad de verter conocimiento sobre la humanidad.</p>
+    </div>
+
+    <div class="box gold">
+      <div class="box-title">◆ DATOS CLAVE ◆</div>
+      <div class="data-grid">
+        <div class="data-item">
+          <span class="data-label">ELEMENTO:</span>
+          <span class="data-value">Aire</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">CUALIDAD:</span>
+          <span class="data-value">Fijo</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PRINCIPIO:</span>
+          <span class="data-value">Activo</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">REGENTE:</span>
+          <span class="data-value">Urano</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FRASE CLAVE:</span>
+          <span class="data-value">Yo sé</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PALABRA CLAVE:</span>
+          <span class="data-value">Imaginación</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">SIGNO DE:</span>
+          <span class="data-value">Undécima casa</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FECHAS:</span>
+          <span class="data-value">21 Ene - 20 Feb</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box blue">
+      <div class="box-title">★ CARACTERÍSTICAS GENERALES ★</div>
+      <p><span class="highlight-cyan">Signo Opuesto:</span> Leo</p>
+      <p><span class="highlight-cyan">Regencia anatómica:</span> Pantorrillas, articulaciones, tibia, bazo, talo-calcáneo, tuétano, peroné, sistema nervioso</p>
+      
+      <p style="margin-top: 20px;"><span class="highlight-gold">RASGOS ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag elevado">Inconvencional</span>
+        <span class="tag elevado">Sabio</span>
+        <span class="tag elevado">Científico</span>
+        <span class="tag elevado">Humanitario</span>
+        <span class="tag elevado">Tolerante</span>
+        <span class="tag elevado">Independiente</span>
+        <span class="tag elevado">Ingenioso</span>
+        <span class="tag elevado">Progresista</span>
+        <span class="tag elevado">Solidario</span>
+        <span class="tag elevado">Altruista</span>
+      </div>
+
+      <p style="margin-top: 20px;"><span class="highlight">RASGOS NO ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag no-elevado">Individualista</span>
+        <span class="tag no-elevado">Libertino</span>
+        <span class="tag no-elevado">Temperamental</span>
+        <span class="tag no-elevado">Impredecible</span>
+        <span class="tag no-elevado">Tímido</span>
+        <span class="tag no-elevado">Rebelde</span>
+        <span class="tag no-elevado">Excéntrico</span>
+        <span class="tag no-elevado">Inconsecuente</span>
+        <span class="tag no-elevado">Sabelotodo</span>
+        <span class="tag no-elevado">Presumido</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="box pink">
+      <div class="box-title">✦ ARQUETIPO DEL VISIONARIO ✦</div>
+      <p>Como <span class="highlight-cyan">signo de Aire Fijo</span>, Acuario cristaliza ideas. No solo imagina, inventa, conecta, libera: <span class="highlight">sabe</span>. Su impulso es romper cadenas, crear redes, verter el futuro sobre el presente.</p>
+      <p>La <span class="highlight">Undécima Casa</span> que rige representa los amigos, los grupos, las esperanzas y la consciencia colectiva. Acuario dice: "Esto sé, esto comparto, esto conecto".</p>
+      <p>La frase clave <span class="highlight">"Yo sé"</span> resume su esencia: es genio colectivo, rebeldía iluminada. Su palabra clave <span class="highlight">Imaginación</span> nos recuerda que este signo vino a ser el <span class="highlight">Aguador</span> que vierte agua de estrellas sobre la red humana.</p>
+    </div>
+  </div>
+
+  <script>
+    const starsContainer = document.getElementById('stars');
+    const starCount = 120;
+    
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      
+      const colors = ['#FFFFFF', '#00BCD4', '#F7B801', '#18FFFF'];
+      star.style.background = colors[Math.floor(Math.random() * colors.length)];
+      
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      
+      starsContainer.appendChild(star);
+    }
+
+    // Red neuronal de fondo
+    const networkContainer = document.getElementById('network');
+    const nodeCount = 25;
+    const nodes = [];
+    
+    // Crear nodos
+    for (let i = 0; i < nodeCount; i++) {
+      const node = document.createElement('div');
+      node.className = 'network-node';
+      node.style.left = Math.random() * 100 + '%';
+      node.style.top = Math.random() * 100 + '%';
+      node.style.animationDelay = Math.random() * 3 + 's';
+      networkContainer.appendChild(node);
+      nodes.push(node);
+    }
+
+    // Conectar nodos con líneas
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        if (Math.random() > 0.85) {
+          const line = document.createElement('div');
+          line.className = 'network-line';
+          const x1 = parseFloat(nodes[i].style.left);
+          const y1 = parseFloat(nodes[i].style.top);
+          const x2 = parseFloat(nodes[j].style.left);
+          const y2 = parseFloat(nodes[j].style.top);
+          
+          const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+          const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+          
+          line.style.width = length + '%';
+          line.style.left = x1 + '%';
+          line.style.top = y1 + '%';
+          line.style.transform = `rotate(${angle}deg)`;
+          line.style.animationDelay = Math.random() * 4 + 's';
+          networkContainer.appendChild(line);
+        }
+      }
+    }
+  </script>
+<script>
+    // Animaciones adicionales: aliens cada 6s y naves estelares
+    const alienEmojis = ['👽', '🛸', '👾'];
+    const starshipEmojis = ['🚀', '🛰️', '🛸'];
+    const acuarioContainer = document.querySelector('.acuario') || document.body;
+    
+    function spawnAlien() {
+        const alien = document.createElement('div');
+        alien.className = 'alien';
+        alien.textContent = alienEmojis[Math.floor(Math.random() * alienEmojis.length)];
+        alien.style.left = Math.random() * 80 + 10 + '%';
+        alien.style.top = Math.random() * 60 + 20 + '%';
+        acuarioContainer.appendChild(alien);
+        
+        setTimeout(() => alien.remove(), 4000);
+    }
+    
+    function spawnStarship() {
+        const ship = document.createElement('div');
+        ship.className = 'starship';
+        ship.textContent = starshipEmojis[Math.floor(Math.random() * starshipEmojis.length)];
+        ship.style.top = Math.random() * 70 + 10 + '%';
+        ship.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        acuarioContainer.appendChild(ship);
+        
+        setTimeout(() => ship.remove(), 5000);
+    }
+    
+    // Iniciar animaciones: alien cada 6 segundos
+    setInterval(spawnAlien, 6000);
+    // Naves estelares cada 4-8 segundos aleatorio
+    setInterval(() => {
+        if (Math.random() > 0.3) spawnStarship();
+    }, 4000);
+    
+    // Spawn inicial para que no espere 6s
+    setTimeout(spawnAlien, 1000);
+    setTimeout(spawnStarship, 2000);
+</script>
+</body>
+</html>

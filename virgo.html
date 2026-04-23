@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>♍ VIRGO - La Virgen ♍</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --virgo-green: #4CAF50;
+    --earth-brown: #6D4C41;
+    --earth-light: #8D6E63;
+    --earth-dark: #4E342E;
+    --mercury-silver: #B0BEC5;
+    --deep-green: #1B5E20;
+    --white: #F0F0F0;
+  }
+
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  .earth-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .particle {
+    position: absolute;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    animation: floatDust 15s linear infinite;
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.4);
+  }
+
+  .particle.small {
+    width: 4px;
+    height: 4px;
+    opacity: 0.7;
+  }
+
+  .particle.medium {
+    width: 6px;
+    height: 6px;
+    opacity: 0.8;
+  }
+
+  .particle.large {
+    width: 8px;
+    height: 8px;
+    opacity: 0.9;
+  }
+
+  @keyframes floatDust {
+    0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(-100vh) translateX(50px) rotate(180deg); opacity: 0; }
+  }
+
+  .earth-ground {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 25%;
+    pointer-events: none;
+    z-index: 1;
+    background: 
+      radial-gradient(ellipse at 10% 100%, var(--earth-dark) 0%, transparent 40%),
+      radial-gradient(ellipse at 30% 100%, var(--earth-brown) 0%, transparent 50%),
+      radial-gradient(ellipse at 60% 100%, var(--earth-dark) 0%, transparent 45%),
+      radial-gradient(ellipse at 85% 100%, var(--earth-brown) 0%, transparent 40%);
+    opacity: 0.4;
+  }
+
+  .mercury-symbol {
+    position: fixed;
+    pointer-events: none;
+    z-index: 3;
+    font-size: 20px;
+    color: var(--mercury-silver);
+    text-shadow: 0 0 10px var(--mercury-silver), 0 0 20px var(--virgo-green);
+    opacity: 0;
+    font-weight: bold;
+  }
+
+  .merc1 {
+    left: 12%;
+    top: -50px;
+    animation: mercFall1 9s linear infinite;
+  }
+
+  .merc2 {
+    left: 32%;
+    top: -50px;
+    transform: scale(0.8);
+    animation: mercFall2 11s linear infinite;
+    animation-delay: 2s;
+  }
+
+  .merc3 {
+    left: 52%;
+    top: -50px;
+    transform: scale(1.2);
+    animation: mercFall3 8s linear infinite;
+    animation-delay: 4s;
+  }
+
+  .merc4 {
+    left: 72%;
+    top: -50px;
+    transform: scale(0.9);
+    animation: mercFall4 10s linear infinite;
+    animation-delay: 1s;
+  }
+
+  .merc5 {
+    left: 88%;
+    top: -50px;
+    transform: scale(0.7);
+    animation: mercFall5 12s linear infinite;
+    animation-delay: 5.5s;
+  }
+
+  .merc6 {
+    left: 18%;
+    top: -50px;
+    transform: scale(1.1);
+    animation: mercFall6 9.5s linear infinite;
+    animation-delay: 6.5s;
+  }
+
+  @keyframes mercFall1 {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.85; }
+    90% { opacity: 0.85; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  @keyframes mercFall2 {
+    0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
+    10% { opacity: 0.75; }
+    90% { opacity: 0.75; }
+    100% { transform: translateY(110vh) rotate(-360deg) scale(0.8); opacity: 0; }
+  }
+
+  @keyframes mercFall3 {
+    0% { transform: translateY(0) rotate(0deg) scale(1.2); opacity: 0; }
+    10% { opacity: 0.9; }
+    90% { opacity: 0.9; }
+    100% { transform: translateY(110vh) rotate(360deg) scale(1.2); opacity: 0; }
+  }
+
+  @keyframes mercFall4 {
+    0% { transform: translateY(0) rotate(0deg) scale(0.9); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(110vh) rotate(-360deg) scale(0.9); opacity: 0; }
+  }
+
+  @keyframes mercFall5 {
+    0% { transform: translateY(0) rotate(0deg) scale(0.7); opacity: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.7; }
+    100% { transform: translateY(110vh) rotate(360deg) scale(0.7); opacity: 0; }
+  }
+
+  @keyframes mercFall6 {
+    0% { transform: translateY(0) rotate(0deg) scale(1.1); opacity: 0; }
+    10% { opacity: 0.85; }
+    90% { opacity: 0.85; }
+    100% { transform: translateY(110vh) rotate(-360deg) scale(1.1); opacity: 0; }
+  }
+
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  .crt-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 100px rgba(76, 175, 80, 0.1);
+  }
+
+  .floating-star {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 24px);
+    color: var(--virgo-green);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--earth-brown), -2px -2px 0 var(--deep-green);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  .virgo-symbol {
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+  }
+
+  .symbol-circle {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+    border: 4px solid var(--virgo-green);
+    border-radius: 50%;
+    background: radial-gradient(circle, #1a3a1a 0%, #0A0A1B 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px var(--virgo-green), inset 0 0 20px rgba(76, 175, 80, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 30px var(--virgo-green), inset 0 0 20px rgba(76, 175, 80, 0.3); }
+    50% { box-shadow: 0 0 50px var(--virgo-green), inset 0 0 30px rgba(76, 175, 80, 0.5); }
+  }
+
+  .symbol-text {
+    font-size: 60px;
+    color: var(--virgo-green);
+    text-shadow: 0 0 20px var(--virgo-green);
+  }
+
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .box.green {
+    background: #0f2e1a;
+    border-color: var(--virgo-green);
+    box-shadow: 8px 8px 0 rgba(76, 175, 80, 0.3), 0 0 20px rgba(76, 175, 80, 0.2);
+  }
+
+  .box.gold {
+    background: #2e2416;
+    border-color: var(--gold);
+    box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.3), 0 0 20px rgba(247, 184, 1, 0.2);
+  }
+
+  .box.cyan {
+    background: #0f1a2e;
+    border-color: var(--cyan);
+    box-shadow: 8px 8px 0 rgba(0, 217, 255, 0.3), 0 0 20px rgba(0, 217, 255, 0.2);
+  }
+
+  .box.pink {
+    background: #2e1620;
+    border-color: var(--pink);
+    box-shadow: 8px 8px 0 rgba(255, 61, 129, 0.3), 0 0 20px rgba(255, 61, 129, 0.2);
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .box.green .box-title {
+    color: var(--virgo-green);
+  }
+
+  .box.gold .box-title {
+    color: var(--gold);
+  }
+
+  .box.cyan .box-title {
+    color: var(--cyan);
+  }
+
+  .box.pink .box-title {
+    color: var(--pink);
+  }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+  }
+
+  .box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .data-item {
+    font-size: 8px;
+    padding: 8px;
+    border: 2px solid var(--virgo-green);
+    background: rgba(76, 175, 80, 0.1);
+  }
+
+  .data-label {
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .data-value {
+    color: var(--white);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .tag {
+    font-size: 7px;
+    padding: 6px 10px;
+    border: 2px solid;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .tag.elevado {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .tag.no-elevado {
+    border-color: var(--pink);
+    color: var(--pink);
+  }
+
+  .highlight {
+    color: var(--virgo-green);
+    text-shadow: 0 0 5px var(--virgo-green);
+  }
+
+  .highlight-cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 5px var(--cyan);
+  }
+
+  .highlight-gold {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--virgo-green), var(--earth-brown), var(--virgo-green), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--virgo-green);
+  }
+
+  @media (max-width: 640px) {
+    .container {
+      padding: 12px;
+    }
+    
+    .box {
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .box p {
+      font-size: 8px;
+    }
+
+    .box-title {
+      font-size: 10px;
+    }
+
+    .data-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tag {
+      font-size: 6px;
+      padding: 4px 8px;
+    }
+  }
+
+  /* 1. ESPIGAS DE TRIGO CRECIENDO */
+  .wheat-stalk {
+    position: fixed;
+    bottom: 0;
+    width: 4px;
+    background: var(--earth-brown);
+    z-index: 2;
+    pointer-events: none;
+    transform-origin: bottom;
+    animation: wheatGrow 12s ease-out infinite;
+  }
+  
+  .wheat-stalk::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 20px;
+    background: linear-gradient(to top, var(--gold), var(--earth-brown));
+    clip-path: polygon(50% 0%, 20% 40%, 30% 40%, 10% 70%, 25% 70%, 50% 100%, 75% 70%, 90% 70%, 70% 40%, 80% 40%);
+    opacity: 0;
+    animation: wheatHead 12s ease-out infinite;
+  }
+  
+  .wheat-stalk::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: grainFall 12s linear infinite;
+  }
+  
+  @keyframes wheatGrow {
+    0%, 10% { height: 0; }
+    40%, 100% { height: 80px; }
+  }
+  
+  @keyframes wheatHead {
+    0%, 35% { opacity: 0; transform: translateX(-50%) scale(0); }
+    50%, 90% { opacity: 1; transform: translateX(-50%) scale(1); }
+    100% { opacity: 0; }
+  }
+  
+  @keyframes grainFall {
+    0%, 60% { top: -20px; left: 50%; opacity: 0; }
+    65% { opacity: 1; }
+    100% { top: 100px; left: calc(50% + 10px); opacity: 0; }
+  }
+  
+  .wheat1 { left: 15%; animation-delay: 0s; }
+  .wheat2 { left: 35%; animation-delay: 2s; height: 70px !important; }
+  .wheat3 { left: 55%; animation-delay: 4s; }
+  .wheat4 { left: 75%; animation-delay: 1s; height: 90px !important; }
+  .wheat5 { left: 85%; animation-delay: 3s; }
+  
+  /* 2. CUADRÍCULA DE ORGANIZACIÓN */
+  .grid-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    animation: gridFade 15s ease-in-out infinite;
+  }
+  
+  .grid-line {
+    position: absolute;
+    background: var(--virgo-green);
+    box-shadow: 0 0 5px var(--virgo-green);
+  }
+  
+  .grid-h {
+    width: 100%;
+    height: 1px;
+    animation: drawHorizontal 15s linear infinite;
+  }
+  
+  .grid-v {
+    height: 100%;
+    width: 1px;
+    animation: drawVertical 15s linear infinite;
+  }
+  
+  @keyframes gridFade {
+    0%, 5% { opacity: 0; }
+    15%, 85% { opacity: 0.15; }
+    95%, 100% { opacity: 0; }
+  }
+  
+  @keyframes drawHorizontal {
+    0%, 10% { transform: scaleX(0); }
+    30%, 80% { transform: scaleX(1); }
+    90%, 100% { transform: scaleX(0); }
+  }
+  
+  @keyframes drawVertical {
+    0%, 20% { transform: scaleY(0); }
+    40%, 70% { transform: scaleY(1); }
+    80%, 100% { transform: scaleY(0); }
+  }
+  
+  /* 3. MANOS QUE LIMPIAN */
+  .cleaning-hand {
+    position: fixed;
+    font-size: 24px;
+    z-index: 3;
+    pointer-events: none;
+    opacity: 0;
+    filter: drop-shadow(0 0 10px var(--virgo-green));
+    animation: handSweep 10s ease-in-out infinite;
+  }
+  
+  .cleaning-hand::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, rgba(76, 175, 80, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .hand1 { animation-delay: 0s; }
+  .hand2 { animation-delay: 5s; }
+  
+  @keyframes handSweep {
+    0% { left: -50px; top: 30%; opacity: 0; transform: rotate(-20deg); }
+    10% { opacity: 0.7; }
+    50% { left: 50%; top: 50%; transform: rotate(0deg); }
+    90% { opacity: 0.7; }
+    100% { left: 110%; top: 70%; opacity: 0; transform: rotate(20deg); }
+  }
+  
+  /* 4. HOJAS CAYENDO EN ESPIRAL */
+  .falling-leaf {
+    position: fixed;
+    font-size: 16px;
+    z-index: 2;
+    pointer-events: none;
+    animation: leafFall 8s ease-in-out infinite;
+    filter: drop-shadow(0 0 5px var(--earth-brown));
+  }
+  
+  @keyframes leafFall {
+    0% { transform: translateY(-50px) translateX(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.8; }
+    25% { transform: translateY(25vh) translateX(30px) rotate(90deg); }
+    50% { transform: translateY(50vh) translateX(-20px) rotate(180deg); }
+    75% { transform: translateY(75vh) translateX(40px) rotate(270deg); }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(110vh) translateX(0) rotate(360deg); opacity: 0; }
+  }
+  
+  .leaf1 { left: 10%; animation-delay: 0s; }
+  .leaf2 { left: 25%; animation-delay: 1.5s; font-size: 14px; }
+  .leaf3 { left: 45%; animation-delay: 3s; }
+  .leaf4 { left: 65%; animation-delay: 4.5s; font-size: 18px; }
+  .leaf5 { left: 80%; animation-delay: 6s; }
+  .leaf6 { left: 90%; animation-delay: 2s; font-size: 12px; }
+
+</style>
+</head>
+<body>
+  <!-- 1. ESPIGAS DE TRIGO -->
+  <div class="wheat-stalk wheat1"></div>
+  <div class="wheat-stalk wheat2"></div>
+  <div class="wheat-stalk wheat3"></div>
+  <div class="wheat-stalk wheat4"></div>
+  <div class="wheat-stalk wheat5"></div>
+  
+  <!-- 2. CUADRÍCULA DE ORGANIZACIÓN -->
+  <div class="grid-overlay">
+    <div class="grid-line grid-h" style="top: 20%; animation-delay: 0s;"></div>
+    <div class="grid-line grid-h" style="top: 40%; animation-delay: 0.5s;"></div>
+    <div class="grid-line grid-h" style="top: 60%; animation-delay: 1s;"></div>
+    <div class="grid-line grid-h" style="top: 80%; animation-delay: 1.5s;"></div>
+    <div class="grid-line grid-v" style="left: 20%; animation-delay: 2s;"></div>
+    <div class="grid-line grid-v" style="left: 40%; animation-delay: 2.5s;"></div>
+    <div class="grid-line grid-v" style="left: 60%; animation-delay: 3s;"></div>
+    <div class="grid-line grid-v" style="left: 80%; animation-delay: 3.5s;"></div>
+  </div>
+  
+  <!-- 3. MANOS QUE LIMPIAN -->
+  <div class="cleaning-hand hand1">🤚</div>
+  <div class="cleaning-hand hand2">🤚</div>
+  
+  <!-- 4. HOJAS CAYENDO -->
+  <div class="falling-leaf leaf1">🍃</div>
+  <div class="falling-leaf leaf2">🍂</div>
+  <div class="falling-leaf leaf3">🍃</div>
+  <div class="falling-leaf leaf4">🍂</div>
+  <div class="falling-leaf leaf5">🍃</div>
+  <div class="falling-leaf leaf6">🍂</div>
+
+  <div class="stars" id="stars"></div>
+  <div class="earth-particles" id="particles"></div>
+  <div class="earth-ground"></div>
+  <div class="mercury-symbol merc1">☿</div>
+  <div class="mercury-symbol merc2">☿</div>
+  <div class="mercury-symbol merc3">☿</div>
+  <div class="mercury-symbol merc4">☿</div>
+  <div class="mercury-symbol merc5">☿</div>
+  <div class="mercury-symbol merc6">☿</div>
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <svg class="floating-star" style="top: 15%; left: 5%; width: 24px; height: 24px; animation-delay: 0s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#4CAF50"/>
+  </svg>
+  <svg class="floating-star" style="top: 60%; right: 8%; width: 20px; height: 20px; animation-delay: 1s;" viewBox="0 0 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#F7B801"/>
+  </svg>
+  <svg class="floating-star" style="top: 40%; left: 10%; width: 18px; height: 18px; animation-delay: 2s;" viewBox="0 0 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#B0BEC5"/>
+  </svg>
+
+  <div class="container">
+    <h1 class="glitch-title">♍ VIRGO ♍<br>LA VIRGEN</h1>
+
+    <div class="virgo-symbol">
+      <div class="symbol-circle">
+        <div class="symbol-text">♍</div>
+      </div>
+    </div>
+
+    <div class="box green">
+      <div class="box-title">◈ ESENCIA DE VIRGO ◈</div>
+      <p>Virgo es el <span class="highlight">sexto signo del zodiaco</span> y representa el análisis, el servicio y la perfección terrenal. Su energía es la tierra fértil que ordena y purifica.</p>
+      <p>Regido por <span class="highlight-gold">Mercurio</span>, planeta de la mente y la comunicación, Virgo encarna la <span class="highlight">voluntad de analizar</span> y la necesidad de hacer útil cada detalle.</p>
+    </div>
+
+    <div class="box gold">
+      <div class="box-title">◆ DATOS CLAVE ◆</div>
+      <div class="data-grid">
+        <div class="data-item">
+          <span class="data-label">ELEMENTO:</span>
+          <span class="data-value">Tierra</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">CUALIDAD:</span>
+          <span class="data-value">Mutable</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PRINCIPIO:</span>
+          <span class="data-value">Pasivo</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">REGENTE:</span>
+          <span class="data-value">Mercurio</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FRASE CLAVE:</span>
+          <span class="data-value">Yo analizo</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PALABRA CLAVE:</span>
+          <span class="data-value">Viabilidad</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">SIGNO DE:</span>
+          <span class="data-value">Sexta casa</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FECHAS:</span>
+          <span class="data-value">23 Ago - 22 Sep</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box cyan">
+      <div class="box-title">★ CARACTERÍSTICAS GENERALES ★</div>
+      <p><span class="highlight-cyan">Signo Opuesto:</span> Piscis</p>
+      <p><span class="highlight-cyan">Regencia anatómica:</span> Vientre, ombligo, manos, intestino delgado, carpo, metacarpo, aparato gastrointestinal</p>
+      
+      <p style="margin-top: 20px;"><span class="highlight-gold">RASGOS ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag elevado">Sistemático</span>
+        <span class="tag elevado">Perfeccionista</span>
+        <span class="tag elevado">Analítico</span>
+        <span class="tag elevado">Ordenado</span>
+        <span class="tag elevado">Pulcro</span>
+        <span class="tag elevado">Metódico</span>
+        <span class="tag elevado">Laborioso</span>
+        <span class="tag elevado">Detallista</span>
+        <span class="tag elevado">Intelectual</span>
+        <span class="tag elevado">Sentido común</span>
+      </div>
+
+      <p style="margin-top: 20px;"><span class="highlight">RASGOS NO ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag no-elevado">Criticón</span>
+        <span class="tag no-elevado">Mañoso</span>
+        <span class="tag no-elevado">Escéptico</span>
+        <span class="tag no-elevado">Quisquilloso</span>
+        <span class="tag no-elevado">Mezquino</span>
+        <span class="tag no-elevado">Discriminador</span>
+        <span class="tag no-elevado">Miedoso</span>
+        <span class="tag no-elevado">Depresivo</span>
+        <span class="tag no-elevado">Incrédulo</span>
+        <span class="tag no-elevado">Imaginativo</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="box pink">
+      <div class="box-title">✦ ARQUETIPO DEL ARTESANO ✦</div>
+      <p>Como <span class="highlight-cyan">signo de Tierra Mutable</span>, Virgo perfecciona. No se queda con lo general, analiza, clasifica, sirve: <span class="highlight">refina</span>. Su impulso es hacer útil, curar, ordenar el caos.</p>
+      <p>La <span class="highlight">Sexta Casa</span> que rige representa el trabajo, la salud, la rutina y el servicio. Virgo dice: "Esto analizo, esto mejoro, esto sirvo".</p>
+      <p>La frase clave <span class="highlight">"Yo analizo"</span> resume su esencia: es discernimiento, método, servicio práctico. Su palabra clave <span class="highlight">Viabilidad</span> nos recuerda que este signo vino a hacer funcionar, a depurar, a volver eficiente la vida.</p>
+    </div>
+  </div>
+
+  <script>
+    const starsContainer = document.getElementById('stars');
+    const starCount = 100;
+    
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      
+      const colors = ['#FFFFFF', '#4CAF50', '#F7B801', '#B0BEC5'];
+      star.style.background = colors[Math.floor(Math.random() * colors.length)];
+      
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      
+      starsContainer.appendChild(star);
+    }
+
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 80;
+    
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      
+      const sizes = ['small', 'medium', 'large'];
+      particle.classList.add(sizes[Math.floor(Math.random() * sizes.length)]);
+      
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.top = (100 + Math.random() * 20) + '%';
+      particle.style.animationDelay = Math.random() * 15 + 's';
+      particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+      
+      const colors = ['#6D4C41', '#8D6E63', '#A1887F', '#4E342E'];
+      particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+      
+      particlesContainer.appendChild(particle);
+    }
+  </script>
+</body>
+</html>

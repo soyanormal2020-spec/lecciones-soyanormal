@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>♓ PISCIS - Los Peces ♓</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #000000;
+    --nebula-purple: #1A0B2E;
+    --nebula-blue: #0A1628;
+    --pisces-teal: #00695C;
+    --ocean-blue: #01579B;
+    --neptune-blue: #0277BD;
+    --water-cyan: #00ACC1;
+    --mystic-purple: #7B1FA2;
+    --fish-white: #F5F5F5;
+    --fish-deep-blue: #1565C0;
+    --asteroid-grey: #616161;
+    --comet-tail: #E1F5FE;
+    --planet-orange: #FF6F00;
+    --planet-red: #D32F2F;
+    --planet-yellow: #FBC02D;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --pink: #FF3D81;
+    --white: #E0E0E0;
+  }
+
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+.galaxy-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    background: 
+      radial-gradient(ellipse at 15% 25%, rgba(26, 11, 46, 0.6) 0%, transparent 40%),
+      radial-gradient(ellipse at 85% 75%, rgba(10, 22, 40, 0.5) 0%, transparent 40%),
+      radial-gradient(ellipse at 50% 50%, rgba(74, 20, 140, 0.15) 0%, transparent 60%);
+    animation: galaxyPulse 40s ease-in-out infinite;
+  }
+
+  @keyframes galaxyPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
+  }
+
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(2); box-shadow: 0 0 10px var(--white); }
+  }
+
+.planet {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    animation: planetOrbit 60s linear infinite;
+  }
+
+  @keyframes planetOrbit {
+    0% { transform: rotate(0deg) translateX(50px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
+  }
+
+.asteroid {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    background: var(--asteroid-grey);
+    border-radius: 40%;
+    opacity: 0.7;
+    animation: asteroidFloat 50s linear infinite;
+  }
+
+  @keyframes asteroidFloat {
+    0% { transform: translateY(0) translateX(0) rotate(0deg); }
+    100% { transform: translateY(-120vh) translateX(100px) rotate(720deg); }
+  }
+
+.comet {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    width: 4px;
+    height: 4px;
+    background: var(--white);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--white), -20px 0 20px var(--comet-tail), -40px 0 30px rgba(225, 245, 254, 0.5);
+    animation: cometFly 8s linear infinite;
+  }
+
+  @keyframes cometFly {
+    0% { 
+      left: -50px; 
+      top: 20%; 
+      opacity: 0;
+    }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { 
+      left: calc(100% + 50px); 
+      top: 40%; 
+      opacity: 0;
+    }
+  }
+
+.network {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+.network-node {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: var(--water-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--water-cyan);
+    animation: pulseNode 3s infinite;
+  }
+
+  @keyframes pulseNode {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(2); }
+  }
+
+.network-line {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--water-cyan), transparent);
+    transform-origin: left center;
+    opacity: 0.2;
+    animation: dataFlow 4s linear infinite;
+  }
+
+  @keyframes dataFlow {
+    0% { opacity: 0; }
+    10% { opacity: 0.5; }
+    90% { opacity: 0.5; }
+    100% { opacity: 0; }
+  }
+
+.neptune-symbol {
+    position: fixed;
+    pointer-events: none;
+    z-index: 3;
+    font-size: 30px;
+    color: var(--neptune-blue);
+    text-shadow: 0 0 20px var(--neptune-blue), 0 0 40px var(--mystic-purple);
+    opacity: 0;
+    font-weight: bold;
+  }
+
+.neptune1 {
+    left: 12%;
+    top: -60px;
+    animation: neptuneFall1 12s linear infinite;
+  }
+
+.neptune2 {
+    left: 38%;
+    top: -60px;
+    transform: scale(0.85);
+    animation: neptuneFall2 14s linear infinite;
+    animation-delay: 3s;
+  }
+
+.neptune3 {
+    left: 62%;
+    top: -60px;
+    transform: scale(1.15);
+    animation: neptuneFall3 13s linear infinite;
+    animation-delay: 6s;
+  }
+
+.neptune4 {
+    left: 82%;
+    top: -60px;
+    transform: scale(0.9);
+    animation: neptuneFall4 15s linear infinite;
+    animation-delay: 8s;
+  }
+
+  @keyframes neptuneFall1 {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.9; }
+    90% { opacity: 0.9; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  @keyframes neptuneFall2 {
+    0% { transform: translateY(0) rotate(0deg) scale(0.85); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(110vh) rotate(-360deg) scale(0.85); opacity: 0; }
+  }
+
+  @keyframes neptuneFall3 {
+    0% { transform: translateY(0) rotate(0deg) scale(1.15); opacity: 0; }
+    10% { opacity: 0.95; }
+    90% { opacity: 0.95; }
+    100% { transform: translateY(110vh) rotate(360deg) scale(1.15); opacity: 0; }
+  }
+
+  @keyframes neptuneFall4 {
+    0% { transform: translateY(0) rotate(0deg) scale(0.9); opacity: 0; }
+    10% { opacity: 0.85; }
+    90% { opacity: 0.85; }
+    100% { transform: translateY(110vh) rotate(-360deg) scale(0.9); opacity: 0; }
+  }
+
+.fish-container {
+    position: fixed;
+    pointer-events: none;
+    z-index: 4;
+  }
+
+.fish-white {
+    top: 25%;
+    left: -100px;
+    animation: fishSwimRight 22s linear infinite;
+  }
+
+.fish-blue {
+    top: 65%;
+    left: -100px;
+    animation: fishSwimRight 26s linear infinite;
+    animation-delay: 6s;
+  }
+
+.star-trail {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+.star-drop {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--gold), 0 0 20px var(--white);
+    opacity: 0;
+    animation: starFade 1.5s ease-out infinite;
+  }
+
+  @keyframes starFade {
+    0% { opacity: 1; transform: scale(1) rotate(0deg); }
+    100% { opacity: 0; transform: scale(0.2) rotate(180deg) translateY(20px); }
+  }
+
+  @keyframes fishSwimRight {
+    0% { left: -100px; transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-40px) rotate(-8deg); }
+    50% { transform: translateY(30px) rotate(8deg); }
+    75% { transform: translateY(-20px) rotate(-5deg); }
+    100% { left: calc(100% + 100px); transform: translateY(0) rotate(0deg); }
+  }
+
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+.crt-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 100px rgba(0, 105, 92, 0.15);
+  }
+
+.floating-star {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+.glitch-title {
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 24px);
+    color: var(--pisces-teal);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--ocean-blue), -2px -2px 0 var(--mystic-purple);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+.pisces-symbol {
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+  }
+
+.symbol-circle {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+    border: 4px solid var(--pisces-teal);
+    border-radius: 50%;
+    background: radial-gradient(circle, #001a14 0%, #000000 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px var(--pisces-teal), inset 0 0 20px rgba(0, 105, 92, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 30px var(--pisces-teal), inset 0 0 20px rgba(0, 105, 92, 0.3); }
+    50% { box-shadow: 0 0 50px var(--pisces-teal), inset 0 0 30px rgba(0, 105, 92, 0.5); }
+  }
+
+.symbol-text {
+    font-size: 60px;
+    color: var(--pisces-teal);
+    text-shadow: 0 0 20px var(--pisces-teal);
+  }
+
+.box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+.box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+.box.teal {
+    background: #001a14;
+    border-color: var(--pisces-teal);
+    box-shadow: 8px 8px 0 rgba(0, 105, 92, 0.3), 0 0 20px rgba(0, 105, 92, 0.2);
+  }
+
+.box.gold {
+    background: #2e2416;
+    border-color: var(--gold);
+    box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.3), 0 0 20px rgba(247, 184, 1, 0.2);
+  }
+
+.box.cyan {
+    background: #0f1a2e;
+    border-color: var(--water-cyan);
+    box-shadow: 8px 8px 0 rgba(0, 172, 193, 0.3), 0 0 20px rgba(0, 172, 193, 0.2);
+  }
+
+.box.pink {
+    background: #2e1620;
+    border-color: var(--pink);
+    box-shadow: 8px 8px 0 rgba(255, 61, 129, 0.3), 0 0 20px rgba(255, 61, 129, 0.2);
+  }
+
+.box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+.box.teal.box-title {
+    color: var(--pisces-teal);
+  }
+
+.box.gold.box-title {
+    color: var(--gold);
+  }
+
+.box.cyan.box-title {
+    color: var(--water-cyan);
+  }
+
+.box.pink.box-title {
+    color: var(--pink);
+  }
+
+.box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #E0E0E0;
+  }
+
+.box p:last-child {
+    margin-bottom: 0;
+  }
+
+.data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+.data-item {
+    font-size: 8px;
+    padding: 8px;
+    border: 2px solid var(--pisces-teal);
+    background: rgba(0, 105, 92, 0.1);
+  }
+
+.data-label {
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+.data-value {
+    color: var(--white);
+  }
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+.tag {
+    font-size: 7px;
+    padding: 6px 10px;
+    border: 2px solid;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+.tag.elevado {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+.tag.no-elevado {
+    border-color: var(--pink);
+    color: var(--pink);
+  }
+
+.highlight {
+    color: var(--pisces-teal);
+    text-shadow: 0 0 5px var(--pisces-teal);
+  }
+
+.highlight-cyan {
+    color: var(--water-cyan);
+    text-shadow: 0 0 5px var(--water-cyan);
+  }
+
+.highlight-gold {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+.divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--pisces-teal), var(--water-cyan), var(--pisces-teal), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--pisces-teal);
+  }
+
+  @media (max-width: 640px) {
+.container {
+      padding: 12px;
+    }
+    
+.box {
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+.box p {
+      font-size: 8px;
+    }
+
+.box-title {
+      font-size: 10px;
+    }
+
+.data-grid {
+      grid-template-columns: 1fr;
+    }
+
+.tag {
+      font-size: 6px;
+      padding: 4px 8px;
+    }
+  }
+
+    /* Control de opacidad de neblina - valores muy sutiles */
+    :root {
+        --neblina-opacidad-1: 0.03;
+        --neblina-opacidad-2: 0.02;
+        --neblina-opacidad-3: 0.015;
+    }
+    
+    /* Fondo espacial con iluminación */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+        background: radial-gradient(ellipse at 20% 30%, rgba(138, 43, 226, 0.3) 0%, transparent 50%),
+                    radial-gradient(ellipse at 80% 70%, rgba(30, 144, 255, 0.25) 0%, transparent 50%),
+                    radial-gradient(ellipse at 50% 50%, rgba(75, 0, 130, 0.2) 0%, transparent 60%),
+                    #000510;
+        animation: espacioPulso 8s ease-in-out infinite;
+    }
+    
+    @keyframes espacioPulso {
+        0%, 100% { 
+            filter: brightness(0.8) saturate(1.2); 
+        }
+        50% { 
+            filter: brightness(1.2) saturate(1.5); 
+        }
+    }
+    
+    /* Capa de neblina MUY sutil */
+    body::after {
+        content: '';
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        z-index: -1;
+        background: 
+            radial-gradient(ellipse 800px 600px at 30% 40%, rgba(100, 149, 237, var(--neblina-opacidad-1)) 0%, transparent 70%),
+            radial-gradient(ellipse 600px 900px at 70% 60%, rgba(147, 112, 219, var(--neblina-opacidad-2)) 0%, transparent 70%),
+            radial-gradient(ellipse 700px 500px at 50% 20%, rgba(72, 61, 139, var(--neblina-opacidad-3)) 0%, transparent 70%);
+        animation: neblinaFlota 25s linear infinite;
+        pointer-events: none;
+        mix-blend-mode: screen;
+    }
+    
+    @keyframes neblinaFlota {
+        0% { 
+            transform: translate(0, 0) rotate(0deg); 
+        }
+        100% { 
+            transform: translate(-10%, -10%) rotate(360deg); 
+        }
+    }
+    
+    /* Estrellas parpadeantes */
+    .estrella-fondo {
+        position: fixed;
+        background: white;
+        border-radius: 50%;
+        z-index: -1;
+        animation: parpadeo 3s ease-in-out infinite;
+        pointer-events: none;
+    }
+    
+    @keyframes parpadeo {
+        0%, 100% { opacity: 0.2; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.3); }
+    }
+
+    
+    /* Halo/Aura color perla pulsante */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 120%;
+        height: 120%;
+        transform: translate(-50%, -50%);
+        z-index: -3;
+        background: radial-gradient(
+            ellipse at center, 
+            rgba(245, 245, 250, 0.12) 0%, 
+            rgba(230, 230, 250, 0.08) 30%,
+            rgba(220, 220, 235, 0.04) 50%,
+            transparent 70%
+        );
+        animation: haloPulso 6s ease-in-out infinite;
+        pointer-events: none;
+        mix-blend-mode: screen;
+    }
+    
+    @keyframes haloPulso {
+        0%, 100% { 
+            transform: translate(-50%, -50%) scale(0.9);
+            opacity: 0.6;
+        }
+        50% { 
+            transform: translate(-50%, -50%) scale(1.1);
+            opacity: 1;
+        }
+    }
+    
+    /* Ondas de agua etéreas */
+    .onda-agua {
+        position: fixed;
+        border: 1px solid rgba(200, 220, 255, 0.3);
+        border-radius: 50%;
+        z-index: -1;
+        pointer-events: none;
+        animation: ondaExpandir 4s ease-out forwards;
+        mix-blend-mode: screen;
+    }
+    
+    @keyframes ondaExpandir {
+        0% {
+            width: 0px;
+            height: 0px;
+            opacity: 0.6;
+            border-width: 2px;
+        }
+        50% {
+            opacity: 0.3;
+            border-width: 1px;
+        }
+        100% {
+            width: 400px;
+            height: 400px;
+            opacity: 0;
+            border-width: 0px;
+        }
+    }
+    
+    /* Variante de ondas con brillo perla */
+    .onda-perla {
+        position: fixed;
+        border-radius: 50%;
+        z-index: -1;
+        pointer-events: none;
+        background: radial-gradient(
+            circle, 
+            rgba(248, 248, 255, 0.15) 0%, 
+            rgba(240, 240, 250, 0.08) 40%,
+            transparent 70%
+        );
+        animation: ondaPerlaExpandir 5s ease-out forwards;
+        mix-blend-mode: overlay;
+    }
+    
+    @keyframes ondaPerlaExpandir {
+        0% {
+            width: 0px;
+            height: 0px;
+            opacity: 0.5;
+            transform: scale(0);
+        }
+        100% {
+            width: 500px;
+            height: 500px;
+            opacity: 0;
+            transform: scale(1);
+        }
+    }
+
+    
+    /* Estrella pixel art flotante */
+    .estrella-pixel {
+        position: fixed;
+        width: 8px;
+        height: 8px;
+        background: #ffffff;
+        z-index: -1;
+        pointer-events: none;
+        animation: pixelFlotar 15s linear infinite;
+        box-shadow: 
+            8px 0 0 #ffffff,
+            0 8px 0 #ffffff,
+            8px 8px 0 #ffffff,
+            16px 8px 0 #ffffff,
+            8px 16px 0 #ffffff;
+        image-rendering: pixelated;
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+    }
+    
+    @keyframes pixelFlotar {
+        0% {
+            transform: translateY(100vh) translateX(0) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100px) translateX(50px) rotate(180deg);
+            opacity: 0;
+        }
+    }
+    
+    /* Planeta atravesando */
+    .planeta {
+        position: fixed;
+        z-index: -2;
+        pointer-events: none;
+        animation: planetaAtraviesa 12s linear forwards;
+        filter: drop-shadow(0 0 20px rgba(180, 160, 220, 0.6));
+    }
+    
+    .planeta-cuerpo {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle at 30% 30%,
+            rgba(200, 190, 230, 0.9) 0%,
+            rgba(150, 130, 200, 0.7) 40%,
+            rgba(100, 80, 150, 0.5) 100%
+        );
+        position: relative;
+    }
+    
+    .planeta-anillo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100px;
+        height: 20px;
+        border: 2px solid rgba(220, 210, 240, 0.4);
+        border-radius: 50%;
+        transform: translate(-50%, -50%) rotateX(75deg);
+    }
+    
+    @keyframes planetaAtraviesa {
+        0% {
+            left: -150px;
+            top: 20%;
+            transform: rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 0.8;
+        }
+        90% {
+            opacity: 0.8;
+        }
+        100% {
+            left: calc(100% + 150px);
+            top: 60%;
+            transform: rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    </style>
+</head>
+<body>
+  <div class="galaxy-bg"></div>
+  <div class="stars" id="stars"></div>
+  <div class="network" id="network"></div>
+  
+  <!-- ASTEROIDES -->
+  <div class="asteroid" style="width: 8px; height: 6px; left: 10%; top: -10%; animation-delay: 0s;"></div>
+  <div class="asteroid" style="width: 5px; height: 7px; left: 35%; top: -10%; animation-delay: 8s; border-radius: 40%;"></div>
+  <div class="asteroid" style="width: 10px; height: 8px; left: 60%; top: -10%; animation-delay: 15s;"></div>
+  <div class="asteroid" style="width: 6px; height: 5px; left: 80%; top: -10%; animation-delay: 22s; border-radius: 50%;"></div>
+  <div class="asteroid" style="width: 7px; height: 9px; left: 25%; top: -10%; animation-delay: 30s;"></div>
+
+  <!-- COMETAS -->
+  <div class="comet" style="animation-delay: 2s;"></div>
+  <div class="comet" style="animation-delay: 12s; top: 50%;"></div>
+  <div class="comet" style="animation-delay: 20s; top: 70%;"></div>
+
+  <!-- PECES: BLANCO Y AZUL PROFUNDO (no negro) -->
+  <div class="fish-container fish-white">
+    <svg width="70" height="45" viewBox="0 0 70 45">
+      <ellipse cx="30" cy="22.5" rx="25" ry="15" fill="#F5F5"/>
+      <path d="M 5 22.5 L 0 12 L 0 33 Z" fill="#E0E0E0"/>
+      <circle cx="40" cy="18" r="2.5" fill="#000"/>
+      <ellipse cx="18" cy="16" rx="8" ry="4" fill="#E0E0E0"/>
+      <ellipse cx="18" cy="29" rx="8" ry="4" fill="#E0E0E0"/>
+    </svg>
+    <div class="star-trail"></div>
+  </div>
+
+  <div class="fish-container fish-blue">
+    <svg width="70" height="45" viewBox="0 0 70 45">
+      <ellipse cx="30" cy="22.5" rx="25" ry="15" fill="#1565C0"/>
+      <path d="M 5 22.5 L 0 12 L 0 33 Z" fill="#0D47A1"/>
+      <circle cx="40" cy="18" r="2.5" fill="#FFEB3B"/>
+      <ellipse cx="18" cy="16" rx="8" ry="4" fill="#0D47A1"/>
+      <ellipse cx="18" cy="29" rx="8" ry="4" fill="#0D47A1"/>
+    </svg>
+    <div class="star-trail"></div>
+  </div>
+
+  <div class="neptune-symbol neptune1">♆</div>
+  <div class="neptune-symbol neptune2">♆</div>
+  <div class="neptune-symbol neptune3">♆</div>
+  <div class="neptune-symbol neptune4">♆</div>
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <svg class="floating-star" style="top: 15%; left: 5%; width: 24px; height: 24px; animation-delay: 0s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#00695C"/>
+  </svg>
+  <svg class="floating-star" style="top: 60%; right: 8%; width: 20px; height: 20px; animation-delay: 1s;" viewBox="0 0 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#F7B801"/>
+  </svg>
+  <svg class="floating-star" style="top: 40%; left: 10%; width: 18px; height: 18px; animation-delay: 2s;" viewBox="0 0 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#00ACC1"/>
+  </svg>
+
+  <div class="container">
+    <h1 class="glitch-title">♓ PISCIS ♓<br>LOS PECES</h1>
+
+    <div class="pisces-symbol">
+      <div class="symbol-circle">
+        <div class="symbol-text">♓</div>
+      </div>
+    </div>
+
+    <div class="box teal">
+      <div class="box-title">◈ ESENCIA DE PISCIS ◈</div>
+      <p>Piscis es el <span class="highlight">duodécimo signo del zodiaco</span> y representa la compasión, la espiritualidad y la conexión universal. Su energía es el océano infinito que disuelve fronteras.</p>
+      <p>Regido por <span class="highlight-gold">Neptuno</span>, planeta de los sueños y la mística, Piscis encarna la <span class="highlight">voluntad de crear</span> y la necesidad de comprender que todos somos uno en el cosmos.</p>
+    </div>
+
+    <div class="box gold">
+      <div class="box-title">◆ DATOS CLAVE ◆</div>
+      <div class="data-grid">
+        <div class="data-item">
+          <span class="data-label">ELEMENTO:</span>
+          <span class="data-value">Agua</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">CUALIDAD:</span>
+          <span class="data-value">Mutable</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PRINCIPIO:</span>
+          <span class="data-value">Pasivo</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">REGENTE:</span>
+          <span class="data-value">Neptuno</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FRASE CLAVE:</span>
+          <span class="data-value">Yo creo</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">PALABRA CLAVE:</span>
+          <span class="data-value">Comprensión</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">SIGNO DE:</span>
+          <span class="data-value">Duodécima casa</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">FECHAS:</span>
+          <span class="data-value">21 Feb - 20 Mar</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box cyan">
+      <div class="box-title">★ CARACTERÍSTICAS GENERALES ★</div>
+      <p><span class="highlight-cyan">Signo Opuesto:</span> Virgo</p>
+      <p><span class="highlight-cyan">Regencia anatómica:</span> Pies y sus dedos, sistema glandular linfático, tarso y metatarso óseo</p>
+      
+      <p style="margin-top: 20px;"><span class="highlight-gold">RASGOS ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag elevado">Cooperador</span>
+        <span class="tag elevado">Buen compañero</span>
+        <span class="tag elevado">Obediente</span>
+        <span class="tag elevado">Simpático</span>
+        <span class="tag elevado">Amable</span>
+        <span class="tag elevado">Compasivo</span>
+        <span class="tag elevado">Misericordioso</span>
+        <span class="tag elevado">Servicial</span>
+        <span class="tag elevado">Espiritual</span>
+        <span class="tag elevado">Caritativo</span>
+      </div>
+
+      <p style="margin-top: 20px;"><span class="highlight">RASGOS NO ELEVADOS:</span></p>
+      <div class="tag-list">
+        <span class="tag no-elevado">Hipersensible</span>
+        <span class="tag no-elevado">Servil</span>
+        <span class="tag no-elevado">Confuso</span>
+        <span class="tag no-elevado">Descuidado</span>
+        <span class="tag no-elevado">Charlatán</span>
+        <span class="tag no-elevado">Indolente</span>
+        <span class="tag no-elevado">Escapista</span>
+        <span class="tag no-elevado">Pesimista</span>
+        <span class="tag no-elevado">Reprimido</span>
+        <span class="tag no-elevado">Conflictivo</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="box pink">
+      <div class="box-title">✦ ARQUETIPO DEL SOÑADOR MÍSTICO ✦</div>
+      <p>Como <span class="highlight-cyan">signo de Agua Mutable</span>, Piscis fluye sin forma. No posee, se disuelve, ama, sana: <span class="highlight">crea</span>. Su impulso es unirse al todo, borrar límites, ser el océano donde todos somos olas.</p>
+      <p>La <span class="highlight">Duodécima Casa</span> que rige representa el inconsciente, los sueños, el karma y la conexión espiritual. Piscis dice: "Esto creo, esto siento, esto unifico".</p>
+      <p>La frase clave <span class="highlight">"Yo creo"</span> resume su esencia: es compasión universal, imaginación sin fronteras. Su palabra clave <span class="highlight">Comprensión</span> nos recuerda que este signo vino a ser <span class="highlight">Los Peces</span> que nadan en el océano cósmico conectando todas las almas.</p>
+    </div>
+  </div>
+
+  <script>
+    const starsContainer = document.getElementById('stars');
+    const starCount = 250;
+    
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      
+      const colors = ['#FFFFFF', '#00695C', '#F7B801', '#00ACC1', '#7B1FA2', '#E1F5FE'];
+      star.style.background = colors[Math.floor(Math.random() * colors.length)];
+      
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      
+      starsContainer.appendChild(star);
+    }
+
+    // Planetas
+    const planets = [
+      {color: '#FF6F00', size: 6, left: '15%', top: '20%'},
+      {color: '#D32F2F', size: 4, left: '75%', top: '30%'},
+      {color: '#FBC02D', size: 5, left: '40%', top: '80%'},
+      {color: '#7B1FA2',
+<script>
+    // Generar estrellas de fondo parpadeantes
+    function crearEstrellas() {
+        const numEstrellas = 50;
+        for (let i = 0; i < numEstrellas; i++) {
+            const estrella = document.createElement('div');
+            estrella.className = 'estrella-fondo';
+            const size = Math.random() * 2 + 1;
+            estrella.style.width = size + 'px';
+            estrella.style.height = size + 'px';
+            estrella.style.left = Math.random() * 100 + '%';
+            estrella.style.top = Math.random() * 100 + '%';
+            estrella.style.animationDelay = Math.random() * 3 + 's';
+            estrella.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(estrella);
+        }
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', crearEstrellas);
+    } else {
+        crearEstrellas();
+    }
+</script>
+<script>
+    // Crear ondas de agua etéreas aleatorias
+    function crearOndaAgua() {
+        const onda = document.createElement('div');
+        // 50% probabilidad de onda normal o onda perla
+        onda.className = Math.random() > 0.5 ? 'onda-agua' : 'onda-perla';
+        
+        // Posición aleatoria
+        onda.style.left = Math.random() * 100 + '%';
+        onda.style.top = Math.random() * 100 + '%';
+        onda.style.transform = 'translate(-50%, -50%)';
+        
+        document.body.appendChild(onda);
+        
+        // Eliminar después de la animación
+        setTimeout(() => onda.remove(), 5000);
+    }
+    
+    // Generar ondas cada 2-4 segundos
+    setInterval(() => {
+        if (Math.random() > 0.3) crearOndaAgua();
+    }, 2500);
+    
+    // Ondas iniciales para que no espere
+    setTimeout(crearOndaAgua, 500);
+    setTimeout(crearOndaAgua, 1500);
+</script>
+<script>
+    // Crear estrella pixel flotante adicional
+    function crearEstrellaPixel() {
+        const estrella = document.createElement('div');
+        estrella.className = 'estrella-pixel';
+        estrella.style.left = Math.random() * 90 + 5 + '%';
+        estrella.style.animationDuration = (Math.random() * 5 + 12) + 's';
+        estrella.style.animationDelay = Math.random() * 2 + 's';
+        document.body.appendChild(estrella);
+        
+        setTimeout(() => estrella.remove(), 17000);
+    }
+    
+    // Crear planeta atravesando
+    function crearPlaneta() {
+        const planeta = document.createElement('div');
+        planeta.className = 'planeta';
+        
+        const cuerpo = document.createElement('div');
+        cuerpo.className = 'planeta-cuerpo';
+        
+        const anillo = document.createElement('div');
+        anillo.className = 'planeta-anillo';
+        
+        cuerpo.appendChild(anillo);
+        planeta.appendChild(cuerpo);
+        
+        // Variar tamaño y altura
+        const escala = Math.random() * 0.5 + 0.7;
+        planeta.style.transform = `scale(${escala})`;
+        planeta.style.animationDuration = (Math.random() * 4 + 10) + 's';
+        
+        document.body.appendChild(planeta);
+        
+        setTimeout(() => planeta.remove(), 15000);
+    }
+    
+    // Estrella pixel cada 8-12 segundos
+    setInterval(crearEstrellaPixel, 10000);
+    
+    // Planeta cada 20-30 segundos para que sea sorpresa
+    setInterval(() => {
+        if (Math.random() > 0.4) crearPlaneta();
+    }, 25000);
+    
+    // Iniciales
+    setTimeout(crearEstrellaPixel, 3000);
+    setTimeout(crearPlaneta, 8000);
+</script>
