@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⭐ LECCIÓN: QUÉ SON LOS SIGNOS ZODIACALES ⭐</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --white: #F0F0F0;
+    --orange: #FF6B35;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* ── COSMOS BACKGROUND ── */
+  .cosmos {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .stars {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50%       { opacity: 1;   transform: scale(1.5); }
+  }
+
+  .nebula {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.15;
+    animation: nebula-drift 20s infinite ease-in-out;
+  }
+
+  .nebula.pink {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, var(--pink), transparent);
+    top: 10%; left: -10%;
+  }
+
+  .nebula.cyan {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, var(--cyan), transparent);
+    bottom: 10%; right: -10%;
+    animation-delay: 5s;
+  }
+
+  @keyframes nebula-drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%       { transform: translate(30px, -20px) scale(1.1); }
+  }
+
+  /* ── COMETAS ── */
+  .comet-layer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .comet-front {
+    position: absolute;
+    width: 8px; height: 8px;
+    background: var(--white);
+    box-shadow: 0 0 15px var(--gold), 0 0 30px var(--gold), 0 0 45px var(--cyan);
+    animation: comet-pass 8s infinite linear;
+  }
+
+  .comet-front::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 120px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--cyan), transparent);
+    transform: translate(-120px, -1px);
+    opacity: 0.6;
+  }
+
+  .comet-front::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 80px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--white), transparent);
+    transform: translate(-80px, -0.5px);
+    opacity: 0.4;
+  }
+
+  @keyframes comet-pass {
+    0%   { left: -50px; top: 15%; transform: scale(0.5) rotate(15deg); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { left: calc(100% + 50px); top: 65%; transform: scale(1.5) rotate(15deg); opacity: 0; }
+  }
+
+  .comet-front:nth-child(2) { animation-delay: 2.5s; animation-duration: 9s; }
+  .comet-front:nth-child(3) { animation-delay: 5s;   animation-duration: 7s; }
+
+  /* ── CRT EFFECTS ── */
+  .scanlines {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.15),
+      rgba(0,0,0,0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  .crt-glow {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 100px rgba(0, 217, 255, 0.1);
+  }
+
+  /* ── ESTRELLAS SVG FLOTANTES ── */
+  .floating-star {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%       { transform: translateY(-20px) rotate(180deg); }
+  }
+
+  /* ── SÍMBOLOS ZODIACALES FONDO ── */
+  .simbolo-fondo {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+    font-size: 20px;
+    opacity: 0;
+    animation: aparecerSimbolo var(--dur, 6s) steps(8, end) infinite;
+    color: var(--purple);
+    text-shadow: 0 0 8px var(--purple);
+  }
+
+  @keyframes aparecerSimbolo {
+    0%, 100% { opacity: 0;    transform: translateY(0) scale(1); }
+    20%, 80% { opacity: .15; }
+    50%       { opacity: .25; transform: translateY(-20px) scale(1.1); }
+  }
+
+  /* ── CANVAS ZODIACO ── */
+  .canvas-red {
+    width: 100%;
+    height: 180px;
+    display: block;
+    margin: 0 auto 24px auto;
+    border: 4px solid var(--purple);
+    box-shadow: 0 0 20px rgba(114,76,249,.4), 8px 8px 0 rgba(0,0,0,.5);
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 24px);
+    color: var(--cyan);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--pink), -2px -2px 0 var(--purple);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px,  2px); }
+    94% { transform: translate( 2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate( 2px,  2px); }
+  }
+
+  /* ── CAJAS ── */
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 8px 8px 0 rgba(0,0,0,0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+    background-image:
+      linear-gradient(135deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+      linear-gradient(225deg, rgba(255,255,255,0.03) 25%, transparent 25%);
+    background-size: 8px 8px;
+  }
+
+  /* Esquinas pixel decorativas */
+  .box::before,
+  .box::after {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px;
+    border: 3px solid currentColor;
+  }
+
+  .box::before { top: -4px; left: -4px; border-right: none; border-bottom: none; }
+  .box::after  { bottom: -4px; right: -4px; border-left: none; border-top: none; }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0,0,0,0.5);
+  }
+
+  .box.tropical {
+    background-color: #2e1620;
+    border-color: var(--pink);
+    color: var(--pink);
+    box-shadow: 8px 8px 0 rgba(255,61,129,0.3), 0 0 20px rgba(255,61,129,0.2);
+    background-image:
+      linear-gradient(135deg, rgba(255,61,129,0.05) 25%, transparent 25%),
+      linear-gradient(225deg, rgba(255,61,129,0.05) 25%, transparent 25%);
+  }
+
+  .box.sideral {
+    background-color: #16202e;
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 8px 8px 0 rgba(0,217,255,0.3), 0 0 20px rgba(0,217,255,0.2);
+    background-image:
+      linear-gradient(135deg, rgba(0,217,255,0.05) 25%, transparent 25%),
+      linear-gradient(225deg, rgba(0,217,255,0.05) 25%, transparent 25%);
+  }
+
+  .box.ecliptic {
+    background-color: #1a1a2e;
+    border-color: var(--purple);
+    color: var(--purple);
+    box-shadow: 8px 8px 0 rgba(114,76,249,0.3), 0 0 20px rgba(114,76,249,0.2);
+    background-image:
+      linear-gradient(135deg, rgba(114,76,249,0.05) 25%, transparent 25%),
+      linear-gradient(225deg, rgba(114,76,249,0.05) 25%, transparent 25%);
+  }
+
+  .box.soy-anormal {
+    background-color: #2e2416;
+    border-color: var(--gold);
+    color: var(--gold);
+    box-shadow: 8px 8px 0 rgba(247,184,1,0.3), 0 0 20px rgba(247,184,1,0.2);
+    background-image:
+      linear-gradient(135deg, rgba(247,184,1,0.05) 25%, transparent 25%),
+      linear-gradient(225deg, rgba(247,184,1,0.05) 25%, transparent 25%);
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+    padding: 8px;
+    border-bottom: 2px dashed currentColor;
+  }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+  }
+
+  .box p:last-child { margin-bottom: 0; }
+
+  /* ── HIGHLIGHTS ── */
+  .highlight        { color: var(--pink);   text-shadow: 0 0 5px var(--pink); }
+  .highlight-cyan   { color: var(--cyan);   text-shadow: 0 0 5px var(--cyan); }
+  .highlight-gold   { color: var(--gold);   text-shadow: 0 0 5px var(--gold); }
+  .highlight-purple { color: var(--purple); text-shadow: 0 0 5px var(--purple); }
+  .highlight-green  { color: var(--green);  text-shadow: 0 0 5px var(--green); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--purple), var(--cyan), var(--purple), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--cyan);
+  }
+
+  /* ── ONDA ENTRE CAJAS ── */
+  .onda-conexion {
+    height: 32px;
+    margin: -8px 0;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  .onda-svg {
+    width: 100%; height: 100%;
+    position: absolute;
+    top: 0; left: 0;
+  }
+
+  .onda-path {
+    fill: none;
+    stroke-width: 2;
+    stroke-dasharray: 8 4;
+    animation: fluirOnda 2s linear infinite;
+  }
+
+  @keyframes fluirOnda { to { stroke-dashoffset: -60; } }
+
+  /* ── EFECTO DESCIFRAR EN HOVER ── */
+  .box .descifrar-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity .3s;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding: 4px;
+    gap: 2px;
+  }
+
+  .box:hover .descifrar-overlay { opacity: 1; }
+
+  .glifo {
+    font-size: 8px;
+    animation: cambiarGlifo .4s steps(1, end) infinite;
+    color: var(--cyan);
+    opacity: .12;
+    font-family: 'Press Start 2P', cursive;
+  }
+
+  @keyframes cambiarGlifo {
+    0%  { opacity: .12; }
+    25% { opacity: .08; }
+    50% { opacity: .15; }
+    75% { opacity: .06; }
+  }
+
+  /* ── PIXEL PARTICLES ── */
+  .pixel-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    width: 4px; height: 4px;
+    animation: pixelFloat linear infinite;
+  }
+
+  @keyframes pixelFloat {
+    0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+  }
+
+  /* ── BARRA DE PROGRESO PIXEL ── */
+  .pixel-progress-bar {
+    height: 8px;
+    background: #111128;
+    border: 2px solid var(--purple);
+    margin: 16px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pixel-progress-fill {
+    height: 100%;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--cyan) 0px, var(--cyan) 4px,
+      var(--purple) 4px, var(--purple) 8px
+    );
+    animation: progressMove 3s linear infinite;
+  }
+
+  @keyframes progressMove {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .container { padding: 12px; }
+    .box { padding: 16px; margin: 16px 0; }
+    .box p { font-size: 8px; }
+    .box-title { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- COSMOS -->
+  <div class="cosmos">
+    <div class="nebula pink"></div>
+    <div class="nebula cyan"></div>
+    <div class="stars" id="stars"></div>
+  </div>
+
+  <!-- COMETAS -->
+  <div class="comet-layer">
+    <div class="comet-front"></div>
+    <div class="comet-front"></div>
+    <div class="comet-front"></div>
+  </div>
+
+  <!-- CRT -->
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <!-- ESTRELLAS SVG FLOTANTES -->
+  <svg class="floating-star" style="top:15%; left:5%; width:24px; height:24px; animation-delay:0s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#F7B801"/>
+  </svg>
+  <svg class="floating-star" style="top:60%; right:8%; width:20px; height:20px; animation-delay:1s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#00D9FF"/>
+  </svg>
+  <svg class="floating-star" style="top:40%; left:10%; width:18px; height:18px; animation-delay:2s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#FF3D81"/>
+  </svg>
+  <svg class="floating-star" style="top:80%; left:3%; width:16px; height:16px; animation-delay:3.5s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#724CF9"/>
+  </svg>
+  <svg class="floating-star" style="top:25%; right:4%; width:22px; height:22px; animation-delay:2.5s;" viewBox="0 0 24 24">
+    <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z" fill="#39FF88"/>
+  </svg>
+
+  <div class="container">
+
+    <!-- CANVAS ZODÍACO -->
+    <canvas class="canvas-red" id="zodiacCanvas"></canvas>
+
+    <h1 class="glitch-title">⭐ LECCIÓN ⭐<br>QUÉ SON LOS SIGNOS ZODIACALES</h1>
+
+    <!-- BARRA PIXEL DECORATIVA -->
+    <div class="pixel-progress-bar"><div class="pixel-progress-fill"></div></div>
+
+    <!-- CAJA 1 -->
+    <div class="box tropical">
+      <div class="descifrar-overlay" id="overlay1"></div>
+      <div class="box-title">◈ DOS CLASES DE ASTROLOGÍA ◈</div>
+      <p>En el mundo occidental se practican dos clases de astrología. Una se llama <span class="highlight">astrología tropical</span>, la otra, <span class="highlight-cyan">astrología sideral</span>.</p>
+      <p>La <span class="highlight">tropical</span> da la posición de un planeta por medio del signo zodiacal; la <span class="highlight-cyan">sideral</span>, por medio de la constelación.</p>
+      <p>Para entender la diferencia entre una y otra, hay que comprender la diferencia que existe entre los <span class="highlight-gold">signos y las constelaciones</span>. Ambos llevan el mismo nombre, lo cual crea una confusión considerable para el principiante.</p>
+    </div>
+
+    <!-- ONDA 1 -->
+    <div class="onda-conexion">
+      <svg class="onda-svg" viewBox="0 0 900 32" preserveAspectRatio="none">
+        <path class="onda-path" d="M0,16 Q112,4 225,16 Q337,28 450,16 Q562,4 675,16 Q787,28 900,16" stroke="#FF3D81" stroke-dashoffset="0"/>
+      </svg>
+    </div>
+
+    <!-- CAJA 2 -->
+    <div class="box sideral">
+      <div class="descifrar-overlay" id="overlay2"></div>
+      <div class="box-title">✦ PRECESIÓN DE LOS EQUINOCCIOS ✦</div>
+      <p>Hace aproximadamente <span class="highlight-gold">4000 años</span>, cuando el Sol se hallaba en la constelación de Aries el primer día de primavera, en el equinoccio vernal, la diferencia no existía. Los signos y las constelaciones coincidían.</p>
+      <p>Ahora, a causa de la <span class="highlight-cyan">precesión</span>, el leve bamboleo de la Tierra sobre su eje, el Sol entra en el equinoccio vernal en el signo de <span class="highlight">Aries</span>, pero en la constelación de <span class="highlight-cyan">Piscis</span>.</p>
+      <p>Que esto se mencione ahora, al empezar, se debe a que es posible que el lector se encuentre con personas familiarizadas con la astronomía o la astrología sideral que pueden hacerle dudar si insisten en que si él cree que su Sol se halla, por ejemplo, en Aries, en realidad nació con el Sol en la constelación de Piscis. <span class="highlight-green">Ambos tienen razón; no hay necesidad de discusiones</span>.</p>
+    </div>
+
+    <!-- ONDA 2 -->
+    <div class="onda-conexion">
+      <svg class="onda-svg" viewBox="0 0 900 32" preserveAspectRatio="none">
+        <path class="onda-path" d="M0,16 Q112,28 225,16 Q337,4 450,16 Q562,28 675,16 Q787,4 900,16" stroke="#00D9FF" stroke-dashoffset="0"/>
+      </svg>
+    </div>
+
+    <!-- CAJA 3 -->
+    <div class="box ecliptic">
+      <div class="descifrar-overlay" id="overlay3"></div>
+      <div class="box-title">★ LA ECLÍPTICA ★</div>
+      <p>Los signos son divisiones del espacio en un círculo llamado <span class="highlight-purple">eclíptica</span>. La eclíptica es un camino a través del espacio celeste que todos los planetas parecen seguir.</p>
+      <p>Hay <span class="highlight-gold">360°</span> en un círculo, y hay <span class="highlight-gold">doce signos</span>, cada uno de los cuales ocupa un espacio de exactamente <span class="highlight">treinta grados</span>. 30 x 12 = 360.</p>
+      <p><span class="highlight">Aries</span> es el nombre que se da al primer sector de treinta grados del espacio que empieza con el equinoccio vernal. Así pues, los signos se calculan a partir de lo que los astrólogos llaman el <span class="highlight-cyan">punto vernal</span>, punto en el cual el Sol llega a 0° Aries. Este punto se halla ahora ubicado en la constelación de Piscis.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ONDA 3 -->
+    <div class="onda-conexion">
+      <svg class="onda-svg" viewBox="0 0 900 32" preserveAspectRatio="none">
+        <path class="onda-path" d="M0,16 Q112,4 225,16 Q337,28 450,16 Q562,4 675,16 Q787,28 900,16" stroke="#724CF9" stroke-dashoffset="0"/>
+      </svg>
+    </div>
+
+    <!-- CAJA 4 -->
+    <div class="box soy-anormal">
+      <div class="descifrar-overlay" id="overlay4"></div>
+      <div class="box-title">◈ ¿CÓMO LOS PERCIBIMOS EN SOY ANORMAL? ◈</div>
+      <p>Para nosotros en <span class="highlight-gold">soy anormal</span>, los signos zodiacales representan poderosos <span class="highlight">arquetipos que son universales</span> en su tema.</p>
+      <p>Más que características designadas alrededor del Sol de la persona, como suele pasar con la Astrología psicológica, vemos a los 12 signos zodiacales como <span class="highlight-cyan">moldes/arquetipos energéticos que el alma posee</span> para poder ingresar a la dimensión de la fisicalidad (o la Tierra, como gustes llamarle) y, vivir la experiencia de un alma encarnada en un molde físico o cuerpo.</p>
+      <p>Es importante recalcar que estas características que te compartimos son las <span class="highlight">más generales</span> que giran sobre cada signo, sin embargo, habrá otros factores que determinen la "mejor" expresión energética que debemos de tomar en cuenta al realizar nuestras lecturas.</p>
+      <p>Las diferencias básicas de los signos conducen a manejar las <span class="highlight-green">características esenciales</span> de cada uno de ellos. Esta información constituye un compendio ya que contiene de forma resumida el bosquejo de lo que cada uno representa.</p>
+      <p>Aquí te compartimos las características de los primeros seis signos del zodiaco, iniciando por supuesto, con <span class="highlight">Aries, el carnero</span>.</p>
+      <p>Es importante aclararte que lo que hemos colocado como <span class="highlight-cyan">&lt;&lt;rasgos elevados&gt;&gt;</span> corresponde al concepto de características elevadas, mientras los <span class="highlight">&lt;&lt;rasgos no elevados&gt;&gt;</span> corresponden a las características de sobrevivencia que ya revisamos en el Módulo I en el apartado del marco conceptual.</p>
+    </div>
+
+    <!-- ONDA 4 -->
+    <div class="onda-conexion">
+      <svg class="onda-svg" viewBox="0 0 900 32" preserveAspectRatio="none">
+        <path class="onda-path" d="M0,16 Q112,28 225,16 Q337,4 450,16 Q562,28 675,16 Q787,4 900,16" stroke="#F7B801" stroke-dashoffset="0"/>
+      </svg>
+    </div>
+
+    <div class="divider"></div>
+
+  </div>
+
+  <script>
+    // ── ESTRELLAS FONDO ──
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 150; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top  = Math.random() * 100 + '%';
+      star.style.animationDelay    = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      const colors = ['#FFFFFF','#FF3D81','#00D9FF','#724CF9','#F7B801'];
+      star.style.background = colors[Math.floor(Math.random() * colors.length)];
+      const size = Math.random() * 2 + 1;
+      star.style.width  = size + 'px';
+      star.style.height = size + 'px';
+      starsContainer.appendChild(star);
+    }
+
+    // ── SÍMBOLOS ZODIACALES EN FONDO ──
+    const SIMBOLOS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓','☉','☽','☿','♀','♂','♃','♄','♅','♆','♇'];
+    const COLORES_SIM = ['#724CF9','#00D9FF','#FF3D81','#F7B801','#39FF88'];
+    for (let i = 0; i < 24; i++) {
+      const el = document.createElement('div');
+      el.className = 'simbolo-fondo';
+      el.textContent = SIMBOLOS[Math.floor(Math.random() * SIMBOLOS.length)];
+      el.style.left  = (Math.random() * 96) + '%';
+      el.style.top   = (Math.random() * 96) + '%';
+      el.style.color = COLORES_SIM[Math.floor(Math.random() * COLORES_SIM.length)];
+      el.style.textShadow = `0 0 8px ${el.style.color}`;
+      el.style.setProperty('--dur', (4 + Math.random() * 6) + 's');
+      el.style.animationDelay = (Math.random() * 8) + 's';
+      el.style.fontSize = (14 + Math.floor(Math.random() * 3) * 4) + 'px';
+      document.body.appendChild(el);
+    }
+
+    // ── PIXEL PARTICLES FLOTANTES ──
+    const PARTICLE_COLORS = ['#724CF9','#00D9FF','#FF3D81','#F7B801','#39FF88'];
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'pixel-particle';
+      p.style.left = (Math.random() * 100) + '%';
+      p.style.background = PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)];
+      p.style.animationDuration  = (6 + Math.random() * 12) + 's';
+      p.style.animationDelay     = (Math.random() * 10) + 's';
+      document.body.appendChild(p);
+    }
+
+    // ── OVERLAYS DESCIFRAR ──
+    const GLIFOS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓','★','◈','✦','◆','☉','☽'];
+    for (let id = 1; id <= 4; id++) {
+      const ov = document.getElementById('overlay' + id);
+      if (!ov) continue;
+      for (let i = 0; i < 80; i++) {
+        const g = document.createElement('span');
+        g.className = 'glifo';
+        g.textContent = GLIFOS[Math.floor(Math.random() * GLIFOS.length)];
+        g.style.animationDelay    = (Math.random() * 2) + 's';
+        g.style.animationDuration = (0.3 + Math.random() * 0.5) + 's';
+        const cols = ['#724CF9','#00D9FF','#FF3D81','#F7B801'];
+        g.style.color = cols[Math.floor(Math.random() * cols.length)];
+        ov.appendChild(g);
+      }
+    }
+
+    // ── CANVAS ZODÍACO ANIMADO ──
+    const canvas = document.getElementById('zodiacCanvas');
+    const ctx    = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const SIGNOSZODIACO  = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+    const NODOS_COLORS   = ['#724CF9','#00D9FF','#FF3D81','#F7B801','#39FF88'];
+    const nodos = [];
+
+    for (let i = 0; i < 40; i++) {
+      nodos.push({
+        x:       Math.random() * (canvas.width || 800),
+        y:       Math.random() * (canvas.height || 180),
+        vx:      (Math.random() - 0.5) * 0.6,
+        vy:      (Math.random() - 0.5) * 0.6,
+        size:    2 + Math.floor(Math.random() * 2) * 2,
+        color:   NODOS_COLORS[Math.floor(Math.random() * NODOS_COLORS.length)],
+        sim:     SIGNOSZODIACO[Math.floor(Math.random() * 12)],
+        showSim: Math.random() > 0.6,
+      });
+    }
+
+    const DIST_CONEX = 120;
+    let tick = 0;
+
+    function drawCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#050510';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Mover nodos
+      nodos.forEach(n => {
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0 || n.x > canvas.width)  n.vx *= -1;
+        if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+      });
+
+      // Conexiones
+      for (let i = 0; i < nodos.length; i++) {
+        for (let j = i + 1; j < nodos.length; j++) {
+          const dx = nodos[i].x - nodos[j].x;
+          const dy = nodos[i].y - nodos[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < DIST_CONEX) {
+            ctx.globalAlpha = (1 - dist / DIST_CONEX) * 0.5;
+            ctx.strokeStyle = nodos[i].color;
+            ctx.lineWidth   = 1;
+            ctx.setLineDash([2, 4]);
+            ctx.beginPath();
+            ctx.moveTo(nodos[i].x, nodos[i].y);
+            ctx.lineTo(nodos[j].x, nodos[j].y);
+            ctx.stroke();
+            ctx.setLineDash([]);
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
+
+      // Nodos pixel
+      nodos.forEach(n => {
+        ctx.fillStyle = n.color;
+        ctx.fillRect(Math.round(n.x) - n.size / 2, Math.round(n.y) - n.size / 2, n.size, n.size);
+
+        // Símbolo zodiacal sobre el nodo
+        if (n.showSim && tick % 120 < 60) {
+          ctx.font        = '8px "Press Start 2P"';
+          ctx.fillStyle   = n.color;
+          ctx.globalAlpha = 0.7;
+          ctx.textAlign   = 'center';
+          ctx.fillText(n.sim, n.x, n.y - 8);
+          ctx.globalAlpha = 1;
+        }
+      });
+
+      // Texto en canvas
+      ctx.font      = '7px "Press Start 2P"';
+      ctx.fillStyle = 'rgba(114,76,249,0.4)';
+      ctx.textAlign = 'center';
+      ctx.fillText('MAPA DEL ZODIACO — 12 SIGNOS — 360°', canvas.width / 2, canvas.height - 8);
+
+      tick++;
+      requestAnimationFrame(drawCanvas);
+    }
+
+    drawCanvas();
+  </script>
+</body>
+</html>

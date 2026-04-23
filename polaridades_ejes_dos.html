@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⭐ POLARIDADES - COMPLEMENTARIEDAD ⭐</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --white: #F0F0F0;
+    --active: #FF3D81;
+    --passive: #00D9FF;
+    --fire: #FF6B35;
+    --earth: #8B4513;
+    --air: #87CEEB;
+    --water: #4169E1;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* ═══════════════════════════════════════
+     COSMOS & FONDO
+  ═══════════════════════════════════════ */
+  .cosmos {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .stars {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  .nebula {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.15;
+    animation: nebula-drift 20s infinite ease-in-out;
+  }
+
+  .nebula.pink {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, var(--pink), transparent);
+    top: 10%; left: -10%;
+  }
+
+  .nebula.cyan {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, var(--cyan), transparent);
+    bottom: 10%; right: -10%;
+    animation-delay: 5s;
+  }
+
+  @keyframes nebula-drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -20px) scale(1.1); }
+  }
+
+  /* ═══════════════════════════════════════
+     COMETAS
+  ═══════════════════════════════════════ */
+  .comet-layer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .comet-front {
+    position: absolute;
+    width: 8px; height: 8px;
+    background: var(--white);
+    box-shadow: 0 0 15px var(--gold), 0 0 30px var(--gold), 0 0 45px var(--cyan);
+    animation: comet-pass 8s infinite linear;
+  }
+
+  .comet-front::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 120px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--cyan), transparent);
+    transform: translate(-120px, -1px);
+    opacity: 0.6;
+  }
+
+  .comet-front::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 80px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--white), transparent);
+    transform: translate(-80px, -0.5px);
+    opacity: 0.4;
+  }
+
+  @keyframes comet-pass {
+    0% { left: -50px; top: 15%; transform: scale(0.5) rotate(15deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: calc(100% + 50px); top: 65%; transform: scale(1.5) rotate(15deg); opacity: 0; }
+  }
+
+  .comet-front:nth-child(2) { animation-delay: 2.5s; animation-duration: 9s; }
+  .comet-front:nth-child(3) { animation-delay: 5s; animation-duration: 7s; }
+
+  /* ═══════════════════════════════════════
+     BURBUJAS +/- EN EL FONDO
+  ═══════════════════════════════════════ */
+  .bubbles-layer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .bubble-pair {
+    position: absolute;
+    width: 100px;
+    height: 50px;
+    animation: bubble-rise linear infinite;
+  }
+
+  .bubble-plus,
+  .bubble-minus {
+    position: absolute;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-family: 'Press Start 2P', cursive;
+    font-weight: bold;
+    border: 2px solid;
+    animation: bubble-attract 3s ease-in-out infinite;
+  }
+
+  .bubble-plus {
+    left: 0;
+    background: radial-gradient(circle at 35% 35%, rgba(255,61,129,0.4), rgba(255,61,129,0.1));
+    border-color: var(--pink);
+    color: var(--pink);
+    box-shadow: 0 0 8px rgba(255,61,129,0.5), inset 0 0 8px rgba(255,61,129,0.1);
+    animation-name: bubble-attract-plus;
+  }
+
+  .bubble-minus {
+    right: 0;
+    background: radial-gradient(circle at 35% 35%, rgba(0,217,255,0.4), rgba(0,217,255,0.1));
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 0 8px rgba(0,217,255,0.5), inset 0 0 8px rgba(0,217,255,0.1);
+    animation-name: bubble-attract-minus;
+  }
+
+  @keyframes bubble-attract-plus {
+    0%   { transform: translateX(0) scale(1);   opacity: 0.7; }
+    40%  { transform: translateX(18px) scale(1.1); opacity: 0.9; }
+    50%  { transform: translateX(20px) scale(1.4); opacity: 1;   }
+    55%  { transform: translateX(20px) scale(0);   opacity: 0;   }
+    56%  { transform: translateX(0) scale(0);   opacity: 0;   }
+    70%  { transform: translateX(0) scale(0);   opacity: 0;   }
+    80%  { transform: translateX(0) scale(1);   opacity: 0.7; }
+    100% { transform: translateX(0) scale(1);   opacity: 0.7; }
+  }
+
+  @keyframes bubble-attract-minus {
+    0%   { transform: translateX(0) scale(1);    opacity: 0.7; }
+    40%  { transform: translateX(-18px) scale(1.1); opacity: 0.9; }
+    50%  { transform: translateX(-20px) scale(1.4); opacity: 1;   }
+    55%  { transform: translateX(-20px) scale(0);   opacity: 0;   }
+    56%  { transform: translateX(0) scale(0);    opacity: 0;   }
+    70%  { transform: translateX(0) scale(0);    opacity: 0;   }
+    80%  { transform: translateX(0) scale(1);    opacity: 0.7; }
+    100% { transform: translateX(0) scale(1);    opacity: 0.7; }
+  }
+
+  .bubble-fusion {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--gold), var(--pink), var(--cyan));
+    box-shadow: 0 0 20px var(--gold), 0 0 40px var(--pink);
+    animation: bubble-fusion-anim 3s ease-in-out infinite;
+  }
+
+  @keyframes bubble-fusion-anim {
+    0%   { transform: translate(-50%,-50%) scale(0); opacity: 0; }
+    48%  { transform: translate(-50%,-50%) scale(0); opacity: 0; }
+    52%  { transform: translate(-50%,-50%) scale(1.2); opacity: 1; }
+    60%  { transform: translate(-50%,-50%) scale(0.8); opacity: 1; }
+    70%  { transform: translate(-50%,-50%) scale(2); opacity: 0; }
+    71%  { transform: translate(-50%,-50%) scale(0); opacity: 0; }
+    100% { transform: translate(-50%,-50%) scale(0); opacity: 0; }
+  }
+
+  /* Partículas de energía al fusionarse */
+  .fusion-sparks {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 0; height: 0;
+    animation: sparks-appear 3s ease-in-out infinite;
+  }
+
+  @keyframes sparks-appear {
+    0%,48%,80%,100% { opacity: 0; }
+    60%,70% { opacity: 1; }
+  }
+
+  .spark {
+    position: absolute;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    animation: spark-fly 3s ease-in-out infinite;
+  }
+
+  .spark:nth-child(1) { background: var(--gold); --dx: -20px; --dy: -20px; }
+  .spark:nth-child(2) { background: var(--pink); --dx: 20px; --dy: -15px; }
+  .spark:nth-child(3) { background: var(--cyan); --dx: -15px; --dy: 20px; }
+  .spark:nth-child(4) { background: var(--purple); --dx: 25px; --dy: 18px; }
+  .spark:nth-child(5) { background: var(--white); --dx: 0px; --dy: -28px; }
+  .spark:nth-child(6) { background: var(--gold); --dx: -28px; --dy: 5px; }
+
+  @keyframes spark-fly {
+    0%,55% { transform: translate(0,0) scale(1); opacity: 0; }
+    60% { transform: translate(0,0) scale(1.5); opacity: 1; }
+    75% { transform: translate(var(--dx), var(--dy)) scale(0.5); opacity: 1; }
+    80% { transform: translate(calc(var(--dx)*1.5), calc(var(--dy)*1.5)) scale(0); opacity: 0; }
+    100% { transform: translate(0,0) scale(0); opacity: 0; }
+  }
+
+  @keyframes bubble-rise {
+    0%   { transform: translateY(110vh); opacity: 0; }
+    5%   { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateY(-120px); opacity: 0; }
+  }
+
+  /* ═══════════════════════════════════════
+     SCANLINES & CRT
+  ═══════════════════════════════════════ */
+  .scanlines {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.15),
+      rgba(0,0,0,0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  .crt-glow {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 100px rgba(0,217,255,0.1);
+  }
+
+  /* ═══════════════════════════════════════
+     LAYOUT
+  ═══════════════════════════════════════ */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 24px);
+    color: var(--cyan);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--pink), -2px -2px 0 var(--purple);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0,0,0,0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0,0,0,0.5);
+  }
+
+  .box.opposition {
+    background: #1a1a2e;
+    border-color: var(--purple);
+    box-shadow: 8px 8px 0 rgba(114,76,249,0.3), 0 0 20px rgba(114,76,249,0.2);
+  }
+
+  .box.unity {
+    background: #2e1620;
+    border-color: var(--pink);
+    box-shadow: 8px 8px 0 rgba(255,61,129,0.3), 0 0 20px rgba(255,61,129,0.2);
+    overflow: hidden;
+  }
+
+  .box.importance {
+    background: #16202e;
+    border-color: var(--cyan);
+    box-shadow: 8px 8px 0 rgba(0,217,255,0.3), 0 0 20px rgba(0,217,255,0.2);
+    overflow: hidden;
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .box.opposition .box-title { color: var(--purple); }
+  .box.unity .box-title { color: var(--pink); }
+  .box.importance .box-title { color: var(--cyan); }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .box p:last-child { margin-bottom: 0; }
+
+  .highlight-fire  { color: var(--fire);  text-shadow: 0 0 5px var(--fire); }
+  .highlight-air   { color: var(--air);   text-shadow: 0 0 5px var(--air); }
+  .highlight-water { color: var(--water); text-shadow: 0 0 5px var(--water); }
+  .highlight-earth { color: var(--earth); text-shadow: 0 0 5px var(--earth); }
+  .highlight       { color: var(--pink);  text-shadow: 0 0 5px var(--pink); }
+  .highlight-cyan  { color: var(--cyan);  text-shadow: 0 0 5px var(--cyan); }
+  .highlight-gold  { color: var(--gold);  text-shadow: 0 0 5px var(--gold); }
+
+  /* ═══════════════════════════════════════
+     EJE CON VOLTIOS
+  ═══════════════════════════════════════ */
+  .axis-grid {
+    display: grid;
+    grid-template-columns: 1fr 120px 1fr;
+    gap: 12px;
+    align-items: center;
+    margin: 16px 0;
+  }
+
+  .axis-sign {
+    border: 3px solid;
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 7px;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+    animation: axis-pulse 3s infinite;
+    position: relative;
+    z-index: 2;
+  }
+
+  .axis-sign.fire  { background: #2e1a16; border-color: var(--fire);  color: var(--fire); }
+  .axis-sign.air   { background: #16202e; border-color: var(--air);   color: var(--air); }
+  .axis-sign.water { background: #161a2e; border-color: var(--water); color: var(--water); }
+  .axis-sign.earth { background: #1f1a16; border-color: var(--earth); color: var(--earth); }
+
+  @keyframes axis-pulse {
+    0%, 100% { transform: scale(1); }
+    50%       { transform: scale(1.03); }
+  }
+
+  /* CANAL DE VOLTIOS */
+  .volt-channel {
+    position: relative;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .volt-canvas {
+    width: 120px;
+    height: 60px;
+    display: block;
+  }
+
+  /* PIXEL ZODIAC GLYPHS */
+  .pixel-sign {
+    display: block;
+    width: 28px; height: 28px;
+    margin: 0 auto 6px;
+    position: relative;
+  }
+
+  .pixel-aries {
+    background:
+      linear-gradient(currentColor, currentColor) 4px 8px / 4px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 20px 8px / 4px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 0px 12px / 4px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 24px 12px / 4px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 4px 16px / 20px 4px no-repeat;
+  }
+
+  .pixel-libra {
+    background:
+      linear-gradient(currentColor, currentColor) 4px 4px / 20px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 12px 8px / 4px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 6px 12px / 16px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 2px 16px / 6px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 20px 16px / 6px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 4px 20px / 20px 4px no-repeat;
+  }
+
+  .pixel-cancer {
+    background:
+      linear-gradient(currentColor, currentColor) 4px 4px / 4px 8px no-repeat,
+      linear-gradient(currentColor, currentColor) 8px 8px / 4px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 12px 12px / 4px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 16px 16px / 4px 8px no-repeat,
+      linear-gradient(currentColor, currentColor) 20px 12px / 4px 4px no-repeat;
+  }
+
+  .pixel-capricorn {
+    background:
+      linear-gradient(currentColor, currentColor) 4px 4px / 16px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 4px 8px / 4px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 16px 8px / 4px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 4px 12px / 20px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 8px 16px / 4px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 16px 16px / 4px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 4px 20px / 8px 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 16px 20px / 8px 4px no-repeat;
+  }
+
+  /* ═══════════════════════════════════════
+     UNIDAD DEL TODO — ANIMACIÓN CÁLIDO↔FRÍO
+  ═══════════════════════════════════════ */
+  .thermal-bar-wrapper {
+    position: relative;
+    z-index: 2;
+    margin: 20px 0;
+  }
+
+  .thermal-label-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 7px;
+    margin-bottom: 6px;
+  }
+
+  .label-warm { color: var(--fire); text-shadow: 0 0 6px var(--fire); }
+  .label-cold { color: var(--cyan); text-shadow: 0 0 6px var(--cyan); }
+
+  .thermal-bar {
+    width: 100%;
+    height: 24px;
+    border: 3px solid rgba(255,255,255,0.2);
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,217,255,0.3);
+  }
+
+  .thermal-fill {
+    position: absolute;
+    top: 0; left: 0;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(90deg,
+      #FF2200, #FF6B35, #F7B801,
+      #00D9FF, #4169E1, #724CF9,
+      #00D9FF, #F7B801, #FF6B35, #FF2200
+    );
+    animation: thermal-flow 4s linear infinite;
+  }
+
+  @keyframes thermal-flow {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* Ondas de calor */
+  .thermal-waves {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 100%;
+    animation: thermal-wave-move 4s linear infinite;
+  }
+
+  @keyframes thermal-wave-move {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .thermal-indicator {
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    font-size: 7px;
+  }
+
+  .therm-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 0;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+
+  /* Temperatura flotante animada */
+  .temp-float-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 12px 0;
+    height: 50px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .temp-icon {
+    font-size: 22px;
+    animation: temp-bounce 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+
+  .temp-icon.hot  { color: var(--fire); animation-delay: 0s; }
+  .temp-icon.warm { color: var(--gold); animation-delay: 0.3s; }
+  .temp-icon.cool { color: #87CEEB; animation-delay: 0.6s; }
+  .temp-icon.cold { color: var(--cyan); animation-delay: 0.9s; }
+
+  @keyframes temp-bounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50%       { transform: translateY(-8px) scale(1.15); }
+  }
+
+  .temp-arrow {
+    color: var(--gold);
+    font-size: 14px;
+    animation: arrow-pulse 2s ease-in-out infinite;
+    text-shadow: 0 0 8px var(--gold);
+  }
+
+  @keyframes arrow-pulse {
+    0%, 100% { opacity: 0.4; transform: scaleX(1); }
+    50%       { opacity: 1;   transform: scaleX(1.3); }
+  }
+
+  /* ═══════════════════════════════════════
+     IMPORTANCIA — MITADES QUE SE ATRAEN
+  ═══════════════════════════════════════ */
+  .attract-scene {
+    position: relative;
+    z-index: 2;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    overflow: visible;
+  }
+
+  .attract-half {
+    position: absolute;
+    width: 80px; height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    text-align: center;
+    line-height: 1.4;
+    border: 3px solid;
+    overflow: hidden;
+  }
+
+  .half-left {
+    border-color: var(--pink);
+    background: linear-gradient(135deg, rgba(255,61,129,0.2), rgba(114,76,249,0.1));
+    color: var(--pink);
+    border-radius: 40px 0 0 40px;
+    border-right: none;
+    clip-path: inset(0 0 0 0);
+    animation: attract-left 3.5s ease-in-out infinite;
+    box-shadow: -4px 0 15px rgba(255,61,129,0.4);
+  }
+
+  .half-right {
+    border-color: var(--cyan);
+    background: linear-gradient(135deg, rgba(0,217,255,0.1), rgba(0,217,255,0.2));
+    color: var(--cyan);
+    border-radius: 0 40px 40px 0;
+    border-left: none;
+    animation: attract-right 3.5s ease-in-out infinite;
+    box-shadow: 4px 0 15px rgba(0,217,255,0.4);
+  }
+
+  @keyframes attract-left {
+    0%    { transform: translateX(-60px); box-shadow: -4px 0 15px rgba(255,61,129,0.4); }
+    35%   { transform: translateX(-60px); }
+    55%   { transform: translateX(0px); box-shadow: -4px 0 25px rgba(255,61,129,0.8), 0 0 30px rgba(255,61,129,0.5); }
+    70%   { transform: translateX(0px); }
+    85%   { transform: translateX(-60px); }
+    100%  { transform: translateX(-60px); }
+  }
+
+  @keyframes attract-right {
+    0%    { transform: translateX(60px); box-shadow: 4px 0 15px rgba(0,217,255,0.4); }
+    35%   { transform: translateX(60px); }
+    55%   { transform: translateX(0px); box-shadow: 4px 0 25px rgba(0,217,255,0.8), 0 0 30px rgba(0,217,255,0.5); }
+    70%   { transform: translateX(0px); }
+    85%   { transform: translateX(60px); }
+    100%  { transform: translateX(60px); }
+  }
+
+  /* Flash de unión */
+  .attract-flash {
+    position: absolute;
+    width: 160px; height: 80px;
+    border-radius: 40px;
+    background: radial-gradient(ellipse, rgba(247,184,1,0.8), rgba(114,76,249,0.3), transparent);
+    animation: union-flash 3.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes union-flash {
+    0%,50% { opacity: 0; transform: scale(0.5); }
+    58%    { opacity: 1; transform: scale(1); }
+    70%    { opacity: 0.6; transform: scale(1.05); }
+    80%    { opacity: 0; transform: scale(0.5); }
+    100%   { opacity: 0; }
+  }
+
+  /* Texto UNIDAD que aparece al juntarse */
+  .attract-text {
+    position: absolute;
+    font-size: 7px;
+    color: var(--gold);
+    text-shadow: 0 0 10px var(--gold);
+    letter-spacing: 2px;
+    animation: unity-text 3.5s ease-in-out infinite;
+    pointer-events: none;
+    top: -18px;
+  }
+
+  @keyframes unity-text {
+    0%,50% { opacity: 0; transform: translateY(5px); }
+    60%    { opacity: 1; transform: translateY(0); }
+    72%    { opacity: 1; }
+    82%    { opacity: 0; transform: translateY(-5px); }
+    100%   { opacity: 0; }
+  }
+
+  /* Partículas de atracción magnética */
+  .mag-particle {
+    position: absolute;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    animation: mag-flow 3.5s ease-in-out infinite;
+  }
+
+  .mag-left  { background: var(--pink); }
+  .mag-right { background: var(--cyan); }
+
+  /* ═══════════════════════════════════════
+     DIVISOR
+  ═══════════════════════════════════════ */
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--purple), var(--cyan), var(--purple), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--cyan);
+  }
+
+  /* ═══════════════════════════════════════
+     RESPONSIVE
+  ═══════════════════════════════════════ */
+  @media (max-width: 640px) {
+    .container { padding: 12px; }
+    .box { padding: 16px; margin: 16px 0; }
+    .box p { font-size: 8px; }
+    .box-title { font-size: 10px; }
+
+    .axis-grid {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .volt-channel { transform: rotate(90deg); margin: 0 auto; }
+  }
+</style>
+</head>
+<body>
+  <div class="cosmos">
+    <div class="nebula pink"></div>
+    <div class="nebula cyan"></div>
+    <div class="stars" id="stars"></div>
+  </div>
+
+  <!-- COMETAS -->
+  <div class="comet-layer">
+    <div class="comet-front"></div>
+    <div class="comet-front"></div>
+    <div class="comet-front"></div>
+  </div>
+
+  <!-- BURBUJAS +/- -->
+  <div class="bubbles-layer" id="bubblesLayer"></div>
+
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <div class="container">
+    <h1 class="glitch-title">⭐ POLARIDADES ⭐<br>EJES DE COMPLEMENTARIEDAD</h1>
+
+    <!-- ══ EJES COMPLEMENTARIOS ══ -->
+    <div class="box opposition">
+      <div class="box-title">◈ EJES COMPLEMENTARIOS ◈</div>
+      <p>Si <span class="highlight-fire">Aries</span> es signo de lucha, agresividad, impulsividad, esmero, acción continua y falta de reposo, <span class="highlight-air">Libra</span>, en cambio, es signo de tranquilidad, descanso, paz, armonía.</p>
+
+      <div class="axis-grid">
+        <div class="axis-sign fire">
+          <span class="pixel-sign pixel-aries"></span>
+          ARIES<br>LUCHA<br>ACCIÓN
+        </div>
+        <div class="volt-channel">
+          <canvas class="volt-canvas" id="volt1" width="120" height="60"></canvas>
+        </div>
+        <div class="axis-sign air">
+          <span class="pixel-sign pixel-libra"></span>
+          LIBRA<br>PAZ<br>ARMONÍA
+        </div>
+      </div>
+
+      <p><span class="highlight-water">Cáncer</span>, que es signo de intuición, sensibilidad y captación, tiene por complementario al calculador, concreto, seco y rígido <span class="highlight-earth">Capricornio</span>.</p>
+
+      <div class="axis-grid">
+        <div class="axis-sign water">
+          <span class="pixel-sign pixel-cancer"></span>
+          CÁNCER<br>INTUICIÓN<br>SENSIBLE
+        </div>
+        <div class="volt-channel">
+          <canvas class="volt-canvas" id="volt2" width="120" height="60"></canvas>
+        </div>
+        <div class="axis-sign earth">
+          <span class="pixel-sign pixel-capricorn"></span>
+          CAPRICORNIO<br>CÁLCULO<br>RÍGIDO
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ UNIDAD DEL TODO ══ -->
+    <div class="box unity">
+      <div class="box-title">✦ UNIDAD DEL TODO ✦</div>
+
+      <!-- Animación cálido→frío -->
+      <div class="thermal-bar-wrapper">
+        <div class="temp-float-row">
+          <span class="temp-icon hot">🔥</span>
+          <span class="temp-arrow">→</span>
+          <span class="temp-icon warm">☀️</span>
+          <span class="temp-arrow">→</span>
+          <span class="temp-icon cool">🌬️</span>
+          <span class="temp-arrow">→</span>
+          <span class="temp-icon cold">❄️</span>
+          <span class="temp-arrow">→</span>
+          <span class="temp-icon warm">☀️</span>
+          <span class="temp-arrow">→</span>
+          <span class="temp-icon hot">🔥</span>
+        </div>
+        <div class="thermal-bar">
+          <div class="thermal-fill"></div>
+        </div>
+        <div class="thermal-indicator">
+          <span><span class="therm-dot" style="background:var(--fire)"></span><span style="color:var(--fire);font-size:7px">CÁLIDO</span></span>
+          <span style="color:var(--gold);font-size:7px">⟷</span>
+          <span><span class="therm-dot" style="background:var(--cyan)"></span><span style="color:var(--cyan);font-size:7px">FRÍO</span></span>
+        </div>
+      </div>
+
+      <p>Existe una <span class="highlight">estrecha relación entre los signos complementarios</span>, dado que ambos forman una Unidad de un mismo Todo, es decir, representan una <span class="highlight-cyan">Energía Modelo</span> que permiten la manifestación de una Realidad desde la <span class="highlight">danza creativa de la dualidad</span>.</p>
+      <p>Sin embargo, hay una diferenciación entre la complementariedad de los <span class="highlight">activos</span> que es muy distinta a la de los <span class="highlight-cyan">pasivos</span> porque el soporte de los primeros es lo <span class="highlight-gold">cálido</span>, mientras que el de los segundos es lo <span class="highlight-cyan">frío</span>.</p>
+      <p>Es decir, gracias a la <span class="highlight">danza energética que se genera entre los polos de lo cálido a lo frío</span> podemos disfrutar de una diversa variedad de temperaturas y climas que, a su vez, dan origen a las estaciones del año.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ IMPORTANCIA ══ -->
+    <div class="box importance">
+      <div class="box-title">★ IMPORTANCIA DE COMPRENDER ★</div>
+
+      <!-- Animación mitades que se atraen -->
+      <div class="attract-scene">
+        <div class="attract-flash"></div>
+        <div class="attract-text">✦ UNIDAD ✦</div>
+        <div class="attract-half half-left">
+          <span>POLO<br>＋</span>
+        </div>
+        <div class="attract-half half-right">
+          <span>POLO<br>－</span>
+        </div>
+      </div>
+
+      <p>La importancia de comprender esta clasificación de las <span class="highlight-cyan">polaridades en los signos</span> estriba en que, por un lado, cuando se trata de comprender las características arquetípicas de los signos, la <span class="highlight">polaridad amplía sus cualidades</span> y, por otro, cuando se trata de aterrizar la comprensión en las personas, esta información nos permite tener un <span class="highlight">mayor entendimiento sobre las personas con quienes nos corresponde compartir</span>.</p>
+    </div>
+
+    <div class="divider"></div>
+  </div>
+
+  <script>
+  /* ══════════════════════════════════════════
+     ESTRELLAS
+  ══════════════════════════════════════════ */
+  (function() {
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 150; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top  = Math.random() * 100 + '%';
+      star.style.animationDelay    = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      const colors = ['#FFFFFF','#FF3D81','#00D9FF','#724CF9','#FF6B35'];
+      star.style.background = colors[Math.floor(Math.random() * colors.length)];
+      const size = Math.random() * 2 + 1;
+      star.style.width = star.style.height = size + 'px';
+      starsContainer.appendChild(star);
+    }
+  })();
+
+  /* ══════════════════════════════════════════
+     VOLT LIGHTNING — CANVAS
+  ══════════════════════════════════════════ */
+  function initVoltCanvas(canvasId, colorA, colorB) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+
+    let t = 0;
+
+    // Genera rayo zigzag pixel
+    function lightning(x0, y0, x1, y1, segments) {
+      const pts = [{x: x0, y: y0}];
+      for (let i = 1; i < segments; i++) {
+        const pct = i / segments;
+        const mx = x0 + (x1 - x0) * pct;
+        const my = y0 + (y1 - y0) * pct;
+        const jitter = (Math.random() - 0.5) * 18;
+        pts.push({x: mx + jitter, y: my + jitter * 0.3});
+      }
+      pts.push({x: x1, y: y1});
+      return pts;
+    }
+
+    function drawBolt(pts, color, glow) {
+      // glow pass
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+      ctx.strokeStyle = glow;
+      ctx.lineWidth = 6;
+      ctx.shadowColor = glow;
+      ctx.shadowBlur = 12;
+      ctx.stroke();
+
+      // core
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.shadowBlur = 4;
+      ctx.stroke();
+    }
+
+    function drawPixelNode(x, y, color, size) {
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 10;
+      // pixel block
+      const s = size;
+      ctx.fillRect(x - s, y - s, s*2, s*2);
+      ctx.shadowBlur = 0;
+    }
+
+    let boltTimer = 0;
+    let activeBolts = [];
+
+    function spawnBolt() {
+      const segs = Math.floor(Math.random() * 4) + 5;
+      const yOffset = (Math.random() - 0.5) * 20;
+      const pts = lightning(8, H/2 + yOffset, W - 8, H/2 + yOffset, segs);
+      activeBolts.push({ pts, life: 1, decay: 0.06 + Math.random() * 0.06 });
+    }
+
+    function frame() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.shadowBlur = 0;
+
+      t += 0.05;
+      boltTimer -= 1;
+
+      if (boltTimer <= 0) {
+        spawnBolt();
+        if (Math.random() < 0.3) spawnBolt(); // doble rayo ocasional
+        boltTimer = 6 + Math.floor(Math.random() * 12);
+      }
+
+      // Draw bolts
+      activeBolts = activeBolts.filter(b => b.life > 0);
+      activeBolts.forEach(b => {
+        const alpha = b.life;
+        const col  = colorA;
+        const glow = colorB;
+        ctx.globalAlpha = alpha;
+        drawBolt(b.pts, col, glow);
+        ctx.globalAlpha = 1;
+        b.life -= b.decay;
+      });
+
+      // Nodos en los extremos — pulso
+      const pulse = 0.6 + 0.4 * Math.abs(Math.sin(t));
+      ctx.globalAlpha = pulse;
+      drawPixelNode(8, H/2, colorA, 4);
+      drawPixelNode(W-8, H/2, colorB, 4);
+      ctx.globalAlpha = 1;
+
+      // Línea de conexión base tenue
+      ctx.beginPath();
+      ctx.moveTo(8, H/2);
+      ctx.lineTo(W-8, H/2);
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.lineWidth = 1;
+      ctx.shadowBlur = 0;
+      ctx.stroke();
+
+      requestAnimationFrame(frame);
+    }
+
+    frame();
+  }
+
+  // Aries–Libra: fuego a aire
+  initVoltCanvas('volt1', '#FF6B35', '#87CEEB');
+  // Cáncer–Capricornio: agua a tierra
+  initVoltCanvas('volt2', '#4169E1', '#CD853F');
+
+  /* ══════════════════════════════════════════
+     BURBUJAS +/-
+  ══════════════════════════════════════════ */
+  (function() {
+    const layer = document.getElementById('bubblesLayer');
+    const pairCount = 7;
+
+    for (let i = 0; i < pairCount; i++) {
+      const pair = document.createElement('div');
+      pair.className = 'bubble-pair';
+
+      const delay    = (i / pairCount) * 12;
+      const duration = 10 + Math.random() * 8;
+      const leftPct  = 5 + Math.random() * 88;
+      const scale    = 0.6 + Math.random() * 0.8;
+
+      pair.style.cssText = `
+        left: ${leftPct}%;
+        bottom: -120px;
+        animation: bubble-rise ${duration}s ${delay}s linear infinite;
+        transform: scale(${scale});
+      `;
+
+      // + bubble
+      const plus = document.createElement('div');
+      plus.className = 'bubble-plus';
+      plus.textContent = '+';
+      plus.style.animationDuration = duration + 's';
+      plus.style.animationDelay    = delay + 's';
+
+      // - bubble
+      const minus = document.createElement('div');
+      minus.className = 'bubble-minus';
+      minus.textContent = '−';
+      minus.style.animationDuration = duration + 's';
+      minus.style.animationDelay    = delay + 's';
+
+      // fusion flash
+      const fusion = document.createElement('div');
+      fusion.className = 'bubble-fusion';
+      fusion.style.animationDuration = duration + 's';
+      fusion.style.animationDelay    = delay + 's';
+
+      // sparks
+      const sparks = document.createElement('div');
+      sparks.className = 'fusion-sparks';
+      sparks.style.animationDuration = duration + 's';
+      sparks.style.animationDelay    = delay + 's';
+      for (let s = 0; s < 6; s++) {
+        const spark = document.createElement('div');
+        spark.className = 'spark';
+        spark.style.animationDuration = duration + 's';
+        spark.style.animationDelay    = delay + 's';
+        sparks.appendChild(spark);
+      }
+
+      pair.appendChild(plus);
+      pair.appendChild(minus);
+      pair.appendChild(fusion);
+      pair.appendChild(sparks);
+      layer.appendChild(pair);
+    }
+  })();
+  </script>
+</body>
+</html>

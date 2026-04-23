@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⭐ 3.3 POLARIDADES ZODIACALES ⭐</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --white: #F0F0F0;
+    --active: #FF3D81;
+    --passive: #00D9FF;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* ===================== FONDO CALOR/FRÍO ===================== */
+  #bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* COSMIC BACKGROUND */
+  .cosmos {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 1s;
+  }
+
+  .stars {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  .nebula {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.15;
+    animation: nebula-drift 20s infinite ease-in-out;
+  }
+
+  .nebula.pink {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, var(--pink), transparent);
+    top: 10%; left: -10%;
+  }
+
+  .nebula.cyan {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, var(--cyan), transparent);
+    bottom: 10%; right: -10%;
+    animation-delay: 5s;
+  }
+
+  .nebula.purple {
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, var(--purple), transparent);
+    top: 50%; left: 50%;
+    animation-delay: 10s;
+  }
+
+  @keyframes nebula-drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -20px) scale(1.1); }
+  }
+
+  .comet {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: var(--white);
+    box-shadow: 0 0 10px var(--cyan);
+    animation: comet-fall 4s infinite linear;
+  }
+
+  .comet::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 40px; height: 1px;
+    background: linear-gradient(90deg, var(--cyan), transparent);
+    transform: translateX(-40px);
+  }
+
+  @keyframes comet-fall {
+    0% { transform: translate(0, -100px) rotate(45deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translate(300px, 300px) rotate(45deg); opacity: 0; }
+  }
+
+  .scanlines {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.15),
+      rgba(0,0,0,0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  .crt-glow {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 100px rgba(0,217,255,0.1);
+  }
+
+  /* ===================== LAYOUT ===================== */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 24px);
+    color: var(--cyan);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--pink), -2px -2px 0 var(--purple);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0,0,0,0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0,0,0,0.5);
+  }
+
+  .box.intro {
+    background: #1a1a2e;
+    border-color: var(--purple);
+    box-shadow: 8px 8px 0 rgba(114,76,249,0.3), 0 0 20px rgba(114,76,249,0.2);
+  }
+
+  .box.active {
+    background: #2e1620;
+    border-color: var(--active);
+    box-shadow: 8px 8px 0 rgba(255,61,129,0.3), 0 0 20px rgba(255,61,129,0.2);
+  }
+
+  .box.passive {
+    background: #161a2e;
+    border-color: var(--passive);
+    box-shadow: 8px 8px 0 rgba(0,217,255,0.3), 0 0 20px rgba(0,217,255,0.2);
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .box.intro .box-title { color: var(--cyan); }
+  .box.active .box-title { color: var(--active); }
+  .box.passive .box-title { color: var(--passive); }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+  }
+
+  .box p:last-child { margin-bottom: 0; }
+
+  .highlight-active { color: var(--active); text-shadow: 0 0 5px var(--active); }
+  .highlight-passive { color: var(--passive); text-shadow: 0 0 5px var(--passive); }
+  .highlight { color: var(--pink); text-shadow: 0 0 5px var(--pink); }
+  .highlight-cyan { color: var(--cyan); text-shadow: 0 0 5px var(--cyan); }
+  .highlight-gold { color: var(--gold); text-shadow: 0 0 5px var(--gold); }
+
+  /* ===================== ESTRELLAS DE DAVID ===================== */
+  .stars-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+
+  .star-diagram {
+    border: 4px solid;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 8px 8px 0 rgba(0,0,0,0.5);
+    position: relative;
+    overflow: visible;
+  }
+
+  .star-diagram::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05), transparent);
+    animation: star-glow 4s infinite ease-in-out;
+    pointer-events: none;
+  }
+
+  @keyframes star-glow {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.2); }
+  }
+
+  .star-diagram.active {
+    background: #2e1620;
+    border-color: var(--active);
+    box-shadow: 8px 8px 0 rgba(255,61,129,0.3), 0 0 20px rgba(255,61,129,0.2);
+    animation: star-pulse-active 3s infinite;
+  }
+
+  .star-diagram.passive {
+    background: #161a2e;
+    border-color: var(--passive);
+    box-shadow: 8px 8px 0 rgba(0,217,255,0.3), 0 0 20px rgba(0,217,255,0.2);
+    animation: star-pulse-passive 4s infinite;
+  }
+
+  @keyframes star-pulse-active {
+    0%, 100% { box-shadow: 8px 8px 0 rgba(255,61,129,0.3), 0 0 20px rgba(255,61,129,0.2); }
+    50% { box-shadow: 8px 8px 0 rgba(255,61,129,0.5), 0 0 40px rgba(255,61,129,0.4); }
+  }
+
+  @keyframes star-pulse-passive {
+    0%, 100% { box-shadow: 8px 8px 0 rgba(0,217,255,0.3), 0 0 20px rgba(0,217,255,0.2); }
+    50% { box-shadow: 8px 8px 0 rgba(0,217,255,0.5), 0 0 40px rgba(0,217,255,0.4); }
+  }
+
+  .star-title {
+    font-size: 10px;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .star-diagram.active .star-title { color: var(--active); }
+  .star-diagram.passive .star-title { color: var(--passive); }
+
+  .star-svg-wrap {
+    width: 100%;
+    max-width: 220px;
+    margin: 0 auto 12px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .star-svg {
+    width: 100%;
+    height: auto;
+    animation: star-rotate 25s infinite linear;
+    filter: drop-shadow(0 0 8px currentColor);
+    overflow: visible;
+  }
+
+  .star-svg.active-star { color: #FF3D81; }
+  .star-svg.passive-star { color: #00D9FF; }
+
+  @keyframes star-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .star-label {
+    font-size: 7px;
+    line-height: 1.8;
+    color: #D0D0D0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--purple), var(--cyan), var(--purple), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--cyan);
+  }
+
+  /* ===================== ANIMACIÓN FUSIÓN ===================== */
+  #fusion-section {
+    position: relative;
+    min-height: 500px;
+    margin: 40px 0;
+  }
+
+  .fusion-boxes {
+    display: flex;
+    gap: 24px;
+    position: relative;
+  }
+
+  .fusion-box {
+    flex: 1;
+    border: 4px solid;
+    padding: 20px;
+    position: relative;
+    transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity;
+  }
+
+  .fusion-box.active {
+    background: #2e1620;
+    border-color: var(--active);
+    box-shadow: 8px 8px 0 rgba(255,61,129,0.3), 0 0 20px rgba(255,61,129,0.2);
+  }
+
+  .fusion-box.passive {
+    background: #161a2e;
+    border-color: var(--passive);
+    box-shadow: 8px 8px 0 rgba(0,217,255,0.3), 0 0 20px rgba(0,217,255,0.2);
+  }
+
+  .fusion-box .box-title {
+    font-size: 11px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .fusion-box.active .box-title { color: var(--active); }
+  .fusion-box.passive .box-title { color: var(--passive); }
+
+  .fusion-box p {
+    font-size: 8px;
+    line-height: 2;
+    color: #D0D0D0;
+    margin-bottom: 10px;
+  }
+
+  /* Estado fusionado */
+  .fusion-boxes.merging .fusion-box.active {
+    transform: translateX(52%);
+    opacity: 0;
+  }
+
+  .fusion-boxes.merging .fusion-box.passive {
+    transform: translateX(-52%);
+    opacity: 0;
+  }
+
+  /* Mensaje final */
+  #unity-message {
+    text-align: center;
+    border: 4px solid var(--gold);
+    padding: 30px 20px;
+    background: #1a140a;
+    box-shadow: 0 0 40px rgba(247,184,1,0.4), 0 0 80px rgba(247,184,1,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #unity-message::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(247,184,1,0.1), transparent 70%);
+    animation: pulse-gold 3s infinite ease-in-out;
+  }
+
+  @keyframes pulse-gold {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  .unity-title {
+    font-size: clamp(9px, 2vw, 14px);
+    color: var(--gold);
+    text-shadow: 0 0 10px var(--gold), 0 0 20px rgba(247,184,1,0.5);
+    line-height: 1.8;
+    position: relative;
+    z-index: 2;
+    animation: unity-glow 2s infinite ease-in-out;
+  }
+
+  @keyframes unity-glow {
+    0%, 100% { text-shadow: 0 0 10px var(--gold), 0 0 20px rgba(247,184,1,0.5); }
+    50% { text-shadow: 0 0 20px var(--gold), 0 0 40px rgba(247,184,1,0.8), 0 0 60px rgba(247,184,1,0.4); }
+  }
+
+  .unity-symbols {
+    font-size: 24px;
+    margin: 10px 0;
+    position: relative;
+    z-index: 2;
+    animation: symbols-spin 10s infinite linear;
+  }
+
+  @keyframes symbols-spin {
+    from { letter-spacing: 4px; }
+    50% { letter-spacing: 12px; }
+    to { letter-spacing: 4px; }
+  }
+
+  /* ===================== CANVAS DE LLAMAS/HIELO ===================== */
+  /* estilos en JS */
+
+  @media (max-width: 768px) {
+    .stars-container { grid-template-columns: 1fr; }
+    .fusion-boxes { flex-direction: column; }
+    .fusion-boxes.merging .fusion-box.active { transform: translateY(60%); }
+    .fusion-boxes.merging .fusion-box.passive { transform: translateY(-60%); }
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 12px; }
+    .box { padding: 16px; margin: 16px 0; }
+    .box p { font-size: 8px; }
+    .box-title { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Canvas para llamas/hielo -->
+<canvas id="bg-canvas"></canvas>
+
+<div class="cosmos">
+  <div class="nebula pink"></div>
+  <div class="nebula cyan"></div>
+  <div class="nebula purple"></div>
+  <div class="stars" id="stars"></div>
+  <div class="comet" style="top:15%;left:10%;animation-delay:0s;"></div>
+  <div class="comet" style="top:40%;left:70%;animation-delay:2s;"></div>
+  <div class="comet" style="top:70%;left:30%;animation-delay:4s;"></div>
+</div>
+<div class="scanlines"></div>
+<div class="crt-glow"></div>
+
+<div class="container">
+  <h1 class="glitch-title">⭐ 3.3 POLARIDADES ⭐<br>EN LOS SIGNOS ZODIACALES</h1>
+
+  <div class="box intro">
+    <div class="box-title">◈ ARMONÍA CELESTE ◈</div>
+    <p>El orden de los signos en el Zodiaco, como una <span class="highlight-cyan">armonía celeste</span>, plantea una secuencia en la que se hallan acoplados los signos formando triángulos y cuadrados conocidos en la Astrología con el nombre de <span class="highlight">triplicidades y cuadruplicidades</span>.</p>
+    <p>La triangulación de los signos es consecuencia de los <span class="highlight-gold">elementos</span>. La polaridad de cada uno de ellos se remonta a las cualidades primitivas que nos señalan a los signos de <span class="highlight">fuego y aire como los que comparten lo cálido</span>, y a los signos de <span class="highlight-cyan">tierra y agua, lo frío</span>.</p>
+    <p>Esto quiere decir que los <span class="highlight">masculinos poseen lo cálido</span> y los <span class="highlight-cyan">femeninos, lo frío</span>. De esta manera se forman las dos estrellas de seis puntas:</p>
+  </div>
+
+  <!-- ESTRELLAS DE DAVID -->
+  <div class="stars-container">
+    <!-- ACTIVA -->
+    <div class="star-diagram active">
+      <div class="star-title">★ ESTRELLA ACTIVA ★</div>
+      <div class="star-svg-wrap">
+        <svg class="star-svg active-star" viewBox="-10 -10 220 220" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+          <!-- Estrella de David: dos triángulos -->
+          <!-- Triángulo apuntando arriba (fuego) -->
+          <polygon points="100,15 175,140 25,140"
+            fill="rgba(255,61,129,0.12)" stroke="#FF3D81" stroke-width="3"/>
+          <!-- Triángulo apuntando abajo (aire) -->
+          <polygon points="100,185 25,60 175,60"
+            fill="rgba(255,61,129,0.08)" stroke="#FF3D81" stroke-width="3"/>
+
+          <!-- Signo en cada punta de la estrella -->
+          <!-- Arriba -->
+          <text x="100" y="5" text-anchor="middle" fill="#FF3D81" font-size="18" font-family="serif">♈</text>
+          <!-- Superior derecha -->
+          <text x="186" y="55" text-anchor="middle" fill="#FF3D81" font-size="18" font-family="serif">♊</text>
+          <!-- Inferior derecha -->
+          <text x="186" y="148" text-anchor="middle" fill="#FF3D81" font-size="18" font-family="serif">♌</text>
+          <!-- Abajo -->
+          <text x="100" y="203" text-anchor="middle" fill="#FF3D81" font-size="18" font-family="serif">♎</text>
+          <!-- Inferior izquierda -->
+          <text x="14" y="148" text-anchor="middle" fill="#FF3D81" font-size="18" font-family="serif">♐</text>
+          <!-- Superior izquierda -->
+          <text x="14" y="55" text-anchor="middle" fill="#FF3D81" font-size="18" font-family="serif">♒</text>
+
+          <!-- Centro: símbolo + -->
+          <line x1="90" y1="100" x2="110" y2="100" stroke="#FF3D81" stroke-width="3"/>
+          <line x1="100" y1="90" x2="100" y2="110" stroke="#FF3D81" stroke-width="3"/>
+        </svg>
+      </div>
+      <div class="star-label">
+        SIGNOS ACTIVOS · POSITIVOS<br>
+        MASCULINOS · EMISORES<br>
+        FUEGO &amp; AIRE 🔥💨
+      </div>
+    </div>
+
+    <!-- PASIVA -->
+    <div class="star-diagram passive">
+      <div class="star-title">★ ESTRELLA PASIVA ★</div>
+      <div class="star-svg-wrap">
+        <svg class="star-svg passive-star" viewBox="-10 -10 220 220" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+          <!-- Estrella de David -->
+          <polygon points="100,15 175,140 25,140"
+            fill="rgba(0,217,255,0.12)" stroke="#00D9FF" stroke-width="3"/>
+          <polygon points="100,185 25,60 175,60"
+            fill="rgba(0,217,255,0.08)" stroke="#00D9FF" stroke-width="3"/>
+
+          <!-- Arriba -->
+          <text x="100" y="5" text-anchor="middle" fill="#00D9FF" font-size="18" font-family="serif">♉</text>
+          <!-- Superior derecha -->
+          <text x="186" y="55" text-anchor="middle" fill="#00D9FF" font-size="18" font-family="serif">♋</text>
+          <!-- Inferior derecha -->
+          <text x="186" y="148" text-anchor="middle" fill="#00D9FF" font-size="18" font-family="serif">♍</text>
+          <!-- Abajo -->
+          <text x="100" y="203" text-anchor="middle" fill="#00D9FF" font-size="18" font-family="serif">♏</text>
+          <!-- Inferior izquierda -->
+          <text x="14" y="148" text-anchor="middle" fill="#00D9FF" font-size="18" font-family="serif">♑</text>
+          <!-- Superior izquierda -->
+          <text x="14" y="55" text-anchor="middle" fill="#00D9FF" font-size="18" font-family="serif">♓</text>
+
+          <!-- Centro: símbolo - -->
+          <line x1="88" y1="100" x2="112" y2="100" stroke="#00D9FF" stroke-width="3"/>
+        </svg>
+      </div>
+      <div class="star-label">
+        SIGNOS PASIVOS · NEGATIVOS<br>
+        FEMENINOS · RECEPTIVOS<br>
+        TIERRA &amp; AGUA 🌱💧
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓN DE FUSIÓN -->
+  <div id="fusion-section">
+    <div class="fusion-boxes" id="fusionBoxes">
+      <div class="fusion-box active">
+        <div class="box-title">🔴 ESTRELLA ACTIVA 🔴</div>
+        <p>La primera se denomina <span class="highlight-active">estrella activa</span>.</p>
+        <p>Los signos de la estrella activa, <span class="highlight">fuego y aire</span>, son los <span class="highlight-active">emisores</span>; ellos dan, acometen, inician, emprenden, motivan y se encuentran en <span class="highlight">continuo movimiento y evolución</span>.</p>
+      </div>
+      <div class="fusion-box passive">
+        <div class="box-title">🔵 ESTRELLA PASIVA 🔵</div>
+        <p>La segunda se denomina <span class="highlight-passive">estrella pasiva</span>.</p>
+        <p>Los signos que se encuentran en la pasiva denotan individuos <span class="highlight">receptivos, que aceptan, acatan, continúan actividades</span> y son <span class="highlight-passive">lentos y parsimoniosos</span>.</p>
+      </div>
+    </div>
+
+    <!-- Mensaje de unidad (oculto hasta la fusión) -->
+    <div id="unity-message">
+      <div class="unity-symbols">🔴 ✦ 🔵</div>
+      <div class="unity-title">
+        ✨ AMBAS ENERGÍAS SON NECESARIAS ✨<br>
+        PARA LA EXISTENCIA DE LA VIDA<br>
+        EN ESTE UNIVERSO
+      </div>
+      <div class="unity-symbols">☯ ⭐ ☯</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+</div>
+
+<script>
+/* =================== ESTRELLAS DE FONDO =================== */
+const starsContainer = document.getElementById('stars');
+for (let i = 0; i < 150; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  s.style.left = Math.random() * 100 + '%';
+  s.style.top = Math.random() * 100 + '%';
+  s.style.animationDelay = Math.random() * 3 + 's';
+  s.style.animationDuration = (Math.random() * 2 + 2) + 's';
+  const colors = ['#FFFFFF','#FF3D81','#00D9FF','#724CF9'];
+  s.style.background = colors[Math.floor(Math.random() * colors.length)];
+  const size = Math.random() * 2 + 1;
+  s.style.width = size + 'px';
+  s.style.height = size + 'px';
+  starsContainer.appendChild(s);
+}
+
+/* =================== CANVAS: LLAMAS → HIELO =================== */
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+
+let W, H;
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// Tiempo global y fase (0=fuego, 1=transición, 2=hielo)
+let t = 0;
+const CYCLE = 600; // frames por ciclo completo (fuego→hielo→fuego)
+
+// Partículas de llama
+const flames = Array.from({length: 60}, () => createFlame());
+function createFlame() {
+  return {
+    x: Math.random() * (typeof W !== 'undefined' ? W : 1200),
+    y: (typeof H !== 'undefined' ? H : 800) + 20,
+    vx: (Math.random() - 0.5) * 1.5,
+    vy: -(Math.random() * 3 + 2),
+    life: Math.random(),
+    maxLife: Math.random() * 0.7 + 0.3,
+    size: Math.random() * 30 + 10,
+    wobble: Math.random() * Math.PI * 2,
+  };
+}
+
+// Partículas de hielo/nieve
+const snowflakes = Array.from({length: 80}, () => createSnow());
+function createSnow() {
+  return {
+    x: Math.random() * (typeof W !== 'undefined' ? W : 1200),
+    y: Math.random() * (typeof H !== 'undefined' ? H : 800) - (typeof H !== 'undefined' ? H : 800),
+    vx: (Math.random() - 0.5) * 0.8,
+    vy: Math.random() * 1.5 + 0.5,
+    size: Math.random() * 5 + 2,
+    opacity: Math.random() * 0.8 + 0.2,
+    wobble: Math.random() * Math.PI * 2,
+  };
+}
+
+// Cristales de hielo
+const crystals = Array.from({length: 12}, () => ({
+  x: Math.random() * (typeof W !== 'undefined' ? W : 1200),
+  y: Math.random() * (typeof H !== 'undefined' ? H : 800),
+  size: Math.random() * 40 + 20,
+  angle: Math.random() * Math.PI,
+  opacity: 0,
+}));
+
+function drawFlame(p, alpha) {
+  p.wobble += 0.05;
+  p.x += p.vx + Math.sin(p.wobble) * 0.5;
+  p.y += p.vy;
+  p.life += 0.008;
+
+  if (p.life >= p.maxLife || p.y < -50) {
+    Object.assign(p, createFlame());
+    p.x = Math.random() * W;
+    return;
+  }
+
+  const progress = p.life / p.maxLife;
+  const fadeAlpha = progress < 0.2 ? progress / 0.2 : (1 - (progress - 0.2) / 0.8);
+  const s = p.size * (1 - progress * 0.5);
+
+  const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, s);
+  grad.addColorStop(0, `rgba(255, 255, 200, ${fadeAlpha * alpha})`);
+  grad.addColorStop(0.3, `rgba(255, 140, 0, ${fadeAlpha * alpha * 0.8})`);
+  grad.addColorStop(0.7, `rgba(255, 50, 0, ${fadeAlpha * alpha * 0.5})`);
+  grad.addColorStop(1, `rgba(80, 0, 0, 0)`);
+
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, s, 0, Math.PI * 2);
+  ctx.fillStyle = grad;
+  ctx.fill();
+}
+
+function drawSnow(p, alpha) {
+  p.wobble += 0.02;
+  p.x += p.vx + Math.sin(p.wobble) * 0.3;
+  p.y += p.vy;
+
+  if (p.y > H + 10) {
+    p.y = -10;
+    p.x = Math.random() * W;
+  }
+
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+  ctx.fillStyle = `rgba(180, 220, 255, ${p.opacity * alpha})`;
+  ctx.fill();
+
+  // Brillito
+  ctx.beginPath();
+  ctx.arc(p.x - p.size * 0.3, p.y - p.size * 0.3, p.size * 0.3, 0, Math.PI * 2);
+  ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity * alpha * 0.8})`;
+  ctx.fill();
+}
+
+function drawCrystal(c, alpha) {
+  ctx.save();
+  ctx.translate(c.x, c.y);
+  ctx.rotate(c.angle);
+  ctx.globalAlpha = c.opacity * alpha;
+
+  const s = c.size;
+  ctx.strokeStyle = 'rgba(100, 200, 255, 0.8)';
+  ctx.lineWidth = 1.5;
+
+  // Hexágono de cristal
+  for (let i = 0; i < 6; i++) {
+    const a = (i / 6) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(Math.cos(a) * s, Math.sin(a) * s);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(a) * s * 0.5, Math.sin(a) * s * 0.5);
+    ctx.lineTo(Math.cos(a + Math.PI / 6) * s * 0.7, Math.sin(a + Math.PI / 6) * s * 0.7);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+  ctx.globalAlpha = 1;
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+  t++;
+
+  // Ciclo: 0→CYCLE fuego, CYCLE→2*CYCLE transición, 2*CYCLE→3*CYCLE hielo, etc.
+  const cycle = t % (CYCLE * 3);
+  let fireAlpha = 0, iceAlpha = 0;
+
+  if (cycle < CYCLE) {
+    // FASE FUEGO
+    fireAlpha = 0.6;
+    iceAlpha = 0;
+  } else if (cycle < CYCLE * 2) {
+    // TRANSICIÓN
+    const p = (cycle - CYCLE) / CYCLE;
+    fireAlpha = 0.6 * (1 - p);
+    iceAlpha = p * 0.5;
+  } else {
+    // FASE HIELO
+    fireAlpha = 0;
+    iceAlpha = 0.5;
+  }
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Fondo de fuego
+  if (fireAlpha > 0) {
+    const bg = ctx.createLinearGradient(0, H, 0, 0);
+    bg.addColorStop(0, `rgba(60, 5, 0, ${fireAlpha * 0.8})`);
+    bg.addColorStop(0.5, `rgba(30, 0, 0, ${fireAlpha * 0.5})`);
+    bg.addColorStop(1, `rgba(0, 0, 0, 0)`);
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    flames.forEach(f => drawFlame(f, fireAlpha));
+  }
+
+  // Fondo de hielo
+  if (iceAlpha > 0) {
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, `rgba(0, 20, 50, ${iceAlpha * 0.7})`);
+    bg.addColorStop(1, `rgba(0, 5, 20, ${iceAlpha * 0.4})`);
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    snowflakes.forEach(s => drawSnow(s, iceAlpha));
+
+    // Cristales con opacidad gradual
+    crystals.forEach(c => {
+      c.opacity = Math.min(1, c.opacity + 0.01);
+      c.angle += 0.002;
+      drawCrystal(c, iceAlpha);
+    });
+  } else {
+    crystals.forEach(c => { c.opacity = 0; });
+  }
+}
+animate();
+
+/* =================== ANIMACIÓN DE FUSIÓN (LOOP) =================== */
+const fusionBoxes = document.getElementById('fusionBoxes');
+const unityMsg   = document.getElementById('unity-message');
+const fusionSection = document.getElementById('fusion-section');
+
+// Usar opacity+visibility para todo, nunca display:none en el loop
+unityMsg.style.opacity    = '0';
+unityMsg.style.visibility = 'hidden';
+unityMsg.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
+unityMsg.style.transform  = 'scale(0.85)';
+unityMsg.style.display    = 'block';
+
+fusionBoxes.style.opacity    = '1';
+fusionBoxes.style.visibility = 'visible';
+fusionBoxes.style.transition = 'opacity 0.7s ease';
+
+let fusionTriggered = false;
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !fusionTriggered) {
+      fusionTriggered = true;
+      observer.disconnect();
+      setTimeout(fusionLoop, 8000); // 8s para leer antes del primer loop
+    }
+  });
+}, { threshold: 0.4 });
+
+observer.observe(fusionSection);
+
+function showBoxes(callback) {
+  fusionBoxes.style.transition = 'none';
+  fusionBoxes.classList.remove('merging');
+  void fusionBoxes.offsetWidth;
+  fusionBoxes.style.opacity = '0';
+  fusionBoxes.style.visibility = 'visible';
+  void fusionBoxes.offsetWidth;
+  fusionBoxes.style.transition = 'opacity 0.8s ease';
+  fusionBoxes.style.opacity = '1';
+  if (callback) setTimeout(callback, 8000); // 8s para leer
+}
+
+function mergeBoxes(callback) {
+  fusionBoxes.classList.add('merging');
+  setTimeout(() => {
+    fusionBoxes.style.transition = 'opacity 0.6s ease';
+    fusionBoxes.style.opacity = '0';
+    fusionBoxes.style.visibility = 'hidden';
+    if (callback) setTimeout(callback, 700);
+  }, 900);
+}
+
+function showUnity(callback) {
+  unityMsg.style.visibility = 'visible';
+  unityMsg.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
+  unityMsg.style.opacity   = '1';
+  unityMsg.style.transform = 'scale(1)';
+  if (callback) setTimeout(callback, 5000); // 5s visible
+}
+
+function hideUnity(callback) {
+  unityMsg.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  unityMsg.style.opacity   = '0';
+  unityMsg.style.transform = 'scale(0.85)';
+  setTimeout(() => {
+    unityMsg.style.visibility = 'hidden';
+    if (callback) callback();
+  }, 900);
+}
+
+function fusionLoop() {
+  mergeBoxes(() => {
+    showUnity(() => {
+      hideUnity(() => {
+        showBoxes(() => fusionLoop());
+      });
+    });
+  });
+}
+</script>
+</body>
+</html>

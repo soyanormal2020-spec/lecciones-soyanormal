@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⭐ CUALIDADES ZODIACALES ⭐</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --white: #F0F0F0;
+    --cardinal: #FF3D81;
+    --fixed: #F7B801;
+    --mutable: #00D9FF;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  .crt-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 100px rgba(0, 217, 255, 0.1);
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 24px);
+    color: var(--cyan);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--pink), -2px -2px 0 var(--purple);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .box.intro {
+    background: #1a1a2e;
+    border-color: var(--purple);
+    box-shadow: 8px 8px 0 rgba(114, 76, 249, 0.3), 0 0 20px rgba(114, 76, 249, 0.2);
+  }
+
+  .box.cardinal {
+    background: #2e1620;
+    border-color: var(--cardinal);
+    box-shadow: 8px 8px 0 rgba(255, 61, 129, 0.3), 0 0 20px rgba(255, 61, 129, 0.2);
+  }
+
+  .box.fixed {
+    background: #2e2416;
+    border-color: var(--fixed);
+    box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.3), 0 0 20px rgba(247, 184, 1, 0.2);
+  }
+
+  .box.mutable {
+    background: #16202e;
+    border-color: var(--mutable);
+    box-shadow: 8px 8px 0 rgba(0, 217, 255, 0.3), 0 0 20px rgba(0, 217, 255, 0.2);
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .box.intro .box-title { color: var(--cyan); }
+  .box.cardinal .box-title { color: var(--cardinal); }
+  .box.fixed .box-title { color: var(--fixed); }
+  .box.mutable .box-title { color: var(--mutable); }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+  }
+
+  .box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .highlight-cardinal {
+    color: var(--cardinal);
+    text-shadow: 0 0 5px var(--cardinal);
+  }
+
+  .highlight-fixed {
+    color: var(--fixed);
+    text-shadow: 0 0 5px var(--fixed);
+  }
+
+  .highlight-mutable {
+    color: var(--mutable);
+    text-shadow: 0 0 5px var(--mutable);
+  }
+
+  .highlight {
+    color: var(--pink);
+    text-shadow: 0 0 5px var(--pink);
+  }
+
+  .highlight-cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 5px var(--cyan);
+  }
+
+  .highlight-gold {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+  .sign-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .sign-badge {
+    border: 3px solid;
+    padding: 8px 4px;
+    text-align: center;
+    font-size: 7px;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s;
+  }
+
+  .sign-badge.cardinal { 
+    background: #2e1620; 
+    border-color: var(--cardinal); 
+    color: var(--cardinal);
+    animation: cardinal-pulse 2s infinite;
+  }
+
+  .sign-badge.fixed { 
+    background: #2e2416; 
+    border-color: var(--fixed); 
+    color: var(--fixed);
+    animation: fixed-solid 3s infinite;
+  }
+
+  .sign-badge.mutable { 
+    background: #16202e; 
+    border-color: var(--mutable); 
+    color: var(--mutable);
+    animation: mutable-flow 2.5s infinite;
+  }
+
+  .sign-badge:hover {
+    transform: translate(-2px, -2px);
+  }
+
+  /* CARDINAL ANIMATION - Pulse de inicio, latido */
+  @keyframes cardinal-pulse {
+    0%, 100% { transform: scale(1); box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5), 0 0 0px var(--cardinal); }
+    50% { transform: scale(1.05); box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5), 0 0 8px var(--cardinal); }
+  }
+
+  /* FIXED ANIMATION - Solidez, brillo estable */
+  @keyframes fixed-solid {
+    0%, 100% { opacity: 1; box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5), inset 0 0 0px var(--fixed); }
+    50% { opacity: 1; box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(247, 184, 1, 0.3); }
+  }
+
+  /* MUTABLE ANIMATION - Flujo, cambio suave */
+  @keyframes mutable-flow {
+    0% { transform: translateX(0) skewX(0deg); }
+    25% { transform: translateX(1px) skewX(2deg); }
+    50% { transform: translateX(0) skewX(0deg); }
+    75% { transform: translateX(-1px) skewX(-2deg); }
+    100% { transform: translateX(0) skewX(0deg); }
+  }
+
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--purple), var(--cyan), var(--purple), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--cyan);
+  }
+
+  @media (max-width: 640px) {
+    .container {
+      padding: 12px;
+    }
+    
+    .box {
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .box p {
+      font-size: 8px;
+    }
+
+    .box-title {
+      font-size: 10px;
+    }
+
+    .sign-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Estrellas flotantes de lenguaje_simbolico */
+  .floating-star {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+
+  /* Entrada de cajas */
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .box { animation: slideIn 0.6s ease-out backwards; }
+
+  /* CARDINALES: fade in/out sin bordes, loop automático */
+  .box.cardinal {
+    border: none !important;
+    animation: slideIn 0.6s ease-out backwards, cardinalCycle 6s ease-in-out infinite !important;
+    animation-delay: 0.1s, 1s !important;
+    box-shadow: none !important;
+  }
+  
+  @keyframes cardinalCycle {
+    0%, 100% { opacity: 0; transform: scale(0.95); }
+    20%, 80% { opacity: 1; transform: scale(1); }
+  }
+
+  /* FIJOS: brillo constante que pulsa */
+  .box.fixed {
+    animation: slideIn 0.6s ease-out backwards, fixedGlow 3s ease-in-out infinite !important;
+    animation-delay: 0.2s, 1s !important;
+  }
+  
+  @keyframes fixedGlow {
+    0%, 100% { 
+      box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.3), 
+                  0 0 20px rgba(247, 184, 1, 0.4),
+                  inset 0 0 30px rgba(247, 184, 1, 0.1); 
+    }
+    50% { 
+      box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.6), 
+                  0 0 50px rgba(247, 184, 1, 0.8),
+                  inset 0 0 60px rgba(247, 184, 1, 0.2); 
+    }
+  }
+
+  /* MUTABLES: líneas que se transforman en círculos */
+  .box.mutable {
+    position: relative;
+    overflow: visible;
+    animation: slideIn 0.6s ease-out backwards !important;
+    animation-delay: 0.3s !important;
+  }
+  
+  .box.mutable::before,
+  .box.mutable::after {
+    content: '';
+    position: absolute;
+    background: var(--mutable);
+    animation: mutableTransform 4s ease-in-out infinite;
+  }
+  
+  .box.mutable::before {
+    width: 100%;
+    height: 4px;
+    top: -12px;
+    left: 0;
+  }
+  
+  .box.mutable::after {
+    width: 4px;
+    height: 100%;
+    right: -12px;
+    top: 0;
+    animation-delay: 2s;
+  }
+  
+  @keyframes mutableTransform {
+    0%, 100% { 
+      border-radius: 0;
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    25%, 75% { 
+      border-radius: 50%;
+      opacity: 1;
+    }
+    50% { 
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      opacity: 1;
+    }
+  }
+
+</style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <div class="container">
+    <h1 class="glitch-title">⭐ 3.2 CUALIDADES ⭐<br>EN LOS SIGNOS ZODIACALES</h1>
+
+    <div class="box intro">
+      <div class="box-title">◈ ESTACIONES Y NACIMIENTO ◈</div>
+      <p>Retomando un poco el tema de las <span class="highlight-cyan">estaciones del año</span> -ya que nos permitirá entender las cualidades energéticas de cada signo-, las estaciones son un <span class="highlight">suceso cósmico</span>, un acontecimiento de la naturaleza, y como suceso del hombre señalan dos aspectos diferentes.</p>
+      <p>El <span class="highlight-gold">primero</span> se relaciona con la época del nacimiento según la estación, y el <span class="highlight-gold">segundo</span>, con el momento de la estación en que nació (mes).</p>
+      <p>Si se nace al <span class="highlight">inicio de una estación</span>, se poseerá el poder de lo que comienza con ímpetu y con fuerza arrolladora por alcanzar una meta.</p>
+      <p>Si se nace en el <span class="highlight">segundo mes</span>, se tendrá la solidez y la estabilidad propia de esta época.</p>
+      <p>Si se nace en el <span class="highlight">tercero</span>, se poseerá la adaptabilidad, la movilidad y la disposición hacia el cambio.</p>
+      <p>Los signos que coinciden con estos tres impulsos de la naturaleza se agrupan según el momento de la estación y reciben el nombre de <span class="highlight-cardinal">Cardinales</span> (los que inician), <span class="highlight-fixed">Fijos</span> (los que están en medio), y <span class="highlight-mutable">Mutables</span> (los que las finalizan).</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="box cardinal">
+      <div class="box-title">🔴 SIGNOS CARDINALES 🔴</div>
+      <p>Los Signos Cardinales son llamados de esta manera porque son los que <span class="highlight-cardinal">abren o dan inicio a cada una de las estaciones</span> del año.</p>
+      <p>Su condición clave es la de <span class="highlight">impulsar, dar el primer paso, crear, animar, establecer nuevas condiciones</span>.</p>
+      <div class="sign-grid">
+        <div class="sign-badge cardinal">ARIES</div>
+        <div class="sign-badge cardinal">CÁNCER</div>
+        <div class="sign-badge cardinal">LIBRA</div>
+        <div class="sign-badge cardinal">CAPRICORNIO</div>
+      </div>
+      <p>La energía arquetípica de estos signos cardinales es <span class="highlight-cardinal">animadora</span>, se apoyan en su creatividad, sin embargo, no representan la estabilidad o persistencia de los signos fijos.</p>
+      <p>La función cardinal es la de <span class="highlight">conseguir las semillas, la tierra y permitir que el proceso de una plantación se emprenda</span>.</p>
+    </div>
+
+    <div class="box fixed">
+      <div class="box-title">🟡 SIGNOS FIJOS 🟡</div>
+      <p>Poseen la capacidad de <span class="highlight-fixed">soportar y de convertirse en columnas</span>. Su función es la de mantener siempre el flujo, la de continuar los ritmos.</p>
+      <p>Sus energías son canalizadas en forma <span class="highlight">unilateral, fija</span>, lo que hace que esta energía cuando se manifiesta de manera desequilibrada se despliegue en conductas tales como la terquedad, la obstinación y las ideas fijas.</p>
+      <p>De la misma manera, cuando esta energía está equilibrada las conductas que pueden desplegarse en una persona con énfasis en estos signos es la <span class="highlight-fixed">perseverancia, la estabilidad, la constancia</span> e incluso pueden ser personas que ayudan a otros a sobrellevar las cargas.</p>
+      <p>En general, cuando la energía de los signos fijos está equilibrada y se presenta en una configuración astral en la carta natal de una persona, estas pueden poseer cualidades de <span class="highlight">fortaleza, resistencia, de gran energía estabilizadora</span> que, a su vez, poseen en ellas mismas tranquilidad.</p>
+      <p>Los procesos de sus vidas se manifiestan con <span class="highlight-fixed">lentitud y parsimonia</span>. Lo que se proponen tratan de llevarlo a cabo a como dé lugar; no cambian de parecer con facilidad. Son robustos y gruesos.</p>
+      <div class="sign-grid">
+        <div class="sign-badge fixed">TAURO</div>
+        <div class="sign-badge fixed">LEO</div>
+        <div class="sign-badge fixed">ESCORPIO</div>
+        <div class="sign-badge fixed">ACUARIO</div>
+      </div>
+      <p>Los Signos Fijos son los que se presentan en <span class="highlight-fixed">medio de las estaciones</span>. Su condición clave como arquetipos energéticos es fortalecer, definir, solidificar, establecer.</p>
+    </div>
+
+    <div class="box mutable">
+      <div class="box-title">🔵 SIGNOS MUTABLES 🔵</div>
+      <p>Los Signos Mutables son los que <span class="highlight-mutable">dan fin a las estaciones</span>. Su condición clave de esta energía es la de renovar, cambiar, disipar, diluir.</p>
+      <p>Cuando esta energía se concentra en la configuración astral de una persona, suele manifestarse como una <span class="highlight">fuerza suficiente para ayudar a limar las asperezas</span> entre los demás.</p>
+      <p>Cuando esta energía de mutabilidad está bien equilibrada, las conductas que se pueden desplegar en las personas con esta configuración astrológica son la <span class="highlight-mutable">habilidad para movilizarse, para adaptarse al cambio</span>, teniendo capacidad para hacer muchas cosas al mismo tiempo, razón por la cual son usualmente multifacéticos, con habilidades y destrezas en diversos y variados asuntos.</p>
+      <div class="sign-grid">
+        <div class="sign-badge mutable">GÉMINIS</div>
+        <div class="sign-badge mutable">VIRGO</div>
+        <div class="sign-badge mutable">SAGITARIO</div>
+        <div class="sign-badge mutable">PISCIS</div>
+      </div>
+      <p>Una de las funciones de esta energía mutable es la de <span class="highlight">unir los polos opuestos y la de mediar</span>.</p>
+      <p>Sin embargo, cuando no está bien equilibrada uno de los problemas que se pueden presentar es la <span class="highlight-mutable">inestabilidad, la inseguridad, la actitud de duda persistente</span>.</p>
+    </div>
+
+    <div class="divider"></div>
+  </div>
+
+  <script>
+    const starsContainer = document.getElementById('stars');
+    const starCount = 100;
+    
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      
+      const colors = ['#FFFFFF', '#FF3D81', '#F7B801', '#00D9FF'];
+      star.style.background = colors[Math.floor(Math.random() * colors.length)];
+      
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      
+      starsContainer.appendChild(star);
+    }
+  </script>
+
+<script>
+  const starsContainer = document.querySelector('.stars');
+  if (starsContainer) {
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      starsContainer.appendChild(star);
+    }
+  }
+
+  const symbols = ['⭐', '✨', '✦', '✧', '★', '♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
+  for (let i = 0; i < 12; i++) {
+    const star = document.createElement('div');
+    star.className = 'floating-star';
+    star.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.fontSize = (Math.random() * 20 + 10) + 'px';
+    star.style.animationDelay = Math.random() * 6 + 's';
+    star.style.animationDuration = (Math.random() * 4 + 4) + 's';
+    document.body.appendChild(star);
+  }
+</script>
+</body>
+</html>

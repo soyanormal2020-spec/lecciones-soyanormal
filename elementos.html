@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⭐ ELEMENTOS ZODIACALES ⭐</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --white: #F0F0F0;
+    --fire: #FF6B35;
+    --earth: #8B4513;
+    --air: #87CEEB;
+    --water: #4169E1;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  .crt-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 100px rgba(0, 217, 255, 0.1);
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(16px, 4vw, 28px);
+    color: var(--cyan);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--pink), -2px -2px 0 var(--purple);
+    animation: glitch 3s infinite;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+  }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .box.intro {
+    background: #1a1a2e;
+    border-color: var(--purple);
+    box-shadow: 8px 8px 0 rgba(114, 76, 249, 0.3), 0 0 20px rgba(114, 76, 249, 0.2);
+  }
+
+  .box.fire {
+    background: #2e1a16;
+    border-color: var(--fire);
+    box-shadow: 8px 8px 0 rgba(255, 107, 53, 0.3), 0 0 20px rgba(255, 107, 53, 0.2);
+  }
+
+  .box.earth {
+    background: #1f1a16;
+    border-color: var(--earth);
+    box-shadow: 8px 8px 0 rgba(139, 69, 19, 0.3), 0 0 20px rgba(139, 69, 19, 0.2);
+  }
+
+  .box.air {
+    background: #16202e;
+    border-color: var(--air);
+    box-shadow: 8px 8px 0 rgba(135, 206, 235, 0.3), 0 0 20px rgba(135, 206, 235, 0.2);
+  }
+
+  .box.water {
+    background: #161a2e;
+    border-color: var(--water);
+    box-shadow: 8px 8px 0 rgba(65, 105, 225, 0.3), 0 0 20px rgba(65, 105, 225, 0.2);
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .box.intro .box-title { color: var(--cyan); }
+  .box.fire .box-title { color: var(--fire); }
+  .box.earth .box-title { color: var(--earth); }
+  .box.air .box-title { color: var(--air); }
+  .box.water .box-title { color: var(--water); }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .highlight-fire {
+    color: var(--fire);
+    text-shadow: 0 0 5px var(--fire);
+  }
+
+  .highlight-earth {
+    color: var(--earth);
+    text-shadow: 0 0 5px var(--earth);
+  }
+
+  .highlight-air {
+    color: var(--air);
+    text-shadow: 0 0 5px var(--air);
+  }
+
+  .highlight-water {
+    color: var(--water);
+    text-shadow: 0 0 5px var(--water);
+  }
+
+  .highlight {
+    color: var(--pink);
+    text-shadow: 0 0 5px var(--pink);
+  }
+
+  .highlight-cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 5px var(--cyan);
+  }
+
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--purple), var(--cyan), var(--purple), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--cyan);
+  }
+
+  .element-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 16px 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .element-badge {
+    border: 3px solid;
+    padding: 8px;
+    text-align: center;
+    font-size: 8px;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .element-badge.fire { background: #2e1a16; border-color: var(--fire); color: var(--fire); }
+  .element-badge.earth { background: #1f1a16; border-color: var(--earth); color: var(--earth); }
+  .element-badge.air { background: #16202e; border-color: var(--air); color: var(--air); }
+  .element-badge.water { background: #161a2e; border-color: var(--water); color: var(--water); }
+
+  /* FIRE ANIMATION - Flickering flames */
+  .fire-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.4;
+  }
+
+  .flame {
+    position: absolute;
+    bottom: 0;
+    width: 4px;
+    background: var(--fire);
+    animation: flicker 0.5s infinite alternate;
+  }
+
+  @keyframes flicker {
+    0% { height: 20px; opacity: 0.8; transform: translateX(0) scaleY(1); }
+    50% { height: 35px; opacity: 1; transform: translateX(2px) scaleY(1.2); }
+    100% { height: 25px; opacity: 0.9; transform: translateX(-1px) scaleY(0.9); }
+  }
+
+  /* EARTH ANIMATION - Growing blocks/pulse */
+  .earth-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.3;
+  }
+
+  .earth-block {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--earth);
+    animation: grow 3s infinite;
+  }
+
+  @keyframes grow {
+    0%, 100% { transform: scale(1) translateY(0); opacity: 0.5; }
+    50% { transform: scale(1.5) translateY(-10px); opacity: 0.8; }
+  }
+
+  /* AIR ANIMATION - Swirling lines */
+  .air-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.3;
+  }
+
+  .air-line {
+    position: absolute;
+    width: 40px;
+    height: 2px;
+    background: var(--air);
+    animation: swirl 4s infinite linear;
+  }
+
+  @keyframes swirl {
+    0% { transform: translateX(-50px) translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateX(900px) translateY(-20px) rotate(180deg); opacity: 0; }
+  }
+
+  /* WATER ANIMATION - Waves */
+  .water-particles {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.4;
+  }
+
+  .wave {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 20px;
+    background: var(--water);
+    animation: wave 3s infinite ease-in-out;
+  }
+
+  @keyframes wave {
+    0%, 100% { transform: translateY(0) scaleY(1); }
+    50% { transform: translateY(-10px) scaleY(1.5); }
+  }
+
+  .wave:nth-child(2) {
+    animation-delay: 0.5s;
+    opacity: 0.6;
+    bottom: 5px;
+  }
+
+  .wave:nth-child(3) {
+    animation-delay: 1s;
+    opacity: 0.4;
+    bottom: 10px;
+  }
+
+  /* ── CANVAS ELEMENTOS INTRO ── */
+  .canvas-intro {
+    width: 100%;
+    max-width: 900px;
+    height: 200px;
+    display: block;
+    margin: 0 auto 24px auto;
+    border: 4px solid var(--purple);
+    box-shadow: 0 0 20px rgba(114,76,249,.4), 8px 8px 0 rgba(0,0,0,.5);
+  }
+
+  /* ── CHISPAS FUEGO ── */
+  .chispa {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--fire);
+    pointer-events: none;
+    z-index: 1;
+    animation: subirChispa var(--dur, 1.5s) steps(12,end) infinite;
+    opacity: 0;
+  }
+  @keyframes subirChispa {
+    0%   { transform: translateY(0)   translateX(0);   opacity: 1; }
+    40%  { opacity: 1; }
+    100% { transform: translateY(-80px) translateX(var(--dx, 10px)); opacity: 0; }
+  }
+
+  /* ── CRISTALES TIERRA ── */
+  .cristal {
+    position: absolute;
+    bottom: 0;
+    width: 6px;
+    background: var(--earth);
+    pointer-events: none;
+    z-index: 1;
+    animation: crecerCristal var(--dur, 2s) steps(8,end) infinite;
+    transform-origin: bottom center;
+  }
+  @keyframes crecerCristal {
+    0%,100% { height: 4px;  opacity: .4; }
+    50%     { height: var(--h, 28px); opacity: .9; }
+  }
+
+  /* ── ESPIRAL AIRE ── */
+  .particula-aire {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--air);
+    border-radius: 0;
+    pointer-events: none;
+    z-index: 1;
+    animation: espiral var(--dur, 4s) steps(20,end) infinite;
+    opacity: 0;
+  }
+  @keyframes espiral {
+    0%   { transform: translate(0,0) rotate(0deg);   opacity: 0; }
+    10%  { opacity: .8; }
+    50%  { transform: translate(var(--tx,40px), var(--ty,-30px)) rotate(180deg); opacity: .6; }
+    90%  { opacity: .2; }
+    100% { transform: translate(var(--tx2,80px), var(--ty2,10px)) rotate(360deg); opacity: 0; }
+  }
+
+  /* ── GOTAS AGUA ── */
+  .gota {
+    position: absolute;
+    width: 4px;
+    height: 8px;
+    background: var(--water);
+    pointer-events: none;
+    z-index: 1;
+    animation: caerGota var(--dur, 2s) steps(10,end) infinite;
+    opacity: 0;
+  }
+  @keyframes caerGota {
+    0%   { transform: translateY(-20px); opacity: 0; }
+    10%  { opacity: 1; }
+    80%  { transform: translateY(var(--dy, 60px)); opacity: .8; }
+    85%  { transform: translateY(var(--dy, 60px)) scaleX(2.5) scaleY(.3); opacity: .6; }
+    100% { transform: translateY(var(--dy, 60px)) scaleX(3) scaleY(.1); opacity: 0; }
+  }
+
+  /* ── ONDAS AGUA MEJORADAS ── */
+  .onda-pixel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: repeating-linear-gradient(90deg,
+      var(--water) 0, var(--water) 4px, transparent 4px, transparent 8px);
+    pointer-events: none;
+    z-index: 1;
+    animation: moverOnda var(--dur,3s) linear infinite;
+  }
+  @keyframes moverOnda {
+    0%   { background-position: 0 0; transform: translateY(0); }
+    50%  { transform: translateY(-6px); }
+    100% { background-position: 80px 0; transform: translateY(0); }
+  }
+
+  @media (max-width: 640px) {
+    .canvas-intro { height: 140px; }
+  }
+</style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <div class="container">
+    <!-- CANVAS ANIMADO: 4 ELEMENTOS INTERACTUANDO -->
+    <canvas class="canvas-intro" id="elementosCanvas"></canvas>
+
+    <h1 class="glitch-title">⭐ ELEMENTOS ⭐</h1>
+
+    <div class="box intro">
+      <div class="box-title">◈ CARGA ENERGÉTICA ELEMENTAL ◈</div>
+      <p>Cuando hablamos de elementos, tenemos que clasificar a los signos zodiacales en relación a su <span class="highlight-cyan">“carga energética elemental”</span> correspondiente a:</p>
+      <div class="element-grid">
+        <div class="element-badge fire">FUEGO</div>
+        <div class="element-badge earth">TIERRA</div>
+        <div class="element-badge air">AIRE</div>
+        <div class="element-badge water">AGUA</div>
+      </div>
+      <p>Cada elemento por su conformación, aspecto y por la función que cumple en la naturaleza, permite que se extraigan <span class="highlight">deducciones cuya aplicación sobre la vida y facetas de los nativos</span> de estas agrupaciones se efectúa a continuación.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="box fire">
+      <div class="fire-particles" id="fireParticles">
+        <div class="flame" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="flame" style="left: 25%; animation-delay: 0.1s;"></div>
+        <div class="flame" style="left: 40%; animation-delay: 0.2s;"></div>
+        <div class="flame" style="left: 55%; animation-delay: 0.15s;"></div>
+        <div class="flame" style="left: 70%; animation-delay: 0.05s;"></div>
+        <div class="flame" style="left: 85%; animation-delay: 0.25s;"></div>
+      </div>
+      <div class="box-title">🔥 ELEMENTO FUEGO 🔥</div>
+      <p>El elemento fuego se refiere a una <span class="highlight-fire">energía radiante universal</span>, una energía que es excitable, entusiasta y que, a través de su luz, aporta color al mundo.</p>
+      <p>Los signos de fuego son ejemplo de <span class="highlight-fire">espíritus elevados, gran fe en sí mismos, entusiasmo, fuerza sin fin y honradez directa</span>.</p>
+      <p>Necesitan mucha libertad a fin de expresarse naturalmente, y por lo común se aseguran ese espacio mediante <span class="highlight">tenaz insistencia en su punto de vista</span>.</p>
+    </div>
+
+    <div class="box earth">
+      <div class="earth-particles">
+        <div class="earth-block" style="left: 15%; bottom: 20px; animation-delay: 0s;"></div>
+        <div class="earth-block" style="left: 35%; bottom: 30px; animation-delay: 0.5s;"></div>
+        <div class="earth-block" style="left: 55%; bottom: 25px; animation-delay: 1s;"></div>
+        <div class="earth-block" style="left: 75%; bottom: 35px; animation-delay: 1.5s;"></div>
+        <div class="earth-block" style="left: 90%; bottom: 20px; animation-delay: 2s;"></div>
+      </div>
+      <div class="box-title">🌍 ELEMENTO TIERRA 🌍</div>
+      <p>Una armonización de este elemento indica que el individuo está en <span class="highlight-earth">contacto con los sentidos físicos y la realidad de aquí y ahora</span> del mundo material.</p>
+      <p>Los signos de tierra tienden a confiar más en sus <span class="highlight-earth">sentidos y su razón práctica</span> que en las inspiraciones, consideraciones teóricas o intuiciones de los demás signos.</p>
+      <p>Están armonizados con el mundo de las <span class="highlight">“formas”</span> que los sentidos y la mente práctica consideran como reales, y su comprensión innata de cómo el mundo material funciona da a los signos de tierra más <span class="highlight-earth">paciencia y autodisciplina</span> que los demás signos.</p>
+    </div>
+
+    <div class="box air">
+      <div class="air-particles">
+        <div class="air-line" style="top: 20%; animation-delay: 0s;"></div>
+        <div class="air-line" style="top: 40%; animation-delay: 1s;"></div>
+        <div class="air-line" style="top: 60%; animation-delay: 2s;"></div>
+        <div class="air-line" style="top: 80%; animation-delay: 3s;"></div>
+      </div>
+      <div class="box-title">💨 ELEMENTO AIRE 💨</div>
+      <p>Es la energía vital que se asoció con la respiración y con lo que los yoguis denominan <span class="highlight-air">“prana”</span>.</p>
+      <p>El reino del aire es el mundo de las <span class="highlight-air">ideas arquetípicas detrás del velo del mundo físico</span>, la energía cósmica concretada dentro de las pautas específicas del pensamiento. Se asocia con líneas geométricas de fuerza, que funcionan a través de la mente, la energía que modela las pautas de las cosas venideras.</p>
+      <p>Mientras los signos de fuego se interesan por querer que algo sea, los signos de aire enfocan su energía en <span class="highlight">ideas específicas que aún no se materializaron</span>, y concentrándose en estas ideas aseguran que a su tiempo se materialicen.</p>
+      <p>De allí que, aunque a los signos de aire a menudo se los acuse de <span class="highlight-air">soñadores sin practicidad</span>, representan un papel en la concreción de la creación en el más amplio nivel social, pues sus ideas pueden a su tiempo entrar en contacto con las vidas de millones de personas.</p>
+    </div>
+
+    <div class="box water">
+      <div class="water-particles">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+      </div>
+      <div class="box-title">💧 ELEMENTO AGUA 💧</div>
+      <p>Los que tienen el elemento agua fuertemente activado en sus mapas advierten desde el nacimiento que <span class="highlight-water">varios factores intangibles representan un papel mayor en la vida</span> de lo que comúnmente se cree.</p>
+      <p>Los signos de agua están en <span class="highlight-water">contacto con sus sentimientos</span>, armonizados con los matices y las sutilezas que muchos otros ni siquiera advierten.</p>
+      <p>El elemento agua representa el reino de la <span class="highlight">emoción profunda y de las respuestas sentimentales</span>, abarcando desde pasiones compulsivas hasta miedos abrumadores, y una aceptación y un amor omniabarcantes de la creación.</p>
+      <p>Puesto que los sentimientos, por su naturaleza misma, son parcialmente inconscientes, los signos de agua están simultáneamente al tanto del <span class="highlight-water">poder de la mente inconsciente</span> y ellos mismos son inconscientes de mucho de lo que realmente los motiva.</p>
+    </div>
+
+    <div class="divider"></div>
+  </div>
+
+  <script>
+    // ── ESTRELLAS ──
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      const colors = ['#FFFFFF','#FF6B35','#8B4513','#87CEEB','#4169E1'];
+      star.style.background = colors[Math.floor(Math.random()*colors.length)];
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      starsContainer.appendChild(star);
+    }
+
+    // ── CHISPAS FUEGO ──
+    const fireBox = document.getElementById('fireParticles');
+    for(let i=0;i<12;i++){
+      const c = document.createElement('div');
+      c.className = 'chispa';
+      c.style.left = (5 + Math.random()*90) + '%';
+      c.style.bottom = (Math.random()*20) + 'px';
+      c.style.setProperty('--dur', (0.8+Math.random()*1.2)+'s');
+      c.style.setProperty('--dx', ((Math.random()-0.5)*40)+'px');
+      c.style.animationDelay = (Math.random()*2)+'s';
+      const sz = Math.random()>0.5 ? 4 : 6;
+      c.style.width = sz+'px'; c.style.height = sz+'px';
+      c.style.background = Math.random()>0.5 ? '#FF6B35' : '#F7B801';
+      fireBox.appendChild(c);
+    }
+
+    // ── CRISTALES TIERRA ──
+    const earthBox = document.querySelector('.box.earth .earth-particles');
+    for(let i=0;i<10;i++){
+      const c = document.createElement('div');
+      c.className = 'cristal';
+      c.style.left = (5+Math.random()*90)+'%';
+      c.style.setProperty('--dur', (1.5+Math.random()*2)+'s');
+      c.style.setProperty('--h', (12+Math.random()*30)+'px');
+      c.style.animationDelay = (Math.random()*3)+'s';
+      c.style.width = (4+Math.floor(Math.random()*3)*2)+'px';
+      c.style.background = Math.random()>0.5 ? '#8B4513' : '#A0522D';
+      earthBox.appendChild(c);
+    }
+
+    // ── PARTÍCULAS AIRE ──
+    const airBox = document.querySelector('.box.air .air-particles');
+    for(let i=0;i<14;i++){
+      const c = document.createElement('div');
+      c.className = 'particula-aire';
+      c.style.left = (Math.random()*80)+'%';
+      c.style.top  = (10+Math.random()*80)+'%';
+      c.style.setProperty('--dur', (3+Math.random()*3)+'s');
+      c.style.setProperty('--tx', ((Math.random()-0.5)*120)+'px');
+      c.style.setProperty('--ty', (-(20+Math.random()*60))+'px');
+      c.style.setProperty('--tx2', ((Math.random()-0.5)*160)+'px');
+      c.style.setProperty('--ty2', ((Math.random()-0.5)*40)+'px');
+      c.style.animationDelay = (Math.random()*4)+'s';
+      c.style.background = Math.random()>0.5 ? '#87CEEB' : '#00D9FF';
+      airBox.appendChild(c);
+    }
+
+    // ── GOTAS AGUA ──
+    const waterBox = document.querySelector('.box.water .water-particles');
+    for(let i=0;i<10;i++){
+      const g = document.createElement('div');
+      g.className = 'gota';
+      g.style.left = (5+Math.random()*90)+'%';
+      g.style.top  = (Math.random()*30)+'px';
+      g.style.setProperty('--dur', (1.2+Math.random()*1.5)+'s');
+      g.style.setProperty('--dy', (30+Math.random()*40)+'px');
+      g.style.animationDelay = (Math.random()*3)+'s';
+      g.style.background = Math.random()>0.5 ? '#4169E1' : '#724CF9';
+      waterBox.appendChild(g);
+    }
+    // Ondas pixel
+    for(let i=0;i<3;i++){
+      const o = document.createElement('div');
+      o.className = 'onda-pixel';
+      o.style.bottom = (i*8)+'px';
+      o.style.opacity = (0.6 - i*0.15).toString();
+      o.style.setProperty('--dur', (2+i*0.5)+'s');
+      o.style.animationDelay = (i*0.4)+'s';
+      waterBox.appendChild(o);
+    }
+
+    // ── CANVAS ANIMADO: 4 ELEMENTOS ──
+    const canvas = document.getElementById('elementosCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas(){
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Partículas del canvas
+    const ELEM = [
+      { color:'#FF6B35', label:'🔥 FUEGO',  x:0.12 },
+      { color:'#8B4513', label:'🌍 TIERRA', x:0.37 },
+      { color:'#87CEEB', label:'💨 AIRE',   x:0.62 },
+      { color:'#4169E1', label:'💧 AGUA',   x:0.87 },
+    ];
+
+    const particulas = [];
+    for(let e=0;e<4;e++){
+      for(let i=0;i<18;i++){
+        const elem = ELEM[e];
+        particulas.push({
+          ex: elem.x,
+          x: canvas.width * elem.x + (Math.random()-0.5)*60,
+          y: canvas.height * (0.3 + Math.random()*0.5),
+          vx: (Math.random()-0.5)*1.2,
+          vy: (Math.random()-0.5)*1.2,
+          size: 2+Math.floor(Math.random()*3)*2,
+          color: elem.color,
+          alpha: 0.4+Math.random()*0.6,
+          elemIdx: e,
+        });
+      }
+    }
+
+    let t = 0;
+    function drawCanvas(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      // Fondo
+      ctx.fillStyle = '#050510';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      // Divisores verticales
+      for(let i=1;i<4;i++){
+        ctx.strokeStyle = '#2A2A4A';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4,4]);
+        ctx.beginPath();
+        ctx.moveTo(canvas.width*i/4, 0);
+        ctx.lineTo(canvas.width*i/4, canvas.height);
+        ctx.stroke();
+      }
+      ctx.setLineDash([]);
+
+      // Labels de elementos
+      ELEM.forEach(e=>{
+        ctx.font = '9px "Press Start 2P"';
+        ctx.fillStyle = e.color;
+        ctx.textAlign = 'center';
+        ctx.fillText(e.label, canvas.width*e.x, 20);
+      });
+
+      // Dibujar partículas
+      particulas.forEach(p=>{
+        // Movimiento ondulante
+        p.x += p.vx + Math.sin(t*0.05 + p.y*0.01)*0.3;
+        p.y += p.vy + Math.cos(t*0.04 + p.x*0.01)*0.3;
+
+        // Rebotar en zona del elemento (±80px del centro)
+        const cx = canvas.width * p.ex;
+        if(p.x < cx-80){ p.vx += 0.1; }
+        if(p.x > cx+80){ p.vx -= 0.1; }
+        if(p.y < 30){ p.vy += 0.1; }
+        if(p.y > canvas.height-10){ p.vy -= 0.1; }
+
+        // Limitar velocidad
+        p.vx = Math.max(-1.5,Math.min(1.5,p.vx));
+        p.vy = Math.max(-1.5,Math.min(1.5,p.vy));
+
+        // Pulso de opacidad
+        const alpha = p.alpha * (0.6 + 0.4*Math.sin(t*0.08 + p.x));
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = p.color;
+        ctx.fillRect(Math.round(p.x), Math.round(p.y), p.size, p.size);
+      });
+
+      ctx.globalAlpha = 1;
+
+      // Interacción entre elementos: líneas en bordes
+      for(let i=0;i<3;i++){
+        const x = canvas.width*(i+1)/4;
+        const glow = 0.3 + 0.3*Math.sin(t*0.06+i);
+        ctx.globalAlpha = glow;
+        ctx.strokeStyle = '#724CF9';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x, canvas.height*0.2);
+        ctx.lineTo(x + Math.sin(t*0.05+i)*8, canvas.height*0.5);
+        ctx.lineTo(x, canvas.height*0.8);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+
+      t++;
+      requestAnimationFrame(drawCanvas);
+    }
+    drawCanvas();
+  </script>
+</body>
+</html>

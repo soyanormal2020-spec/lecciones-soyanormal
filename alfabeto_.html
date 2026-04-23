@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alfabeto Astrológico — Soy Anormal</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Press Start 2P',cursive;background:#0A0A1B;color:#F0F0FF;padding:32px 24px;font-size:11px;line-height:2.4;}
+body::before{content:'';position:fixed;inset:0;z-index:999;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent,transparent 3px,rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px);}
+.stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(2px 2px at 20px 30px,#eee,transparent),radial-gradient(1px 1px at 100px 80px,#fff,transparent),radial-gradient(2px 2px at 280px 120px,#F7B801,transparent),radial-gradient(1px 1px at 430px 60px,#fff,transparent),radial-gradient(2px 2px at 550px 180px,#00D9FF,transparent);
+  background-size:600px 300px;animation:twinkle 5s steps(4,end) infinite;}
+@keyframes twinkle{0%,100%{opacity:.6}50%{opacity:1}}
+
+.wrapper{max-width:800px;margin:0 auto;background:#0A0A1B;border:4px solid #724CF9;box-shadow:6px 6px 0 rgba(114,76,249,.5);padding:32px;}
+
+h2{color:#F7B801;font-size:16px;margin:0 0 28px 0;text-shadow:3px 3px 0 rgba(0,0,0,.8);text-align:center;border-bottom:3px solid #2A2A4A;padding-bottom:16px;line-height:2;}
+
+/* ── RUEDA ZODIACAL ANIMADA CSS ── */
+.rueda-wrapper{text-align:center;margin:28px 0;}
+@keyframes girarRueda{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes girarInverso{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+@keyframes pulsarCentro{0%,100%{fill:#F7B801}50%{fill:#FF3D81}}
+.anillo-ext{animation:girarRueda 20s linear infinite;transform-origin:center;}
+.anillo-int{animation:girarInverso 15s linear infinite;transform-origin:center;}
+.centro-pulso{animation:pulsarCentro 2s steps(4,end) infinite;}
+.rueda-sub{color:#8080A0;font-size:7px;margin-top:12px;}
+
+/* Cuadros */
+.cuadro{background:#050510;border:3px solid #00D9FF;padding:20px;margin:28px 0;box-shadow:4px 4px 0 rgba(0,217,255,.3);}
+.cuadro-title{color:#00D9FF;font-size:11px;margin:0 0 16px 0;text-align:center;}
+.cuadro p{color:#D0D0D0;font-size:9px;margin:0 0 12px 0;line-height:2.2;}
+.cuadro p:last-child{margin-bottom:0;}
+
+/* Acordeones */
+details{background:#050510;margin:28px 0;padding:0;}
+details.purple{border:3px solid #724CF9;}
+details.pink{border:3px solid #FF3D81;}
+details.cyan{border:3px solid #00D9FF;}
+details summary{cursor:pointer;padding:16px 20px;font-size:11px;list-style:none;display:flex;align-items:center;justify-content:space-between;}
+details.purple summary{color:#724CF9;}
+details.pink summary{color:#FF3D81;}
+details.cyan summary{color:#00D9FF;}
+details summary::-webkit-details-marker{display:none;}
+details summary:hover{filter:brightness(1.2);}
+.arrow{display:inline-block;font-size:14px;transition:transform .2s;}
+details[open] .arrow{transform:rotate(180deg);}
+.detail-content{padding:0 20px 20px;border-top:2px solid #2A2A4A;}
+.detail-content p{color:#D0D0D0;font-size:10px;margin:16px 0;line-height:2.4;}
+.nota-purple{color:#724CF9;font-size:9px;margin:16px 0 0 0;text-align:center;padding:12px;background:rgba(114,76,249,.1);border:2px solid #724CF9;}
+
+/* Tabla abecedario */
+.tabla-wrapper{background:#050510;border:4px solid #F7B801;padding:24px;margin:32px 0;box-shadow:4px 4px 0 rgba(247,184,1,.3);}
+.tabla-title{color:#F7B801;font-size:13px;margin:0 0 20px 0;text-align:center;}
+
+/* Grids de signos y planetas */
+.seccion-label{font-size:10px;margin:24px 0 16px 0;text-align:center;padding-bottom:8px;border-bottom:2px solid #2A2A4A;}
+.seccion-label.signos{color:#FF3D81;}
+.seccion-label.planetas{color:#00D9FF;}
+
+.simbolos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin:0 0 24px 0;}
+.simbolo-card{background:#0A0A1B;border:2px solid #2A2A4A;padding:12px 8px;text-align:center;cursor:default;transition:transform .1s,border-color .1s,box-shadow .1s;}
+.simbolo-card:hover{transform:translate(-2px,-2px);}
+.simbolo-card .sym{font-size:28px;display:block;margin-bottom:6px;line-height:1;}
+.simbolo-card .nombre{font-size:7px;line-height:1.6;}
+
+/* Colores por elemento */
+.fuego{border-color:#FF3D81;} .fuego:hover{box-shadow:3px 3px 0 #FF3D81;}
+.fuego .sym,.fuego .nombre{color:#FF3D81;}
+.tierra{border-color:#F7B801;} .tierra:hover{box-shadow:3px 3px 0 #F7B801;}
+.tierra .sym,.tierra .nombre{color:#F7B801;}
+.aire{border-color:#00D9FF;} .aire:hover{box-shadow:3px 3px 0 #00D9FF;}
+.aire .sym,.aire .nombre{color:#00D9FF;}
+.agua{border-color:#724CF9;} .agua:hover{box-shadow:3px 3px 0 #724CF9;}
+.agua .sym,.agua .nombre{color:#724CF9;}
+.planeta-card{border-color:#8080A0;} .planeta-card:hover{box-shadow:3px 3px 0 #8080A0;}
+
+/* Flashcards interactivas */
+.flash-section-label{font-size:11px;margin:32px 0 16px 0;text-align:center;padding-bottom:12px;border-bottom:2px solid #2A2A4A;}
+.flash-section-label.planetas-flash{color:#FF3D81;}
+.flash-section-label.signos-flash{color:#00D9FF;}
+
+.flashcards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:0 0 32px 0;}
+.flash-card{background:#0A0A1B;border:2px solid;padding:0;cursor:pointer;}
+.flash-card summary{padding:12px;font-size:9px;text-align:center;list-style:none;}
+.flash-card summary::-webkit-details-marker{display:none;}
+.flash-body{padding:12px;border-top:2px solid #2A2A4A;text-align:center;}
+.flash-body .sym{font-size:32px;margin:8px 0;display:block;line-height:1;}
+.flash-body p{font-size:7px;color:#D0D0D0;margin:0;line-height:1.8;}
+
+/* Leyenda de elementos */
+.leyenda{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:16px 0 24px;}
+.leyenda-item{font-size:8px;padding:6px 12px;border:2px solid;}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="wrapper">
+
+  <h2>✦ EL ALFABETO<br>ASTROLÓGICO ✦</h2>
+
+  <!-- RUEDA ZODIACAL ANIMADA CSS -->
+  <div class="rueda-wrapper">
+    <svg width="200" height="200" viewBox="0 0 100 100" style="image-rendering:pixelated;overflow:visible;">
+      <!-- Anillo exterior girando -->
+      <g class="anillo-ext" style="transform-origin:50px 50px;">
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#2A2A4A" stroke-width="2"/>
+        <!-- 12 puntos del zodíaco -->
+        <text x="50" y="7" fill="#FF3D81" font-size="7" text-anchor="middle">♈</text>
+        <text x="73" y="13" fill="#F7B801" font-size="7" text-anchor="middle">♉</text>
+        <text x="89" y="32" fill="#00D9FF" font-size="7" text-anchor="middle">♊</text>
+        <text x="93" y="52" fill="#724CF9" font-size="7" text-anchor="middle">♋</text>
+        <text x="86" y="73" fill="#FF3D81" font-size="7" text-anchor="middle">♌</text>
+        <text x="70" y="88" fill="#F7B801" font-size="7" text-anchor="middle">♍</text>
+        <text x="50" y="96" fill="#00D9FF" font-size="7" text-anchor="middle">♎</text>
+        <text x="28" y="88" fill="#724CF9" font-size="7" text-anchor="middle">♏</text>
+        <text x="13" y="73" fill="#FF3D81" font-size="7" text-anchor="middle">♐</text>
+        <text x="7" y="52" fill="#F7B801" font-size="7" text-anchor="middle">♑</text>
+        <text x="13" y="32" fill="#00D9FF" font-size="7" text-anchor="middle">♒</text>
+        <text x="30" y="13" fill="#724CF9" font-size="7" text-anchor="middle">♓</text>
+      </g>
+      <!-- Anillo interior girando al revés -->
+      <g class="anillo-int" style="transform-origin:50px 50px;">
+        <circle cx="50" cy="50" r="28" fill="none" stroke="#2A2A4A" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="50" y="27" fill="#F7B801" font-size="6" text-anchor="middle">☉</text>
+        <text x="68" y="37" fill="#8080A0" font-size="6" text-anchor="middle">☽</text>
+        <text x="72" y="55" fill="#00D9FF" font-size="6" text-anchor="middle">☿</text>
+        <text x="62" y="70" fill="#FF3D81" font-size="6" text-anchor="middle">♀</text>
+        <text x="44" y="74" fill="#FF3D81" font-size="6" text-anchor="middle">♂</text>
+        <text x="30" y="63" fill="#724CF9" font-size="6" text-anchor="middle">♃</text>
+        <text x="28" y="44" fill="#724CF9" font-size="6" text-anchor="middle">♄</text>
+      </g>
+      <!-- Centro pulsante -->
+      <rect x="44" y="44" width="12" height="12" class="centro-pulso"/>
+      <text x="50" y="53" fill="#050510" font-size="8" text-anchor="middle">✦</text>
+    </svg>
+    <p class="rueda-sub">La rueda del zodiaco — 12 arquetipos cósmicos</p>
+  </div>
+
+  <!-- Objetivos -->
+  <div class="cuadro">
+    <p class="cuadro-title">▶ OBJETIVOS DE APRENDIZAJE ◀</p>
+    <p>1. Memorizas el <span style="color:#F7B801;">alfabeto de símbolos astrológicos</span></p>
+    <p>2. Relacionas el <span style="color:#FF3D81;">símbolo del planeta</span> con su regencia al signo zodiacal</p>
+  </div>
+
+  <!-- Acordeones -->
+  <details class="purple" open>
+    <summary><span>▶ ¿QUÉ ES LA ASTROLOGÍA?</span><span class="arrow">▼</span></summary>
+    <div class="detail-content">
+      <p>La astrología es una <span style="color:#F7B801;">ciencia espiritual</span> que, aunque no está sostenida en la lógica de la ciencia oficializada, posee una metodología que permite ser abordada por cualquier persona: contiene su <span style="color:#00D9FF;">propio lenguaje y abecedario</span>.</p>
+      <p>Para manejar sus significados es indispensable conocer sus <span style="color:#FF3D81;">símbolos básicos</span>, porque en su conjunto constituyen todo un lenguaje.</p>
+    </div>
+  </details>
+
+  <details class="pink">
+    <summary><span>▶ SÍMBOLOS UNIVERSALES</span><span class="arrow">▼</span></summary>
+    <div class="detail-content">
+      <p>Los gráficos que aluden a cada signo son de <span style="color:#F7B801;">carácter universal</span>: se emplean en todas partes y por todos los astrólogos, estudiosos o seguidores de la ciencia de los astros.</p>
+      <p>La representación gráfica tiene una <span style="color:#00D9FF;">fuerza especial</span> dado que simbolizan principios energéticos de carácter cósmico. Este lenguaje simbólico nos conecta con la esencia primigenia de la Astrología.</p>
+    </div>
+  </details>
+
+  <details class="cyan">
+    <summary><span>▶ ARQUETIPOS, NO PSICOLOGÍA</span><span class="arrow">▼</span></summary>
+    <div class="detail-content">
+      <p>Desde una lógica espiritual, cada signo zodiacal representa un <span style="color:#F7B801;">arquetipo o molde energético</span> de expresión álmica y no un conjunto de características psicológicas como la mayoría de los astrólogos la practican.</p>
+      <p>Nuestra alma, antes de ingresar a este plano, elige la <span style="color:#FF3D81;">frecuencia energética o signo zodiacal</span> coherente con su nivel evolutivo particular.</p>
+      <p class="nota-purple">La Astrología va más allá de los aspectos psicológicos: trabaja a nivel álmico y espiritual</p>
+    </div>
+  </details>
+
+  <!-- TABLA ABECEDARIO COMPLETO -->
+  <div class="tabla-wrapper">
+    <p class="tabla-title">✨ ABECEDARIO ASTROLÓGICO COMPLETO ✨</p>
+
+    <!-- Leyenda elementos -->
+    <div class="leyenda">
+      <span class="leyenda-item" style="border-color:#FF3D81;color:#FF3D81;">🔥 FUEGO</span>
+      <span class="leyenda-item" style="border-color:#F7B801;color:#F7B801;">🌍 TIERRA</span>
+      <span class="leyenda-item" style="border-color:#00D9FF;color:#00D9FF;">💨 AIRE</span>
+      <span class="leyenda-item" style="border-color:#724CF9;color:#724CF9;">💧 AGUA</span>
+    </div>
+
+    <!-- SIGNOS — todos los 12 -->
+    <p class="seccion-label signos">♈ SIGNOS ZODIACALES ♈</p>
+    <div class="simbolos-grid">
+      <div class="simbolo-card fuego"><span class="sym">♈︎</span><span class="nombre">ARIES</span></div>
+      <div class="simbolo-card tierra"><span class="sym">♉︎</span><span class="nombre">TAURO</span></div>
+      <div class="simbolo-card aire"><span class="sym">♊︎</span><span class="nombre">GÉMINIS</span></div>
+      <div class="simbolo-card agua"><span class="sym">♋︎</span><span class="nombre">CÁNCER</span></div>
+      <div class="simbolo-card fuego"><span class="sym">♌︎</span><span class="nombre">LEO</span></div>
+      <div class="simbolo-card tierra"><span class="sym">♍︎</span><span class="nombre">VIRGO</span></div>
+      <div class="simbolo-card aire"><span class="sym">♎︎</span><span class="nombre">LIBRA</span></div>
+      <div class="simbolo-card agua"><span class="sym">♏︎</span><span class="nombre">ESCORPIO</span></div>
+      <div class="simbolo-card fuego"><span class="sym">♐︎</span><span class="nombre">SAGITARIO</span></div>
+      <div class="simbolo-card tierra"><span class="sym">♑︎</span><span class="nombre">CAPRICORNIO</span></div>
+      <div class="simbolo-card aire"><span class="sym">♒︎</span><span class="nombre">ACUARIO</span></div>
+      <div class="simbolo-card agua"><span class="sym">♓︎</span><span class="nombre">PISCIS</span></div>
+    </div>
+
+    <!-- PLANETAS -->
+    <p class="seccion-label planetas">☉ PLANETAS ☉</p>
+    <div class="simbolos-grid">
+      <div class="simbolo-card planeta-card" style="border-color:#F7B801;"><span class="sym" style="color:#F7B801;">☉</span><span class="nombre" style="color:#F7B801;">SOL</span></div>
+      <div class="simbolo-card planeta-card" style="border-color:#8080A0;"><span class="sym" style="color:#8080A0;">☽</span><span class="nombre" style="color:#8080A0;">LUNA</span></div>
+      <div class="simbolo-card planeta-card" style="border-color:#00D9FF;"><span class="sym" style="color:#00D9FF;">☿</span><span class="nombre" style="color:#00D9FF;">MERCURIO</span></div>
+      <div class="simbolo-card planeta-card" style="border-color:#FF3D81;"><span class="sym" style="color:#FF3D81;">♀</span><span class="nombre" style="color:#FF3D81;">VENUS</span></div>
+      <div class="simbolo-card planeta-card" style="border-color:#FF3D81;"><span class="sym" style="color:#FF3D81;">♂</span><span class="nombre" style="color:#FF3D81;">MARTE</span></div>
+      <div class="simbolo-card planeta-card" style="border-color:#724CF9;"><span class="sym" style="color:#724CF9;">♃</span><span class="nombre" style="color:#724CF9;">JÚPITER</span></div>
+      <div class="simbolo-card planeta-card" style="border-color:#724CF9;"><span class="sym" style="color:#724CF9;">♄</span><span class="nombre" style="color:#724CF9;">SATURNO</span></div>
+      <div class="simbolo-card planeta-card" style="border-color:#00D9FF;"><span class="sym" style="color:#00D9FF;">♅</span><span class="nombre" style="color:#00D9FF;">URANO</span></div>
+      <div class="simbolo-card planeta-card" style="border-color:#724CF9;"><span class="sym" style="color:#724CF9;">♆</span><span class="nombre" style="color:#724CF9;">NEPTUNO</span></div>
+      <div class="simbolo-card planeta-card" style="border-color:#8080A0;"><span class="sym" style="color:#8080A0;">♇</span><span class="nombre" style="color:#8080A0;">PLUTÓN</span></div>
+    </div>
+
+    <!-- FLASHCARDS PLANETAS -->
+    <p class="flash-section-label planetas-flash">☉ PLANETAS — HAZ CLICK PARA REVELAR ☉</p>
+    <div class="flashcards-grid">
+      <details class="flash-card" style="border-color:#F7B801;"><summary style="color:#F7B801;">SOL</summary><div class="flash-body"><span class="sym" style="color:#F7B801;">☉</span><p>Regente: Leo ♌︎</p></div></details>
+      <details class="flash-card" style="border-color:#8080A0;"><summary style="color:#8080A0;">LUNA</summary><div class="flash-body"><span class="sym" style="color:#8080A0;">☽</span><p>Regente: Cáncer ♋︎</p></div></details>
+      <details class="flash-card" style="border-color:#00D9FF;"><summary style="color:#00D9FF;">MERCURIO</summary><div class="flash-body"><span class="sym" style="color:#00D9FF;">☿</span><p>Géminis ♊︎ / Virgo ♍︎</p></div></details>
+      <details class="flash-card" style="border-color:#FF3D81;"><summary style="color:#FF3D81;">VENUS</summary><div class="flash-body"><span class="sym" style="color:#FF3D81;">♀</span><p>Tauro ♉︎ / Libra ♎︎</p></div></details>
+      <details class="flash-card" style="border-color:#FF3D81;"><summary style="color:#FF3D81;">MARTE</summary><div class="flash-body"><span class="sym" style="color:#FF3D81;">♂</span><p>Regente: Aries ♈︎</p></div></details>
+      <details class="flash-card" style="border-color:#724CF9;"><summary style="color:#724CF9;">JÚPITER</summary><div class="flash-body"><span class="sym" style="color:#724CF9;">♃</span><p>Regente: Sagitario ♐︎</p></div></details>
+      <details class="flash-card" style="border-color:#724CF9;"><summary style="color:#724CF9;">SATURNO</summary><div class="flash-body"><span class="sym" style="color:#724CF9;">♄</span><p>Regente: Capricornio ♑︎</p></div></details>
+      <details class="flash-card" style="border-color:#00D9FF;"><summary style="color:#00D9FF;">URANO</summary><div class="flash-body"><span class="sym" style="color:#00D9FF;">♅</span><p>Regente: Acuario ♒︎</p></div></details>
+      <details class="flash-card" style="border-color:#724CF9;"><summary style="color:#724CF9;">NEPTUNO</summary><div class="flash-body"><span class="sym" style="color:#724CF9;">♆</span><p>Regente: Piscis ♓︎</p></div></details>
+      <details class="flash-card" style="border-color:#8080A0;"><summary style="color:#8080A0;">PLUTÓN</summary><div class="flash-body"><span class="sym" style="color:#8080A0;">♇</span><p>Regente: Escorpio ♏︎</p></div></details>
+    </div>
+
+    <!-- FLASHCARDS SIGNOS — todos los 12 -->
+    <p class="flash-section-label signos-flash">♈︎ SIGNOS ZODIACALES — HAZ CLICK ♈︎</p>
+    <div class="flashcards-grid">
+      <details class="flash-card" style="border-color:#FF3D81;"><summary style="color:#FF3D81;">ARIES</summary><div class="flash-body"><span class="sym" style="color:#FF3D81;">♈︎</span><p>Elemento: Fuego 🔥<br>Planeta: ♂ Marte</p></div></details>
+      <details class="flash-card" style="border-color:#F7B801;"><summary style="color:#F7B801;">TAURO</summary><div class="flash-body"><span class="sym" style="color:#F7B801;">♉︎</span><p>Elemento: Tierra 🌍<br>Planeta: ♀ Venus</p></div></details>
+      <details class="flash-card" style="border-color:#00D9FF;"><summary style="color:#00D9FF;">GÉMINIS</summary><div class="flash-body"><span class="sym" style="color:#00D9FF;">♊︎</span><p>Elemento: Aire 💨<br>Planeta: ☿ Mercurio</p></div></details>
+      <details class="flash-card" style="border-color:#724CF9;"><summary style="color:#724CF9;">CÁNCER</summary><div class="flash-body"><span class="sym" style="color:#724CF9;">♋︎</span><p>Elemento: Agua 💧<br>Planeta: ☽ Luna</p></div></details>
+      <details class="flash-card" style="border-color:#FF3D81;"><summary style="color:#FF3D81;">LEO</summary><div class="flash-body"><span class="sym" style="color:#FF3D81;">♌︎</span><p>Elemento: Fuego 🔥<br>Planeta: ☉ Sol</p></div></details>
+      <details class="flash-card" style="border-color:#F7B801;"><summary style="color:#F7B801;">VIRGO</summary><div class="flash-body"><span class="sym" style="color:#F7B801;">♍︎</span><p>Elemento: Tierra 🌍<br>Planeta: ☿ Mercurio</p></div></details>
+      <details class="flash-card" style="border-color:#00D9FF;"><summary style="color:#00D9FF;">LIBRA</summary><div class="flash-body"><span class="sym" style="color:#00D9FF;">♎︎</span><p>Elemento: Aire 💨<br>Planeta: ♀ Venus</p></div></details>
+      <details class="flash-card" style="border-color:#724CF9;"><summary style="color:#724CF9;">ESCORPIO</summary><div class="flash-body"><span class="sym" style="color:#724CF9;">♏︎</span><p>Elemento: Agua 💧<br>Planeta: ♇ Plutón</p></div></details>
+      <details class="flash-card" style="border-color:#FF3D81;"><summary style="color:#FF3D81;">SAGITARIO</summary><div class="flash-body"><span class="sym" style="color:#FF3D81;">♐︎</span><p>Elemento: Fuego 🔥<br>Planeta: ♃ Júpiter</p></div></details>
+      <details class="flash-card" style="border-color:#F7B801;"><summary style="color:#F7B801;">CAPRICORNIO</summary><div class="flash-body"><span class="sym" style="color:#F7B801;">♑︎</span><p>Elemento: Tierra 🌍<br>Planeta: ♄ Saturno</p></div></details>
+      <details class="flash-card" style="border-color:#00D9FF;"><summary style="color:#00D9FF;">ACUARIO</summary><div class="flash-body"><span class="sym" style="color:#00D9FF;">♒︎</span><p>Elemento: Aire 💨<br>Planeta: ♅ Urano</p></div></details>
+      <details class="flash-card" style="border-color:#724CF9;"><summary style="color:#724CF9;">PISCIS</summary><div class="flash-body"><span class="sym" style="color:#724CF9;">♓︎</span><p>Elemento: Agua 💧<br>Planeta: ♆ Neptuno</p></div></details>
+    </div>
+
+  </div><!-- fin tabla-wrapper -->
+
+</div>
+<script>
+// Beep al abrir flashcards
+document.querySelectorAll('.flash-card').forEach(d=>{
+  d.addEventListener('toggle',function(){
+    if(!this.open)return;
+    try{
+      const ctx=new(window.AudioContext||window.webkitAudioContext)();
+      const osc=ctx.createOscillator();const gain=ctx.createGain();
+      osc.connect(gain);gain.connect(ctx.destination);
+      osc.type='square';osc.frequency.value=660;
+      gain.gain.setValueAtTime(.08,ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.1);
+      osc.start();osc.stop(ctx.currentTime+.1);
+    }catch(e){}
+  });
+});
+</script>
+</body>
+</html>
