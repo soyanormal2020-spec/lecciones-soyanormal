@@ -53,9 +53,153 @@
     details summary::-webkit-details-marker { display: none; }
     details[open] summary span:last-child { transform: rotate(180deg); }
     details summary:hover { filter: brightness(1.2); }
+  
+    /* Animación de la velita */
+    .vela-container {
+      position: relative;
+      display: inline-block;
+      animation: flotar 3s ease-in-out infinite;
+    }
+    
+    .vela-flama {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 12px;
+      height: 18px;
+      background: radial-gradient(ellipse at center, #FFF 0%, #F7B801 40%, #F18701 70%, transparent 100%);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      opacity: 0;
+      animation: encender 2s ease-in forwards, parpadeo 1.5s ease-in-out infinite 2s;
+      filter: blur(0.5px);
+    }
+    
+    .vela-brillo {
+      position: absolute;
+      top: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 30px;
+      background: radial-gradient(circle, rgba(247,184,1,0.4) 0%, transparent 70%);
+      border-radius: 50%;
+      opacity: 0;
+      animation: encender 2s ease-in forwards 0.5s;
+    }
+    
+    @keyframes encender {
+      0% { opacity: 0; transform: translateX(-50%) scale(0.3); }
+      100% { opacity: 1; transform: translateX(-50%) scale(1); }
+    }
+    
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    
+    @keyframes parpadeo {
+      0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+      25% { opacity: 0.8; transform: translateX(-50%) scale(0.95); }
+      75% { opacity: 0.9; transform: translateX(-50%) scale(1.05); }
+    }
+    
+    /* Brillitos para la caja de principios */
+    .principios-box {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .principios-box::before,
+    .principios-box::after {
+      content: '✦';
+      position: absolute;
+      color: #F7B801;
+      font-size: 10px;
+      opacity: 0;
+      animation: brillito 3s ease-in-out infinite;
+    }
+    
+    .principios-box::before {
+      top: 10px;
+      left: 15px;
+      animation-delay: 0s;
+    }
+    
+    .principios-box::after {
+      bottom: 10px;
+      right: 20px;
+      animation-delay: 1.5s;
+    }
+    
+    @keyframes brillito {
+      0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+    }
+    
+    .sparkle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: #F7B801;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: sparkle-fall 2s linear infinite;
+    }
+    
+    @keyframes sparkle-fall {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(30px) scale(0); }
+    }
+    
+    /* Lluvia de estrellas de fondo */
+    .stars-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #FFF;
+      border-radius: 50%;
+      animation: caer linear infinite;
+      opacity: 0;
+    }
+    
+    @keyframes caer {
+      0% { transform: translateY(-100vh); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+    
+    /* Asegurar que el contenido esté encima de las estrellas */
+    .scanlines, .container {
+      position: relative;
+      z-index: 1;
+    }
+
+  
+    /* Efecto hover en el portal */
+    .portal-wrapper {
+      transition: transform 0.3s ease;
+    }
+    .portal-wrapper:hover {
+      transform: scale(1.05);
+    }
+
   </style>
 </head>
 <body>
+  <div class="stars-container" id="starsContainer"></div>
 
   <div class="contenedor" style="background: #0A0A1B; color: #F0F0FF; padding: 32px; border: 4px solid #F7B801; box-shadow: 6px 6px 0 rgba(247,184,1,.5);">
 
@@ -69,22 +213,71 @@
       COMIENZA TU AVENTURA<br>DE APRENDIZAJE
     </h1>
 
-    <!-- Pixel art: Portal cósmico -->
+    <!-- Pixel art: Portal cósmico animado -->
     <div style="text-align: center; margin: 28px 0;">
-      <div style="display: inline-block; background: #050510; border: 4px solid #724CF9; box-shadow: 4px 4px 0 #724CF9; padding: 20px;">
+      <div class="portal-wrapper" style="display: inline-block; background: #050510; border: 4px solid #724CF9; box-shadow: 4px 4px 0 #724CF9; padding: 20px; cursor: pointer;">
         <svg viewBox="0 0 120 100" style="width: 120px; height: 100px; image-rendering: pixelated;">
+          <defs>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+            <radialGradient id="portalGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" style="stop-color:#FFF;stop-opacity:1" />
+              <stop offset="50%" style="stop-color:#724CF9;stop-opacity:0.8" />
+              <stop offset="100%" style="stop-color:#724CF9;stop-opacity:0" />
+            </radialGradient>
+          </defs>
+          
           <rect width="120" height="100" fill="#050510"/>
-          <!-- Portal -->
-          <rect x="40" y="20" width="40" height="60" fill="#0A0A1B" stroke="#724CF9" stroke-width="4"/>
-          <rect x="44" y="24" width="32" height="52" fill="#724CF9" opacity="0.3"/>
-          <!-- Estrellas alrededor -->
-          <rect x="20" y="15" width="4" height="4" fill="#F7B801"/>
-          <rect x="90" y="25" width="4" height="4" fill="#00D9FF"/>
-          <rect x="30" y="70" width="4" height="4" fill="#FF3D81"/>
-          <rect x="85" y="65" width="4" height="4" fill="#F7B801"/>
-          <!-- Figura entrando -->
-          <rect x="56" y="50" width="8" height="8" fill="#F0F0FF"/>
-          <rect x="52" y="58" width="16" height="16" fill="#724CF9"/>
+          
+          <!-- Luz interior del portal -->
+          <rect x="44" y="24" width="32" height="52" fill="url(#portalGlow)" opacity="0">
+            <animate attributeName="opacity" values="0;0.8;0.6;1;0.8" dur="3s" begin="1s" repeatCount="indefinite"/>
+          </rect>
+          
+          <!-- Portal - puerta izquierda -->
+          <g class="puerta-izq">
+            <rect x="40" y="20" width="20" height="60" fill="#0A0A1B" stroke="#724CF9" stroke-width="4"/>
+            <animateTransform attributeName="transform" type="translate" values="0 0;-22 0;0 0" dur="4s" begin="0s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="1;0.7;1" dur="4s" begin="0s" repeatCount="indefinite"/>
+          </g>
+          
+          <!-- Portal - puerta derecha -->
+          <g class="puerta-der">
+            <rect x="60" y="20" width="20" height="60" fill="#0A0A1B" stroke="#724CF9" stroke-width="4"/>
+            <animateTransform attributeName="transform" type="translate" values="0 0;22 0;0 0" dur="4s" begin="0s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="1;0.7;1" dur="4s" begin="0s" repeatCount="indefinite"/>
+          </g>
+          
+          <!-- Marco del portal -->
+          <rect x="40" y="20" width="40" height="60" fill="none" stroke="#724CF9" stroke-width="4" filter="url(#glow)">
+            <animate attributeName="stroke" values="#724CF9;#F7B801;#724CF9" dur="3s" begin="1s" repeatCount="indefinite"/>
+          </rect>
+          
+          <!-- Estrellas alrededor con parpadeo -->
+          <rect x="20" y="15" width="4" height="4" fill="#F7B801">
+            <animate attributeName="opacity" values="1;0.3;1" dur="2s" begin="0s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="90" y="25" width="4" height="4" fill="#00D9FF">
+            <animate attributeName="opacity" values="1;0.3;1" dur="2.5s" begin="0.5s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="30" y="70" width="4" height="4" fill="#FF3D81">
+            <animate attributeName="opacity" values="1;0.3;1" dur="1.8s" begin="1s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="85" y="65" width="4" height="4" fill="#F7B801">
+            <animate attributeName="opacity" values="1;0.3;1" dur="2.2s" begin="0.3s" repeatCount="indefinite"/>
+          </rect>
+          
+          <!-- Figura entrando con efecto de luz -->
+          <g opacity="0">
+            <animate attributeName="opacity" values="0;0;1;1;0" dur="4s" begin="1.5s" repeatCount="indefinite"/>
+            <rect x="56" y="50" width="8" height="8" fill="#F0F0FF" filter="url(#glow)"/>
+            <rect x="52" y="58" width="16" height="16" fill="#724CF9" filter="url(#glow)"/>
+          </g>
         </svg>
       </div>
       <p style="color: #8080A0; font-size: 7px; margin-top: 12px;">Tu viaje comienza aquí</p>
@@ -100,7 +293,7 @@
     </p>
 
     <!-- Caja destacada del curso -->
-    <div style="background: #050510; border: 3px solid #724CF9; padding: 24px; margin: 28px 0; box-shadow: 4px 4px 0 rgba(114,76,249,.3); text-align: center;">
+    <div class="principios-box" style="background: #050510; border: 3px solid #724CF9; padding: 24px; margin: 28px 0; box-shadow: 4px 4px 0 rgba(114,76,249,.3); text-align: center;">
       <p style="color: #724CF9; font-size: 11px; margin: 0 0 16px 0;">
         ✦ PRINCIPIOS BÁSICOS 1 ✦
       </p>
@@ -137,6 +330,36 @@
     </div>
 
   </div>
+
+
+  <script>
+    // Lluvia de estrellas
+    const starsContainer = document.getElementById('starsContainer');
+    const numStars = 50;
+    
+    for (let i = 0; i < numStars; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      star.style.animationDelay = Math.random() * 5 + 's';
+      star.style.width = star.style.height = (Math.random() * 2 + 1) + 'px';
+      starsContainer.appendChild(star);
+    }
+    
+    // Brillitos en la caja de principios
+    const principiosBox = document.querySelector('.principios-box');
+    if (principiosBox) {
+      setInterval(() => {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = Math.random() * 100 + '%';
+        sparkle.style.top = Math.random() * 100 + '%';
+        principiosBox.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 2000);
+      }, 400);
+    }
+  </script>
 
 </body>
 </html>
