@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contenido Temático — Curso Astrología Soy Anormal</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    font-family:'Press Start 2P',cursive;
+    background:#0A0A1B;
+    color:#F0F0FF;
+    padding:20px;
+    font-size:9px;
+    line-height:2.2;
+}
+
+/* Fondo con símbolos zodiacales pixel */
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    opacity:0.08;
+    background-image:
+        url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='10' y='20' fill='%23F0F0FF' font-size='16'%3E♈%3C/text%3E%3Ctext x='50' y='20' fill='%23F0F0FF' font-size='16'%3E♉%3C/text%3E%3Ctext x='90' y='20' fill='%23F0F0FF' font-size='16'%3E♊%3C/text%3E%3Ctext x='10' y='50' fill='%23F0F0FF' font-size='16'%3E♋%3C/text%3E%3Ctext x='50' y='50' fill='%23F0F0FF' font-size='16'%3E♌%3C/text%3E%3Ctext x='90' y='50' fill='%23F0F0FF' font-size='16'%3E♍%3C/text%3E%3Ctext x='10' y='80' fill='%23F0F0FF' font-size='16'%3E♎%3C/text%3E%3Ctext x='50' y='80' fill='%23F0F0FF' font-size='16'%3E♏%3C/text%3E%3Ctext x='90' y='80' fill='%23F0F0FF' font-size='16'%3E♐%3C/text%3E%3Ctext x='10' y='110' fill='%23F0F0FF' font-size='16'%3E♑%3C/text%3E%3Ctext x='50' y='110' fill='%23F0F0FF' font-size='16'%3E♒%3C/text%3E%3Ctext x='90' y='110' fill='%23F0F0FF' font-size='16'%3E♓%3C/text%3E%3C/svg%3E");
+    background-size:120px 120px;
+    animation:scroll-bg 30s linear infinite;
+}
+@keyframes scroll-bg{
+    from{background-position:0 0;}
+    to{background-position:120px 120px;}
+}
+
+/* Scanlines CRT */
+body::after{
+    content:'';
+    position:fixed;
+    inset:0;
+    z-index:999;
+    pointer-events:none;
+    background:repeating-linear-gradient(
+        to bottom,transparent 3px,
+        rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px
+    );
+}
+
+.wrapper{
+    max-width:900px;
+    margin:0 auto;
+    background:#0A0A1B;
+    border:4px solid #724CF9;
+    box-shadow:6px 6px 0 rgba(114,76,249,.5);
+    padding:32px 24px;
+    position:relative;
+}
+
+/* LOGO SOY ANORMAL */
+.logo-container{
+    text-align:center;
+    margin-bottom:24px;
+    animation:logoGlow 3s ease-in-out infinite alternate;
+}
+.logo{
+    width:120px;
+    height:120px;
+    image-rendering:pixelated;
+    image-rendering:-moz-crisp-edges;
+    image-rendering:crisp-edges;
+    filter:drop-shadow(0 0 10px rgba(114,76,249,.6));
+    animation:float 4s ease-in-out infinite;
+}
+@keyframes float{
+    0%,100%{transform:translateY(0px) scale(1);}
+    50%{transform:translateY(-8px) scale(1.02);}
+}
+@keyframes logoGlow{
+    from{filter:drop-shadow(0 0 8px rgba(114,76,249,.4));}
+    to{filter:drop-shadow(0 0 20px rgba(114,76,249,.8)) drop-shadow(0 0 30px rgba(247,184,1,.4));}
+}
+
+/* Header */
+.header{
+    text-align:center;
+    border-bottom:3px solid #2A2A4A;
+    padding-bottom:20px;
+    margin-bottom:30px;
+}
+h1{
+    color:#F7B801;
+    font-size:14px;
+    text-shadow:3px 3px 0 rgba(0,0,0,.8);
+    line-height:1.6;
+    animation:glow 2s ease-in-out infinite alternate;
+}
+@keyframes glow{
+    from{text-shadow:3px 3px 0 rgba(0,0,0,.8), 0 0 5px #F7B801;}
+    to{text-shadow:3px 3px 0 rgba(0,0,0,.8), 0 0 15px #F7B801;}
+}
+.subtitle{
+    color:#724CF9;
+    font-size:8px;
+    margin-top:10px;
+    animation:blink 2s steps(2) infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+/* Sección Objetivo */
+.objetivo{
+    background:#1A1A3A;
+    border:3px solid #F7B801;
+    padding:20px;
+    margin:25px 0;
+    box-shadow:0 0 15px rgba(247,184,1,.3);
+}
+
+h2{
+    color:#00D9FF;
+    font-size:12px;
+    margin-bottom:16px;
+    text-shadow:2px 2px 0 rgba(0,0,0,.8);
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+/* Iconos pixel */
+.pixel-icon{
+    display:inline-block;
+    width:20px;height:20px;
+    background:#F7B801;
+    box-shadow:2px 2px 0 rgba(0,0,0,.8);
+    animation:iconFloat 3s ease-in-out infinite;
+}
+@keyframes iconFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}
+
+/* Grid de módulos */
+.modulos-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:16px;
+    margin:25px 0;
+}
+
+.modulo{
+    background:#1A1A3A;
+    border:3px solid #2A2A4A;
+    padding:16px;
+    position:relative;
+    transition:all 0.2s steps(2);
+    cursor:pointer;
+}
+
+.modulo:hover{
+    border-color:#FF3D81;
+    box-shadow:4px 4px 0 rgba(255,61,129,.6);
+    transform:translate(-2px,-2px);
+}
+
+.modulo-num{
+    position:absolute;
+    top:-8px;right:-8px;
+    background:#724CF9;
+    color:#0A0A1B;
+    width:32px;height:32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    border:3px solid #F0F0FF;
+    box-shadow:2px 2px 0 rgba(0,0,0,.8);
+}
+.modulo-a .modulo-num{background:#FF3D81;}
+.modulo-5 .modulo-num{background:#F7B801;}
+
+.modulo-titulo{
+    color:#F7B801;
+    font-size:9px;
+    margin-bottom:10px;
+    line-height:1.6;
+}
+
+.modulo-desc{
+    font-size:7px;
+    color:#F0F0FF;
+    opacity:0.9;
+    line-height:1.8;
+}
+
+ul{list-style:none;padding-left:0;}
+li{
+    margin:12px 0;
+    padding-left:24px;
+    position:relative;
+    font-size:8px;
+}
+li::before{
+    content:'►';
+    position:absolute;
+    left:0;
+    color:#FF3D81;
+    animation:blink 1.5s steps(2) infinite;
+}
+
+.highlight{
+    color:#F7B801;
+    text-shadow:1px 1px 0 rgba(0,0,0,.8);
+}
+
+footer{
+    text-align:center;
+    margin-top:30px;
+    padding-top:20px;
+    border-top:3px solid #2A2A4A;
+    font-size:7px;
+    color:#724CF9;
+}
+
+/* Animación de entrada */
+@keyframes slideIn{
+    from{opacity:0;transform:translateY(20px);}
+    to{opacity:1;transform:translateY(0);}
+}
+.modulo{animation:slideIn 0.5s steps(5) backwards;}
+.modulo:nth-child(1){animation-delay:0.1s;}
+.modulo:nth-child(2){animation-delay:0.2s;}
+.modulo:nth-child(3){animation-delay:0.3s;}
+.modulo:nth-child(4){animation-delay:0.4s;}
+.modulo:nth-child(5){animation-delay:0.5s;}
+.modulo:nth-child(6){animation-delay:0.6s;}
+
+@media print{
+    body::before,body::after{display:none;}
+    .wrapper{box-shadow:none;border:2px solid #000;}
+    .logo{filter:none;}
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="logo-container">
+        <img src="soyanormal_pixel.png" alt="Soy Anormal" class="logo">
+    </div>
+
+    <div class="header">
+        <h1>CONTENIDO TEMÁTICO<br>CURSO DE ASTROLOGÍA</h1>
+        <div class="subtitle">SOY ANORMAL — NIVEL PRINCIPIANTES</div>
+    </div>
+
+    <div class="objetivo">
+        <h2><span class="pixel-icon"></span>OBJETIVO GENERAL DE APRENDIZAJE</h2>
+        <p><span class="highlight">Al terminar este curso el estudiante:</span></p>
+        <ul>
+            <li>Conocerá los símbolos básicos que configuran el <span class="highlight">alfabeto astrológico</span>.</li>
+            <li>Comprenderá la simbología y características generales del alfabeto astrológico.</li>
+            <li>Se iniciará en un enfoque de <span class="highlight">sabiduría y propósito trascendental</span> del conocimiento astrológico.</li>
+        </ul>
+    </div>
+
+    <h2><span class="pixel-icon"></span>ORGANIZACIÓN DE LOS CONTENIDOS</h2>
+    <div class="card" style="background:#1A1A3A;border:3px solid #2A2A4A;padding:16px;margin:20px 0;">
+        <p>Este curso está compuesto de <span class="highlight">6 módulos</span>. Cada módulo tiene entre <span class="highlight">3 y 6 lecciones</span> dependiendo de la complejidad de la temática.</p>
+        <br>
+        <p>A continuación los <span class="highlight">6 módulos</span> con su objetivo y temas:</p>
+    </div>
+
+    <div class="modulos-grid">
+        <div class="modulo modulo-a">
+            <div class="modulo-num">A</div>
+            <div class="modulo-titulo">ENCUADRE DEL CURSO</div>
+            <div class="modulo-desc">
+                Los participantes conocen el propósito y temática del curso, así como la metodología de aprendizaje.
+            </div>
+        </div>
+
+        <div class="modulo">
+            <div class="modulo-num">1</div>
+            <div class="modulo-titulo">INTRODUCCIÓN A LA ASTROLOGÍA</div>
+            <div class="modulo-desc">
+                El grupo conoce el significado y propósito de la Astrología y la Carta Natal, así como su relación con el cosmos.
+            </div>
+        </div>
+
+        <div class="modulo">
+            <div class="modulo-num">2</div>
+            <div class="modulo-titulo">PRINCIPIOS BÁSICOS DE LOS SIGNOS</div>
+            <div class="modulo-desc">
+                El grupo comprende la simbología y características generales de los signos del zodiaco.
+            </div>
+        </div>
+
+        <div class="modulo">
+            <div class="modulo-num">3</div>
+            <div class="modulo-titulo">PRINCIPIOS BÁSICOS DE LOS PLANETAS</div>
+            <div class="modulo-desc">
+                El grupo comprende la simbología y características generales de los planetas.
+            </div>
+        </div>
+
+        <div class="modulo">
+            <div class="modulo-num">4</div>
+            <div class="modulo-titulo">PRINCIPIOS BÁSICOS DE LAS CASAS</div>
+            <div class="modulo-desc">
+                El grupo comprende las características básicas de las casas zodiacales.
+            </div>
+        </div>
+
+        <div class="modulo modulo-5">
+            <div class="modulo-num">5</div>
+            <div class="modulo-titulo">ENFOQUE ESPIRITUAL DE LA ASTROLOGÍA</div>
+            <div class="modulo-desc">
+                El grupo conoce la naturaleza espiritual del conocimiento astrológico y su trascendencia en la vida humana.
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        CONTENIDO TEMÁTICO ✦ SOY ANORMAL © 2026 ✦ 6 MÓDULOS
+    </footer>
+</div>
+</body>
+</html>
