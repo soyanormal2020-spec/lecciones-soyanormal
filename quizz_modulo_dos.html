@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌟 QUIZ · MÓDULO II · SIGNOS DEL ZODIACO</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #08081A;
+    --cyan:    #00D9FF;
+    --pink:    #FF3D81;
+    --purple:  #724CF9;
+    --gold:    #F7B801;
+    --green:   #39FF88;
+    --white:   #F0F0F0;
+    --violet:  #BF5FFF;
+    --rose:    #FF6EB4;
+    --indigo:  #5B8CFF;
+    --red:     #FF4444;
+  }
+
+  *, *::before, *::after {
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ── BG FX ── */
+  .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .star  { position: absolute; width: 2px; height: 2px; background: #fff; animation: twinkle 3s infinite; }
+
+  @keyframes twinkle {
+    0%,100% { opacity: .3; transform: scale(1); }
+    50%      { opacity: 1;  transform: scale(1.8); }
+  }
+
+  .scanlines {
+    position: fixed; inset: 0; pointer-events: none; z-index: 999;
+    background: repeating-linear-gradient(0deg,
+      rgba(0,0,0,.13), rgba(0,0,0,.13) 1px,
+      transparent 1px, transparent 2px);
+    opacity: .45;
+  }
+
+  .crt-glow {
+    position: fixed; inset: 0; pointer-events: none; z-index: 998;
+    box-shadow: inset 0 0 120px rgba(255,61,129,.1);
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ── HEADER ── */
+  .header-wrap { text-align: center; margin: 24px 0 10px; }
+
+  /* ── FALLING ZODIAC ELEMENTS ── */
+  .zodiac-fall {
+    position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden;
+  }
+  .zfall {
+    position: absolute;
+    top: -60px;
+    font-size: 22px;
+    opacity: 0;
+    animation: fallDown linear infinite;
+    filter: drop-shadow(0 0 6px currentColor);
+  }
+  @keyframes fallDown {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+    5%   { opacity: 0.55; }
+    90%  { opacity: 0.45; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  .module-tag {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--gold);
+    border: 2px solid var(--gold);
+    padding: 4px 12px;
+    margin-bottom: 18px;
+    text-shadow: 0 0 6px var(--gold);
+    animation: tag-pulse 2s infinite;
+  }
+  @keyframes tag-pulse {
+    0%,100% { box-shadow: 0 0 4px var(--gold); }
+    50%      { box-shadow: 0 0 16px var(--gold), 0 0 30px rgba(247,184,1,.3); }
+  }
+
+  .main-title {
+    font-size: clamp(18px, 4.5vw, 30px);
+    color: var(--pink);
+    text-shadow: 3px 3px 0 var(--purple), -2px -2px 0 rgba(0,217,255,.4);
+    animation: glitch 4s infinite;
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+  @keyframes glitch {
+    0%,88%,100% { transform: translate(0); }
+    90% { transform: translate(-2px, 2px); }
+    92% { transform: translate(2px,-2px); }
+    94% { transform: translate(-2px,-2px); }
+    96% { transform: translate(2px,2px); }
+  }
+
+  .sub-title {
+    font-size: clamp(10px, 2vw, 14px);
+    color: var(--violet);
+    animation: pulse-glow 3s infinite;
+    line-height: 2;
+  }
+  @keyframes pulse-glow {
+    0%,100% { text-shadow: 0 0 4px var(--violet); }
+    50%      { text-shadow: 0 0 16px var(--violet), 0 0 30px var(--pink); }
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--pink), var(--purple), var(--cyan), var(--purple), var(--pink), transparent);
+    margin: 28px 0;
+    box-shadow: 0 0 10px var(--pink);
+  }
+  .divider.gold {
+    background: linear-gradient(90deg, transparent, var(--gold), var(--rose), var(--gold), transparent);
+    box-shadow: 0 0 10px var(--gold);
+  }
+  .divider.green {
+    background: linear-gradient(90deg, transparent, var(--green), var(--cyan), var(--green), transparent);
+    box-shadow: 0 0 10px var(--green);
+  }
+
+  /* ── PROGRESS BOX ── */
+  .progress-wrap {
+    border: 3px solid var(--purple);
+    background: #0e0a22;
+    padding: 14px 18px;
+    margin-bottom: 22px;
+    box-shadow: 6px 6px 0 rgba(114,76,249,.3);
+  }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--cyan);
+    text-shadow: 0 0 6px var(--cyan);
+    margin-bottom: 10px;
+  }
+  .score-live { color: var(--gold); text-shadow: 0 0 6px var(--gold); }
+  .progress-bar-bg {
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--purple);
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--purple), var(--pink), var(--cyan));
+    box-shadow: 0 0 8px var(--pink);
+    transition: width 0.5s steps(20);
+    width: 0%;
+  }
+
+  /* ── QUESTION CARD ── */
+  .q-card {
+    border: 4px solid var(--cyan);
+    background: #0a0f24;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 8px 8px 0 rgba(0,217,255,.15), 0 0 20px rgba(0,217,255,.08);
+    animation: card-in 0.3s steps(8);
+    position: relative;
+    overflow: hidden;
+  }
+  @keyframes card-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .q-badge {
+    font-size: 9px;
+    padding: 3px 8px;
+    border: 2px solid;
+    letter-spacing: 1px;
+  }
+  .badge-mc     { border-color: var(--violet); color: var(--violet); text-shadow: 0 0 5px var(--violet); }
+  .badge-tf     { border-color: var(--green);  color: var(--green);  text-shadow: 0 0 5px var(--green); }
+  .badge-open   { border-color: var(--gold);   color: var(--gold);   text-shadow: 0 0 5px var(--gold); }
+
+  .q-category {
+    font-size: 9px;
+    color: var(--rose);
+    text-shadow: 0 0 5px var(--rose);
+  }
+
+  .q-number {
+    font-size: 9px;
+    color: rgba(255,255,255,.35);
+    margin-left: auto;
+  }
+
+  .q-text {
+    font-size: clamp(10px, 2.2vw, 13px);
+    color: var(--white);
+    line-height: 2.2;
+    margin-bottom: 18px;
+  }
+
+  /* ── OPTIONS ── */
+  .options { display: flex; flex-direction: column; gap: 8px; }
+
+  .opt-btn {
+    background: rgba(255,255,255,.03);
+    border: 2px solid rgba(91,140,255,.3);
+    padding: 10px 14px;
+    text-align: left;
+    color: #ccc;
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(9px,1.8vw,11px);
+    line-height: 1.9;
+    cursor: pointer;
+    transition: none;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    position: relative;
+  }
+  .opt-btn:hover:not(:disabled) {
+    background: rgba(114,76,249,.15);
+    border-color: var(--purple);
+    color: var(--white);
+    box-shadow: 4px 4px 0 var(--purple);
+  }
+  .opt-btn:active:not(:disabled) { transform: translate(2px,2px); box-shadow: none; }
+
+  .opt-letter {
+    color: var(--indigo);
+    text-shadow: 0 0 6px var(--indigo);
+    flex-shrink: 0;
+    font-size: 11px;
+  }
+
+  .opt-btn.selected {
+    background: rgba(114,76,249,.2);
+    border-color: var(--purple);
+    color: var(--white);
+    box-shadow: 4px 4px 0 var(--purple);
+  }
+  .opt-btn.correct {
+    background: rgba(57,255,136,.12);
+    border-color: var(--green);
+    color: var(--white);
+    box-shadow: 4px 4px 0 var(--green);
+  }
+  .opt-btn.correct .opt-letter { color: var(--green); text-shadow: 0 0 8px var(--green); }
+  .opt-btn.wrong {
+    background: rgba(255,68,68,.1);
+    border-color: var(--red);
+    color: #aaa;
+    box-shadow: 4px 4px 0 var(--red);
+  }
+  .opt-btn.wrong .opt-letter { color: var(--red); text-shadow: 0 0 8px var(--red); }
+  .opt-btn.missed {
+    border-color: rgba(57,255,136,.4);
+    background: rgba(57,255,136,.05);
+  }
+  .opt-btn:disabled { cursor: default; }
+
+  /* ── TRUE/FALSE ── */
+  .tf-wrap { display: flex; gap: 12px; }
+  .tf-btn {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid rgba(255,255,255,.15);
+    background: rgba(255,255,255,.03);
+    color: #ccc;
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(10px,1.8vw,12px);
+    cursor: pointer;
+    text-align: center;
+    transition: none;
+  }
+  .tf-btn:hover:not(:disabled) {
+    border-color: var(--purple);
+    background: rgba(114,76,249,.15);
+    color: var(--white);
+    box-shadow: 4px 4px 0 var(--purple);
+  }
+  .tf-btn.selected { border-color: var(--purple); background: rgba(114,76,249,.2); color: var(--white); box-shadow: 4px 4px 0 var(--purple); }
+  .tf-btn.correct  { border-color: var(--green); background: rgba(57,255,136,.12); color: var(--white); box-shadow: 4px 4px 0 var(--green); }
+  .tf-btn.wrong    { border-color: var(--red);   background: rgba(255,68,68,.1);   color: #888; box-shadow: 4px 4px 0 var(--red); }
+  .tf-btn.missed   { border-color: rgba(57,255,136,.4); }
+  .tf-btn:disabled { cursor: default; }
+
+  /* ── OPEN TEXTAREA ── */
+  .open-input {
+    width: 100%;
+    background: rgba(255,255,255,.03);
+    border: 2px solid rgba(247,184,1,.3);
+    padding: 10px 12px;
+    color: var(--white);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 11px;
+    min-height: 90px;
+  }
+  .open-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 12px rgba(247,184,1,.3); }
+  .open-input:disabled { opacity: .5; }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    margin-top: 14px;
+    padding: 12px 14px;
+    font-size: 10px;
+    border: 2px solid;
+    animation: card-in 0.25s steps(6);
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb { border-color: var(--green); background: rgba(57,255,136,.08); color: var(--green); text-shadow: 0 0 4px var(--green); }
+  .feedback-box.wrong-fb   { border-color: var(--red);   background: rgba(255,68,68,.08);  color: var(--red);   }
+  .feedback-box.open-fb    { border-color: var(--gold);  background: rgba(247,184,1,.07);  color: var(--gold);  text-shadow: 0 0 4px var(--gold); }
+
+  .fb-main { margin-bottom: 6px; }
+  .fb-expl {
+    color: rgba(255,255,255,.55);
+    font-size: 9px;
+    padding-top: 8px;
+    margin-top: 8px;
+  }
+
+  /* ── CONTROLS ── */
+  .controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+
+  .btn-check {
+    background: transparent;
+    border: 3px solid var(--cyan);
+    color: var(--cyan);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 11px;
+    box-shadow: 0 0 8px rgba(0,217,255,.2);
+    transition: none;
+  }
+  .btn-check:hover:not(:disabled) {
+    background: rgba(0,217,255,.12);
+    box-shadow: 4px 4px 0 var(--cyan), 0 0 14px rgba(0,217,255,.35);
+    transform: translate(-2px,-2px);
+  }
+  .btn-check:disabled { opacity: .3; cursor: default; transform: none; }
+
+  .btn-next {
+    background: linear-gradient(135deg, #4a1fa0, #724CF9);
+    border: 3px solid var(--purple);
+    color: var(--white);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 11px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 rgba(114,76,249,.4);
+    transition: none;
+    margin-left: auto;
+  }
+  .btn-next:hover:not(:disabled) {
+    background: linear-gradient(135deg, #6435c9, #9b65ff);
+    transform: translate(-2px,-2px);
+    box-shadow: 6px 6px 0 rgba(114,76,249,.5), 0 0 16px rgba(114,76,249,.4);
+  }
+  .btn-next:disabled { opacity: .3; cursor: default; transform: none; }
+
+  /* ── RESULTS ── */
+  .results-screen { display: none; }
+  .results-screen.show { display: block; animation: card-in 0.4s steps(10); }
+
+  .results-hero {
+    border: 4px solid var(--gold);
+    background: #120e00;
+    padding: 28px 20px;
+    text-align: center;
+    margin-bottom: 22px;
+    box-shadow: 8px 8px 0 rgba(247,184,1,.25), 0 0 24px rgba(247,184,1,.15);
+  }
+
+  .hero-symbol {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 12px;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+  }
+
+  .score-display {
+    font-size: clamp(20px,6vw,42px);
+    color: var(--gold);
+    text-shadow: 4px 4px 0 var(--purple), 0 0 20px var(--gold);
+    margin: 12px 0 6px;
+    animation: tag-pulse 2s infinite;
+  }
+
+  .score-tagline {
+    font-size: clamp(10px,2.2vw,14px);
+    color: var(--pink);
+    text-shadow: 0 0 8px var(--pink);
+    margin-bottom: 6px;
+    line-height: 2;
+  }
+  .score-detail {
+    font-size: 10px;
+    color: rgba(255,255,255,.5);
+    line-height: 2;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .stat-card {
+    border: 3px solid;
+    padding: 14px 10px;
+    text-align: center;
+    box-shadow: 5px 5px 0 rgba(0,0,0,.4);
+  }
+  .stat-card.green-card { border-color: var(--green); background: rgba(57,255,136,.06); }
+  .stat-card.red-card   { border-color: var(--red);   background: rgba(255,68,68,.06); }
+  .stat-card.gold-card  { border-color: var(--gold);  background: rgba(247,184,1,.06); }
+
+  .stat-val {
+    font-size: clamp(18px,5vw,32px);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .stat-val.green { color: var(--green); text-shadow: 0 0 12px var(--green); }
+  .stat-val.red   { color: var(--red);   text-shadow: 0 0 12px var(--red); }
+  .stat-val.gold  { color: var(--gold);  text-shadow: 0 0 12px var(--gold); }
+  .stat-lbl { font-size: 9px; color: rgba(255,255,255,.45); }
+
+  .review-title {
+    font-size: 11px;
+    color: var(--violet);
+    text-shadow: 0 0 8px var(--violet);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .review-item {
+    border: 2px solid;
+    padding: 14px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .review-item.correct-item { border-color: var(--green); background: rgba(57,255,136,.04); }
+  .review-item.wrong-item   { border-color: var(--red);   background: rgba(255,68,68,.04); }
+  .review-item.open-item    { border-color: var(--gold);  background: rgba(247,184,1,.04); }
+
+  .review-num {
+    font-size: 9px;
+    color: rgba(255,255,255,.3);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .review-q  { font-size: 10px; color: var(--white); line-height: 2; margin-bottom: 8px; }
+  .review-a  { font-size: 9px; line-height: 2; }
+  .review-a.correct-a { color: var(--green); text-shadow: 0 0 4px var(--green); }
+  .review-a.wrong-a   { color: var(--red); }
+  .review-a.open-a    { color: var(--gold); text-shadow: 0 0 4px var(--gold); }
+  .review-correct-ans { font-size: 9px; color: rgba(255,255,255,.4); margin-top: 4px; line-height: 2; }
+  .review-expl {
+    font-size: 9px;
+    color: rgba(255,255,255,.35);
+    line-height: 2;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+
+  .restart-btn {
+    display: block;
+    width: 100%;
+    margin-top: 24px;
+    padding: 14px;
+    background: linear-gradient(135deg, #8b0044, #FF3D81);
+    border: 3px solid var(--pink);
+    color: var(--white);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: 2px;
+    box-shadow: 6px 6px 0 rgba(255,61,129,.3), 0 0 18px rgba(255,61,129,.2);
+    animation: tag-pulse 2s infinite;
+    transition: none;
+  }
+  .restart-btn:hover {
+    transform: translate(-2px,-2px);
+    box-shadow: 8px 8px 0 rgba(255,61,129,.4), 0 0 24px rgba(255,61,129,.35);
+  }
+
+  /* ── INTRO BOX ── */
+  .intro-box {
+    border: 4px solid var(--pink);
+    background: #150e2e;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 8px 8px 0 rgba(255,61,129,.2), 0 0 20px rgba(255,61,129,.1);
+    text-align: center;
+  }
+  .intro-box p {
+    font-size: 10px;
+    color: #ccc;
+    line-height: 2.4;
+  }
+  .intro-box .hl-pink   { color: var(--pink);   text-shadow: 0 0 5px var(--pink); }
+  .intro-box .hl-cyan   { color: var(--cyan);   text-shadow: 0 0 5px var(--cyan); }
+  .intro-box .hl-gold   { color: var(--gold);   text-shadow: 0 0 5px var(--gold); }
+  .intro-box .hl-green  { color: var(--green);  text-shadow: 0 0 5px var(--green); }
+  .intro-box .hl-violet { color: var(--violet); text-shadow: 0 0 5px var(--violet); }
+
+  /* Pixel corners */
+  .q-card::before, .q-card::after,
+  .intro-box::before, .intro-box::after {
+    content: '■';
+    position: absolute;
+    font-size: 6px;
+    color: var(--cyan);
+    text-shadow: 0 0 4px var(--cyan);
+  }
+  .q-card::before { top: 4px; right: 8px; }
+  .q-card::after  { bottom: 4px; right: 8px; opacity: 0.4; }
+
+  @media (max-width: 520px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .controls { flex-direction: column; }
+    .btn-next { margin-left: 0; }
+    .tf-wrap { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="zodiac-fall" id="zodiac-fall"></div>
+<div class="scanlines"></div>
+<div class="crt-glow"></div>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header-wrap">
+    <div class="module-tag">★ ESCUELA SOY ANORMAL · ASTROLOGÍA ★</div>
+    <h1 class="main-title">MÓDULO II<br>QUIZ INTERACTIVO</h1>
+    <p class="sub-title">⟡ PRINCIPIOS BÁSICOS DE LOS SIGNOS DEL ZODIACO ⟡</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen">
+
+    <div class="intro-box" id="intro-box">
+      <p>
+        ✦ Este quiz tiene <span class="hl-cyan">22 preguntas</span> sobre el Módulo II ✦<br><br>
+        Incluye <span class="hl-pink">opción múltiple</span>, <span class="hl-green">verdadero/falso</span><br>
+        y <span class="hl-gold">respuestas abiertas</span>.<br><br>
+        Al final recibirás tu <span class="hl-violet">★ PUNTAJE ESTELAR ★</span><br>
+        con explicación detallada de cada respuesta.
+      </p>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="q-counter">▶ PREGUNTA 1 / 22</span>
+        <span class="score-live" id="q-score-live">⭐ PTS: 0</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="q-card" id="question-card">
+      <div class="q-meta">
+        <span class="q-badge" id="q-type-badge"></span>
+        <span class="q-category" id="q-category"></span>
+        <span class="q-number" id="q-number"></span>
+      </div>
+      <p class="q-text" id="question-text"></p>
+      <div id="answer-area"></div>
+      <div class="feedback-box" id="feedback-box">
+        <p class="fb-main" id="fb-main"></p>
+        <p class="fb-expl" id="fb-expl"></p>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn-check" id="btn-check" onclick="checkAnswer()">[ COMPROBAR ]</button>
+      <button class="btn-next"  id="btn-next"  onclick="nextQuestion()" disabled>SIGUIENTE ▶</button>
+    </div>
+
+  </div><!-- /quiz-screen -->
+
+  <!-- RESULTS SCREEN -->
+  <div class="results-screen" id="results-screen">
+
+    <div class="results-hero">
+      <span class="hero-symbol">🌟</span>
+      <div class="score-display" id="res-pct">0%</div>
+      <p class="score-tagline" id="res-tagline"></p>
+      <p class="score-detail" id="res-detail"></p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card green-card">
+        <span class="stat-val green" id="res-correct">0</span>
+        <div class="stat-lbl">✔ CORRECTAS</div>
+      </div>
+      <div class="stat-card red-card">
+        <span class="stat-val red" id="res-wrong">0</span>
+        <div class="stat-lbl">✗ INCORRECTAS</div>
+      </div>
+      <div class="stat-card gold-card">
+        <span class="stat-val gold" id="res-open">0</span>
+        <div class="stat-lbl">✎ ABIERTAS</div>
+      </div>
+    </div>
+
+    <div class="divider gold"></div>
+
+    <p class="review-title">⟡ REVISIÓN DETALLADA ⟡</p>
+    <div id="review-list"></div>
+
+    <div class="divider green"></div>
+
+    <button class="restart-btn" onclick="restart()">↺ REINTENTAR QUIZ</button>
+
+  </div><!-- /results-screen -->
+
+</div><!-- /container -->
+
+<script>
+// ── STARS ──
+const starsEl = document.getElementById('stars');
+const starColors = ['#fff','#BF5FFF','#00D9FF','#F7B801','#FF3D81','#5B8CFF','#FF6EB4'];
+for (let i = 0; i < 130; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  s.style.left = Math.random()*100+'%';
+  s.style.top  = Math.random()*100+'%';
+  s.style.animationDelay    = Math.random()*3+'s';
+  s.style.animationDuration = (Math.random()*2+2)+'s';
+  s.style.background = starColors[Math.floor(Math.random()*starColors.length)];
+  const sz = Math.random()*2+1;
+  s.style.width = s.style.height = sz+'px';
+  starsEl.appendChild(s);
+}
+
+// ── QUESTIONS ──
+const questions = [
+  // --- ALFABETO ASTROLÓGICO ---
+  {
+    type: "mc", category: "☽ ALFABETO ASTROLÓGICO",
+    text: "¿Cuántos signos componen el Zodíaco en astrología occidental?",
+    options: ["10", "12", "13", "8"],
+    answer: 1,
+    explanation: "El zodíaco se divide en 12 signos, cada uno ocupando 30° de la eclíptica, sumando los 360° del círculo completo."
+  },
+  {
+    type: "tf", category: "☽ ALFABETO ASTROLÓGICO",
+    text: "Los planetas NO forman parte del 'alfabeto astrológico'; solo los 12 signos lo componen.",
+    answer: false,
+    explanation: "El alfabeto astrológico incluye signos, planetas Y casas. Cada elemento aporta su propio lenguaje simbólico al sistema."
+  },
+  {
+    type: "mc", category: "☽ ALFABETO ASTROLÓGICO",
+    text: "¿Qué representa principalmente un signo zodiacal en astrología?",
+    options: [
+      "Un planeta que rige el destino",
+      "Una forma o estilo de expresar energía",
+      "La posición exacta del Sol al nacer",
+      "El mes de nacimiento gregoriano"
+    ],
+    answer: 1,
+    explanation: "El signo describe la CUALIDAD o 'cómo' se expresa la energía, no solo el momento de nacimiento."
+  },
+  // --- ELEMENTOS ---
+  {
+    type: "mc", category: "🔥 LOS CUATRO ELEMENTOS",
+    text: "¿A qué elemento pertenecen los signos Aries, Leo y Sagitario?",
+    options: ["Tierra", "Agua", "Fuego", "Aire"],
+    answer: 2,
+    explanation: "Aries, Leo y Sagitario son los tres signos de Fuego: apasionados, entusiastas y orientados a la acción y la inspiración."
+  },
+  {
+    type: "mc", category: "🔥 LOS CUATRO ELEMENTOS",
+    text: "Los signos de Agua (Cáncer, Escorpio, Piscis) se asocian principalmente con:",
+    options: [
+      "La razón lógica y comunicación",
+      "La sensibilidad emocional e intuición",
+      "La practicidad y lo material",
+      "El impulso y la acción"
+    ],
+    answer: 1,
+    explanation: "El elemento Agua rige el mundo emocional, la intuición profunda y la capacidad de conectar con el inconsciente."
+  },
+  {
+    type: "mc", category: "🔥 LOS CUATRO ELEMENTOS",
+    text: "¿Cuál de estos grupos corresponde al elemento Tierra?",
+    options: [
+      "Tauro, Virgo, Capricornio",
+      "Géminis, Libra, Acuario",
+      "Cáncer, Escorpio, Piscis",
+      "Aries, Leo, Sagitario"
+    ],
+    answer: 0,
+    explanation: "Tauro, Virgo y Capricornio son signos de Tierra: pragmáticos, estables y enfocados en lo concreto y material."
+  },
+  {
+    type: "tf", category: "🔥 LOS CUATRO ELEMENTOS",
+    text: "Géminis, Libra y Acuario pertenecen al elemento Aire, asociado con el intelecto y la comunicación.",
+    answer: true,
+    explanation: "Los signos de Aire comparten el amor por las ideas, la socialización y el pensamiento abstracto y racional."
+  },
+  // --- CUALIDADES ---
+  {
+    type: "mc", category: "⚡ CUALIDADES / MODALIDADES",
+    text: "¿Cómo se llaman las tres cualidades o modalidades en astrología?",
+    options: [
+      "Activa, Pasiva, Neutral",
+      "Cardinal, Fija, Mutable",
+      "Positiva, Negativa, Mixta",
+      "Yin, Yang, Tao"
+    ],
+    answer: 1,
+    explanation: "Las tres modalidades son: Cardinal (inicia), Fija (sostiene) y Mutable (adapta y transforma)."
+  },
+  {
+    type: "mc", category: "⚡ CUALIDADES / MODALIDADES",
+    text: "Los signos cardinales (Aries, Cáncer, Libra, Capricornio) se caracterizan por:",
+    options: [
+      "Adaptarse y cambiar con facilidad",
+      "Iniciar, liderar y poner las cosas en marcha",
+      "Mantener y consolidar lo que ya existe",
+      "Reflexionar profundamente antes de actuar"
+    ],
+    answer: 1,
+    explanation: "La energía cardinal es pionera: abre caminos, marca el inicio de cada estación y lidera con impulso."
+  },
+  {
+    type: "mc", category: "⚡ CUALIDADES / MODALIDADES",
+    text: "¿A qué modalidad pertenecen Géminis, Virgo, Sagitario y Piscis?",
+    options: ["Cardinal", "Fija", "Mutable", "Dual"],
+    answer: 2,
+    explanation: "Los signos mutables son los más flexibles y adaptativos; se ubican al final de cada estación, preparando el cambio."
+  },
+  {
+    type: "tf", category: "⚡ CUALIDADES / MODALIDADES",
+    text: "Tauro, Leo, Escorpio y Acuario son signos de modalidad Fija, lo que los hace muy persistentes y determinados.",
+    answer: true,
+    explanation: "La modalidad Fija sostiene y consolida la energía de cada estación. Estos signos suelen ser constantes y difíciles de mover de sus posiciones."
+  },
+  // --- POLARIDADES ---
+  {
+    type: "mc", category: "☯ POLARIDADES",
+    text: "En astrología, la dualidad básica de los signos se denomina:",
+    options: [
+      "Norte y Sur",
+      "Masculino y Femenino (Yang / Yin)",
+      "Solar y Lunar",
+      "Activo y Pasivo"
+    ],
+    answer: 1,
+    explanation: "Se usa Masculino/Femenino o Yang/Yin para describir la polaridad energética, sin implicar género biológico."
+  },
+  {
+    type: "tf", category: "☯ POLARIDADES",
+    text: "Los signos de Fuego y Tierra son de polaridad Masculina (Yang), mientras Agua y Aire son Femeninos (Yin).",
+    answer: false,
+    explanation: "Fuego y AIRE son Yang (masculino/activo/expansivo). Tierra y AGUA son Yin (femenino/receptivo/consolidador)."
+  },
+  // --- SIGNOS ---
+  {
+    type: "mc", category: "♈ ARIES",
+    text: "Aries es Fuego-Cardinal. ¿Cuál es su planeta regente?",
+    options: ["Venus", "Marte", "Júpiter", "El Sol"],
+    answer: 1,
+    explanation: "Marte rige a Aries, otorgándole su energía valiente, impulsiva, guerrera y pionera."
+  },
+  {
+    type: "mc", category: "♉ TAURO",
+    text: "Tauro es Tierra-Fijo. ¿Qué planeta lo rige principalmente?",
+    options: ["Marte", "Mercurio", "Venus", "Saturno"],
+    answer: 2,
+    explanation: "Venus rige Tauro, lo que le da su amor por la belleza, el placer sensorial, la comodidad y los bienes materiales."
+  },
+  {
+    type: "open", category: "♊ GÉMINIS",
+    text: "Describe con tus palabras las principales características de Géminis y por qué se le asocia con la dualidad.",
+    answer: null,
+    explanation: "Géminis es Aire-Mutable, regido por Mercurio. Se asocia con la dualidad por su capacidad de ver múltiples perspectivas, su mente curiosa y versátil, y su facilidad para adaptarse y comunicarse en distintos contextos simultáneamente."
+  },
+  {
+    type: "mc", category: "♋ CÁNCER",
+    text: "Cáncer es Agua-Cardinal. ¿Qué astro lo rige?",
+    options: ["El Sol", "Mercurio", "La Luna", "Neptuno"],
+    answer: 2,
+    explanation: "La Luna rige Cáncer, reforzando su conexión con las emociones, la intuición, la familia, el hogar y los ciclos."
+  },
+  {
+    type: "mc", category: "♌ LEO",
+    text: "Leo es el único signo regido por el Sol. Su elemento y modalidad son:",
+    options: ["Fuego - Cardinal", "Fuego - Fijo", "Fuego - Mutable", "Aire - Fijo"],
+    answer: 1,
+    explanation: "Leo es Fuego-Fijo: su energía ardiente se consolida y expresa con constancia, creatividad y liderazgo natural."
+  },
+  {
+    type: "mc", category: "♍ VIRGO",
+    text: "¿Qué planeta rige a Virgo y cuál es su elemento?",
+    options: ["Venus – Tierra", "Marte – Tierra", "Mercurio – Tierra", "Saturno – Tierra"],
+    answer: 2,
+    explanation: "Mercurio rige Virgo (también a Géminis). Virgo es Tierra-Mutable: práctico, analítico y orientado al servicio y la mejora."
+  },
+  {
+    type: "tf", category: "♎ LIBRA",
+    text: "Libra es un signo de Aire y modalidad Cardinal, regido por Venus, conocido por buscar equilibrio y justicia.",
+    answer: true,
+    explanation: "Libra busca la armonía en las relaciones y el entorno. Su naturaleza cardinal lo impulsa a iniciar vínculos con diplomacia."
+  },
+  {
+    type: "mc", category: "♐ SAGITARIO",
+    text: "¿Cuál de los siguientes signos es de modalidad Mutable y pertenece al elemento Fuego?",
+    options: ["Escorpio", "Capricornio", "Sagitario", "Aries"],
+    answer: 2,
+    explanation: "Sagitario es el único signo Fuego-Mutable: aventurero, filosófico y expansivo, siempre en búsqueda de nuevos horizontes."
+  },
+  {
+    type: "mc", category: "♓ PISCIS",
+    text: "Piscis es el último signo del zodiaco. Su elemento y modalidad son:",
+    options: ["Agua – Cardinal", "Agua – Fija", "Agua – Mutable", "Aire – Mutable"],
+    answer: 2,
+    explanation: "Piscis es Agua-Mutable: el más empático, intuitivo y espiritual de los signos. Cierra y disuelve el ciclo zodiacal completo."
+  }
+];
+
+let current = 0, score = 0, answered = false, results = [];
+let selectedOption = null;
+
+function init() {
+  current = 0; score = 0; answered = false; results = []; selectedOption = null;
+  document.getElementById('quiz-screen').style.display = 'block';
+  document.getElementById('results-screen').classList.remove('show');
+  document.getElementById('intro-box').style.display = 'block';
+  document.getElementById('btn-next').textContent = 'SIGUIENTE ▶';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false; selectedOption = null;
+  const q = questions[current];
+
+  // Hide intro after first interaction
+  if (current > 0) document.getElementById('intro-box').style.display = 'none';
+
+  document.getElementById('q-counter').textContent = `▶ PREGUNTA ${current+1} / ${questions.length}`;
+  document.getElementById('q-score-live').textContent = `⭐ PTS: ${score}`;
+  document.getElementById('progress-fill').style.width = `${(current/questions.length)*100}%`;
+  document.getElementById('q-number').textContent = `#${current+1}`;
+
+  const badge = document.getElementById('q-type-badge');
+  if (q.type === 'mc')   { badge.textContent = '[ OPCIÓN MÚLTIPLE ]'; badge.className = 'q-badge badge-mc'; }
+  else if (q.type === 'tf') { badge.textContent = '[ VERDADERO / FALSO ]'; badge.className = 'q-badge badge-tf'; }
+  else                   { badge.textContent = '[ RESPUESTA ABIERTA ]'; badge.className = 'q-badge badge-open'; }
+
+  document.getElementById('q-category').textContent = q.category;
+  document.getElementById('question-text').textContent = q.text;
+
+  const fb = document.getElementById('feedback-box');
+  fb.className = 'feedback-box';
+
+  const area = document.getElementById('answer-area');
+  area.innerHTML = '';
+
+  if (q.type === 'mc') {
+    const wrap = document.createElement('div');
+    wrap.className = 'options';
+    ['A','B','C','D'].forEach((letter, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.id = `opt-${i}`;
+      btn.innerHTML = `<span class="opt-letter">${letter}.</span>${q.options[i]}`;
+      btn.onclick = () => selectOption(i);
+      wrap.appendChild(btn);
+    });
+    area.appendChild(wrap);
+  } else if (q.type === 'tf') {
+    const wrap = document.createElement('div');
+    wrap.className = 'tf-wrap';
+    [['✔ VERDADERO', true], ['✗ FALSO', false]].forEach(([label, val], i) => {
+      const btn = document.createElement('button');
+      btn.className = 'tf-btn';
+      btn.id = `tf-${i}`;
+      btn.textContent = label;
+      btn.onclick = () => selectTF(val, i);
+      wrap.appendChild(btn);
+    });
+    area.appendChild(wrap);
+  } else {
+    const ta = document.createElement('textarea');
+    ta.className = 'open-input';
+    ta.id = 'open-input';
+    ta.placeholder = '> ESCRIBE TU RESPUESTA AQUÍ...';
+    area.appendChild(ta);
+  }
+
+  document.getElementById('btn-check').disabled = false;
+  document.getElementById('btn-next').disabled = true;
+
+  // Re-animate card
+  const card = document.getElementById('question-card');
+  card.style.animation = 'none';
+  void card.offsetWidth;
+  card.style.animation = 'card-in 0.3s steps(8)';
+}
+
+function selectOption(i) {
+  if (answered) return;
+  selectedOption = i;
+  document.querySelectorAll('.opt-btn').forEach((b, idx) => {
+    b.classList.toggle('selected', idx === i);
+  });
+}
+
+function selectTF(val, idx) {
+  if (answered) return;
+  selectedOption = val;
+  document.querySelectorAll('.tf-btn').forEach((b, i) => {
+    b.classList.toggle('selected', i === idx);
+  });
+}
+
+function checkAnswer() {
+  if (answered) return;
+  const q = questions[current];
+  const fb = document.getElementById('feedback-box');
+
+  if (q.type === 'open') {
+    const val = document.getElementById('open-input').value.trim();
+    if (!val) { alert('ESCRIBE TU RESPUESTA ANTES DE CONTINUAR'); return; }
+    answered = true;
+    document.getElementById('open-input').disabled = true;
+    fb.className = 'feedback-box open-fb show';
+    document.getElementById('fb-main').textContent = '✎ RESPUESTA GUARDADA · COMPARA CON LA GUÍA:';
+    document.getElementById('fb-expl').textContent = q.explanation;
+    results.push({ q, status: 'open', userText: val });
+
+  } else if (q.type === 'mc') {
+    if (selectedOption === null) { alert('SELECCIONA UNA OPCIÓN'); return; }
+    answered = true;
+    const correct = selectedOption === q.answer;
+    if (correct) score++;
+    document.querySelectorAll('.opt-btn').forEach((btn, idx) => {
+      btn.disabled = true;
+      if (idx === q.answer) btn.classList.add('correct');
+      else if (idx === selectedOption && !correct) btn.classList.add('wrong');
+    });
+    fb.className = `feedback-box ${correct ? 'correct-fb' : 'wrong-fb'} show`;
+    document.getElementById('fb-main').textContent = correct
+      ? '✔ ¡CORRECTO! +1 PUNTO'
+      : `✗ INCORRECTO · RESPUESTA: ${q.options[q.answer]}`;
+    document.getElementById('fb-expl').textContent = q.explanation;
+    results.push({ q, status: correct ? 'correct' : 'wrong', selected: selectedOption });
+
+  } else if (q.type === 'tf') {
+    if (selectedOption === null) { alert('SELECCIONA VERDADERO O FALSO'); return; }
+    answered = true;
+    const correct = selectedOption === q.answer;
+    if (correct) score++;
+    document.querySelectorAll('.tf-btn').forEach((btn, i) => {
+      btn.disabled = true;
+      const val = i === 0;
+      if (val === q.answer) btn.classList.add('correct');
+      else if (val === selectedOption && !correct) btn.classList.add('wrong');
+    });
+    fb.className = `feedback-box ${correct ? 'correct-fb' : 'wrong-fb'} show`;
+    document.getElementById('fb-main').textContent = correct
+      ? '✔ ¡CORRECTO! +1 PUNTO'
+      : `✗ INCORRECTO · RESPUESTA: ${q.answer ? 'VERDADERO' : 'FALSO'}`;
+    document.getElementById('fb-expl').textContent = q.explanation;
+    results.push({ q, status: correct ? 'correct' : 'wrong', selected: selectedOption });
+  }
+
+  selectedOption = null;
+  document.getElementById('btn-check').disabled = true;
+  document.getElementById('btn-next').disabled = false;
+  document.getElementById('q-score-live').textContent = `⭐ PTS: ${score}`;
+
+  if (current === questions.length - 1) {
+    document.getElementById('btn-next').textContent = 'VER RESULTADOS ★';
+  }
+}
+
+function nextQuestion() {
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  const rs = document.getElementById('results-screen');
+  rs.classList.add('show');
+
+  const openCount = results.filter(r => r.status === 'open').length;
+  const gradable  = questions.length - openCount;
+  const pct = gradable > 0 ? Math.round((score / gradable) * 100) : 0;
+
+  document.getElementById('res-pct').textContent = `${pct}%`;
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('res-correct').textContent = score;
+  document.getElementById('res-wrong').textContent = gradable - score;
+  document.getElementById('res-open').textContent = openCount;
+
+  let tagline, detail;
+  if      (pct >= 90) { tagline = '★ MAESTRO DEL ZODIACO ★';      detail = 'Tu conocimiento estelar es impresionante.'; }
+  else if (pct >= 75) { tagline = '⟡ BUEN ALINEAMIENTO CÓSMICO ⟡'; detail = 'Dominas los principios. ¡Sigue explorando!'; }
+  else if (pct >= 60) { tagline = '☽ EN EL CAMINO CORRECTO ☽';     detail = 'Buena base. Repasa los temas fallados.'; }
+  else                { tagline = '✦ LOS ASTROS TE GUIARÁN ✦';     detail = 'Revisa el módulo y vuelve a intentarlo.'; }
+
+  document.getElementById('res-tagline').textContent = tagline;
+  document.getElementById('res-detail').textContent  = detail;
+
+  const list = document.getElementById('review-list');
+  list.innerHTML = '';
+  results.forEach((r, i) => {
+    const div = document.createElement('div');
+    div.className = `review-item ${r.status}-item`;
+
+    let answerHTML = '';
+    if (r.status === 'correct') {
+      const ans = r.q.type === 'mc' ? r.q.options[r.selected] : (r.selected ? 'VERDADERO' : 'FALSO');
+      answerHTML = `<p class="review-a correct-a">✔ TU RESPUESTA: ${ans}</p>`;
+    } else if (r.status === 'wrong') {
+      const userAns    = r.q.type === 'mc' ? r.q.options[r.selected] : (r.selected ? 'VERDADERO' : 'FALSO');
+      const correctAns = r.q.type === 'mc' ? r.q.options[r.q.answer] : (r.q.answer ? 'VERDADERO' : 'FALSO');
+      answerHTML = `<p class="review-a wrong-a">✗ TU RESPUESTA: ${userAns}</p>
+                    <p class="review-correct-ans">▶ CORRECTA: ${correctAns}</p>`;
+    } else {
+      answerHTML = `<p class="review-a open-a">✎ TU RESPUESTA: ${r.userText}</p>`;
+    }
+
+    div.innerHTML = `
+      <span class="review-num">PREGUNTA ${i+1} · ${r.q.category}</span>
+      <p class="review-q">${r.q.text}</p>
+      ${answerHTML}
+      <p class="review-expl">ℹ ${r.q.explanation}</p>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function restart() {
+  document.getElementById('results-screen').classList.remove('show');
+  init();
+}
+
+init();
+
+// ── FALLING ZODIAC ELEMENTS ──
+const zodiacFall = document.getElementById('zodiac-fall');
+const zodiacSymbols = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓','★','✦','⟡','☽','☀','✧','⭐','🌙'];
+const zodiacColors  = ['#FF3D81','#00D9FF','#BF5FFF','#F7B801','#39FF88','#5B8CFF','#FF6EB4'];
+
+function createFallingSymbol() {
+  const el = document.createElement('div');
+  el.className = 'zfall';
+  el.textContent = zodiacSymbols[Math.floor(Math.random() * zodiacSymbols.length)];
+  el.style.left = Math.random() * 100 + '%';
+  el.style.color = zodiacColors[Math.floor(Math.random() * zodiacColors.length)];
+  const dur = (Math.random() * 8 + 6).toFixed(1) + 's';
+  const delay = (Math.random() * 5).toFixed(1) + 's';
+  el.style.animationDuration = dur;
+  el.style.animationDelay   = delay;
+  el.style.fontSize = (Math.random() * 18 + 14) + 'px';
+  zodiacFall.appendChild(el);
+  // Remove after animation ends to keep DOM clean
+  el.addEventListener('animationiteration', () => {
+    el.style.left = Math.random() * 100 + '%';
+    el.style.color = zodiacColors[Math.floor(Math.random() * zodiacColors.length)];
+  });
+}
+for (let i = 0; i < 28; i++) createFallingSymbol();
+
+// ── SFX (Web Audio API) ──
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new AudioCtx();
+  return audioCtx;
+}
+
+function playTone(type, freq, freq2, duration, gainVal, detune) {
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    if (freq2) osc.frequency.linearRampToValueAtTime(freq2, ctx.currentTime + duration);
+    if (detune) osc.detune.setValueAtTime(detune, ctx.currentTime);
+    gain.gain.setValueAtTime(gainVal, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
+  } catch(e) {}
+}
+
+function sfxClick() {
+  playTone('square', 440, 880, 0.12, 0.18);
+}
+function sfxSelect() {
+  playTone('sine', 520, 660, 0.15, 0.2);
+  setTimeout(() => playTone('sine', 660, 780, 0.12, 0.15), 80);
+}
+function sfxCorrect() {
+  playTone('sine', 523, 784, 0.15, 0.25);
+  setTimeout(() => playTone('sine', 659, 1046, 0.2, 0.2), 120);
+  setTimeout(() => playTone('triangle', 1046, 1318, 0.3, 0.18), 260);
+}
+function sfxWrong() {
+  playTone('sawtooth', 300, 150, 0.25, 0.2);
+  setTimeout(() => playTone('sawtooth', 180, 100, 0.2, 0.15), 150);
+}
+function sfxNext() {
+  playTone('square', 330, 440, 0.1, 0.15);
+  setTimeout(() => playTone('square', 440, 550, 0.1, 0.12), 90);
+}
+function sfxResults() {
+  const notes = [523,659,784,1046,784,1046,1318];
+  notes.forEach((n, i) => setTimeout(() => playTone('sine', n, n*1.02, 0.18, 0.2), i * 110));
+}
+function sfxRestart() {
+  playTone('sine', 880, 440, 0.2, 0.2);
+  setTimeout(() => playTone('sine', 440, 880, 0.25, 0.2), 180);
+}
+
+// ── ATTACH SFX TO BUTTONS ──
+document.getElementById('btn-check').addEventListener('click', () => sfxClick());
+document.getElementById('btn-next').addEventListener('click', () => sfxNext());
+document.querySelector('.restart-btn') && document.querySelector('.restart-btn').addEventListener('click', () => sfxRestart());
+
+// Patch selectOption & selectTF to also play sound
+const _origSelectOption = selectOption;
+selectOption = function(i) {
+  sfxSelect();
+  _origSelectOption(i);
+};
+const _origSelectTF = selectTF;
+selectTF = function(val, idx) {
+  sfxSelect();
+  _origSelectTF(val, idx);
+};
+
+// Patch checkAnswer to play correct/wrong sfx
+const _origCheckAnswer = checkAnswer;
+checkAnswer = function() {
+  const q = questions[current];
+  if (q.type === 'open') {
+    const val = document.getElementById('open-input') && document.getElementById('open-input').value.trim();
+    if (val) sfxClick();
+  } else if (q.type === 'mc') {
+    if (selectedOption !== null) {
+      // Will play after result
+      const correct = selectedOption === q.answer;
+      setTimeout(() => correct ? sfxCorrect() : sfxWrong(), 50);
+    }
+  } else if (q.type === 'tf') {
+    if (selectedOption !== null) {
+      const correct = selectedOption === q.answer;
+      setTimeout(() => correct ? sfxCorrect() : sfxWrong(), 50);
+    }
+  }
+  _origCheckAnswer();
+};
+
+// Patch showResults for fanfare
+const _origShowResults = showResults;
+showResults = function() {
+  _origShowResults();
+  setTimeout(() => sfxResults(), 300);
+};
+</script>
+</body>
+</html>
