@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Por qué el estilo píxel? — Soy Anormal</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root {
+  --cyan: #00D9FF;
+  --purple: #724CF9;
+  --pink: #FF3D81;
+  --gold: #F7B801;
+  --green: #39FF88;
+  --bg: #0A0A1B;
+  --bg2: #050510;
+  --text: #F0F0FF;
+  --muted: #8080A0;
+  --dim: #D0D0D0;
+}
+
+body {
+  font-family: 'Press Start 2P', cursive;
+  background: var(--bg);
+  color: var(--text);
+  padding: 32px 24px;
+  font-size: 11px;
+  line-height: 2.4;
+  overflow-x: hidden;
+}
+
+/* CRT scanlines */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent, transparent 3px,
+    rgba(0,0,0,.06) 3px, rgba(0,0,0,.06) 4px
+  );
+}
+
+/* Fondo de estrellas */
+.stars {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 40px 60px, #eee, transparent),
+    radial-gradient(1px 1px at 200px 90px, #fff, transparent),
+    radial-gradient(2px 2px at 380px 140px, var(--cyan), transparent),
+    radial-gradient(1px 1px at 550px 80px, #fff, transparent),
+    radial-gradient(1px 1px at 90px 200px, var(--purple), transparent),
+    radial-gradient(2px 2px at 470px 250px, var(--gold), transparent),
+    radial-gradient(1px 1px at 310px 320px, #fff, transparent);
+  background-size: 700px 400px;
+  animation: twinkle 5s steps(4, end) infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: .5 }
+  50% { opacity: 1 }
+}
+
+/* Wrapper principal */
+.wrapper {
+  max-width: 700px;
+  margin: 0 auto;
+  background: var(--bg);
+  border: 4px solid var(--purple);
+  box-shadow: 6px 6px 0 rgba(114,76,249,.4), 0 0 40px rgba(114,76,249,.1);
+  padding: 36px 32px 40px;
+}
+
+/* ─── ENCABEZADO ─── */
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+  border-bottom: 3px solid #1A1A3A;
+  padding-bottom: 24px;
+}
+
+.header h2 {
+  color: var(--cyan);
+  font-size: 14px;
+  line-height: 2.2;
+  text-shadow: 3px 3px 0 rgba(0,0,0,.8);
+  margin-bottom: 16px;
+}
+
+/* Controlador pixel art animado */
+.controller-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0 12px;
+  gap: 16px;
+}
+
+.pixel-icon {
+  display: inline-block;
+  image-rendering: pixelated;
+}
+
+@keyframes flotar {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes brillo {
+  0%, 100% { filter: drop-shadow(0 0 4px var(--cyan)); }
+  33% { filter: drop-shadow(0 0 12px var(--purple)); }
+  66% { filter: drop-shadow(0 0 10px var(--gold)); }
+}
+
+.controller-wrap svg {
+  animation: flotar 3s ease-in-out infinite, brillo 4s steps(4, end) infinite;
+}
+
+.header-sub {
+  color: var(--muted);
+  font-size: 7px;
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+/* ─── INTRO ─── */
+p.intro {
+  color: var(--dim);
+  font-size: 10px;
+  line-height: 2.4;
+  margin-bottom: 24px;
+}
+
+/* ─── RAZÓN PRINCIPAL (cuadro gold) ─── */
+.cuadro-gold {
+  background: var(--bg2);
+  border: 3px solid var(--gold);
+  padding: 20px;
+  margin: 24px 0;
+  box-shadow: 4px 4px 0 rgba(247,184,1,.25);
+}
+.cuadro-gold-title {
+  color: var(--gold);
+  font-size: 11px;
+  text-align: center;
+  margin-bottom: 14px;
+}
+.cuadro-gold p {
+  color: var(--dim);
+  font-size: 10px;
+  line-height: 2.4;
+  text-align: center;
+}
+
+/* ─── TARJETAS DE RAZONES ─── */
+.razones-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin: 28px 0;
+}
+
+.razon-card {
+  background: var(--bg2);
+  border: 3px solid transparent;
+  padding: 18px 20px;
+  position: relative;
+  transition: all .2s steps(2, end);
+}
+.razon-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 3px solid transparent;
+  pointer-events: none;
+}
+
+/* Colores por card */
+.razon-card.c1 { border-color: var(--cyan); box-shadow: 4px 4px 0 rgba(0,217,255,.2); }
+.razon-card.c2 { border-color: var(--purple); box-shadow: 4px 4px 0 rgba(114,76,249,.2); }
+.razon-card.c3 { border-color: var(--pink); box-shadow: 4px 4px 0 rgba(255,61,129,.2); }
+.razon-card.c4 { border-color: var(--green); box-shadow: 4px 4px 0 rgba(57,255,136,.2); }
+
+.razon-card:hover {
+  transform: translate(-2px, -2px);
+}
+.razon-card.c1:hover { box-shadow: 6px 6px 0 rgba(0,217,255,.35); }
+.razon-card.c2:hover { box-shadow: 6px 6px 0 rgba(114,76,249,.35); }
+.razon-card.c3:hover { box-shadow: 6px 6px 0 rgba(255,61,129,.35); }
+.razon-card.c4:hover { box-shadow: 6px 6px 0 rgba(57,255,136,.35); }
+
+.razon-num {
+  font-size: 20px;
+  margin-bottom: 10px;
+  display: block;
+}
+.razon-titulo {
+  font-size: 10px;
+  margin-bottom: 12px;
+  display: block;
+}
+.c1 .razon-titulo { color: var(--cyan); }
+.c2 .razon-titulo { color: var(--purple); }
+.c3 .razon-titulo { color: var(--pink); }
+.c4 .razon-titulo { color: var(--green); }
+
+.razon-card p {
+  color: var(--dim);
+  font-size: 9px;
+  line-height: 2.4;
+}
+
+/* ─── ACORDEÓN ─── */
+details {
+  background: var(--bg2);
+  border: 3px solid var(--cyan);
+  margin: 20px 0;
+  padding: 0;
+}
+details summary {
+  cursor: pointer;
+  padding: 16px 20px;
+  color: var(--cyan);
+  font-size: 10px;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary:hover { filter: brightness(1.2); }
+.arrow { display: inline-block; font-size: 14px; transition: transform .2s; }
+details[open] .arrow { transform: rotate(180deg); }
+.detail-content {
+  padding: 0 20px 20px;
+  border-top: 2px solid #1A1A3A;
+}
+.detail-content p {
+  color: var(--dim);
+  font-size: 9px;
+  line-height: 2.4;
+  margin-top: 16px;
+}
+.detail-content p span { color: var(--gold); }
+
+/* ─── BARRA DE XP ─── */
+.xp-section {
+  margin: 28px 0;
+  background: var(--bg2);
+  border: 3px solid var(--purple);
+  padding: 20px;
+  box-shadow: 4px 4px 0 rgba(114,76,249,.2);
+}
+.xp-title {
+  color: var(--purple);
+  font-size: 10px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.xp-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.xp-label {
+  color: var(--dim);
+  font-size: 8px;
+  min-width: 110px;
+  flex-shrink: 0;
+}
+.xp-bar-bg {
+  flex: 1;
+  height: 12px;
+  background: #1A1A3A;
+  border: 2px solid #2A2A4A;
+  position: relative;
+  overflow: hidden;
+}
+.xp-bar-fill {
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  animation: fillBar 2s steps(10, end) forwards;
+  animation-delay: .3s;
+  width: 0;
+}
+@keyframes fillBar {
+  to { width: var(--fill); }
+}
+.xp-bar-fill.cyan { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+.xp-bar-fill.purple { background: var(--purple); box-shadow: 0 0 6px var(--purple); }
+.xp-bar-fill.pink { background: var(--pink); box-shadow: 0 0 6px var(--pink); }
+.xp-bar-fill.gold { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
+
+/* ─── CIERRE ─── */
+.cuadro-final {
+  background: rgba(114,76,249,.12);
+  border: 2px solid var(--purple);
+  padding: 20px;
+  margin-top: 28px;
+  text-align: center;
+}
+.cuadro-final p {
+  color: var(--cyan);
+  font-size: 10px;
+  line-height: 2.2;
+  margin-bottom: 8px;
+}
+.cuadro-final .firma {
+  color: var(--muted);
+  font-size: 8px;
+  margin-top: 16px;
+  border-top: 1px solid #2A2A4A;
+  padding-top: 14px;
+  line-height: 2.2;
+}
+.cuadro-final .firma span {
+  color: var(--pink);
+}
+
+/* ─── ESTRELLAS FUGACES ─── */
+.shooting-star {
+  position: fixed;
+  width: 4px; height: 4px;
+  background: var(--gold);
+  box-shadow: 4px 0 0 var(--gold), 8px 0 0 var(--gold),
+    12px 0 0 rgba(247,184,1,.5), 16px 0 0 rgba(247,184,1,.2);
+  pointer-events: none;
+  z-index: 50;
+}
+@keyframes shoot {
+  0% { transform: translateX(0) translateY(0); opacity: 1; }
+  100% { transform: translateX(500px) translateY(260px); opacity: 0; }
+}
+
+/* ─── CONFETTI ─── */
+.confetti {
+  position: fixed;
+  width: 6px; height: 6px;
+  pointer-events: none;
+  z-index: 150;
+}
+
+/* ─── BLINKER CURSOR ─── */
+@keyframes blink {
+  0%, 100% { opacity: 1 }
+  50% { opacity: 0 }
+}
+.blink {
+  display: inline-block;
+  animation: blink 1s steps(1, end) infinite;
+  color: var(--gold);
+}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+
+<div class="wrapper">
+
+  <!-- ENCABEZADO -->
+  <div class="header">
+    <h2>¿POR QUÉ ELEGIMOS EL<br>ESTILO PÍXEL? <span class="blink">█</span></h2>
+
+    <div class="controller-wrap">
+      <!-- Controlador pixel art SVG -->
+      <svg width="90" height="54" viewBox="0 0 90 54" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated;">
+        <!-- Cuerpo del control -->
+        <rect x="10" y="10" width="70" height="34" rx="0" fill="#1A1A3A"/>
+        <rect x="6" y="18" width="78" height="18" fill="#1A1A3A"/>
+        <!-- D-pad izquierdo -->
+        <rect x="18" y="26" width="6" height="6" fill="#00D9FF"/>
+        <rect x="24" y="20" width="6" height="6" fill="#00D9FF"/>
+        <rect x="24" y="26" width="6" height="6" fill="#00D9FF"/>
+        <rect x="24" y="32" width="6" height="6" fill="#00D9FF"/>
+        <rect x="30" y="26" width="6" height="6" fill="#00D9FF"/>
+        <!-- Botones derecha -->
+        <rect x="56" y="20" width="7" height="7" fill="#FF3D81"/>
+        <rect x="64" y="26" width="7" height="7" fill="#F7B801"/>
+        <rect x="56" y="32" width="7" height="7" fill="#39FF88"/>
+        <rect x="48" y="26" width="7" height="7" fill="#724CF9"/>
+        <!-- Botones centrales -->
+        <rect x="37" y="27" width="5" height="4" fill="#2A2A5A"/>
+        <rect x="43" y="27" width="5" height="4" fill="#2A2A5A"/>
+      </svg>
+    </div>
+
+    <p class="header-sub">// SOY ANORMAL · DISEÑO LÚDICO Y DISRUPTIVO //</p>
+  </div>
+
+  <!-- INTRO -->
+  <p class="intro">Tal vez al entrar a este curso, lo primero que notaste fue: los colores brillantes, la tipografía de videojuego retro, las animaciones y el sonido 8-bit. ¿Casualidad? Para nada.</p>
+  <p class="intro">Hay razones muy concretas —y profundas— por las que <span style="color:var(--pink);">Soy Anormal</span> eligió esta estética para enseñarte astrología.</p>
+
+  <!-- CUADRO PRINCIPAL -->
+  <div class="cuadro-gold">
+    <p class="cuadro-gold-title">⭐ NUESTRA FILOSOFÍA ⭐</p>
+    <p>El conocimiento puede —y debe— ser una experiencia de juego, creatividad y disfrute. No solo de información acumulada.</p>
+  </div>
+
+  <!-- TARJETAS DE RAZONES -->
+  <div class="razones-grid">
+
+    <div class="razon-card c1">
+      <span class="razon-num">🎮</span>
+      <span class="razon-titulo">01 // EL JUEGO COMO MÉTODO</span>
+      <p>Con más de 25 años facilitando talleres de formación, descubrimos algo clave: cuando aprendemos jugando, la información se integra de forma más profunda, creativa y duradera. El juego estimula la vista, activa la emoción y permite que <span style="color:var(--cyan);">tú seas el protagonista de tu experiencia</span>.</p>
+    </div>
+
+    <div class="razon-card c2">
+      <span class="razon-num">🚀</span>
+      <span class="razon-titulo">02 // INNOVACIÓN RADICAL</span>
+      <p>Elegir un estilo visual de videojuego retro para un curso de astrología es, por definición, <span style="color:var(--purple);">disruptivo e inesperado</span>. No somos 150 horas de video convencional. Somos una propuesta que rompe con lo que "se supone" que debe ser un curso de formación.</p>
+    </div>
+
+    <div class="razon-card c3">
+      <span class="razon-num">✨</span>
+      <span class="razon-titulo">03 // SALIR DE LA NORMALIDAD</span>
+      <p>Aprender en este formato es, en sí mismo, un entrenamiento para tu mente. Es una invitación a que te permitas experimentar que las cosas pueden hacerse diferente, que el conocimiento no tiene que ser serio y rígido, y que <span style="color:var(--pink);">salirte de la caja es posible</span> —y divertido.</p>
+    </div>
+
+    <div class="razon-card c4">
+      <span class="razon-num">💚</span>
+      <span class="razon-titulo">04 // INMERSIÓN Y DISFRUTE</span>
+      <p>Lo más importante no es acumular información: es que <span style="color:var(--green);">disfrutes el proceso</span>. Que te diviertas. Que te sumerjas. Que el aprendizaje no se sienta como una obligación, sino como una aventura que elegiste vivir.</p>
+    </div>
+
+  </div>
+
+  <!-- ACORDEÓN: Años de experiencia -->
+  <details id="exp-acordeon">
+    <summary>
+      <span>▶ 25 AÑOS DE EXPERIENCIA DETRÁS</span>
+      <span class="arrow">▼</span>
+    </summary>
+    <div class="detail-content">
+      <p>Cuando éramos aún <span>CEDER A.C.</span>, durante más de dos décadas trabajamos con población en temas sociales y de salud emocional. En ese tiempo observamos, experimentamos y comprobamos que las metodologías lúdicas y creativas son profundamente efectivas.</p>
+      <p>No llegamos aquí por moda ni por estética. Llegamos aquí porque <span>los datos, la experiencia y el corazón</span> nos llevaron a este camino.</p>
+      <p>Este estilo es la síntesis visual de todo lo que aprendimos: que el método importa tanto como el contenido, y que la forma en que enseñas dice mucho de lo que crees sobre quien aprende.</p>
+    </div>
+  </details>
+
+  <!-- BARRAS DE XP -->
+  <div class="xp-section">
+    <p class="xp-title">📊 ESTADÍSTICAS DE ESTE MÉTODO</p>
+
+    <div class="xp-row">
+      <span class="xp-label">Creatividad</span>
+      <div class="xp-bar-bg">
+        <div class="xp-bar-fill cyan" style="--fill:96%"></div>
+      </div>
+    </div>
+    <div class="xp-row">
+      <span class="xp-label">Inmersión</span>
+      <div class="xp-bar-bg">
+        <div class="xp-bar-fill purple" style="--fill:90%"></div>
+      </div>
+    </div>
+    <div class="xp-row">
+      <span class="xp-label">Disrupción</span>
+      <div class="xp-bar-bg">
+        <div class="xp-bar-fill pink" style="--fill:98%"></div>
+      </div>
+    </div>
+    <div class="xp-row">
+      <span class="xp-label">Diversión</span>
+      <div class="xp-bar-bg">
+        <div class="xp-bar-fill gold" style="--fill:100%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CIERRE -->
+  <div class="cuadro-final">
+    <p>✨ Gracias por tu confianza ✨</p>
+    <p>Deseamos que te diviertas y te apasione este curso, tanto como nosotros lo hicimos al crearlo.</p>
+    <p class="firma">
+      Con amor y mucha <span>anormalidad</span>,<br>
+      EQUIPO SOY ANORMAL
+    </p>
+  </div>
+
+</div>
+
+<script>
+// ─── ESTRELLAS FUGACES ───
+(function() {
+  const colors = ['#00D9FF','#724CF9','#FF3D81','#F7B801','#39FF88'];
+  const symbols = ['★','✦','✧','⭐','✨','♦'];
+
+  function createShootingStar() {
+    const star = document.createElement('div');
+    star.className = 'shooting-star';
+    star.style.left = Math.random() * window.innerWidth * 0.4 + 'px';
+    star.style.top = Math.random() * window.innerHeight * 0.5 + 'px';
+    const dur = 1.4 + Math.random() * 1.2;
+    star.style.animation = `shoot ${dur}s linear forwards`;
+    document.body.appendChild(star);
+    setTimeout(() => star.remove(), dur * 1000);
+  }
+  setInterval(createShootingStar, 4000 + Math.random() * 2000);
+  setTimeout(createShootingStar, 1000);
+
+  // ─── CONFETTI ───
+  function explode(x, y) {
+    for (let i = 0; i < 22; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.cssText = `left:${x}px;top:${y}px;background:${colors[Math.floor(Math.random()*colors.length)]};`;
+      document.body.appendChild(c);
+      const angle = (Math.PI * 2 * i) / 22;
+      const vel = 2.5 + Math.random() * 3.5;
+      let px = x, py = y, vy = Math.sin(angle) * vel - 2.5;
+      const vx = Math.cos(angle) * vel;
+      const dur = 1400 + Math.random() * 800;
+      const start = Date.now();
+      (function anim() {
+        const e = Date.now() - start;
+        if (e > dur) { c.remove(); return; }
+        vy += 0.14;
+        px += vx; py += vy;
+        c.style.left = px + 'px';
+        c.style.top = py + 'px';
+        c.style.opacity = 1 - (e / dur);
+        requestAnimationFrame(anim);
+      })();
+    }
+  }
+
+  // ─── SÍMBOLO EXPLOSIVO ───
+  function spawnSymbol() {
+    const el = document.createElement('div');
+    el.style.cssText = `
+      position:fixed;
+      left:${Math.random()*(window.innerWidth-200)+100}px;
+      top:${Math.random()*(window.innerHeight-200)+100}px;
+      font-size:70px;
+      font-family:'Press Start 2P',cursive;
+      color:${colors[Math.floor(Math.random()*colors.length)]};
+      text-shadow:0 0 18px currentColor;
+      z-index:90;pointer-events:none;
+      opacity:0;transform:scale(0);
+      transition:all 0.4s ease-out;
+    `;
+    el.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    document.body.appendChild(el);
+    setTimeout(() => { el.style.opacity='1'; el.style.transform='scale(1)'; }, 50);
+    setTimeout(() => {
+      const r = el.getBoundingClientRect();
+      explode(r.left + r.width/2, r.top + r.height/2);
+      el.style.transform = 'scale(2)';
+      el.style.opacity = '0';
+      setTimeout(() => el.remove(), 300);
+    }, 1600);
+  }
+  setTimeout(spawnSymbol, 2200);
+  setInterval(spawnSymbol, 9000 + Math.random() * 4000);
+})();
+
+// ─── BEEP 8-BIT ───
+function playBeep(freq) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'square'; osc.frequency.value = freq || 800;
+    gain.gain.setValueAtTime(.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .14);
+    osc.start(); osc.stop(ctx.currentTime + .14);
+  } catch(e) {}
+}
+document.getElementById('exp-acordeon').addEventListener('toggle', function() {
+  playBeep(this.open ? 880 : 440);
+});
+
+// ─── XP BARS: re-animar al hacer scroll ───
+const bars = document.querySelectorAll('.xp-bar-fill');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.animation = 'none';
+      e.target.offsetHeight;
+      e.target.style.animation = '';
+    }
+  });
+}, { threshold: 0.5 });
+bars.forEach(b => obs.observe(b));
+</script>
+</body>
+</html>
