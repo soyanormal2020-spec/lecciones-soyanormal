@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MÓDULO III: PLANETAS GENERACIONALES </title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-dark: #0A0A1B;
+        --cyan: #00D9FF;
+        --pink: #FF3D81;
+        --purple: #724CF9;
+        --gold: #F7B801;
+        --urano: #00E5FF;
+        --neptuno: #4169E1;
+        --pluton: #1A1A1A;
+        --text: #E0E0E0;
+    }
+
+    * {
+        box-sizing: border-box;
+        -webkit-font-smoothing: none;
+        -moz-osx-font-smoothing: grayscale;
+        image-rendering: pixelated;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg-dark);
+        color: var(--text);
+        font-family: 'Press Start 2P', cursive;
+        overflow-x: hidden;
+        min-height: 100vh;
+        line-height: 1.8;
+        font-size: 12px;
+        position: relative;
+    }
+
+    /* Fondo de rayos/energía para Urano */
+    .energy-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+    
+    body.urano-active .energy-bg {
+        opacity: 0.15;
+    }
+    
+    .lightning {
+        position: absolute;
+        width: 2px;
+        height: 100px;
+        background: linear-gradient(180deg, transparent, var(--urano), transparent);
+        box-shadow: 0 0 20px var(--urano);
+        animation: lightning-flash 0.3s ease-out infinite;
+    }
+    
+    @keyframes lightning-flash {
+        0%, 100% { opacity: 0; }
+        50% { opacity: 1; }
+    }
+
+    /* Niebla para Neptuno */
+    .mist-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0;
+        transition: opacity 0.5s;
+        background: radial-gradient(ellipse at 30% 50%, rgba(65, 105, 225, 0.1), transparent 50%),
+                    radial-gradient(ellipse at 70% 60%, rgba(65, 105, 225, 0.1), transparent 50%);
+        animation: mist-flow 8s ease-in-out infinite;
+    }
+    
+    body.neptuno-active .mist-bg {
+        opacity: 1;
+    }
+    
+    @keyframes mist-flow {
+        0%, 100% { transform: translateX(0) scale(1); }
+        50% { transform: translateX(-20px) scale(1.1); }
+    }
+
+    .star {
+        position: absolute;
+        background: #fff;
+        width: 2px;
+        height: 2px;
+        animation: twinkle 3s infinite;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    @keyframes twinkle {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 1; }
+    }
+
+    body::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.15),
+            rgba(0, 0, 0, 0.15) 1px,
+            transparent 1px,
+            transparent 2px
+        );
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.5;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 20px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .main-title {
+        text-align: center;
+        font-size: clamp(18px, 4vw, 32px);
+        color: var(--cyan);
+        margin: 30px 0 10px 0;
+        text-shadow: 2px 2px 0 var(--pink), -2px -2px 0 var(--purple);
+        animation: glitch 3s infinite;
+    }
+
+    @keyframes glitch {
+        0%, 90%, 100% { transform: translate(0); }
+        92% { transform: translate(-2px, 2px); }
+        94% { transform: translate(2px, -2px); }
+        96% { transform: translate(-2px, -2px); }
+        98% { transform: translate(2px, 2px); }
+    }
+
+    .subtitle {
+        text-align: center;
+        font-size: 10px;
+        color: var(--gold);
+        margin-bottom: 30px;
+        letter-spacing: 2px;
+    }
+
+    .intro-box {
+        border: 4px solid var(--purple);
+        background: #1a1a2e;
+        padding: 20px;
+        margin: 30px 0;
+        box-shadow: 8px 8px 0 rgba(114, 76, 249, 0.3), 0 0 20px rgba(114, 76, 249, 0.2);
+    }
+    
+    .intro-text {
+        font-size: 10px;
+        line-height: 2;
+        margin-bottom: 16px;
+        color: #D0D0D0;
+    }
+    
+    .intro-text:last-child {
+        margin-bottom: 0;
+    }
+    
+    .highlight-cyan {
+        color: var(--cyan);
+        text-shadow: 0 0 5px var(--cyan);
+    }
+    
+    .highlight-pink {
+        color: var(--pink);
+        text-shadow: 0 0 5px var(--pink);
+    }
+
+    .planets-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        margin-top: 40px;
+    }
+
+    @media (max-width: 1024px) {
+        .planets-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .planet-card {
+        border: 4px solid;
+        padding: 25px;
+        background: rgba(10, 10, 27, 0.95);
+        position: relative;
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        transform-origin: center;
+        backdrop-filter: blur(3px);
+    }
+
+    .urano {
+        border-color: var(--urano);
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.3), inset 0 0 20px rgba(0, 229, 255, 0.1);
+    }
+
+    .neptuno {
+        border-color: var(--neptuno);
+        box-shadow: 0 0 20px rgba(65, 105, 225, 0.3), inset 0 0 20px rgba(65, 105, 225, 0.1);
+    }
+    
+    .pluton {
+        border-color: #444;
+        box-shadow: 0 0 20px rgba(26, 26, 26, 0.5), inset 0 0 20px rgba(26, 26, 26, 0.3);
+    }
+
+    .planet-header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 25px;
+        padding-bottom: 20px;
+        border-bottom: 2px dashed rgba(255,255,255,0.2);
+        position: relative;
+        z-index: 5;
+    }
+
+    .planet-icon {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 50px;
+        flex-shrink: 0;
+        animation: float 3s ease-in-out infinite;
+        transition: all 0.6s ease;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .planet-name {
+        font-size: 18px;
+        letter-spacing: 2px;
+        transition: all 0.6s ease;
+    }
+
+    .urano .planet-name { color: var(--urano); text-shadow: 0 0 10px var(--urano); }
+    .neptuno .planet-name { color: var(--neptuno); text-shadow: 0 0 10px var(--neptuno); }
+    .pluton .planet-name { color: #888; text-shadow: 0 0 10px #444; }
+
+    .planet-info-circular {
+        margin: 15px 0 20px 0;
+        padding: 12px;
+        background: rgba(0,0,0,0.5);
+        border: 2px dashed rgba(255,255,255,0.2);
+        font-size: 8px;
+        line-height: 1.6;
+        text-align: center;
+        position: relative;
+        z-index: 5;
+    }
+    
+    .circular-text {
+        color: #ccc;
+        letter-spacing: 0.5px;
+    }
+    
+    .urano .circular-text { color: var(--urano); }
+    .neptuno .circular-text { color: var(--neptuno); }
+    .pluton .circular-text { color: #888; }
+
+    .info-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 5;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 9px;
+        line-height: 1.9;
+        color: #bbb;
+    }
+
+    .info-label {
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    .urano .info-label { color: var(--urano); }
+    .neptuno .info-label { color: var(--neptuno); }
+    .pluton .info-label { color: #888; }
+
+    .concept {
+        margin-top: 20px;
+        padding: 15px;
+        background: rgba(0,0,0,0.4);
+        border-left: 3px solid;
+        font-size: 10px;
+        line-height: 2;
+        color: #ccc;
+        position: relative;
+        z-index: 5;
+    }
+
+    .urano .concept { border-color: var(--urano); }
+    .neptuno .concept { border-color: var(--neptuno); }
+    .pluton .concept { border-color: #444; }
+    
+    .highlight-urano {
+        color: var(--urano);
+        text-shadow: 0 0 5px var(--urano);
+        font-weight: bold;
+    }
+    
+    .highlight-neptuno {
+        color: var(--neptuno);
+        text-shadow: 0 0 5px var(--neptuno);
+        font-weight: bold;
+    }
+    
+    .highlight-pluton {
+        color: #aaa;
+        text-shadow: 0 0 5px #444;
+        font-weight: bold;
+    }
+
+    /* URANO - Electricidad y rayos */
+    .urano:hover {
+        border-color: #fff;
+        transform: scale(1.03);
+        box-shadow: 0 0 100px rgba(0, 229, 255, 1), 
+                    inset 0 0 60px rgba(0, 229, 255, 0.5);
+        animation: electric-pulse 0.5s ease-in-out infinite;
+    }
+    
+    @keyframes electric-pulse {
+        0%, 100% { filter: brightness(1); }
+        50% { filter: brightness(1.3) contrast(1.2); }
+    }
+    
+    .urano:hover .planet-icon {
+        animation: float 0.2s ease-in-out infinite, electric-shake 0.1s infinite;
+        transform: scale(1.2);
+        filter: drop-shadow(0 0 30px var(--urano)) brightness(1.5);
+    }
+    
+    @keyframes electric-shake {
+        0%, 100% { transform: translateX(0) scale(1.2); }
+        25% { transform: translateX(-2px) scale(1.2); }
+        75% { transform: translateX(2px) scale(1.2); }
+    }
+
+    /* NEPTUNO - Niebla y disolución */
+    .neptuno:hover {
+        border-color: #fff;
+        transform: scale(1.02);
+        box-shadow: 0 0 80px rgba(65, 105, 225, 1), 
+                    inset 0 0 50px rgba(65, 105, 225, 0.4);
+        animation: neptune-dissolve 3s ease-in-out infinite;
+    }
+    
+    @keyframes neptune-dissolve {
+        0%, 100% { filter: blur(0px) brightness(1); }
+        50% { filter: blur(1px) brightness(1.2); }
+    }
+    
+    .neptuno:hover .planet-icon {
+        animation: float 2s ease-in-out infinite, neptune-wave 4s ease-in-out infinite;
+        filter: drop-shadow(0 0 25px var(--neptuno));
+    }
+    
+    @keyframes neptune-wave {
+        0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        50% { transform: scale(1.1) rotate(5deg); opacity: 0.8; }
+    }
+
+    /* PLUTÓN - Transformación y oculto */
+    .pluton:hover {
+        border-color: #fff;
+        transform: scale(1.03);
+        box-shadow: 0 0 60px rgba(255, 255, 255, 0.5), 
+                    inset 0 0 80px rgba(0, 0, 0, 0.8);
+        animation: pluton-transform 2s ease-in-out infinite;
+    }
+    
+    @keyframes pluton-transform {
+        0%, 100% { filter: brightness(1) contrast(1); }
+        50% { filter: brightness(0.7) contrast(1.5); }
+    }
+    
+    .pluton:hover .planet-icon {
+        animation: float 1s ease-in-out infinite, pluton-dark 3s ease-in-out infinite;
+        filter: drop-shadow(0 0 20px #000) invert(0.2);
+    }
+    
+    @keyframes pluton-dark {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(0.9); opacity: 0.6; }
+    }
+</style>
+</head>
+<body>
+    <div class="energy-bg">
+        <div class="lightning" style="left: 10%; top: 20%; animation-delay: 0s;"></div>
+        <div class="lightning" style="left: 30%; top: 50%; animation-delay: 0.5s;"></div>
+        <div class="lightning" style="left: 50%; top: 10%; animation-delay: 1s;"></div>
+        <div class="lightning" style="left: 70%; top: 60%; animation-delay: 1.5s;"></div>
+        <div class="lightning" style="left: 90%; top: 30%; animation-delay: 2s;"></div>
+    </div>
+    <div class="mist-bg"></div>
+    <div id="stars-container"></div>
+
+    <div class="container">
+        <h1 class="main-title">PLANETAS GENERACIONALES</h1>
+        <p class="subtitle">>> SISTEMA TRUJILLO TIERRA <<</p>
+        
+        <div class="intro-box">
+            <p class="intro-text">
+                <span class="highlight-cyan">PLANETAS GENERACIONALES</span> — También conocidos como transpersonales, son aquellos que por sus movimientos lentos, <span class="highlight-pink">marcan el paso de las generaciones</span>.
+            </p>
+            <p class="intro-text">
+                Nos permiten comprender cómo percibimos el contexto en el que vivimos, la naturaleza energética de la generación a la que pertenecemos y, cómo esto determina el desarrollo de nuestra vida. Nos ayudan a comprender el <span class="highlight-cyan">contexto social e histórico</span> al que nacimos; qué procesos compartidos colectivamente han ayudado a dar forma a nuestro carácter y nuestra experiencia particular del mundo.
+            </p>
+        </div>
+
+        <div class="planets-grid">
+            <div class="planet-card urano" id="urano-card">
+                <div class="planet-header">
+                    <div class="planet-icon">♅</div>
+                    <div class="planet-name">URANO</div>
+                </div>
+                
+                <div class="planet-info-circular">
+                    <div class="circular-text">Palabra clave: El que despierta - Rige a: Acuario - Representa: Impulso de libertad</div>
+                </div>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">EXALTACIÓN:</span>
+                        <span>Escorpio</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">DETRIMENTO:</span>
+                        <span>Leo</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">CAÍDA:</span>
+                        <span>Tauro</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">ANATOMÍA:</span>
+                        <span>El sistema nervioso superior, los sólidos, electricidad corporal.</span>
+                    </div>
+                </div>
+                
+                <div class="concept">
+                    <span class="highlight-urano">RIGE INVENTOS, ORIGINALIDAD, CIENCIA,</span> magia, electricidad, lo oculto, luz, astrología, psicología. Es futurista, liberación de ataduras, excéntrico, humanista.
+                    <br><br>
+                    <span class="highlight-urano">DONDE SE HALLE URANO</span> es cómo rompo con lo establecido, cómo implemento los cambios.
+                </div>
+            </div>
+
+            <div class="planet-card neptuno" id="neptuno-card">
+                <div class="planet-header">
+                    <div class="planet-icon">♆</div>
+                    <div class="planet-name">NEPTUNO</div>
+                </div>
+                
+                <div class="planet-info-circular">
+                    <div class="circular-text">Palabra clave: Intuición - Rige a: Piscis - Representa: Impulso espiritual o escapista</div>
+                </div>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">EXALTACIÓN:</span>
+                        <span>sin establecer</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">DETRIMENTO:</span>
+                        <span>Virgo</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">CAÍDA:</span>
+                        <span>sin establecer</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">ANATOMÍA:</span>
+                        <span>columna vertebral, pies, glándula pineal, fibras nerviosas, funciones telepáticas, leucocitos.</span>
+                    </div>
+                </div>
+                
+                <div class="concept">
+                    <span class="highlight-neptuno">RIGE LA MÚSICA, CINE, TELEVISIÓN, TEATRO</span> sueños, apariencias, espiritualidad, ideales, mística, presentimientos, el misterio, anestésicos, intuición.
+                    <br><br>
+                    <span class="highlight-neptuno">DONDE SE HALLE NEPTUNO</span> es cómo me conecto con lo mágico y sutil, como experimento la unidad, dónde uno busca el ideal, la manera en que expresamos nuestra espiritualidad.
+                </div>
+            </div>
+
+            <div class="planet-card pluton" id="pluton-card">
+                <div class="planet-header">
+                    <div class="planet-icon">♇</div>
+                    <div class="planet-name">PLUTÓN</div>
+                </div>
+                
+                <div class="planet-info-circular">
+                    <div class="circular-text">Palabra clave: Transformación - Rige a: Escorpio - Representa: Impulso de destrucción y reforma, fusión</div>
+                </div>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">EXALTACIÓN:</span>
+                        <span>sin determinar</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">DETRIMENTO:</span>
+                        <span>Tauro</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">CAÍDA:</span>
+                        <span>sin determinar</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">ANATOMÍA:</span>
+                        <span>Glándula pituitaria, sistema eliminador y sistema reproductor, crecimientos anormales.</span>
+                    </div>
+                </div>
+                
+                <div class="concept">
+                    <span class="highlight-pluton">RIGE LO QUE ESTÁ OCULTO A LA VISTA</span> incluyendo el mundo interior desconocido o el subconsciente, los procesos de duplicación, poder atómico y crimen.
+                    <br><br>
+                    <span class="highlight-pluton">DONDE SE HALLE PLUTÓN</span> en el horóscopo, es donde uno tendrá que resolver problemas solo y sin ayuda.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const starsContainer = document.getElementById('stars-container');
+        for (let i = 0; i < 150; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+        
+        const uranoCard = document.getElementById('urano-card');
+        const neptunoCard = document.getElementById('neptuno-card');
+        const plutonCard = document.getElementById('pluton-card');
+        
+        // URANO: Activar fondo de rayos
+        uranoCard.addEventListener('mouseenter', () => {
+            document.body.classList.add('urano-active');
+        });
+        
+        uranoCard.addEventListener('mouseleave', () => {
+            document.body.classList.remove('urano-active');
+        });
+        
+        // NEPTUNO: Activar niebla
+        neptunoCard.addEventListener('mouseenter', () => {
+            document.body.classList.add('neptuno-active');
+        });
+        
+        neptunoCard.addEventListener('mouseleave', () => {
+            document.body.classList.remove('neptuno-active');
+        });
+        
+        // PLUTÓN: Efecto de transformación (ya está en CSS)
+    </script>
+</body>
+</html>

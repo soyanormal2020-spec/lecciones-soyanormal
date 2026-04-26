@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo III: Regencias Astrológicas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0A0A1B;
+            font-family: 'Press Start 2P', cursive;
+            color: #fff;
+            line-height: 1.8;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg,
+                rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px,
+                transparent 1px, transparent 2px);
+            pointer-events: none;
+            z-index: 9999;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0%   { transform: translateY(0); }
+            100% { transform: translateY(6px); }
+        }
+
+        .stars {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+
+        .star {
+            position: absolute; background: #fff;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50%       { opacity: 1; }
+        }
+
+        .wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            text-align: center;
+            color: #724CF9;
+            text-shadow: 4px 4px 0px #000, 0 0 20px rgba(114,76,249,0.8);
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 4px 4px 0px #000, 0 0 20px rgba(114,76,249,0.5); }
+            to   { text-shadow: 4px 4px 0px #000, 0 0 30px rgba(114,76,249,1); }
+        }
+
+        h2 {
+            font-size: clamp(0.9rem, 3vw, 1.3rem);
+            color: #00D9FF;
+            text-shadow: 3px 3px 0px #000;
+            margin: 40px 0 20px 0;
+            padding: 15px;
+            border: 4px solid #2A2A4A;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            box-shadow: 6px 6px 0px #000;
+            position: relative;
+            text-align: center;
+        }
+
+        h2::before { content:'★'; color:#F7B801; margin-right:10px; display:inline-block; animation:spin 4s linear infinite; }
+        h2::after  { content:'★'; color:#F7B801; margin-left:10px;  display:inline-block; animation:spin 4s linear infinite reverse; }
+
+        @keyframes spin {
+            0%   { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .cuadros {
+            background: #1a1a2e;
+            border: 4px solid #2A2A4A;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 8px 8px 0px #000;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: slideInGlow 0.8s ease-out;
+        }
+
+        @keyframes slideInGlow {
+            0%  { opacity:0; transform:translateY(30px); }
+            50% { box-shadow:8px 8px 0px #000, 0 0 20px rgba(114,76,249,0.4); }
+            100%{ opacity:1; transform:translateY(0); box-shadow:8px 8px 0px #000; }
+        }
+
+        .cuadros:hover {
+            transform: translate(-2px,-2px);
+            box-shadow: 10px 10px 0px #000, 0 0 25px rgba(114,76,249,0.3);
+        }
+
+        .cuadros p {
+            font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+            line-height: 2;
+            color: #E0E0E0;
+            margin-bottom: 15px;
+        }
+
+        .cuadros p:last-child { margin-bottom: 0; }
+
+        .highlight        { color: #F7B801;  text-shadow: 2px 2px 0px #000; }
+        .highlight-cyan   { color: #00D9FF;  text-shadow: 2px 2px 0px #000; }
+        .highlight-pink   { color: #FF3D81;  text-shadow: 2px 2px 0px #000; }
+        .highlight-purple { color: #724CF9;  text-shadow: 2px 2px 0px #000; }
+        .highlight-green  { color: #10b981;  text-shadow: 2px 2px 0px #000; }
+        .highlight-red    { color: #ff6b6b;  text-shadow: 2px 2px 0px #000; }
+
+        .highlight-merged {
+            background: linear-gradient(90deg, #FF3D81, #724CF9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            animation: shineMerge 2s ease-in-out infinite;
+            text-shadow: none;
+        }
+
+        @keyframes shineMerge {
+            0%,100% { filter: brightness(1) drop-shadow(0 0 5px rgba(255,61,129,0.5)); }
+            50%     { filter: brightness(1.8) drop-shadow(0 0 15px rgba(114,76,249,0.9)); }
+        }
+
+        /* ===== CAMBIO 2: colores por concepto en Domicilio/Exilio ===== */
+        .concept-domicilio  { color: #10b981; text-shadow: 0 0 8px rgba(16,185,129,0.7),  2px 2px 0 #000; font-weight:bold; }
+        .concept-exilio     { color: #FF3D81; text-shadow: 0 0 8px rgba(255,61,129,0.7),   2px 2px 0 #000; font-weight:bold; }
+        .concept-detrimento { color: #ff6b6b; text-shadow: 0 0 8px rgba(255,107,107,0.7),  2px 2px 0 #000; font-weight:bold; }
+        .concept-exaltacion { color: #F7B801; text-shadow: 0 0 8px rgba(247,184,1,0.7),    2px 2px 0 #000; font-weight:bold; }
+        .concept-caida      { color: #724CF9; text-shadow: 0 0 8px rgba(114,76,249,0.7),   2px 2px 0 #000; font-weight:bold; }
+
+        .domicilio-line  { border-left: 4px solid #10b981; padding-left:14px; background: rgba(16,185,129,0.05); margin-bottom:14px; border-radius:0 4px 4px 0; }
+        .exilio-line     { border-left: 4px solid #FF3D81; padding-left:14px; background: rgba(255,61,129,0.05);  margin-bottom:14px; border-radius:0 4px 4px 0; }
+        .exaltacion-line { border-left: 4px solid #F7B801; padding-left:14px; background: rgba(247,184,1,0.05);   margin-bottom:14px; border-radius:0 4px 4px 0; }
+        .caida-line      { border-left: 4px solid #724CF9; padding-left:14px; background: rgba(114,76,249,0.05);  margin-bottom:0;    border-radius:0 4px 4px 0; }
+
+        /* ===== CAMBIO 5: anillos de Saturno alrededor del cuadro de planetas exteriores ===== */
+        .saturn-ring-box {
+            position: relative;
+            padding: 28px 25px;
+            margin: 25px 0;
+            background: #1a1a2e;
+            border: 4px solid #2A2A4A;
+            box-shadow: 8px 8px 0px #000;
+            transition: transform 0.2s, box-shadow 0.2s;
+            overflow: visible;
+        }
+
+        .saturn-ring-box:hover {
+            transform: translate(-2px,-2px);
+            box-shadow: 10px 10px 0px #000, 0 0 25px rgba(247,184,1,0.25);
+        }
+
+        .saturn-ring {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            border-style: solid;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotateX(72deg);
+        }
+
+        .saturn-ring-1 {
+            width: calc(100% + 40px);
+            height: 28px;
+            border-width: 3px;
+            border-color: rgba(247,184,1,0.6);
+            box-shadow: 0 0 14px rgba(247,184,1,0.4), inset 0 0 8px rgba(247,184,1,0.2);
+            animation: ringPulse1 6s ease-in-out infinite;
+        }
+
+        .saturn-ring-2 {
+            width: calc(100% + 72px);
+            height: 44px;
+            border-width: 2px;
+            border-color: rgba(114,76,249,0.45);
+            box-shadow: 0 0 10px rgba(114,76,249,0.3);
+            animation: ringPulse2 9s ease-in-out infinite;
+        }
+
+        .saturn-ring-3 {
+            width: calc(100% + 106px);
+            height: 60px;
+            border-width: 2px;
+            border-color: rgba(0,217,255,0.3);
+            box-shadow: 0 0 8px rgba(0,217,255,0.2);
+            animation: ringPulse3 13s ease-in-out infinite;
+        }
+
+        @keyframes ringPulse1 {
+            0%,100% { box-shadow: 0 0 14px rgba(247,184,1,0.4), inset 0 0 8px rgba(247,184,1,0.2); border-color: rgba(247,184,1,0.6); }
+            50%     { box-shadow: 0 0 28px rgba(247,184,1,0.8), inset 0 0 14px rgba(247,184,1,0.4); border-color: rgba(247,184,1,1); }
+        }
+
+        @keyframes ringPulse2 {
+            0%,100% { box-shadow: 0 0 10px rgba(114,76,249,0.3); }
+            50%     { box-shadow: 0 0 22px rgba(114,76,249,0.7); }
+        }
+
+        @keyframes ringPulse3 {
+            0%,100% { box-shadow: 0 0 8px rgba(0,217,255,0.2); }
+            50%     { box-shadow: 0 0 18px rgba(0,217,255,0.55); }
+        }
+
+        /* ===== tabla ===== */
+        .pixel-divider {
+            height: 4px;
+            background: repeating-linear-gradient(90deg,
+                #724CF9 0px,  #724CF9 8px,
+                #FF3D81 8px,  #FF3D81 16px,
+                #00D9FF 16px, #00D9FF 24px,
+                #F7B801 24px, #F7B801 32px);
+            margin: 30px 0;
+            box-shadow: 0 4px 0px #000;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 30px 0;
+            border: 4px solid #2A2A4A;
+            background: #1a1a2e;
+            box-shadow: 8px 8px 0px #000;
+        }
+
+        table { width:100%; border-collapse:separate; border-spacing:0; font-size:clamp(0.55rem,1.4vw,0.7rem); }
+        thead { background: linear-gradient(135deg,#724CF9 0%,#5a3cd7 100%); }
+
+        th {
+            padding: 18px 12px; text-align:center; color:#fff;
+            text-shadow:2px 2px 0px #000;
+            border-right:2px solid #2A2A4A; border-bottom:4px solid #2A2A4A;
+            text-transform:uppercase; letter-spacing:1px;
+        }
+
+        th:last-child { border-right:none; }
+        tbody tr { background:#0f0f1e; transition:background 0.2s; }
+        tbody tr:nth-child(even) { background:#141428; }
+        tbody tr:hover           { background:#1f1f3a; }
+
+        td {
+            padding:15px 10px; text-align:center;
+            border-right:2px solid #2A2A4A; border-bottom:2px solid #2A2A4A;
+            color:#E0E0E0; vertical-align:middle;
+        }
+
+        td:last-child { border-right:none; }
+        tbody tr:last-child td { border-bottom:none; }
+
+        .planet-symbol { font-size:1.8em; display:inline-block; filter:drop-shadow(2px 2px 0px #000); transition:transform 0.2s; }
+        tbody tr:hover .planet-symbol { transform:scale(1.2) rotate(10deg); }
+        .planet-name { color:#F7B801; font-size:0.9em; display:block; margin-top:5px; }
+
+        .sign-symbol {
+            font-size:1.6em; display:inline-block; color:#00D9FF; font-weight:bold;
+            text-shadow:-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000,2px 2px 0 #000,0 0 8px rgba(0,217,255,0.6);
+            transition:transform 0.2s;
+        }
+        tbody tr:hover .sign-symbol {
+            transform:scale(1.15);
+            text-shadow:-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000,2px 2px 0 #000,0 0 15px rgba(0,217,255,1);
+        }
+        .sign-name { color:#00D9FF; font-size:0.85em; display:block; margin-top:5px; }
+
+        .corner-deco { position:absolute; width:20px; height:20px; background:#FF3D81; box-shadow:0 0 0 4px #2A2A4A,4px 4px 0px #000; }
+        .corner-tl { top:-2px; left:-2px; }
+        .corner-tr { top:-2px; right:-2px; }
+        .corner-bl { bottom:-2px; left:-2px; }
+        .corner-br { bottom:-2px; right:-2px; }
+
+        /* ===== CAMBIO 4: bits de colores DENTRO del cuadro importancia ===== */
+        #importanceBox { overflow: hidden; }
+        .importance-text { position: relative; z-index: 2; }
+
+        .bit-element {
+            position: absolute;
+            width: 10px; height: 10px;
+            pointer-events: none; z-index: 1;
+            border-radius: 1px;
+            animation: bitFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes bitFloat {
+            0%,100% { transform: translate(0,0) rotate(0deg); }
+            33%     { transform: translate(20px,-15px) rotate(120deg); }
+            66%     { transform: translate(-15px,20px) rotate(240deg); }
+        }
+
+        .importance-light-burst {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none; z-index: 1;
+            background: radial-gradient(circle,rgba(245,158,11,0.65) 0%,rgba(114,76,249,0.35) 40%,transparent 70%);
+            animation: importanceBurst 1.5s ease-out forwards;
+        }
+
+        @keyframes importanceBurst {
+            0%   { transform: scale(0); opacity: 1; }
+            100% { transform: scale(5); opacity: 0; }
+        }
+
+        /* ===== TETRIS ===== */
+        .tetris-popup {
+            position: fixed;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            pointer-events: none; z-index: 100;
+            text-shadow: 2px 2px 0 #000;
+            will-change: transform;
+        }
+
+        @keyframes tetrisFall {
+            0%   { transform: translateY(-100px) rotateZ(0deg); opacity: 0; }
+            10%  { opacity: 1; }
+            100% { transform: translateY(100vh) rotateZ(720deg); opacity: 0; }
+        }
+
+        @keyframes popExplode {
+            0%   { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; filter: blur(4px); }
+        }
+
+        @keyframes mergeFlash {
+            0%,100% { transform: scale(1); }
+            50%     { transform: scale(1.3); filter: brightness(2); }
+        }
+
+        @keyframes confettiFall {
+            0%   { transform: translate(0,0) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--tx),200px) rotate(720deg); opacity: 0; }
+        }
+
+        .confetti-piece { position:fixed; width:8px; height:8px; pointer-events:none; z-index:101; }
+
+        .canvas-burst-particle {
+            position:fixed; width:10px; height:10px;
+            pointer-events:none; z-index:102;
+            animation: canvasBurstMove 1.2s ease-out forwards;
+        }
+
+        @keyframes canvasBurstMove {
+            0%   { opacity:1; transform:translate(0,0) scale(1); }
+            100% { opacity:0; transform:translate(var(--tx),var(--ty)) scale(0); }
+        }
+
+        #planetCanvas { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:4; }
+
+        @media (max-width:768px) {
+            .wrapper { padding:20px 10px; }
+            .cuadros { padding:18px; margin:20px 0; }
+            h2 { padding:12px; margin:30px 0 15px 0; }
+            th,td { padding:12px 8px; }
+            .planet-symbol { font-size:1.5em; }
+            .sign-symbol   { font-size:1.3em; }
+        }
+
+        @media (max-width:480px) {
+            .cuadros p { font-size:0.55rem; }
+            table      { font-size:0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <canvas id="planetCanvas"></canvas>
+
+    <div class="wrapper">
+        <h1> REGENCIAS ASTROLÓGICAS </h1>
+
+        <h2>¿Qué es una Regencia Planetaria?</h2>
+        <div class="cuadros">
+            <span class="corner-deco corner-tl"></span>
+            <span class="corner-deco corner-tr"></span>
+            <span class="corner-deco corner-bl"></span>
+            <span class="corner-deco corner-br"></span>
+
+            <!-- CAMBIO 1: partitura musical en vez del cuadrado energy-icon -->
+            <p>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 32"
+                     style="display:inline-block;vertical-align:middle;margin-right:12px;width:64px;height:32px;overflow:visible">
+                    <!-- 5 líneas del pentagrama en colores distintos -->
+                    <line x1="8" y1="4"  x2="64" y2="4"  stroke="#F7B801" stroke-width="1.3" opacity="0.85"/>
+                    <line x1="8" y1="10" x2="64" y2="10" stroke="#FF3D81" stroke-width="1.3" opacity="0.85"/>
+                    <line x1="8" y1="16" x2="64" y2="16" stroke="#724CF9" stroke-width="1.3" opacity="0.85"/>
+                    <line x1="8" y1="22" x2="64" y2="22" stroke="#00D9FF" stroke-width="1.3" opacity="0.85"/>
+                    <line x1="8" y1="28" x2="64" y2="28" stroke="#10b981" stroke-width="1.3" opacity="0.85"/>
+                    <!-- Clave de Sol -->
+                    <text x="0" y="28" font-size="24" fill="#F7B801" opacity="0.55" font-family="serif">𝄞</text>
+                    <!-- Notas en distintas alturas y colores -->
+                    <ellipse cx="20" cy="7"  rx="3.5" ry="2.5" fill="#F7B801" transform="rotate(-15,20,7)"/>
+                    <line x1="23.3" y1="6"  x2="23.3" y2="-3"  stroke="#F7B801" stroke-width="1.5"/>
+                    <ellipse cx="30" cy="19" rx="3.5" ry="2.5" fill="#724CF9" transform="rotate(-15,30,19)"/>
+                    <line x1="33.3" y1="18" x2="33.3" y2="9"  stroke="#724CF9" stroke-width="1.5"/>
+                    <ellipse cx="40" cy="13" rx="3.5" ry="2.5" fill="#FF3D81" transform="rotate(-15,40,13)"/>
+                    <line x1="43.3" y1="12" x2="43.3" y2="3"  stroke="#FF3D81" stroke-width="1.5"/>
+                    <ellipse cx="50" cy="25" rx="3.5" ry="2.5" fill="#00D9FF" transform="rotate(-15,50,25)"/>
+                    <line x1="53.3" y1="24" x2="53.3" y2="15" stroke="#00D9FF" stroke-width="1.5"/>
+                    <ellipse cx="60" cy="10" rx="3.5" ry="2.5" fill="#10b981" transform="rotate(-15,60,10)"/>
+                    <line x1="63.3" y1="9"  x2="63.3" y2="0"  stroke="#10b981" stroke-width="1.5"/>
+                </svg>En astrología, una <span class="highlight">regencia planetaria</span> es la relación especial entre un planeta y un signo zodiacal. Cada planeta gobierna o "rige" sobre uno o dos signos, compartiendo energías, características y vibraciones similares.
+            </p>
+            <p>
+                Cuando un planeta se encuentra en su <span class="highlight-cyan">signo de regencia</span>, su energía se expresa de manera más pura, directa y poderosa. Es como cuando <span class="highlight-merged">dos colores similares se encuentran</span>: al juntarse, se potencian y brillan con mayor intensidad.
+            </p>
+            <p>
+                Por ejemplo, <span class="highlight-pink">Marte rige Aries</span> porque ambos comparten la energía del guerrero, la acción, la iniciativa y la valentía. <span class="highlight-purple">Venus rige Libra</span> porque ambos buscan belleza, armonía y equilibrio.
+            </p>
+        </div>
+
+        <div class="pixel-divider"></div>
+
+        <!-- CAMBIO 2: cada concepto colorea su texto, sin franja overlay -->
+        <h2>Domicilio, Exilio, Exaltación y Caída</h2>
+        <div class="cuadros">
+            <span class="corner-deco corner-tl"></span>
+            <span class="corner-deco corner-tr"></span>
+            <span class="corner-deco corner-bl"></span>
+            <span class="corner-deco corner-br"></span>
+            <p class="domicilio-line">
+                <span class="concept-domicilio">DOMICILIO:</span> Es el signo donde el planeta está en regencia. Aquí el planeta se siente cómodo, fuerte y puede expresar su naturaleza completa sin obstáculos.
+            </p>
+            <p class="exilio-line">
+                <span class="concept-exilio">EXILIO</span> / <span class="concept-detrimento">DETRIMENTO:</span> Es el signo opuesto al domicilio. El planeta se encuentra en territorio "extranjero" y requiere más esfuerzo para expresar su energía natural.
+            </p>
+            <p class="exaltacion-line">
+                <span class="concept-exaltacion">EXALTACIÓN:</span> Un signo donde el planeta, aunque no esté en su domicilio, puede expresar una versión elevada y refinada de su energía.
+            </p>
+            <p class="caida-line">
+                <span class="concept-caida">CAÍDA:</span> El signo opuesto a la exaltación, donde la energía del planeta se encuentra más desafiada.
+            </p>
+        </div>
+
+        <div class="pixel-divider"></div>
+
+        <h2>Tabla de Regencias Planetarias</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr><th>Planeta</th><th>Signo Regente</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="planet-symbol">☉</span><span class="planet-name">SOL</span></td>
+                        <td><span class="sign-symbol">♌</span><span class="sign-name">LEO</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="planet-symbol">☽</span><span class="planet-name">LUNA</span></td>
+                        <td><span class="sign-symbol">♋</span><span class="sign-name">CÁNCER</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="planet-symbol">☿</span><span class="planet-name">MERCURIO</span></td>
+                        <td><span class="sign-symbol">♊</span><span class="sign-name">GÉMINIS</span><br><span class="sign-symbol">♍</span><span class="sign-name">VIRGO</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="planet-symbol">♀</span><span class="planet-name">VENUS</span></td>
+                        <td><span class="sign-symbol">♉</span><span class="sign-name">TAURO</span><br><span class="sign-symbol">♎</span><span class="sign-name">LIBRA</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="planet-symbol">♂</span><span class="planet-name">MARTE</span></td>
+                        <td><span class="sign-symbol">♈</span><span class="sign-name">ARIES</span><br><span class="sign-symbol">♏</span><span class="sign-name">ESCORPIO</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="planet-symbol">♃</span><span class="planet-name">JÚPITER</span></td>
+                        <td><span class="sign-symbol">♐</span><span class="sign-name">SAGITARIO</span><br><span class="sign-symbol">♓</span><span class="sign-name">PISCIS</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="planet-symbol">♄</span><span class="planet-name">SATURNO</span></td>
+                        <td><span class="sign-symbol">♑</span><span class="sign-name">CAPRICORNIO</span><br><span class="sign-symbol">♒</span><span class="sign-name">ACUARIO</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="planet-symbol">♅</span><span class="planet-name">URANO</span></td>
+                        <td><span class="sign-symbol">♒</span><span class="sign-name">ACUARIO</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="planet-symbol">♆</span><span class="planet-name">NEPTUNO</span></td>
+                        <td><span class="sign-symbol">♓</span><span class="sign-name">PISCIS</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="planet-symbol">♇</span><span class="planet-name">PLUTÓN</span></td>
+                        <td><span class="sign-symbol">♏</span><span class="sign-name">ESCORPIO</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CAMBIO 5: anillos de Saturno alrededor de este cuadro -->
+        <div class="saturn-ring-box">
+            <div class="saturn-ring saturn-ring-1"></div>
+            <div class="saturn-ring saturn-ring-2"></div>
+            <div class="saturn-ring saturn-ring-3"></div>
+            <p style="font-size:0.65rem; color:#E0E0E0; line-height:2; margin:0;">
+                <span class="highlight">*</span> Los planetas exteriores
+                <span class="highlight-cyan">Urano</span>,
+                <span class="highlight-purple">Neptuno</span> y
+                <span class="highlight-red">Plutón</span>
+                son considerados los regentes modernos de Acuario, Piscis y Escorpio respectivamente.
+            </p>
+        </div>
+
+        <div class="pixel-divider"></div>
+
+        <!-- CAMBIO 4: bits de colores viven y explotan dentro de este cuadro -->
+        <h2>¿Por Qué Es Importante?</h2>
+        <div class="cuadros" id="importanceBox" style="min-height:220px;">
+            <span class="corner-deco corner-tl"></span>
+            <span class="corner-deco corner-tr"></span>
+            <span class="corner-deco corner-bl"></span>
+            <span class="corner-deco corner-br"></span>
+            <div class="importance-text">
+                <p>
+                    Comprender las <span class="highlight-cyan">regencias planetarias</span> te permite interpretar una carta natal con mayor profundidad. Un planeta en su <span class="concept-domicilio">domicilio</span> indica facilidad y dones naturales en esa área de la vida.
+                </p>
+                <p>
+                    Por ejemplo, alguien con <span class="highlight-pink">Venus en Libra</span> tendrá una inclinación natural hacia las relaciones armoniosas y el arte. Mientras que <span class="highlight-purple">Marte en Aries</span> otorga coraje y espíritu pionero.
+                </p>
+                <p>
+                    Los <span class="highlight">regentes</span> también nos ayudan a identificar los "gobernantes" de cada casa astrológica, revelando qué energías dominan las diferentes áreas de nuestra vida.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+    /* ============================================
+       ESTRELLAS
+    ============================================ */
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 150; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 3 + 1;
+        star.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*3}s;animation-duration:${Math.random()*2+2}s`;
+        starsContainer.appendChild(star);
+    }
+
+    /* ============================================
+       CAMBIO 3: lluvia Tetris con términos astrológicos
+       DOMICILIO, EXILIO, DETRIMENTO, EXALTACIÓN, CAÍDA
+    ============================================ */
+    const astroTerms = [
+        { text: 'DOMICILIO',   color: '#10b981' },
+        { text: 'EXILIO',      color: '#FF3D81' },
+        { text: 'DETRIMENTO',  color: '#ff6b6b' },
+        { text: 'EXALTACIÓN',  color: '#F7B801' },
+        { text: 'CAÍDA',       color: '#724CF9' },
+    ];
+
+    let rainActive = false;
+
+    function startTetrisRain() {
+        if (rainActive) return;
+        rainActive = true;
+        let count = 0;
+        const iv = setInterval(() => {
+            if (count >= 30) { clearInterval(iv); rainActive = false; return; }
+            createTetrisPopup(); count++;
+        }, 200);
+    }
+
+    function createTetrisPopup() {
+        const term = astroTerms[Math.floor(Math.random() * astroTerms.length)];
+        const el = document.createElement('div');
+        el.className = 'tetris-popup';
+        el.textContent = term.text;
+        el.style.left  = Math.random() * 85 + 2 + '%';
+        el.style.top   = '-50px';
+        el.style.color = term.color;
+        const dur = Math.random() * 3 + 4;
+        el.style.animation = `tetrisFall ${dur}s linear forwards`;
+        document.body.appendChild(el);
+
+        setTimeout(() => {
+            const r = Math.random();
+            if      (r < 0.35) mergePopup(el, term.color);
+            else if (r < 0.65) createConfettiFromPopup(el, term.color);
+            else               explodePopup(el, term.color);
+        }, dur * 600);
+
+        setTimeout(() => el.remove(), dur * 1000 + 500);
+    }
+
+    function mergePopup(el, color) {
+        el.style.animation = 'mergeFlash 0.5s ease-in-out';
+        setTimeout(() => { el.style.fontSize = '14px'; el.style.color = color; el.style.textShadow = `0 0 20px ${color}`; }, 250);
+    }
+
+    function explodePopup(el, color) {
+        el.style.animation = 'popExplode 0.4s ease-out forwards';
+        const r = el.getBoundingClientRect();
+        spawnColorBurst(r.left + r.width/2, r.top + r.height/2, color);
+    }
+
+    function createConfettiFromPopup(src, color) {
+        const r = src.getBoundingClientRect();
+        const pal = ['#10b981','#FF3D81','#F7B801','#724CF9','#00D9FF','#ff6b6b'];
+        for (let i = 0; i < 12; i++) {
+            const c = document.createElement('div');
+            c.className = 'confetti-piece';
+            c.style.cssText = `left:${r.left}px;top:${r.top}px;background:${i===0?color:pal[Math.floor(Math.random()*pal.length)]};`;
+            c.style.setProperty('--tx', (Math.random()-0.5)*200+'px');
+            c.style.animation = `confettiFall ${Math.random()+1}s ease-out forwards`;
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 2000);
+        }
+        src.style.opacity = '0';
+    }
+
+    /* ============================================
+       CANVAS — planetas que aparecen y explotan
+    ============================================ */
+    const canvas = document.getElementById('planetCanvas');
+    const ctx    = canvas.getContext('2d');
+
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const planetNames  = ['SOL','LUNA','MERCURIO','VENUS','MARTE','JÚPITER','SATURNO','URANO','NEPTUNO','PLUTÓN'];
+    const planetColors = { SOL:'#F7B801',LUNA:'#00D9FF',MERCURIO:'#10b981',VENUS:'#FF3D81',
+        MARTE:'#ff4444','JÚPITER':'#724CF9',SATURNO:'#d4a017',URANO:'#06b6d4',NEPTUNO:'#3b82f6','PLUTÓN':'#cc3333' };
+
+    const canvasParticles = [];
+
+    class PlanetLabel {
+        constructor() {
+            this.name = planetNames[Math.floor(Math.random()*planetNames.length)];
+            this.color = planetColors[this.name];
+            this.x = Math.random()*(canvas.width-200)+100;
+            this.y = Math.random()*(canvas.height-100)+50;
+            this.alpha = 0; this.scale = 0.3;
+            this.state = 'fadein'; this.age = 0;
+            this.lifetime = Math.random()*120+100;
+            this.exploded = false;
+            this.fontSize = Math.floor(Math.random()*6+8);
+        }
+
+        update() {
+            this.age++;
+            if (this.state==='fadein') {
+                this.alpha+=0.04; this.scale+=0.04;
+                if (this.alpha>=1) { this.alpha=1; this.scale=1; this.state='visible'; }
+            } else if (this.state==='visible') {
+                if (this.age>this.lifetime) this.state='exploding';
+            } else {
+                this.alpha-=0.06; this.scale+=0.08;
+                if (!this.exploded) { this.exploded=true; this.spawnBurst(); }
+                if (this.alpha<=0) return false;
+            }
+            return true;
+        }
+
+        spawnBurst() {
+            for (let i=0;i<18;i++) {
+                const a=(Math.PI*2*i)/18, s=Math.random()*4+2;
+                canvasParticles.push({x:this.x,y:this.y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,
+                    color:this.color,alpha:1,size:Math.random()*6+3,life:1});
+            }
+        }
+
+        draw(c) {
+            c.save(); c.globalAlpha=this.alpha;
+            c.translate(this.x,this.y); c.scale(this.scale,this.scale);
+            c.font=`${this.fontSize}px 'Press Start 2P',monospace`;
+            c.textAlign='center'; c.textBaseline='middle';
+            c.fillStyle='#000'; c.fillText(this.name,2,2);
+            c.shadowColor=this.color; c.shadowBlur=12;
+            c.fillStyle=this.color; c.fillText(this.name,0,0);
+            c.restore();
+        }
+    }
+
+    const activeLabels = []; let labelTimer = 0;
+
+    function updateCanvas() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for (let i=activeLabels.length-1;i>=0;i--) {
+            if (!activeLabels[i].update()) activeLabels.splice(i,1);
+            else activeLabels[i].draw(ctx);
+        }
+        for (let i=canvasParticles.length-1;i>=0;i--) {
+            const p=canvasParticles[i];
+            p.x+=p.vx; p.y+=p.vy; p.vy+=0.1;
+            p.life-=0.025; p.alpha=p.life;
+            if (p.life<=0) { canvasParticles.splice(i,1); continue; }
+            ctx.save(); ctx.globalAlpha=p.alpha;
+            ctx.fillStyle=p.color; ctx.shadowColor=p.color; ctx.shadowBlur=8;
+            ctx.fillRect(p.x-p.size/2,p.y-p.size/2,p.size,p.size);
+            ctx.restore();
+        }
+        labelTimer++;
+        if (labelTimer>90 && activeLabels.length<6) { activeLabels.push(new PlanetLabel()); labelTimer=0; }
+        requestAnimationFrame(updateCanvas);
+    }
+    updateCanvas();
+
+    function spawnColorBurst(cx, cy, color) {
+        const pal=[color,'#F7B801','#FF3D81','#724CF9','#00D9FF'];
+        for (let i=0;i<16;i++) {
+            const p=document.createElement('div');
+            p.className='canvas-burst-particle';
+            p.style.cssText=`left:${cx}px;top:${cy}px;background:${pal[i%pal.length]};box-shadow:0 0 6px ${color}`;
+            const a=(Math.PI*2*i)/16, d=Math.random()*100+50;
+            p.style.setProperty('--tx',Math.cos(a)*d+'px');
+            p.style.setProperty('--ty',Math.sin(a)*d+'px');
+            document.body.appendChild(p);
+            setTimeout(()=>p.remove(),1200);
+        }
+    }
+
+    /* ============================================
+       CAMBIO 4: fusión de bits DENTRO del cuadro ¿Por qué importa?
+    ============================================ */
+    let fusionActive = false;
+
+    function triggerImportanceFusion() {
+        if (fusionActive) return;
+        fusionActive = true;
+
+        const box    = document.getElementById('importanceBox');
+        const colors = ['#724CF9','#06b6d4','#F7B801','#10b981','#FF3D81'];
+        const bits   = [];
+        const count  = 20;
+
+        for (let i=0;i<count;i++) {
+            const bit = document.createElement('div');
+            bit.className = 'bit-element';
+            bit.style.left       = Math.random()*85+5+'%';
+            bit.style.top        = Math.random()*70+15+'%';
+            bit.style.background = colors[Math.floor(Math.random()*colors.length)];
+            bit.style.boxShadow  = `0 0 8px ${colors[Math.floor(Math.random()*colors.length)]}`;
+            bit.style.animationDelay = Math.random()*2+'s';
+            box.appendChild(bit);
+            bits.push(bit);
+        }
+
+        setTimeout(() => {
+            bits.forEach((bit,i) => setTimeout(() => {
+                bit.style.transition = 'all 1s ease-in-out';
+                bit.style.left='50%'; bit.style.top='50%';
+                bit.style.transform='translate(-50%,-50%) scale(0.5)';
+            }, i*50));
+        }, 3500);
+
+        setTimeout(() => {
+            bits.forEach((bit,i) => {
+                bit.style.transition='all 0.8s ease-in-out';
+                bit.style.transform=`translate(-50%,-50%) rotate(${i*(360/count)}deg) scale(0.8)`;
+            });
+        }, 5000);
+
+        setTimeout(() => {
+            const burst = document.createElement('div');
+            burst.className='importance-light-burst';
+            burst.style.cssText='width:80px;height:80px;left:calc(50% - 40px);top:calc(50% - 40px)';
+            box.appendChild(burst);
+            bits.forEach(b=>b.remove());
+            setTimeout(() => { burst.remove(); fusionActive=false; }, 1500);
+        }, 6200);
+    }
+
+    /* ============================================
+       HOVER TABLA / PARALLAX
+    ============================================ */
+    document.querySelectorAll('tbody tr').forEach(row => {
+        row.addEventListener('mouseenter', () => { row.style.transform='scale(1.01)'; row.style.transition='transform 0.2s'; });
+        row.addEventListener('mouseleave', () => { row.style.transform='scale(1)'; });
+    });
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                starsContainer.style.transform=`translateY(${window.pageYOffset*0.5}px)`;
+                ticking=false;
+            });
+            ticking=true;
+        }
+    });
+
+    /* ============================================
+       AUTO-INICIO
+    ============================================ */
+    setTimeout(()=>startTetrisRain(), 800);
+    setTimeout(()=>triggerImportanceFusion(), 4000);
+    setInterval(()=>{ if(!rainActive)   startTetrisRain(); }, 8000);
+    setInterval(()=>{ if(!fusionActive) triggerImportanceFusion(); }, 18000);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUMINARIAS: Sol y Luna ☀️🌙</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --sun-gold: #F7B801;
+    --sun-orange: #FF6B35;
+    --moon-silver: #E0E0E0;
+    --moon-blue: #B2EBF2;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --white: #F0F0F0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* Estrellas de fondo */
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  /* Dualidad Luz */
+  .light-duality {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .light-beam {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    opacity: 0.15;
+  }
+
+  .beam-sun {
+    left: 0;
+    background: radial-gradient(ellipse at right center, var(--sun-gold), transparent 70%);
+    animation: sunPulse 6s ease-in-out infinite;
+  }
+
+  .beam-moon {
+    right: 0;
+    background: radial-gradient(ellipse at left center, var(--moon-blue), transparent 70%);
+    animation: moonPulse 6s ease-in-out infinite 3s;
+  }
+
+  @keyframes sunPulse {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.25; }
+  }
+
+  @keyframes moonPulse {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.25; }
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .main-title {
+    text-align: center;
+    font-size: clamp(16px, 4vw, 28px);
+    margin: 30px 0 20px;
+    background: linear-gradient(90deg, var(--sun-gold), var(--moon-silver));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px var(--sun-gold);
+    animation: titleGlow 4s ease-in-out infinite;
+  }
+
+  @keyframes titleGlow {
+    0%, 100% { filter: drop-shadow(0 0 10px var(--sun-gold)); }
+    50% { filter: drop-shadow(0 0 20px var(--moon-blue)); }
+  }
+
+  .subtitle {
+    text-align: center;
+    font-size: 10px;
+    color: var(--cyan);
+    margin-bottom: 40px;
+    line-height: 2;
+  }
+
+  /* Sección de Luminarias */
+  .luminarias-duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin: 40px 0;
+  }
+
+  @media (max-width: 768px) {
+    .luminarias-duo {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .luminaria-card {
+    border: 4px solid;
+    padding: 24px;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .luminaria-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 11px 11px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .card-sun {
+    background: #2e2416;
+    border-color: var(--sun-gold);
+    box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.3), 0 0 30px rgba(247, 184, 1, 0.2);
+  }
+
+  .card-moon {
+    background: #1a1a2e;
+    border-color: var(--moon-silver);
+    box-shadow: 8px 8px 0 rgba(224, 224, 224, 0.3), 0 0 30px rgba(178, 235, 242, 0.2);
+  }
+
+  .luminaria-symbol {
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .symbol-circle {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    animation: symbolPulse 3s ease-in-out infinite;
+  }
+
+  .symbol-sun {
+    border: 4px solid var(--sun-gold);
+    background: radial-gradient(circle, #3a2a0a 0%, #0A0A1B 100%);
+    box-shadow: 0 0 40px var(--sun-gold), inset 0 0 20px rgba(247, 184, 1, 0.3);
+  }
+
+  .symbol-moon {
+    border: 4px solid var(--moon-silver);
+    background: radial-gradient(circle, #2a2a3a 0%, #0A0A1B 100%);
+    box-shadow: 0 0 40px var(--moon-blue), inset 0 0 20px rgba(178, 235, 242, 0.3);
+  }
+
+  @keyframes symbolPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .symbol-text {
+    font-size: 50px;
+  }
+
+  .symbol-sun .symbol-text {
+    color: var(--sun-gold);
+    text-shadow: 0 0 20px var(--sun-gold);
+  }
+
+  .symbol-moon .symbol-text {
+    color: var(--moon-silver);
+    text-shadow: 0 0 20px var(--moon-blue);
+  }
+
+  .card-title {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+  }
+
+  .card-sun .card-title {
+    color: var(--sun-gold);
+    text-shadow: 0 0 10px var(--sun-gold);
+  }
+
+  .card-moon .card-title {
+    color: var(--moon-silver);
+    text-shadow: 0 0 10px var(--moon-blue);
+  }
+
+  .info-grid {
+    display: grid;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .info-item {
+    font-size: 7px;
+    padding: 10px;
+    border: 2px solid;
+    line-height: 1.8;
+  }
+
+  .card-sun .info-item {
+    border-color: var(--sun-orange);
+    background: rgba(255, 107, 53, 0.1);
+  }
+
+  .card-moon .info-item {
+    border-color: var(--moon-blue);
+    background: rgba(178, 235, 242, 0.1);
+  }
+
+  .info-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 8px;
+  }
+
+  .card-sun .info-label {
+    color: var(--sun-gold);
+  }
+
+  .card-moon .info-label {
+    color: var(--moon-blue);
+  }
+
+  .concept-box {
+    border: 4px solid var(--cyan);
+    background: #0f1a2e;
+    padding: 24px;
+    margin: 40px 0;
+    box-shadow: 8px 8px 0 rgba(0, 217, 255, 0.3), 0 0 20px rgba(0, 217, 255, 0.2);
+  }
+
+  .concept-title {
+    font-size: 12px;
+    color: var(--cyan);
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px var(--cyan);
+  }
+
+  .concept-text {
+    font-size: 8px;
+    line-height: 2.2;
+    color: #D0D0D0;
+    margin-bottom: 16px;
+  }
+
+  .highlight-sun {
+    color: var(--sun-gold);
+    text-shadow: 0 0 5px var(--sun-gold);
+  }
+
+  .highlight-moon {
+    color: var(--moon-blue);
+    text-shadow: 0 0 5px var(--moon-blue);
+  }
+
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, var(--sun-gold), var(--cyan), var(--moon-blue));
+    margin: 40px 0;
+    box-shadow: 0 0 15px var(--cyan);
+    animation: dividerFlow 4s linear infinite;
+  }
+
+  @keyframes dividerFlow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 12px; }
+    .luminaria-card { padding: 16px; }
+    .info-item { font-size: 6px; }
+    .concept-text { font-size: 7px; }
+  }
+
+/* Destellos para la card del SOL */
+@keyframes sunDestello {
+  0%, 85%, 100% { 
+    box-shadow: 0 0 0 0 rgba(255, 200, 0, 0);
+    filter: brightness(1);
+  }
+  92% { 
+    box-shadow: 0 0 60px 20px rgba(255, 220, 100, 0.6),
+                0 0 100px 40px rgba(255, 200, 50, 0.3);
+    filter: brightness(1.15);
+  }
+}
+
+.card-sun {
+  animation: sunDestello 9s ease-in-out infinite;
+  position: relative;
+}
+
+/* Destellos extra en el símbolo del sol */
+@keyframes sunRayos {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+  50% { transform: scale(1.1) rotate(5deg); opacity: 1; }
+}
+
+.card-sun .symbol-sun {
+  animation: sunRayos 4s ease-in-out infinite;
+}
+
+/* Marea para la card de LUNA */
+@keyframes moonMarea {
+  0%, 100% { 
+    transform: translateY(0px);
+  }
+  50% { 
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes moonBrillo {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+.card-moon .info-grid,
+.card-moon .info-item {
+  animation: moonMarea 8s ease-in-out infinite;
+}
+
+.card-moon .symbol-moon {
+  animation: moonBrillo 6s ease-in-out infinite;
+}
+
+.card-moon {
+  overflow: hidden;
+  position: relative;
+}
+
+/* Efecto de olas sutil en el fondo de la luna */
+.card-moon::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(to top, rgba(100, 150, 255, 0.08), transparent);
+  animation: moonMarea 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card-moon > * {
+  position: relative;
+  z-index: 1;
+}
+
+</style>
+</head>
+<body>
+  <div class="light-duality">
+    <div class="light-beam beam-sun"></div>
+    <div class="light-beam beam-moon"></div>
+  </div>
+
+  <div class="stars" id="stars"></div>
+
+  <div class="container">
+    <h1 class="main-title">☀️ LUMINARIAS 🌙</h1>
+    <p class="subtitle">
+      Sol y Luna: Fuentes de Luz<br>
+      Las características esenciales que definen<br>
+      la forma de la personalidad individual
+    </p>
+
+    <div class="concept-box">
+      <div class="concept-title">◈ CONCEPTO CLAVE ◈</div>
+      <p class="concept-text">
+        Dentro de los 10 planetas tenemos al <span class="highlight-sun">Sol</span> y la <span class="highlight-moon">Luna</span> que en Astrología se les conoce también como <span class="highlight-sun">LUMINARIAS</span>, que significa, simplemente, <<fuente de luz>>.
+      </p>
+      <p class="concept-text">
+        Se dice del Sol y la Luna que representan las <span class="highlight-sun">características esenciales</span> que definen de forma irrevocable la personalidad individual.
+      </p>
+      <p class="concept-text">
+        Las luminarias, en la carta natal, son auténticos <span class="highlight-moon">instructores</span>, que reflejan lo que podríamos llegar a ser un día, presentando de forma simbólica <span class="highlight-sun">lo mejor que podamos lograr</span>.
+      </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="luminarias-duo">
+      <!-- SOL -->
+      <div class="luminaria-card card-sun">
+        <div class="card-title">☀️ SOL ☀️</div>
+        <div class="luminaria-symbol">
+          <div class="symbol-circle symbol-sun">
+            <div class="symbol-text">☉</div>
+          </div>
+        </div>
+        
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">RIGE A:</span>
+            Leo
+          </div>
+          <div class="info-item">
+            <span class="info-label">PALABRA CLAVE:</span>
+            Ser interno
+          </div>
+          <div class="info-item">
+            <span class="info-label">REPRESENTA:</span>
+            El impulso de poder, la personalidad, el ego
+          </div>
+          <div class="info-item">
+            <span class="info-label">EXALTACIÓN:</span>
+            Aries
+          </div>
+          <div class="info-item">
+            <span class="info-label">DETRIMENTO:</span>
+            Acuario
+          </div>
+          <div class="info-item">
+            <span class="info-label">CAÍDA:</span>
+            Libra
+          </div>
+          <div class="info-item">
+            <span class="info-label">ANATOMÍA:</span>
+            Corazón, parte superior de la espalda, bazo, sistema circulatorio, esperma
+          </div>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">MUESTRA EL SENTIDO DE IDENTIDAD:</span>
+          La consciencia del yo. La salud y autoridad. Su acción es fortificante y vitalizadora.
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">DONDE SE HALLE EL SOL:</span>
+          Muestra cómo soy, cómo expreso mi individualidad, cómo irradio mi fuerza vital.
+        </div>
+      </div>
+
+      <!-- LUNA -->
+      <div class="luminaria-card card-moon">
+        <div class="card-title">🌙 LUNA 🌙</div>
+        <div class="luminaria-symbol">
+          <div class="symbol-circle symbol-moon">
+            <div class="symbol-text">☽</div>
+          </div>
+        </div>
+        
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">RIGE A:</span>
+            Cáncer
+          </div>
+          <div class="info-item">
+            <span class="info-label">PALABRA CLAVE:</span>
+            Emociones
+          </div>
+          <div class="info-item">
+            <span class="info-label">REPRESENTA:</span>
+            Impulso doméstico y de crianza
+          </div>
+          <div class="info-item">
+            <span class="info-label">EXALTACIÓN:</span>
+            Tauro
+          </div>
+          <div class="info-item">
+            <span class="info-label">DETRIMENTO:</span>
+            Capricornio
+          </div>
+          <div class="info-item">
+            <span class="info-label">CAÍDA:</span>
+            Escorpio
+          </div>
+          <div class="info-item">
+            <span class="info-label">ANATOMÍA:</span>
+            Senos, estómago, digestión, equilibrio de los líquidos del cuerpo
+          </div>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">REPRESENTA EL PRINCIPIO FEMENINO:</span>
+          Instintos, humores, sentimientos, hábitos de conducta, magnetismo, crecimiento, fertilidad. Su acción fluctúa y cambia.
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">DONDE SE HALLA LA LUNA:</span>
+          Es lo qué necesito, cuál es mi respuesta emocional y cómo es mi comportamiento inconsciente.
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="concept-box">
+      <div class="concept-title">◈ LA DUALIDAD LUMINOSA ◈</div>
+      <p class="concept-text">
+        <span class="highlight-sun">SOL</span> = Consciencia, identidad, ego, voluntad, lo que proyecto al mundo.
+      </p>
+      <p class="concept-text">
+        <span class="highlight-moon">LUNA</span> = Inconsciente, emociones, necesidades, hábitos, lo que nutro en mi interior.
+      </p>
+      <p class="concept-text">
+        Juntos forman el <span class="highlight-sun">eje central</span> de la carta: quién soy y qué necesito para ser.
+      </p>
+    </div>
+
+  </div>
+
+  <script>
+    // Generar estrellas
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 150; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      starsContainer.appendChild(star);
+    }
+  </script>
+</body>
+</html>
