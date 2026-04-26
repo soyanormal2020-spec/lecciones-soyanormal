@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🪐 QUIZ · MÓDULO III · PRINCIPIOS BÁSICOS DE LOS PLANETAS</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #08081A;
+    --cyan:    #00D9FF;
+    --pink:    #FF3D81;
+    --purple:  #724CF9;
+    --gold:    #F7B801;
+    --green:   #39FF88;
+    --white:   #F0F0F0;
+    --violet:  #BF5FFF;
+    --rose:    #FF6EB4;
+    --indigo:  #5B8CFF;
+    --red:     #FF4444;
+    --orange:  #FF8C00;
+  }
+
+  *, *::before, *::after {
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ── BG FX ── */
+  .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .star  { position: absolute; width: 2px; height: 2px; background: #fff; animation: twinkle 3s infinite; }
+
+  @keyframes twinkle {
+    0%,100% { opacity: .3; transform: scale(1); }
+    50%      { opacity: 1;  transform: scale(1.8); }
+  }
+
+  /* ── FALLING PLANETS ── */
+  .planet-fall { position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+  .pfail {
+    position: absolute;
+    top: -60px;
+    opacity: 0;
+    animation: fallDown linear infinite;
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+  @keyframes fallDown {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+    5%   { opacity: 0.6; }
+    90%  { opacity: 0.5; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  .scanlines {
+    position: fixed; inset: 0; pointer-events: none; z-index: 999;
+    background: repeating-linear-gradient(0deg,
+      rgba(0,0,0,.13), rgba(0,0,0,.13) 1px,
+      transparent 1px, transparent 2px);
+    opacity: .45;
+  }
+
+  .crt-glow {
+    position: fixed; inset: 0; pointer-events: none; z-index: 998;
+    box-shadow: inset 0 0 120px rgba(114,76,249,.12);
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ── HEADER ── */
+  .header-wrap { text-align: center; margin: 24px 0 10px; }
+
+  .module-tag {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--orange);
+    border: 2px solid var(--orange);
+    padding: 4px 12px;
+    margin-bottom: 18px;
+    text-shadow: 0 0 6px var(--orange);
+    animation: tag-pulse 2s infinite;
+  }
+  @keyframes tag-pulse {
+    0%,100% { box-shadow: 0 0 4px var(--orange); }
+    50%      { box-shadow: 0 0 18px var(--orange), 0 0 32px rgba(255,140,0,.3); }
+  }
+
+  .main-title {
+    font-size: clamp(18px, 4.5vw, 30px);
+    color: var(--violet);
+    text-shadow: 3px 3px 0 var(--pink), -2px -2px 0 rgba(0,217,255,.4);
+    animation: glitch 4s infinite;
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+  @keyframes glitch {
+    0%,88%,100% { transform: translate(0); }
+    90% { transform: translate(-2px, 2px); }
+    92% { transform: translate(2px,-2px); }
+    94% { transform: translate(-2px,-2px); }
+    96% { transform: translate(2px,2px); }
+  }
+
+  .sub-title {
+    font-size: clamp(10px, 2vw, 14px);
+    color: var(--cyan);
+    animation: pulse-glow 3s infinite;
+    line-height: 2;
+  }
+  @keyframes pulse-glow {
+    0%,100% { text-shadow: 0 0 4px var(--cyan); }
+    50%      { text-shadow: 0 0 16px var(--cyan), 0 0 30px var(--violet); }
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--violet), var(--pink), var(--cyan), var(--violet), transparent);
+    margin: 28px 0;
+    box-shadow: 0 0 10px var(--violet);
+  }
+  .divider.gold {
+    background: linear-gradient(90deg, transparent, var(--gold), var(--orange), var(--gold), transparent);
+    box-shadow: 0 0 10px var(--gold);
+  }
+  .divider.green {
+    background: linear-gradient(90deg, transparent, var(--green), var(--cyan), var(--green), transparent);
+    box-shadow: 0 0 10px var(--green);
+  }
+
+  /* ── PROGRESS BOX ── */
+  .progress-wrap {
+    border: 3px solid var(--violet);
+    background: #0e0a22;
+    padding: 14px 18px;
+    margin-bottom: 22px;
+    box-shadow: 6px 6px 0 rgba(191,95,255,.3);
+  }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--cyan);
+    text-shadow: 0 0 6px var(--cyan);
+    margin-bottom: 10px;
+  }
+  .score-live { color: var(--orange); text-shadow: 0 0 6px var(--orange); }
+  .progress-bar-bg {
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--violet);
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--violet), var(--pink), var(--orange));
+    box-shadow: 0 0 8px var(--violet);
+    transition: width 0.5s steps(20);
+    width: 0%;
+  }
+
+  /* ── QUESTION CARD ── */
+  .q-card {
+    border: 4px solid var(--violet);
+    background: #0a0f24;
+    padding: 22px;
+    margin-bottom: 18px;
+    box-shadow: 8px 8px 0 rgba(191,95,255,.2), 0 0 20px rgba(191,95,255,.08);
+    animation: card-in 0.3s steps(8);
+    position: relative;
+    overflow: hidden;
+  }
+  @keyframes card-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .q-badge {
+    font-size: 9px;
+    padding: 3px 8px;
+    border: 2px solid;
+    letter-spacing: 1px;
+  }
+  .badge-mc     { border-color: var(--violet); color: var(--violet); text-shadow: 0 0 5px var(--violet); }
+  .badge-tf     { border-color: var(--green);  color: var(--green);  text-shadow: 0 0 5px var(--green); }
+  .badge-open   { border-color: var(--orange); color: var(--orange); text-shadow: 0 0 5px var(--orange); }
+
+  .q-category {
+    font-size: 9px;
+    color: var(--rose);
+    text-shadow: 0 0 5px var(--rose);
+  }
+
+  .q-number {
+    font-size: 9px;
+    color: rgba(255,255,255,.35);
+    margin-left: auto;
+  }
+
+  .q-text {
+    font-size: clamp(10px, 2.2vw, 13px);
+    color: var(--white);
+    line-height: 2.2;
+    margin-bottom: 18px;
+  }
+
+  /* ── OPTIONS ── */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+
+  .opt-btn {
+    background: rgba(255,255,255,.03);
+    border: 2px solid rgba(191,95,255,.3);
+    padding: 12px 16px;
+    text-align: left;
+    color: #ccc;
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(9px,1.8vw,11px);
+    line-height: 2;
+    cursor: pointer;
+    transition: none;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    position: relative;
+  }
+  .opt-btn:hover:not(:disabled) {
+    background: rgba(191,95,255,.15);
+    border-color: var(--violet);
+    color: var(--white);
+    box-shadow: 4px 4px 0 var(--violet);
+  }
+  .opt-btn:active:not(:disabled) { transform: translate(2px,2px); box-shadow: none; }
+
+  .opt-letter {
+    color: var(--indigo);
+    text-shadow: 0 0 6px var(--indigo);
+    flex-shrink: 0;
+    font-size: 11px;
+    min-width: 18px;
+  }
+
+  .opt-btn.selected {
+    background: rgba(191,95,255,.2);
+    border-color: var(--violet);
+    color: var(--white);
+    box-shadow: 4px 4px 0 var(--violet);
+  }
+  .opt-btn.correct {
+    background: rgba(57,255,136,.12);
+    border-color: var(--green);
+    color: var(--white);
+    box-shadow: 4px 4px 0 var(--green);
+  }
+  .opt-btn.correct .opt-letter { color: var(--green); text-shadow: 0 0 8px var(--green); }
+  .opt-btn.wrong {
+    background: rgba(255,68,68,.1);
+    border-color: var(--red);
+    color: #aaa;
+    box-shadow: 4px 4px 0 var(--red);
+  }
+  .opt-btn.wrong .opt-letter { color: var(--red); text-shadow: 0 0 8px var(--red); }
+  .opt-btn:disabled { cursor: default; }
+
+  /* ── TRUE/FALSE ── */
+  .tf-wrap { display: flex; gap: 12px; }
+  .tf-btn {
+    flex: 1;
+    padding: 14px;
+    border: 2px solid rgba(255,255,255,.15);
+    background: rgba(255,255,255,.03);
+    color: #ccc;
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(10px,1.8vw,12px);
+    cursor: pointer;
+    text-align: center;
+    transition: none;
+  }
+  .tf-btn:hover:not(:disabled) {
+    border-color: var(--violet);
+    background: rgba(191,95,255,.15);
+    color: var(--white);
+    box-shadow: 4px 4px 0 var(--violet);
+  }
+  .tf-btn.selected { border-color: var(--violet); background: rgba(191,95,255,.2); color: var(--white); box-shadow: 4px 4px 0 var(--violet); }
+  .tf-btn.correct  { border-color: var(--green); background: rgba(57,255,136,.12); color: var(--white); box-shadow: 4px 4px 0 var(--green); }
+  .tf-btn.wrong    { border-color: var(--red);   background: rgba(255,68,68,.1);   color: #888; box-shadow: 4px 4px 0 var(--red); }
+  .tf-btn:disabled { cursor: default; }
+
+  /* ── OPEN TEXTAREA ── */
+  .open-input {
+    width: 100%;
+    background: rgba(255,255,255,.03);
+    border: 2px solid rgba(255,140,0,.3);
+    padding: 12px 14px;
+    color: var(--white);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 11px;
+    line-height: 2;
+    resize: vertical;
+    min-height: 100px;
+  }
+  .open-input:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 12px rgba(255,140,0,.3); }
+  .open-input:disabled { opacity: .5; }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    margin-top: 14px;
+    padding: 14px 16px;
+    font-size: 10px;
+    line-height: 2.2;
+    display: none;
+    border: 2px solid;
+    animation: card-in 0.25s steps(6);
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb { border-color: var(--green); background: rgba(57,255,136,.08); color: var(--green); text-shadow: 0 0 4px var(--green); }
+  .feedback-box.wrong-fb   { border-color: var(--red);   background: rgba(255,68,68,.08);  color: var(--red); }
+  .feedback-box.open-fb    { border-color: var(--orange); background: rgba(255,140,0,.07); color: var(--orange); text-shadow: 0 0 4px var(--orange); }
+
+  .fb-main { margin-bottom: 6px; }
+  .fb-expl {
+    color: rgba(255,255,255,.6);
+    font-size: 9px;
+    line-height: 2.2;
+    border-top: 1px solid rgba(255,255,255,.1);
+    padding-top: 8px;
+    margin-top: 8px;
+  }
+
+  /* ── CONTROLS ── */
+  .controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+
+  .btn-check {
+    background: transparent;
+    border: 3px solid var(--cyan);
+    color: var(--cyan);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 11px;
+    padding: 12px 18px;
+    cursor: pointer;
+    text-shadow: 0 0 6px var(--cyan);
+    box-shadow: 0 0 8px rgba(0,217,255,.2);
+    transition: none;
+  }
+  .btn-check:hover:not(:disabled) {
+    background: rgba(0,217,255,.12);
+    box-shadow: 4px 4px 0 var(--cyan), 0 0 14px rgba(0,217,255,.35);
+    transform: translate(-2px,-2px);
+  }
+  .btn-check:disabled { opacity: .3; cursor: default; transform: none; }
+
+  .btn-next {
+    background: linear-gradient(135deg, #5a0fa0, #BF5FFF);
+    border: 3px solid var(--violet);
+    color: var(--white);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 11px;
+    padding: 12px 20px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 rgba(191,95,255,.4);
+    transition: none;
+    margin-left: auto;
+  }
+  .btn-next:hover:not(:disabled) {
+    background: linear-gradient(135deg, #7a35c9, #d985ff);
+    transform: translate(-2px,-2px);
+    box-shadow: 6px 6px 0 rgba(191,95,255,.5), 0 0 16px rgba(191,95,255,.4);
+  }
+  .btn-next:disabled { opacity: .3; cursor: default; transform: none; }
+
+  /* ── RESULTS ── */
+  .results-screen { display: none; }
+  .results-screen.show { display: block; animation: card-in 0.4s steps(10); }
+
+  .results-hero {
+    border: 4px solid var(--orange);
+    background: #120800;
+    padding: 28px 20px;
+    text-align: center;
+    margin-bottom: 22px;
+    box-shadow: 8px 8px 0 rgba(255,140,0,.25), 0 0 24px rgba(255,140,0,.15);
+  }
+
+  .hero-symbol {
+    font-size: 3.5rem;
+    display: block;
+    margin-bottom: 12px;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+  }
+
+  .score-display {
+    font-size: clamp(20px,6vw,42px);
+    color: var(--orange);
+    text-shadow: 4px 4px 0 var(--violet), 0 0 20px var(--orange);
+    margin: 12px 0 6px;
+    animation: tag-pulse 2s infinite;
+  }
+
+  .score-tagline {
+    font-size: clamp(10px,2.2vw,14px);
+    color: var(--violet);
+    text-shadow: 0 0 8px var(--violet);
+    margin-bottom: 6px;
+    line-height: 2;
+  }
+  .score-detail {
+    font-size: 10px;
+    color: rgba(255,255,255,.5);
+    line-height: 2;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .stat-card {
+    border: 3px solid;
+    padding: 14px 10px;
+    text-align: center;
+    box-shadow: 5px 5px 0 rgba(0,0,0,.4);
+  }
+  .stat-card.green-card { border-color: var(--green); background: rgba(57,255,136,.06); }
+  .stat-card.red-card   { border-color: var(--red);   background: rgba(255,68,68,.06); }
+  .stat-card.gold-card  { border-color: var(--orange); background: rgba(255,140,0,.06); }
+
+  .stat-val {
+    font-size: clamp(18px,5vw,32px);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .stat-val.green  { color: var(--green);  text-shadow: 0 0 12px var(--green); }
+  .stat-val.red    { color: var(--red);    text-shadow: 0 0 12px var(--red); }
+  .stat-val.orange { color: var(--orange); text-shadow: 0 0 12px var(--orange); }
+  .stat-lbl { font-size: 9px; color: rgba(255,255,255,.45); }
+
+  .review-title {
+    font-size: 11px;
+    color: var(--violet);
+    text-shadow: 0 0 8px var(--violet);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .review-item {
+    border: 2px solid;
+    padding: 14px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .review-item.correct-item { border-color: var(--green); background: rgba(57,255,136,.04); }
+  .review-item.wrong-item   { border-color: var(--red);   background: rgba(255,68,68,.04); }
+  .review-item.open-item    { border-color: var(--orange); background: rgba(255,140,0,.04); }
+
+  .review-num  { font-size: 9px; color: rgba(255,255,255,.3); margin-bottom: 6px; display: block; }
+  .review-q    { font-size: 10px; color: var(--white); line-height: 2; margin-bottom: 8px; }
+  .review-a    { font-size: 9px; line-height: 2; }
+  .review-a.correct-a { color: var(--green); text-shadow: 0 0 4px var(--green); }
+  .review-a.wrong-a   { color: var(--red); }
+  .review-a.open-a    { color: var(--orange); text-shadow: 0 0 4px var(--orange); }
+  .review-correct-ans { font-size: 9px; color: rgba(255,255,255,.4); margin-top: 4px; line-height: 2; }
+  .review-expl {
+    font-size: 9px;
+    color: rgba(255,255,255,.35);
+    line-height: 2;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+
+  .restart-btn {
+    display: block;
+    width: 100%;
+    margin-top: 24px;
+    padding: 14px;
+    background: linear-gradient(135deg, #7a2000, #FF8C00);
+    border: 3px solid var(--orange);
+    color: var(--white);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: 2px;
+    box-shadow: 6px 6px 0 rgba(255,140,0,.3), 0 0 18px rgba(255,140,0,.2);
+    animation: tag-pulse 2s infinite;
+    transition: none;
+  }
+  .restart-btn:hover {
+    transform: translate(-2px,-2px);
+    box-shadow: 8px 8px 0 rgba(255,140,0,.4), 0 0 24px rgba(255,140,0,.35);
+  }
+
+  /* ── INTRO BOX ── */
+  .intro-box {
+    border: 4px solid var(--violet);
+    background: #12082e;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 8px 8px 0 rgba(191,95,255,.2), 0 0 20px rgba(191,95,255,.1);
+    text-align: center;
+  }
+  .intro-box p { font-size: 10px; color: #ccc; line-height: 2.4; }
+  .intro-box .hl-pink   { color: var(--pink);   text-shadow: 0 0 5px var(--pink); }
+  .intro-box .hl-cyan   { color: var(--cyan);   text-shadow: 0 0 5px var(--cyan); }
+  .intro-box .hl-gold   { color: var(--orange); text-shadow: 0 0 5px var(--orange); }
+  .intro-box .hl-green  { color: var(--green);  text-shadow: 0 0 5px var(--green); }
+  .intro-box .hl-violet { color: var(--violet); text-shadow: 0 0 5px var(--violet); }
+
+  /* Pixel corners */
+  .q-card::before, .q-card::after {
+    content: '■';
+    position: absolute;
+    font-size: 6px;
+    color: var(--violet);
+    text-shadow: 0 0 4px var(--violet);
+  }
+  .q-card::before { top: 4px; right: 8px; }
+  .q-card::after  { bottom: 4px; right: 8px; opacity: 0.4; }
+
+  @media (max-width: 520px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .controls { flex-direction: column; }
+    .btn-next { margin-left: 0; }
+    .tf-wrap { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="planet-fall" id="planet-fall"></div>
+<div class="scanlines"></div>
+<div class="crt-glow"></div>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header-wrap">
+    <div class="module-tag">🪐 ESCUELA SOY ANORMAL · ASTROLOGÍA 🪐</div>
+    <h1 class="main-title">MÓDULO III<br>QUIZ INTERACTIVO</h1>
+    <p class="sub-title">⟡ PRINCIPIOS BÁSICOS DE LOS PLANETAS ⟡</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen">
+
+    <div class="intro-box" id="intro-box">
+      <p>
+        🪐 Este quiz tiene <span class="hl-cyan">22 preguntas</span> sobre el Módulo III 🪐<br><br>
+        Incluye <span class="hl-pink">opción múltiple</span>, <span class="hl-green">verdadero/falso</span><br>
+        y <span class="hl-gold">respuestas abiertas</span>.<br><br>
+        Al final recibirás tu <span class="hl-violet">★ PUNTAJE CÓSMICO ★</span><br>
+        con explicación detallada de cada respuesta.
+      </p>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="q-counter">▶ PREGUNTA 1 / 22</span>
+        <span class="score-live" id="q-score-live">🪐 PTS: 0</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="q-card" id="question-card">
+      <div class="q-meta">
+        <span class="q-badge" id="q-type-badge"></span>
+        <span class="q-category" id="q-category"></span>
+        <span class="q-number" id="q-number"></span>
+      </div>
+      <p class="q-text" id="question-text"></p>
+      <div id="answer-area"></div>
+      <div class="feedback-box" id="feedback-box">
+        <p class="fb-main" id="fb-main"></p>
+        <p class="fb-expl" id="fb-expl"></p>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn-check" id="btn-check" onclick="checkAnswer()">[ COMPROBAR ]</button>
+      <button class="btn-next"  id="btn-next"  onclick="nextQuestion()" disabled>SIGUIENTE ▶</button>
+    </div>
+
+  </div><!-- /quiz-screen -->
+
+  <!-- RESULTS SCREEN -->
+  <div class="results-screen" id="results-screen">
+
+    <div class="results-hero">
+      <span class="hero-symbol">🪐</span>
+      <div class="score-display" id="res-pct">0%</div>
+      <p class="score-tagline" id="res-tagline"></p>
+      <p class="score-detail" id="res-detail"></p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card green-card">
+        <span class="stat-val green" id="res-correct">0</span>
+        <div class="stat-lbl">✔ CORRECTAS</div>
+      </div>
+      <div class="stat-card red-card">
+        <span class="stat-val red" id="res-wrong">0</span>
+        <div class="stat-lbl">✗ INCORRECTAS</div>
+      </div>
+      <div class="stat-card gold-card">
+        <span class="stat-val orange" id="res-open">0</span>
+        <div class="stat-lbl">✎ ABIERTAS</div>
+      </div>
+    </div>
+
+    <div class="divider gold"></div>
+
+    <p class="review-title">⟡ REVISIÓN DETALLADA ⟡</p>
+    <div id="review-list"></div>
+
+    <div class="divider green"></div>
+
+    <button class="restart-btn" onclick="restart()">↺ REINTENTAR QUIZ</button>
+
+  </div><!-- /results-screen -->
+
+</div><!-- /container -->
+
+<script>
+// ── STARS ──
+const starsEl = document.getElementById('stars');
+const starColors = ['#fff','#BF5FFF','#00D9FF','#FF8C00','#FF3D81','#5B8CFF','#FF6EB4'];
+for (let i = 0; i < 130; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  s.style.left = Math.random()*100+'%';
+  s.style.top  = Math.random()*100+'%';
+  s.style.animationDelay    = Math.random()*3+'s';
+  s.style.animationDuration = (Math.random()*2+2)+'s';
+  s.style.background = starColors[Math.floor(Math.random()*starColors.length)];
+  const sz = Math.random()*2+1;
+  s.style.width = s.style.height = sz+'px';
+  starsEl.appendChild(s);
+}
+
+// ── FALLING PLANETS ──
+const planetFall = document.getElementById('planet-fall');
+const planetSymbols = ['☀','☽','☿','♀','♂','♃','♄','♅','♆','♇','⭐','✦','★','⟡','✧','🌙','⚡','🔮'];
+const planetColors  = ['#FF8C00','#BF5FFF','#00D9FF','#FF3D81','#39FF88','#F7B801','#5B8CFF','#FF6EB4'];
+
+for (let i = 0; i < 30; i++) {
+  const el = document.createElement('div');
+  el.className = 'pfail';
+  el.textContent = planetSymbols[Math.floor(Math.random() * planetSymbols.length)];
+  el.style.left = Math.random() * 100 + '%';
+  el.style.color = planetColors[Math.floor(Math.random() * planetColors.length)];
+  const dur = (Math.random() * 9 + 6).toFixed(1) + 's';
+  const delay = (Math.random() * 6).toFixed(1) + 's';
+  el.style.animationDuration = dur;
+  el.style.animationDelay   = delay;
+  el.style.fontSize = (Math.random() * 20 + 14) + 'px';
+  planetFall.appendChild(el);
+  el.addEventListener('animationiteration', () => {
+    el.style.left = Math.random() * 100 + '%';
+    el.style.color = planetColors[Math.floor(Math.random() * planetColors.length)];
+  });
+}
+
+// ── SFX (Web Audio API) ──
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new AudioCtx();
+  return audioCtx;
+}
+function playTone(type, freq, freq2, duration, gainVal) {
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    if (freq2) osc.frequency.linearRampToValueAtTime(freq2, ctx.currentTime + duration);
+    gain.gain.setValueAtTime(gainVal, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
+  } catch(e) {}
+}
+function sfxClick()   { playTone('square', 480, 900, 0.12, 0.18); }
+function sfxSelect()  { playTone('sine', 540, 680, 0.14, 0.2); setTimeout(()=>playTone('sine',680,800,0.12,0.15),80); }
+function sfxCorrect() { playTone('sine',523,784,0.15,0.25); setTimeout(()=>playTone('sine',659,1046,0.2,0.2),120); setTimeout(()=>playTone('triangle',1046,1318,0.3,0.18),260); }
+function sfxWrong()   { playTone('sawtooth',300,150,0.25,0.2); setTimeout(()=>playTone('sawtooth',180,100,0.2,0.15),150); }
+function sfxNext()    { playTone('square',350,460,0.1,0.15); setTimeout(()=>playTone('square',460,570,0.1,0.12),90); }
+function sfxResults() { [523,659,784,880,1046,784,1318].forEach((n,i)=>setTimeout(()=>playTone('sine',n,n*1.02,0.18,0.2),i*110)); }
+function sfxRestart() { playTone('sine',880,440,0.2,0.2); setTimeout(()=>playTone('sine',440,880,0.25,0.2),180); }
+
+// ── QUESTIONS ──
+const questions = [
+
+  // ─── INTRODUCCIÓN A LOS PLANETAS ───
+  {
+    type: "mc", category: "🪐 INTRODUCCIÓN",
+    text: "¿Cuántos planetas se utilizan principalmente en la astrología occidental moderna?",
+    options: ["7", "8", "10", "12"],
+    answer: 2,
+    explanation: "La astrología occidental moderna trabaja con 10 cuerpos celestes: Sol, Luna, Mercurio, Venus, Marte, Júpiter, Saturno, Urano, Neptuno y Plutón."
+  },
+  {
+    type: "tf", category: "🪐 INTRODUCCIÓN",
+    text: "En astrología, el Sol y la Luna se consideran 'planetas' aunque técnicamente son luminarias.",
+    answer: true,
+    explanation: "Aunque el Sol es una estrella y la Luna un satélite, en astrología se les llama 'planetas' o 'luminarias' y se les da la misma importancia simbólica que a los demás planetas."
+  },
+  {
+    type: "mc", category: "🪐 INTRODUCCIÓN",
+    text: "¿Cómo se clasifica a los planetas según su distancia al Sol y su influencia en la carta natal?",
+    options: [
+      "Internos y externos",
+      "Personales, sociales y transpersonales",
+      "Rápidos y lentos",
+      "Benéficos y maléficos"
+    ],
+    answer: 1,
+    explanation: "Los planetas se dividen en: Personales (Sol, Luna, Mercurio, Venus, Marte), Sociales (Júpiter y Saturno) y Transpersonales o generacionales (Urano, Neptuno y Plutón)."
+  },
+
+  // ─── EL SOL ───
+  {
+    type: "mc", category: "☀ EL SOL",
+    text: "¿Qué arquetipo o principio representa el Sol en la carta natal?",
+    options: [
+      "El inconsciente y los sueños",
+      "La identidad consciente, la voluntad y el propósito vital",
+      "La comunicación y el pensamiento racional",
+      "Los valores materiales y el placer"
+    ],
+    answer: 1,
+    explanation: "El Sol simboliza el YO central, la identidad consciente, la voluntad creativa y el propósito de vida. Es la luz que buscamos encarnar plenamente."
+  },
+  {
+    type: "tf", category: "☀ EL SOL",
+    text: "El Sol tarda aproximadamente un mes en transitar cada signo zodiacal, completando el zodiaco en un año.",
+    answer: true,
+    explanation: "El Sol recorre los 12 signos en aproximadamente 365 días, pasando cerca de 30 días en cada signo. Por eso el 'signo solar' coincide con el mes de nacimiento."
+  },
+
+  // ─── LA LUNA ───
+  {
+    type: "mc", category: "☽ LA LUNA",
+    text: "¿Qué área de la vida simboliza principalmente la Luna en astrología?",
+    options: [
+      "La carrera profesional y el estatus social",
+      "Las emociones, el instinto, la memoria y el mundo subconsciente",
+      "Los viajes largos y la filosofía",
+      "La estructura, la disciplina y las responsabilidades"
+    ],
+    answer: 1,
+    explanation: "La Luna rige las emociones, las reacciones instintivas, la memoria, el pasado, la figura materna y todo lo que nos nutre y da seguridad."
+  },
+  {
+    type: "mc", category: "☽ LA LUNA",
+    text: "¿Cuál es el ciclo aproximado de la Luna alrededor de la Tierra?",
+    options: ["7 días", "14 días", "28 días", "365 días"],
+    answer: 2,
+    explanation: "La Luna completa su ciclo en aproximadamente 28-29 días (ciclo sinódico), cambiando de signo cada 2-2.5 días. Es el planeta más rápido del zodiaco."
+  },
+
+  // ─── MERCURIO ───
+  {
+    type: "mc", category: "☿ MERCURIO",
+    text: "Mercurio rige los signos de Géminis y Virgo. ¿Qué principio representa?",
+    options: [
+      "El amor romántico y la atracción",
+      "La mente, la comunicación, el aprendizaje y los viajes cortos",
+      "La expansión, la suerte y la sabiduría",
+      "Las transformaciones profundas y el poder"
+    ],
+    answer: 1,
+    explanation: "Mercurio es el mensajero del zodiaco: rige la mente racional, el habla, la escritura, los viajes cortos, el aprendizaje y toda forma de comunicación e intercambio de información."
+  },
+  {
+    type: "tf", category: "☿ MERCURIO",
+    text: "Mercurio retrograda varias veces al año y en astrología se asocia con retrasos en comunicaciones y tecnología.",
+    answer: true,
+    explanation: "Mercurio retrograda aproximadamente 3 veces al año. En astrología, este período se asocia simbólicamente con revisar, replantear y retrasos en comunicaciones, contratos y tecnología."
+  },
+
+  // ─── VENUS ───
+  {
+    type: "mc", category: "♀ VENUS",
+    text: "Venus rige Tauro y Libra. ¿Cuál es su simbolismo principal?",
+    options: [
+      "La guerra, la competencia y la ambición",
+      "El amor, la belleza, los valores, el placer y las relaciones",
+      "La expansión espiritual y la búsqueda de verdad",
+      "La disciplina, el karma y las limitaciones"
+    ],
+    answer: 1,
+    explanation: "Venus representa el principio del amor, la atracción, la belleza, el arte, los valores personales y todo lo que nos da placer. También rige el dinero como símbolo de lo que valoramos."
+  },
+  {
+    type: "mc", category: "♀ VENUS",
+    text: "¿Cuál de las siguientes afirmaciones sobre Venus es correcta en astrología?",
+    options: [
+      "Venus solo rige las relaciones románticas",
+      "Venus es el planeta más lento del sistema solar",
+      "Venus indica cómo amamos y qué consideramos bello y valioso",
+      "Venus rige exclusivamente el dinero y las finanzas"
+    ],
+    answer: 2,
+    explanation: "Venus muestra nuestra forma de amar, relacionarnos, nuestro sentido estético y lo que valoramos. Su posición en la carta natal describe el estilo amoroso y artístico de la persona."
+  },
+
+  // ─── MARTE ───
+  {
+    type: "mc", category: "♂ MARTE",
+    text: "¿Qué principio rige Marte en la carta natal?",
+    options: [
+      "La intuición y los sueños",
+      "La acción, el deseo, la energía, la iniciativa y la sexualidad",
+      "La expansión social y el optimismo",
+      "La transformación espiritual y el renacimiento"
+    ],
+    answer: 1,
+    explanation: "Marte es el planeta de la acción: rige la energía vital, el deseo, la iniciativa, la sexualidad, la valentía y la manera en que luchamos por lo que queremos."
+  },
+  {
+    type: "tf", category: "♂ MARTE",
+    text: "Marte es considerado un planeta personal porque su posición varía notablemente de persona a persona y describe comportamientos individuales.",
+    answer: true,
+    explanation: "Marte es un planeta personal: tarda menos de 2 años en recorrer el zodiaco, por lo que su posición es única para cada individuo y describe su forma de actuar, desear y competir."
+  },
+
+  // ─── JÚPITER ───
+  {
+    type: "mc", category: "♃ JÚPITER",
+    text: "Júpiter es conocido como el 'gran benéfico'. ¿Qué representa en astrología?",
+    options: [
+      "Las restricciones y el karma",
+      "La expansión, la abundancia, la sabiduría y la buena suerte",
+      "El conflicto y la transformación dolorosa",
+      "La comunicación y los viajes cortos"
+    ],
+    answer: 1,
+    explanation: "Júpiter simboliza la expansión, la filosofía, la sabiduría, la suerte, la generosidad y el crecimiento. Indica en qué área de la vida tendemos a crecer y atraer abundancia."
+  },
+  {
+    type: "mc", category: "♃ JÚPITER",
+    text: "¿Aproximadamente cuánto tiempo tarda Júpiter en transitar cada signo del zodiaco?",
+    options: ["6 meses", "1 año", "2 años", "12 años"],
+    answer: 1,
+    explanation: "Júpiter tarda aproximadamente 12 años en recorrer todo el zodiaco, pasando cerca de 1 año en cada signo. Por eso se le considera un planeta social, no puramente personal."
+  },
+
+  // ─── SATURNO ───
+  {
+    type: "mc", category: "♄ SATURNO",
+    text: "Saturno es conocido como el 'gran maléfico' o maestro del zodiaco. ¿Qué simboliza?",
+    options: [
+      "La expansión sin límites y la buena fortuna",
+      "Las emociones y el inconsciente",
+      "La disciplina, las responsabilidades, el karma y las limitaciones",
+      "El amor y las relaciones de pareja"
+    ],
+    answer: 2,
+    explanation: "Saturno representa las lecciones de vida, la disciplina, el esfuerzo, el tiempo, el karma y las responsabilidades. Muestra dónde debemos trabajar con paciencia para madurar."
+  },
+  {
+    type: "tf", category: "♄ SATURNO",
+    text: "El 'retorno de Saturno', que ocurre alrededor de los 28-30 años, marca un período importante de madurez y responsabilidad en la vida.",
+    answer: true,
+    explanation: "Saturno tarda ~29 años en completar su órbita. Cuando regresa al punto donde estaba al nacer (~28-30 años), ocurre el 'retorno de Saturno', una etapa de revisión profunda y transición hacia la adultez real."
+  },
+
+  // ─── URANO ───
+  {
+    type: "mc", category: "♅ URANO",
+    text: "¿Cuál es el principio que representa Urano en astrología?",
+    options: [
+      "La tradición, la familia y las raíces",
+      "La revolución, la libertad, los cambios repentinos y la originalidad",
+      "El amor compasivo y la espiritualidad",
+      "La regeneración y el poder oculto"
+    ],
+    answer: 1,
+    explanation: "Urano es el planeta del cambio radical, la revolución, la originalidad, la tecnología y la libertad. Su tránsito sacude estructuras establecidas y trae lo inesperado."
+  },
+  {
+    type: "mc", category: "♅ URANO",
+    text: "Urano se considera un planeta transpersonal o generacional porque:",
+    options: [
+      "Rige solo a los adultos mayores",
+      "Su ciclo es tan largo (~84 años) que afecta a generaciones enteras, no solo individuos",
+      "Solo se puede ver desde el hemisferio norte",
+      "Es el planeta más cercano al Sol"
+    ],
+    answer: 1,
+    explanation: "Urano tarda ~84 años en recorrer el zodiaco, pasando ~7 años en cada signo. Su posición es compartida por toda una generación, por lo que se llama 'transpersonal' o 'generacional'."
+  },
+
+  // ─── NEPTUNO ───
+  {
+    type: "mc", category: "♆ NEPTUNO",
+    text: "¿Qué dimensiones de la experiencia humana rige Neptuno?",
+    options: [
+      "La mente racional y el análisis",
+      "La ambición, el poder y el estatus",
+      "Los sueños, la espiritualidad, la ilusión, la compasión y lo trascendente",
+      "La estructura social y las leyes"
+    ],
+    answer: 2,
+    explanation: "Neptuno rige el mundo de los sueños, la espiritualidad, la ilusión, el misticismo, la compasión universal y lo que trasciende la realidad ordinaria. También se asocia con el arte y la música."
+  },
+  {
+    type: "tf", category: "♆ NEPTUNO",
+    text: "Neptuno rige el signo de Piscis y tarda aproximadamente 165 años en recorrer todo el zodiaco.",
+    answer: true,
+    explanation: "Neptuno es uno de los planetas más lentos: tarda ~165 años en completar su órbita, pasando ~14 años en cada signo. Rige a Piscis y simboliza la disolución de límites y la conexión con lo divino."
+  },
+
+  // ─── PLUTÓN ───
+  {
+    type: "mc", category: "♇ PLUTÓN",
+    text: "¿Qué arquetipo representa Plutón en astrología?",
+    options: [
+      "La comunicación y el intelecto",
+      "El amor y la armonía en las relaciones",
+      "La transformación radical, la muerte-renacimiento, el poder y lo oculto",
+      "La expansión social y la abundancia"
+    ],
+    answer: 2,
+    explanation: "Plutón es el planeta de la transformación profunda, el poder, lo oculto, la muerte simbólica y el renacimiento. Su influencia obliga a soltar lo que ya no sirve para renacer renovado."
+  },
+
+  // ─── PREGUNTA ABIERTA ───
+  {
+    type: "open", category: "🌌 REFLEXIÓN INTEGRADORA",
+    text: "Elige uno de los 10 planetas y explica con tus propias palabras qué simboliza y cómo podría manifestarse su influencia en la vida cotidiana de una persona.",
+    answer: null,
+    explanation: "No hay una sola respuesta correcta. Lo importante es relacionar el arquetipo del planeta (Sol=identidad, Luna=emociones, Mercurio=mente, Venus=amor, Marte=acción, Júpiter=expansión, Saturno=disciplina, Urano=cambio, Neptuno=espiritualidad, Plutón=transformación) con experiencias concretas de la vida."
+  }
+];
+
+let current = 0, score = 0, answered = false, results = [];
+let selectedOption = null;
+
+function init() {
+  current = 0; score = 0; answered = false; results = []; selectedOption = null;
+  document.getElementById('quiz-screen').style.display = 'block';
+  document.getElementById('results-screen').classList.remove('show');
+  document.getElementById('intro-box').style.display = 'block';
+  document.getElementById('btn-next').textContent = 'SIGUIENTE ▶';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false; selectedOption = null;
+  const q = questions[current];
+
+  if (current > 0) document.getElementById('intro-box').style.display = 'none';
+
+  document.getElementById('q-counter').textContent = `▶ PREGUNTA ${current+1} / ${questions.length}`;
+  document.getElementById('q-score-live').textContent = `🪐 PTS: ${score}`;
+  document.getElementById('progress-fill').style.width = `${(current/questions.length)*100}%`;
+  document.getElementById('q-number').textContent = `#${current+1}`;
+
+  const badge = document.getElementById('q-type-badge');
+  if (q.type === 'mc')   { badge.textContent = '[ OPCIÓN MÚLTIPLE ]'; badge.className = 'q-badge badge-mc'; }
+  else if (q.type === 'tf') { badge.textContent = '[ VERDADERO / FALSO ]'; badge.className = 'q-badge badge-tf'; }
+  else                   { badge.textContent = '[ RESPUESTA ABIERTA ]'; badge.className = 'q-badge badge-open'; }
+
+  document.getElementById('q-category').textContent = q.category;
+  document.getElementById('question-text').textContent = q.text;
+
+  const fb = document.getElementById('feedback-box');
+  fb.className = 'feedback-box';
+
+  const area = document.getElementById('answer-area');
+  area.innerHTML = '';
+
+  if (q.type === 'mc') {
+    const wrap = document.createElement('div');
+    wrap.className = 'options';
+    ['A','B','C','D'].forEach((letter, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.id = `opt-${i}`;
+      btn.innerHTML = `<span class="opt-letter">${letter}.</span>${q.options[i]}`;
+      btn.onclick = () => selectOption(i);
+      wrap.appendChild(btn);
+    });
+    area.appendChild(wrap);
+  } else if (q.type === 'tf') {
+    const wrap = document.createElement('div');
+    wrap.className = 'tf-wrap';
+    [['✔ VERDADERO', true], ['✗ FALSO', false]].forEach(([label, val], i) => {
+      const btn = document.createElement('button');
+      btn.className = 'tf-btn';
+      btn.id = `tf-${i}`;
+      btn.textContent = label;
+      btn.onclick = () => selectTF(val, i);
+      wrap.appendChild(btn);
+    });
+    area.appendChild(wrap);
+  } else {
+    const ta = document.createElement('textarea');
+    ta.className = 'open-input';
+    ta.id = 'open-input';
+    ta.placeholder = '> ESCRIBE TU RESPUESTA AQUÍ...';
+    area.appendChild(ta);
+  }
+
+  document.getElementById('btn-check').disabled = false;
+  document.getElementById('btn-next').disabled = true;
+
+  const card = document.getElementById('question-card');
+  card.style.animation = 'none';
+  void card.offsetWidth;
+  card.style.animation = 'card-in 0.3s steps(8)';
+}
+
+function selectOption(i) {
+  if (answered) return;
+  sfxSelect();
+  selectedOption = i;
+  document.querySelectorAll('.opt-btn').forEach((b, idx) => {
+    b.classList.toggle('selected', idx === i);
+  });
+}
+
+function selectTF(val, idx) {
+  if (answered) return;
+  sfxSelect();
+  selectedOption = val;
+  document.querySelectorAll('.tf-btn').forEach((b, i) => {
+    b.classList.toggle('selected', i === idx);
+  });
+}
+
+function checkAnswer() {
+  if (answered) return;
+  const q = questions[current];
+  const fb = document.getElementById('feedback-box');
+
+  if (q.type === 'open') {
+    const val = document.getElementById('open-input').value.trim();
+    if (!val) { alert('ESCRIBE TU RESPUESTA ANTES DE CONTINUAR'); return; }
+    sfxClick();
+    answered = true;
+    document.getElementById('open-input').disabled = true;
+    fb.className = 'feedback-box open-fb show';
+    document.getElementById('fb-main').textContent = '✎ RESPUESTA GUARDADA · COMPARA CON LA GUÍA:';
+    document.getElementById('fb-expl').textContent = q.explanation;
+    results.push({ q, status: 'open', userText: val });
+
+  } else if (q.type === 'mc') {
+    if (selectedOption === null) { alert('SELECCIONA UNA OPCIÓN'); return; }
+    answered = true;
+    const correct = selectedOption === q.answer;
+    if (correct) { score++; setTimeout(sfxCorrect, 50); }
+    else { setTimeout(sfxWrong, 50); }
+    document.querySelectorAll('.opt-btn').forEach((btn, idx) => {
+      btn.disabled = true;
+      if (idx === q.answer) btn.classList.add('correct');
+      else if (idx === selectedOption && !correct) btn.classList.add('wrong');
+    });
+    fb.className = `feedback-box ${correct ? 'correct-fb' : 'wrong-fb'} show`;
+    document.getElementById('fb-main').textContent = correct
+      ? '✔ ¡CORRECTO! +1 PUNTO'
+      : `✗ INCORRECTO · RESPUESTA: ${q.options[q.answer]}`;
+    document.getElementById('fb-expl').textContent = q.explanation;
+    results.push({ q, status: correct ? 'correct' : 'wrong', selected: selectedOption });
+
+  } else if (q.type === 'tf') {
+    if (selectedOption === null) { alert('SELECCIONA VERDADERO O FALSO'); return; }
+    answered = true;
+    const correct = selectedOption === q.answer;
+    if (correct) { score++; setTimeout(sfxCorrect, 50); }
+    else { setTimeout(sfxWrong, 50); }
+    document.querySelectorAll('.tf-btn').forEach((btn, i) => {
+      btn.disabled = true;
+      const val = i === 0;
+      if (val === q.answer) btn.classList.add('correct');
+      else if (val === selectedOption && !correct) btn.classList.add('wrong');
+    });
+    fb.className = `feedback-box ${correct ? 'correct-fb' : 'wrong-fb'} show`;
+    document.getElementById('fb-main').textContent = correct
+      ? '✔ ¡CORRECTO! +1 PUNTO'
+      : `✗ INCORRECTO · RESPUESTA: ${q.answer ? 'VERDADERO' : 'FALSO'}`;
+    document.getElementById('fb-expl').textContent = q.explanation;
+    results.push({ q, status: correct ? 'correct' : 'wrong', selected: selectedOption });
+  }
+
+  selectedOption = null;
+  document.getElementById('btn-check').disabled = true;
+  document.getElementById('btn-next').disabled = false;
+  document.getElementById('q-score-live').textContent = `🪐 PTS: ${score}`;
+
+  if (current === questions.length - 1) {
+    document.getElementById('btn-next').textContent = 'VER RESULTADOS ★';
+  }
+}
+
+function nextQuestion() {
+  sfxNext();
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  const rs = document.getElementById('results-screen');
+  rs.classList.add('show');
+
+  const openCount = results.filter(r => r.status === 'open').length;
+  const gradable  = questions.length - openCount;
+  const pct = gradable > 0 ? Math.round((score / gradable) * 100) : 0;
+
+  document.getElementById('res-pct').textContent = `${pct}%`;
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('res-correct').textContent = score;
+  document.getElementById('res-wrong').textContent = gradable - score;
+  document.getElementById('res-open').textContent = openCount;
+
+  let tagline, detail;
+  if      (pct >= 90) { tagline = '★ MAESTRO DE LOS PLANETAS ★';      detail = 'Tu conocimiento cósmico es extraordinario.'; }
+  else if (pct >= 75) { tagline = '⟡ BUEN ALINEAMIENTO PLANETARIO ⟡'; detail = 'Dominas los principios. ¡Sigue explorando!'; }
+  else if (pct >= 60) { tagline = '☽ EN EL CAMINO CORRECTO ☽';         detail = 'Buena base. Repasa los planetas fallados.'; }
+  else                { tagline = '✦ LOS PLANETAS TE GUIARÁN ✦';       detail = 'Revisa el módulo y vuelve a intentarlo.'; }
+
+  document.getElementById('res-tagline').textContent = tagline;
+  document.getElementById('res-detail').textContent  = detail;
+
+  setTimeout(() => sfxResults(), 400);
+
+  const list = document.getElementById('review-list');
+  list.innerHTML = '';
+  results.forEach((r, i) => {
+    const div = document.createElement('div');
+    div.className = `review-item ${r.status}-item`;
+
+    let answerHTML = '';
+    if (r.status === 'correct') {
+      const ans = r.q.type === 'mc' ? r.q.options[r.selected] : (r.selected ? 'VERDADERO' : 'FALSO');
+      answerHTML = `<p class="review-a correct-a">✔ TU RESPUESTA: ${ans}</p>`;
+    } else if (r.status === 'wrong') {
+      const userAns    = r.q.type === 'mc' ? r.q.options[r.selected] : (r.selected ? 'VERDADERO' : 'FALSO');
+      const correctAns = r.q.type === 'mc' ? r.q.options[r.q.answer] : (r.q.answer ? 'VERDADERO' : 'FALSO');
+      answerHTML = `<p class="review-a wrong-a">✗ TU RESPUESTA: ${userAns}</p>
+                    <p class="review-correct-ans">▶ CORRECTA: ${correctAns}</p>`;
+    } else {
+      answerHTML = `<p class="review-a open-a">✎ TU RESPUESTA: ${r.userText}</p>`;
+    }
+
+    div.innerHTML = `
+      <span class="review-num">PREGUNTA ${i+1} · ${r.q.category}</span>
+      <p class="review-q">${r.q.text}</p>
+      ${answerHTML}
+      <p class="review-expl">ℹ ${r.q.explanation}</p>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function restart() {
+  sfxRestart();
+  document.getElementById('results-screen').classList.remove('show');
+  init();
+}
+
+init();
+</script>
+</body>
+</html>
