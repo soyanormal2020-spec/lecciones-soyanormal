@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad de Autoevaluación · Astrología Espiritual</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --purple: #724CF9;
+            --cyan: #00D9FF;
+            --pink: #FF3D81;
+            --gold: #FFD700;
+            --bg: #0A0A1A;
+            --bg2: #1a1a2e;
+            --bg3: #0f0f1e;
+            --text: #E0E0E0;
+        }
+
+        body {
+            background: var(--bg);
+            font-family: 'Press Start 2P', cursive;
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* scanlines */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg,
+                rgba(0,0,0,0.12) 0px, rgba(0,0,0,0.12) 1px,
+                transparent 1px, transparent 2px);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ── Estrellas de fondo ── */
+        .stars-bg {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.25; }
+            50% { opacity: 1; }
+        }
+
+        /* ── Estrellas fugaces ── */
+        .estrellas-frente {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 1; overflow: hidden;
+        }
+        .estrella-caida {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: #E0E0E0;
+            border-radius: 50%;
+            box-shadow: 0 0 6px rgba(255,255,255,0.9), 0 0 12px rgba(0,217,255,0.5);
+            animation: caerEstrella linear infinite;
+        }
+        .estrella-caida::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 35px; height: 1px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.7), transparent);
+            transform: translate(-100%, -50%);
+        }
+        .estrella-caida.cyan { background: #00D9FF; box-shadow: 0 0 8px rgba(0,217,255,1); }
+        .estrella-caida.rosa { background: #FF3D81; box-shadow: 0 0 8px rgba(255,61,129,1); }
+        .estrella-caida.morada { background: #724CF9; box-shadow: 0 0 8px rgba(114,76,249,1); }
+        .estrella-caida:nth-child(1) { left: 10%; animation-duration: 3s; animation-delay: 0s; }
+        .estrella-caida:nth-child(2) { left: 22%; animation-duration: 4s; animation-delay: 0.7s; }
+        .estrella-caida:nth-child(3) { left: 35%; animation-duration: 3.5s; animation-delay: 1.2s; }
+        .estrella-caida:nth-child(4) { left: 50%; animation-duration: 5s; animation-delay: 1.8s; }
+        .estrella-caida:nth-child(5) { left: 63%; animation-duration: 3.2s; animation-delay: 0.4s; }
+        .estrella-caida:nth-child(6) { left: 78%; animation-duration: 4.5s; animation-delay: 2.1s; }
+        .estrella-caida:nth-child(7) { left: 88%; animation-duration: 3.8s; animation-delay: 1s; }
+        @keyframes caerEstrella {
+            0% { top: -5%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 105%; opacity: 0; }
+        }
+
+        /* ── Wrapper ── */
+        .wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ── Header intro ── */
+        .intro-block {
+            background: var(--bg2);
+            border: 4px solid var(--purple);
+            box-shadow: 8px 8px 0 #000, 0 0 30px rgba(114,76,249,0.4);
+            padding: 35px 28px;
+            margin-bottom: 40px;
+            animation: purplePulse 4s ease-in-out infinite;
+        }
+        @keyframes purplePulse {
+            0%, 100% { box-shadow: 8px 8px 0 #000, 0 0 20px rgba(114,76,249,0.3); }
+            50% { box-shadow: 8px 8px 0 #000, 0 0 40px rgba(114,76,249,0.7); }
+        }
+
+        .intro-badge {
+            display: inline-block;
+            background: var(--purple);
+            color: #fff;
+            font-size: 0.45rem;
+            padding: 6px 12px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-shadow: none;
+        }
+
+        .intro-title {
+            font-size: clamp(0.65rem, 2vw, 1rem);
+            color: var(--gold);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255,215,0,0.7);
+            animation: goldGlow 3s ease-in-out infinite;
+        }
+        @keyframes goldGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+            50% { text-shadow: 0 0 25px rgba(255,215,0,1); }
+        }
+
+        .intro-text {
+            font-size: clamp(0.42rem, 1.2vw, 0.58rem);
+            line-height: 2.1;
+            color: var(--text);
+            text-align: justify;
+        }
+
+        /* ── Pixel divider ── */
+        .pixel-divider {
+            width: 100%;
+            height: 4px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--purple) 0px, var(--purple) 8px,
+                var(--cyan) 8px, var(--cyan) 16px,
+                var(--pink) 16px, var(--pink) 24px
+            );
+            margin: 35px 0;
+            box-shadow: 0 0 10px rgba(114,76,249,0.5);
+        }
+
+        /* ── Progress bar ── */
+        .progress-wrapper {
+            margin-bottom: 30px;
+        }
+        .progress-label {
+            font-size: 0.4rem;
+            color: var(--cyan);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .progress-bar-bg {
+            width: 100%;
+            height: 12px;
+            background: var(--bg2);
+            border: 2px solid var(--purple);
+            box-shadow: 4px 4px 0 #000;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--purple), var(--cyan));
+            transition: width 0.6s ease;
+            box-shadow: 0 0 10px rgba(0,217,255,0.6);
+        }
+        .progress-count {
+            font-size: 0.38rem;
+            color: var(--gold);
+            text-align: right;
+            margin-top: 6px;
+        }
+
+        /* ── Cards de preguntas ── */
+        .question-card {
+            display: none;
+            background: var(--bg2);
+            border: 4px solid var(--cyan);
+            box-shadow: 8px 8px 0 #000;
+            padding: 30px 25px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .question-card.active { display: block; animation: fadeSlide 0.4s ease; }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* esquinas decorativas */
+        .corner { position: absolute; width: 14px; height: 14px; border: 3px solid var(--gold); }
+        .corner-tl { top: -3px; left: -3px; border-right: none; border-bottom: none; }
+        .corner-tr { top: -3px; right: -3px; border-left: none; border-bottom: none; }
+        .corner-bl { bottom: -3px; left: -3px; border-right: none; border-top: none; }
+        .corner-br { bottom: -3px; right: -3px; border-left: none; border-top: none; }
+
+        .q-number {
+            font-size: 0.38rem;
+            color: var(--pink);
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 8px rgba(255,61,129,0.6);
+        }
+
+        .q-icon {
+            font-size: 1.6rem;
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .q-text {
+            font-size: clamp(0.48rem, 1.4vw, 0.65rem);
+            color: var(--cyan);
+            line-height: 1.9;
+            margin-bottom: 22px;
+            text-shadow: 0 0 8px rgba(0,217,255,0.3);
+        }
+
+        .q-hint {
+            font-size: 0.38rem;
+            color: var(--purple);
+            line-height: 1.8;
+            margin-bottom: 18px;
+            padding: 10px 14px;
+            border-left: 3px solid var(--purple);
+            background: rgba(114,76,249,0.08);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 160px;
+            background: var(--bg3);
+            border: 3px solid var(--purple);
+            color: var(--text);
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(0.38rem, 1vw, 0.48rem);
+            line-height: 2;
+            padding: 14px;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-shadow: 4px 4px 0 #000;
+        }
+        textarea:focus {
+            border-color: var(--cyan);
+            box-shadow: 4px 4px 0 #000, 0 0 15px rgba(0,217,255,0.4);
+        }
+        textarea::placeholder {
+            color: rgba(224,224,224,0.3);
+            font-size: 0.38rem;
+        }
+
+        .char-count {
+            font-size: 0.35rem;
+            color: var(--purple);
+            text-align: right;
+            margin-top: 6px;
+            transition: color 0.3s;
+        }
+        .char-count.good { color: var(--cyan); }
+        .char-count.great { color: var(--gold); }
+
+        /* ── Botones ── */
+        .btn-row {
+            display: flex;
+            gap: 15px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.45rem;
+            padding: 14px 20px;
+            border: 3px solid transparent;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: transform 0.1s, box-shadow 0.1s;
+            text-transform: uppercase;
+        }
+        .btn:active { transform: translate(3px, 3px); box-shadow: none !important; }
+
+        .btn-next {
+            background: var(--purple);
+            color: #fff;
+            border-color: var(--purple);
+            box-shadow: 5px 5px 0 #000;
+        }
+        .btn-next:hover { box-shadow: 7px 7px 0 #000, 0 0 15px rgba(114,76,249,0.6); }
+        .btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .btn-prev {
+            background: transparent;
+            color: var(--cyan);
+            border-color: var(--cyan);
+            box-shadow: 5px 5px 0 #000;
+        }
+        .btn-prev:hover { box-shadow: 7px 7px 0 #000, 0 0 10px rgba(0,217,255,0.4); }
+
+        .btn-finish {
+            background: var(--gold);
+            color: #000;
+            border-color: var(--gold);
+            box-shadow: 5px 5px 0 #000;
+            animation: goldBlink 2s ease-in-out infinite;
+        }
+        @keyframes goldBlink {
+            0%, 100% { box-shadow: 5px 5px 0 #000, 0 0 10px rgba(255,215,0,0.4); }
+            50% { box-shadow: 5px 5px 0 #000, 0 0 25px rgba(255,215,0,0.8); }
+        }
+
+        /* ── Pantalla final ── */
+        #final-screen {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        #final-screen.visible { display: block; animation: fadeSlide 0.5s ease; }
+
+        .final-box {
+            background: var(--bg2);
+            border: 4px solid var(--gold);
+            box-shadow: 10px 10px 0 #000, 0 0 40px rgba(255,215,0,0.4);
+            padding: 40px 30px;
+            margin-bottom: 30px;
+            animation: goldPulse 3s ease-in-out infinite;
+        }
+        @keyframes goldPulse {
+            0%, 100% { box-shadow: 10px 10px 0 #000, 0 0 25px rgba(255,215,0,0.3); }
+            50% { box-shadow: 10px 10px 0 #000, 0 0 50px rgba(255,215,0,0.7); }
+        }
+
+        .final-star { font-size: 3rem; display: block; margin-bottom: 20px; }
+
+        .final-title {
+            font-size: clamp(0.65rem, 2vw, 1rem);
+            color: var(--gold);
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255,215,0,0.8);
+        }
+
+        .final-msg {
+            font-size: clamp(0.4rem, 1.1vw, 0.55rem);
+            color: var(--text);
+            line-height: 2.1;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        /* ── Resumen de respuestas ── */
+        .summary-title {
+            font-size: 0.55rem;
+            color: var(--cyan);
+            margin-bottom: 20px;
+            text-shadow: 0 0 8px rgba(0,217,255,0.5);
+            text-align: left;
+            border-left: 4px solid var(--cyan);
+            padding-left: 12px;
+        }
+
+        .answer-summary {
+            background: var(--bg3);
+            border: 3px solid var(--purple);
+            box-shadow: 5px 5px 0 #000;
+            padding: 20px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .answer-q {
+            font-size: 0.38rem;
+            color: var(--pink);
+            line-height: 1.7;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .answer-r {
+            font-size: 0.38rem;
+            color: var(--text);
+            line-height: 2;
+            border-left: 3px solid var(--purple);
+            padding-left: 12px;
+        }
+        .answer-r.empty { color: rgba(224,224,224,0.3); font-style: italic; }
+
+        .btn-restart {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.45rem;
+            padding: 16px 24px;
+            background: var(--pink);
+            color: #fff;
+            border: 3px solid var(--pink);
+            box-shadow: 6px 6px 0 #000;
+            cursor: pointer;
+            margin-top: 10px;
+            text-transform: uppercase;
+            transition: box-shadow 0.2s;
+        }
+        .btn-restart:hover { box-shadow: 8px 8px 0 #000, 0 0 20px rgba(255,61,129,0.6); }
+
+        /* ── Notificación de guardado ── */
+        .save-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--purple);
+            color: #fff;
+            font-size: 0.4rem;
+            padding: 12px 18px;
+            border: 2px solid var(--cyan);
+            box-shadow: 4px 4px 0 #000;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+        .save-toast.show { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 600px) {
+            .btn-row { flex-direction: column; }
+            .btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Fondo de estrellas -->
+<div class="stars-bg" id="starsBg"></div>
+
+<!-- Estrellas fugaces -->
+<div class="estrellas-frente">
+    <div class="estrella-caida"></div>
+    <div class="estrella-caida cyan"></div>
+    <div class="estrella-caida rosa"></div>
+    <div class="estrella-caida morada"></div>
+    <div class="estrella-caida"></div>
+    <div class="estrella-caida cyan"></div>
+    <div class="estrella-caida rosa"></div>
+</div>
+
+<!-- Toast de guardado -->
+<div class="save-toast" id="saveToast">✦ RESPUESTA GUARDADA</div>
+
+<div class="wrapper">
+
+    <!-- Intro -->
+    <div class="intro-block">
+        <div class="intro-badge">✦ MÓDULO FINAL · AUTOEVALUACIÓN</div>
+        <h1 class="intro-title">INTEGRANDO LA LÓGICA ESPIRITUAL EN TU PRÁCTICA ASTROLÓGICA</h1>
+        <div class="pixel-divider"></div>
+        <p class="intro-text">
+            Como te habrás dado cuenta, la Astrología es un conocimiento
+            profundamente espiritual. Por tanto, si pretendes ser un profesional
+            de la Astrología que se caracterice por ser profundo, ético y que
+            realmente sea un guía para el consultante, es indispensable que
+            incorpores este enfoque de <span style="color:var(--cyan)">lógica espiritual</span> en tu quehacer como Astrólogo
+            y que los aspectos psicológicos que llegues a descifrar solo sean
+            una herramienta básica para adentrarte en el
+            <span style="color:var(--purple)">lenguaje simbólico del alma</span>
+            que se despliega en cada posición astrológica.
+        </p>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-wrapper" id="progressWrapper">
+        <div class="progress-label">◈ PROGRESO DE TU REFLEXIÓN</div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+        </div>
+        <div class="progress-count" id="progressCount">0 / 4 completadas</div>
+    </div>
+
+    <!-- Pregunta 1 -->
+    <div class="question-card active" id="card-0">
+        <span class="corner corner-tl"></span>
+        <span class="corner corner-tr"></span>
+        <span class="corner corner-bl"></span>
+        <span class="corner corner-br"></span>
+        <div class="q-number">◈ PREGUNTA 01 / 04</div>
+        <span class="q-icon">♈</span>
+        <p class="q-text">Describe con tus propias palabras: ¿cuáles son las características y la función de la Astrología Espiritual que se ejerce?</p>
+        <p class="q-hint">💡 Pista: piensa en cómo difiere del enfoque psicologizado matrix. ¿Qué la hace única? ¿Cuál es su propósito más profundo?</p>
+        <textarea id="answer-0" placeholder="Escribe tu reflexión aquí..." oninput="updateChar(0); autoSave(0);"></textarea>
+        <div class="char-count" id="char-0">Mínimo sugerido: 80 caracteres · Escritos: 0</div>
+        <div class="btn-row">
+            <button class="btn btn-next" onclick="goNext(0)">SIGUIENTE ▶</button>
+        </div>
+    </div>
+
+    <!-- Pregunta 2 -->
+    <div class="question-card" id="card-1">
+        <span class="corner corner-tl"></span>
+        <span class="corner corner-tr"></span>
+        <span class="corner corner-bl"></span>
+        <span class="corner corner-br"></span>
+        <div class="q-number">◈ PREGUNTA 02 / 04</div>
+        <span class="q-icon">⚠</span>
+        <p class="q-text">¿Cuáles son las creencias que se practican en la Astrología que reducen su innata profundidad?</p>
+        <p class="q-hint">💡 Pista: recuerda la perspectiva "matrix": determinismos, etiquetas de personalidad, predicciones fatalistas... ¿cuáles identificas tú?</p>
+        <textarea id="answer-1" placeholder="Escribe tu reflexión aquí..." oninput="updateChar(1); autoSave(1);"></textarea>
+        <div class="char-count" id="char-1">Mínimo sugerido: 80 caracteres · Escritos: 0</div>
+        <div class="btn-row">
+            <button class="btn btn-prev" onclick="goPrev(1)">◀ ANTERIOR</button>
+            <button class="btn btn-next" onclick="goNext(1)">SIGUIENTE ▶</button>
+        </div>
+    </div>
+
+    <!-- Pregunta 3 -->
+    <div class="question-card" id="card-2">
+        <span class="corner corner-tl"></span>
+        <span class="corner corner-tr"></span>
+        <span class="corner corner-bl"></span>
+        <span class="corner corner-br"></span>
+        <div class="q-number">◈ PREGUNTA 03 / 04</div>
+        <span class="q-icon">✦</span>
+        <p class="q-text">¿Cómo crees que la Astrología Espiritual podría contribuir a la transformación en las personas?</p>
+        <p class="q-hint">💡 Pista: piensa en los procesos evolutivos, la alineación con ciclos naturales y el rol del astrólogo como guía del alma...</p>
+        <textarea id="answer-2" placeholder="Escribe tu reflexión aquí..." oninput="updateChar(2); autoSave(2);"></textarea>
+        <div class="char-count" id="char-2">Mínimo sugerido: 80 caracteres · Escritos: 0</div>
+        <div class="btn-row">
+            <button class="btn btn-prev" onclick="goPrev(2)">◀ ANTERIOR</button>
+            <button class="btn btn-next" onclick="goNext(2)">SIGUIENTE ▶</button>
+        </div>
+    </div>
+
+    <!-- Pregunta 4 -->
+    <div class="question-card" id="card-3">
+        <span class="corner corner-tl"></span>
+        <span class="corner corner-tr"></span>
+        <span class="corner corner-bl"></span>
+        <span class="corner corner-br"></span>
+        <div class="q-number">◈ PREGUNTA 04 / 04</div>
+        <span class="q-icon">🗝</span>
+        <p class="q-text">En tus propias palabras, ¿por qué consideras que la Astrología Espiritual es una llave para el alma?</p>
+        <p class="q-hint">💡 Pista: conecta la Matriz Zodiacal, el lenguaje simbólico y el mandala natal como herramientas de autoconocimiento profundo...</p>
+        <textarea id="answer-3" placeholder="Escribe tu reflexión aquí..." oninput="updateChar(3); autoSave(3);"></textarea>
+        <div class="char-count" id="char-3">Mínimo sugerido: 80 caracteres · Escritos: 0</div>
+        <div class="btn-row">
+            <button class="btn btn-prev" onclick="goPrev(3)">◀ ANTERIOR</button>
+            <button class="btn btn-finish" onclick="finish()">✦ COMPLETAR MÓDULO</button>
+        </div>
+    </div>
+
+    <!-- Pantalla final -->
+    <div id="final-screen">
+        <div class="final-box">
+            <span class="final-star">✦</span>
+            <h2 class="final-title">¡MÓDULO COMPLETADO!</h2>
+            <p class="final-msg">
+                Has integrado y expresado con tus propias palabras la esencia de la
+                <span style="color:var(--cyan)">Astrología Espiritual</span>. Este proceso de reflexión
+                es en sí mismo un acto de conciencia: al articular lo que comprendes,
+                lo anclas en tu ser y lo haces <span style="color:var(--gold)">tuyo</span>.
+                Sigue adelante — el lenguaje simbólico del cosmos te espera. 🌌
+            </p>
+        </div>
+
+        <div style="text-align:left;">
+            <div class="summary-title">◈ TUS REFLEXIONES</div>
+            <div id="summaryContainer"></div>
+        </div>
+
+        <div style="text-align:center; margin-top:30px;">
+            <button class="btn-restart" onclick="restart()">↺ VOLVER A COMENZAR</button>
+        </div>
+    </div>
+
+</div><!-- /wrapper -->
+
+<script>
+    // ── Generar estrellas de fondo ──
+    const starsBg = document.getElementById('starsBg');
+    for (let i = 0; i < 80; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        const size = Math.random() * 2.5 + 0.5;
+        s.style.cssText = `
+            width:${size}px; height:${size}px;
+            left:${Math.random()*100}%;
+            top:${Math.random()*100}%;
+            animation-delay:${Math.random()*4}s;
+            animation-duration:${Math.random()*3+2}s;
+        `;
+        starsBg.appendChild(s);
+    }
+
+    // ── Estado ──
+    let current = 0;
+    const total = 4;
+    const answers = ['', '', '', ''];
+    const completed = [false, false, false, false];
+
+    const qLabels = [
+        'Características y función de la Astrología Espiritual',
+        'Creencias que reducen la profundidad astrológica',
+        'Contribución a la transformación de las personas',
+        'La Astrología como llave para el alma'
+    ];
+
+    // ── Char counter ──
+    function updateChar(idx) {
+        const ta = document.getElementById('answer-' + idx);
+        const cc = document.getElementById('char-' + idx);
+        const len = ta.value.length;
+        answers[idx] = ta.value;
+
+        if (len >= 200) {
+            cc.textContent = `✦ ¡Excelente profundidad! · ${len} caracteres`;
+            cc.className = 'char-count great';
+        } else if (len >= 80) {
+            cc.textContent = `✓ Bien · ${len} caracteres`;
+            cc.className = 'char-count good';
+        } else {
+            cc.textContent = `Mínimo sugerido: 80 caracteres · Escritos: ${len}`;
+            cc.className = 'char-count';
+        }
+    }
+
+    // ── Toast de guardado ──
+    let toastTimer;
+    function autoSave(idx) {
+        answers[idx] = document.getElementById('answer-' + idx).value;
+        const toast = document.getElementById('saveToast');
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 1400);
+    }
+
+    // ── Progreso ──
+    function updateProgress() {
+        const done = completed.filter(Boolean).length;
+        const pct = (done / total) * 100;
+        document.getElementById('progressFill').style.width = pct + '%';
+        document.getElementById('progressCount').textContent = `${done} / ${total} completadas`;
+    }
+
+    // ── Navegación ──
+    function showCard(idx) {
+        document.querySelectorAll('.question-card').forEach(c => c.classList.remove('active'));
+        document.getElementById('card-' + idx).classList.add('active');
+        // restaurar texto guardado
+        document.getElementById('answer-' + idx).value = answers[idx];
+        updateChar(idx);
+        current = idx;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goNext(idx) {
+        const val = document.getElementById('answer-' + idx).value.trim();
+        answers[idx] = val;
+        completed[idx] = val.length > 0;
+        updateProgress();
+
+        if (idx + 1 < total) {
+            showCard(idx + 1);
+        }
+    }
+
+    function goPrev(idx) {
+        if (idx - 1 >= 0) showCard(idx - 1);
+    }
+
+    function finish() {
+        const val = document.getElementById('answer-3').value.trim();
+        answers[3] = val;
+        completed[3] = val.length > 0;
+        updateProgress();
+
+        // Ocultar cards y progress
+        document.querySelectorAll('.question-card').forEach(c => c.style.display = 'none');
+        document.getElementById('progressWrapper').style.display = 'none';
+
+        // Construir resumen
+        const container = document.getElementById('summaryContainer');
+        container.innerHTML = '';
+        qLabels.forEach((label, i) => {
+            const resp = answers[i].trim();
+            const div = document.createElement('div');
+            div.className = 'answer-summary';
+            div.innerHTML = `
+                <div class="answer-q">◈ ${label}</div>
+                <div class="answer-r ${resp ? '' : 'empty'}">${resp || '(sin respuesta)'}</div>
+            `;
+            container.appendChild(div);
+        });
+
+        document.getElementById('final-screen').classList.add('visible');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restart() {
+        answers.fill('');
+        completed.fill(false);
+        document.querySelectorAll('textarea').forEach(ta => ta.value = '');
+        document.querySelectorAll('.char-count').forEach(cc => {
+            cc.textContent = 'Mínimo sugerido: 80 caracteres · Escritos: 0';
+            cc.className = 'char-count';
+        });
+        document.querySelectorAll('.question-card').forEach(c => { c.style.display = ''; });
+        document.getElementById('progressWrapper').style.display = '';
+        document.getElementById('final-screen').classList.remove('visible');
+        updateProgress();
+        showCard(0);
+    }
+</script>
+</body>
+</html>

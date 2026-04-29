@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Mundo Astral — Sandbox Carta Natal</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #0A0A1B;
+  --bg2:    #050510;
+  --bg3:    #0D0D22;
+  --text:   #F0F0FF;
+  --cyan:   #00D9FF;
+  --pink:   #FF3D81;
+  --purple: #724CF9;
+  --gold:   #F7B801;
+  --green:  #39FF88;
+  --orange: #FF8C42;
+  --border: #2A2A4A;
+  --pixel:  4px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Press Start 2P', cursive;
+  background: var(--bg); color: var(--text);
+  font-size: 10px; line-height: 1.6;
+  overflow: hidden; height: 100vh;
+  user-select: none;
+}
+body::before {
+  content:''; position:fixed; inset:0; z-index:9999; pointer-events:none;
+  background: repeating-linear-gradient(to bottom, transparent, transparent 3px, rgba(0,0,0,.05) 3px, rgba(0,0,0,.05) 4px);
+}
+
+/* ── TOPBAR ── */
+#topbar {
+  height: 44px; background: var(--bg2);
+  border-bottom: 3px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 14px; gap: 12px;
+  position: relative; z-index: 200;
+}
+#topbar .title { color: var(--cyan); font-size: 8px; flex: 1; }
+#topbar .title span { color: var(--pink); }
+.top-btn {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 6px; padding: 5px 9px;
+  border: 2px solid var(--border); background: transparent;
+  color: #A0A0C0; cursor: pointer; transition: all .1s;
+}
+.top-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+.top-btn.danger:hover { border-color: var(--pink); color: var(--pink); }
+
+/* ── LAYOUT ── */
+#layout {
+  display: grid;
+  grid-template-columns: 200px 1fr 220px;
+  height: calc(100vh - 44px);
+}
+
+/* ── LEFT PANEL ── */
+#left-panel {
+  background: var(--bg2);
+  border-right: 3px solid var(--border);
+  overflow-y: auto; overflow-x: hidden;
+  display: flex; flex-direction: column;
+}
+#left-panel::-webkit-scrollbar { width: 4px; }
+#left-panel::-webkit-scrollbar-track { background: var(--bg2); }
+#left-panel::-webkit-scrollbar-thumb { background: var(--border); }
+
+.panel-section { border-bottom: 2px solid var(--border); }
+.panel-label {
+  font-size: 6px; color: #606080;
+  padding: 8px 10px 6px; letter-spacing: 1px;
+  background: rgba(255,255,255,.02);
+}
+.item-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 2px; padding: 6px;
+}
+.item-btn {
+  aspect-ratio: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 2px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--border);
+  cursor: grab; transition: all .1s;
+  font-size: 14px; padding: 4px;
+  position: relative;
+}
+.item-btn:hover { border-color: var(--cyan); background: rgba(0,217,255,.08); transform: scale(1.05); }
+.item-btn:active { cursor: grabbing; transform: scale(.95); }
+.item-label { font-size: 4px; color: #707090; text-align: center; line-height: 1.3; }
+
+/* color por tipo */
+.item-btn.planeta { border-color: rgba(114,76,249,.3); }
+.item-btn.planeta:hover { border-color: var(--purple); background: rgba(114,76,249,.12); }
+.item-btn.signo   { border-color: rgba(247,184,1,.25); }
+.item-btn.signo:hover { border-color: var(--gold); background: rgba(247,184,1,.1); }
+.item-btn.casa    { border-color: rgba(0,217,255,.25); }
+.item-btn.casa:hover { border-color: var(--cyan); background: rgba(0,217,255,.1); }
+.item-btn.elemento { border-color: rgba(57,255,136,.25); }
+.item-btn.elemento:hover { border-color: var(--green); background: rgba(57,255,136,.08); }
+.item-btn.cualidad { border-color: rgba(255,140,66,.25); }
+.item-btn.cualidad:hover { border-color: var(--orange); background: rgba(255,140,66,.08); }
+
+/* ── CANVAS ── */
+#canvas-wrap {
+  position: relative; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 50%, #0f0f2e 0%, #050510 70%);
+  display: flex; flex-direction: column;
+}
+#canvas-wrap canvas { display: block; }
+
+/* Grid overlay hint */
+#canvas-wrap::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(42,42,74,.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(42,42,74,.18) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── INSTRUCTION BAR ── */
+#instruction-bar {
+  position: relative; z-index: 100;
+  background: rgba(5,5,16,.9);
+  border-bottom: 2px solid var(--border);
+  padding: 6px 12px;
+  display: flex; align-items: center; gap: 8px;
+  flex-shrink: 0;
+}
+#instruction-text {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 5.5px; color: #A0A0D0;
+  background: transparent; border: none; outline: none;
+  flex: 1; line-height: 1.8;
+  cursor: text;
+  user-select: text;
+}
+#instruction-text:focus {
+  color: var(--cyan);
+}
+#instruction-edit-icon {
+  font-size: 9px; color: #404060;
+  flex-shrink: 0; pointer-events: none;
+}
+#instruction-bar:focus-within #instruction-edit-icon {
+  color: var(--cyan);
+}
+
+/* ── CANVAS INNER (tokens + wheel) ── */
+#canvas-inner {
+  position: relative; flex: 1; overflow: hidden;
+}
+
+/* Zodiac wheel SVG */
+#zodiac-wheel-svg {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity .3s;
+}
+
+/* drop hint */
+#drop-hint {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  text-align: center; color: #2A2A4A; pointer-events: none;
+  transition: opacity .3s; z-index: 2;
+}
+#drop-hint .big { font-size: 48px; margin-bottom: 12px; opacity: .3; }
+#drop-hint p { font-size: 6px; line-height: 2.4; opacity: .5; }
+
+/* dragging overlay token */
+#drag-ghost {
+  position: fixed; pointer-events: none;
+  font-size: 22px; z-index: 9000;
+  display: none; transform: translate(-50%,-50%);
+  filter: drop-shadow(0 0 6px var(--cyan));
+}
+
+/* placed tokens */
+.placed-token {
+  position: absolute; cursor: move;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  transform: translate(-50%, -50%);
+  transition: filter .1s;
+  z-index: 10;
+}
+.placed-token:hover { filter: drop-shadow(0 0 8px var(--cyan)); z-index: 20; }
+.placed-token .emoji { font-size: 22px; line-height: 1; }
+.placed-token .tok-label {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 5px; color: #B0B0D0;
+  white-space: nowrap; text-align: center;
+  text-shadow: 1px 1px 0 #000, -1px -1px 0 #000;
+}
+.placed-token.selected { filter: drop-shadow(0 0 10px var(--gold)); z-index: 30; }
+
+/* connection lines drawn on svg overlay */
+#svg-overlay {
+  position: absolute; inset: 0; pointer-events: none; z-index: 5;
+}
+
+/* ── RIGHT PANEL ── */
+#right-panel {
+  background: var(--bg2);
+  border-left: 3px solid var(--border);
+  overflow-y: auto; display: flex; flex-direction: column;
+  font-size: 7px;
+}
+#right-panel::-webkit-scrollbar { width: 4px; }
+#right-panel::-webkit-scrollbar-thumb { background: var(--border); }
+
+.info-header {
+  padding: 14px 12px 10px;
+  border-bottom: 2px solid var(--border);
+  background: rgba(114,76,249,.06);
+}
+.info-header .info-emoji { font-size: 28px; margin-bottom: 8px; }
+.info-header .info-name { color: var(--cyan); font-size: 8px; margin-bottom: 4px; }
+.info-header .info-type { color: #606080; font-size: 5px; letter-spacing: 1px; }
+
+.info-body { padding: 12px; flex: 1; }
+.info-row { margin-bottom: 12px; }
+.info-row .lbl { color: #606080; font-size: 5px; letter-spacing: 1px; margin-bottom: 4px; }
+.info-row .val { color: #D0D0F0; line-height: 2; font-size: 6px; }
+.info-row .val .chip {
+  display: inline-block; padding: 2px 6px; margin: 2px 2px 2px 0;
+  border: 1px solid; font-size: 5px;
+}
+.chip-fuego { border-color: #FF6B35; color: #FF6B35; }
+.chip-tierra { border-color: #8BC34A; color: #8BC34A; }
+.chip-aire   { border-color: var(--cyan); color: var(--cyan); }
+.chip-agua   { border-color: #4FC3F7; color: #4FC3F7; }
+.chip-cardinal { border-color: var(--pink); color: var(--pink); }
+.chip-fijo   { border-color: var(--gold); color: var(--gold); }
+.chip-mutable { border-color: var(--green); color: var(--green); }
+.chip-positivo { border-color: var(--gold); color: var(--gold); }
+.chip-negativo { border-color: var(--purple); color: var(--purple); }
+.chip-angular { border-color: var(--pink); color: var(--pink); }
+.chip-sucedente { border-color: var(--gold); color: var(--gold); }
+.chip-cadente { border-color: var(--green); color: var(--green); }
+
+.info-placeholder {
+  padding: 20px 12px; color: #404060; font-size: 6px; line-height: 2.4; text-align: center;
+}
+
+/* selected token actions */
+#token-actions {
+  padding: 10px 12px;
+  border-top: 2px solid var(--border);
+  display: none; gap: 6px; flex-direction: column;
+}
+.tok-action-btn {
+  font-family: 'Press Start 2P', cursive; font-size: 5px;
+  padding: 6px 8px; border: 1.5px solid var(--border);
+  background: transparent; color: #A0A0C0; cursor: pointer;
+  text-align: left; transition: all .1s;
+}
+.tok-action-btn:hover { border-color: var(--pink); color: var(--pink); }
+
+/* connection mode */
+.tok-action-btn.connect-btn:hover { border-color: var(--purple); color: var(--purple); }
+#connect-hint {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  background: rgba(114,76,249,.8); color: #fff;
+  font-size: 6px; padding: 6px 12px; pointer-events: none;
+  border: 2px solid var(--purple); display: none; z-index: 100;
+}
+
+/* mini legend bottom-left of canvas */
+#mini-legend {
+  position: absolute; bottom: 8px; left: 8px;
+  background: rgba(5,5,16,.85); border: 1px solid var(--border);
+  padding: 6px 8px; font-size: 5px; color: #606080; line-height: 2.2;
+  pointer-events: none; z-index: 50;
+}
+#mini-legend span { color: #909090; }
+
+/* toast */
+#toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: var(--bg2); border: 2px solid var(--green); color: var(--green);
+  font-size: 7px; padding: 8px 16px; z-index: 9999;
+  opacity: 0; transition: opacity .2s; pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<!-- DRAG GHOST -->
+<div id="drag-ghost"></div>
+<div id="toast"></div>
+
+<!-- TOP BAR -->
+<div id="topbar">
+  <div class="title">✦ <span>MI MUNDO ASTRAL</span> — SANDBOX CARTA NATAL</div>
+  <button class="top-btn" id="btn-connect-mode">⟡ CONECTAR</button>
+  <button class="top-btn" id="btn-clear-connections">⌫ LIMPIAR LÍNEAS</button>
+  <button class="top-btn danger" id="btn-clear-all">✕ REINICIAR</button>
+</div>
+
+<div id="layout">
+
+  <!-- ── LEFT: PALETTE ── -->
+  <div id="left-panel">
+
+    <div class="panel-section">
+      <div class="panel-label">☿ PLANETAS</div>
+      <div class="item-grid" id="grid-planetas"></div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-label">♈ SIGNOS</div>
+      <div class="item-grid" id="grid-signos"></div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-label">⌂ CASAS</div>
+      <div class="item-grid" id="grid-casas"></div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-label">◈ ELEMENTOS</div>
+      <div class="item-grid" id="grid-elementos"></div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-label">◇ CUALIDADES</div>
+      <div class="item-grid" id="grid-cualidades"></div>
+    </div>
+
+  </div>
+
+  <!-- ── CENTER: CANVAS ── -->
+  <div id="canvas-wrap">
+
+    <!-- INSTRUCTION BAR (editable) -->
+    <div id="instruction-bar">
+      <span id="instruction-edit-icon">✏</span>
+      <input id="instruction-text" type="text"
+        value="ARRASTRA LOS ICONOS AL LIENZO · HOZ CLIC EN UN TOKEN PARA VER SU INFORMACIÓN · USA ⟡ PARA CONECTAR ELEMENTOS"
+        title="Haz clic para editar las instrucciones" />
+    </div>
+
+    <!-- CANVAS INNER -->
+    <div id="canvas-inner">
+      <svg id="svg-overlay"></svg>
+      <svg id="zodiac-wheel-svg"></svg>
+
+      <div id="drop-hint">
+        <div class="big">✦</div>
+        <p>ARRASTRA ELEMENTOS<br>AL LIENZO<br><br>HOZ CLIC EN UN TOKEN<br>PARA VER SU INFO</p>
+      </div>
+      <div id="connect-hint">MODO CONEXIÓN — HOZ CLIC EN OTRO TOKEN</div>
+      <div id="mini-legend">
+        <span>DRAG</span> mover · <span>CLICK</span> info · <span>⟡</span> conectar
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RIGHT: INFO PANEL ── -->
+  <div id="right-panel">
+    <div id="info-display">
+      <div class="info-placeholder">
+        ✦<br><br>
+        HAZ CLIC EN<br>CUALQUIER TOKEN<br>DEL LIENZO<br><br>PARA VER SU<br>SIGNIFICADO<br><br>⬇<br><br>
+        ARRASTRA DESDE<br>EL PANEL IZQUIERDO<br>PARA COMENZAR
+      </div>
+    </div>
+    <div id="token-actions">
+      <button class="tok-action-btn connect-btn" id="btn-start-connect">⟡ CONECTAR CON...</button>
+      <button class="tok-action-btn" id="btn-delete-token">✕ ELIMINAR TOKEN</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════════
+const DATA = {
+  planetas: [
+    { id:'sol',     emoji:'☀️', label:'SOL',     tipo:'Luminaria',
+      keywords:'Identidad · Propósito · Vitalidad',
+      desc:'El Sol representa tu esencia más profunda, tu identidad consciente y la fuerza vital que te impulsa. Rige el ego, la voluntad y el camino de desarrollo personal. Es la luminaria diurna.',
+      elemento:'Fuego', rige:'Leo', cualidad:'Yang / Masculino' },
+    { id:'luna',    emoji:'🌙', label:'LUNA',    tipo:'Luminaria',
+      keywords:'Emociones · Instinto · Memoria',
+      desc:'La Luna gobierna el mundo emocional, los instintos y la memoria inconsciente. Representa la madre, el hogar y cómo nos nutrimos. Es la luminaria nocturna y cambia de signo cada 2-3 días.',
+      elemento:'Agua', rige:'Cáncer', cualidad:'Yin / Femenino' },
+    { id:'mercurio',emoji:'☿', label:'MERCURIO', tipo:'Interior',
+      keywords:'Mente · Comunicación · Aprendizaje',
+      desc:'Mercurio rige la mente racional, la comunicación, el lenguaje y el pensamiento. Influye en cómo procesas información, hablas y te expresas. Es el mensajero del zodíaco.',
+      elemento:'Tierra/Aire', rige:'Géminis/Virgo', cualidad:'Neutro' },
+    { id:'venus',   emoji:'♀️', label:'VENUS',   tipo:'Interior',
+      keywords:'Amor · Belleza · Valores',
+      desc:'Venus rige el amor, la estética, los valores personales y la capacidad de dar y recibir afecto. Muestra qué te atrae y cómo te relacionas afectivamente.',
+      elemento:'Tierra/Aire', rige:'Tauro/Libra', cualidad:'Yin / Femenino' },
+    { id:'marte',   emoji:'♂️', label:'MARTE',   tipo:'Interior',
+      keywords:'Acción · Deseo · Energía',
+      desc:'Marte es el planeta de la acción, el deseo, la iniciativa y la fuerza física. Representa cómo actúas, luchas y manifiestas tu voluntad en el mundo.',
+      elemento:'Fuego', rige:'Aries', cualidad:'Yang / Masculino' },
+    { id:'jupiter', emoji:'♃', label:'JÚPITER',  tipo:'Social',
+      keywords:'Expansión · Abundancia · Fe',
+      desc:'Júpiter es el gran benefactor. Expande todo lo que toca: fe, sabiduría, oportunidades y abundancia. Rige los viajes largos, la filosofía y el crecimiento espiritual.',
+      elemento:'Fuego', rige:'Sagitario', cualidad:'Yang / Masculino' },
+    { id:'saturno', emoji:'♄', label:'SATURNO',  tipo:'Social',
+      keywords:'Estructura · Karma · Disciplina',
+      desc:'Saturno es el maestro severo del zodíaco. Impone límites, estructura y responsabilidad. Representa las lecciones kármicas, el tiempo y la madurez que se alcanza con esfuerzo.',
+      elemento:'Tierra', rige:'Capricornio', cualidad:'Yin / Femenino' },
+    { id:'urano',   emoji:'⛢', label:'URANO',    tipo:'Generacional',
+      keywords:'Revolución · Libertad · Cambio',
+      desc:'Urano rige los cambios repentinos, la innovación y la ruptura con lo establecido. Permanece ~7 años en cada signo, marcando generaciones enteras con su energía revolucionaria.',
+      elemento:'Aire', rige:'Acuario', cualidad:'Yang / Masculino' },
+    { id:'neptuno', emoji:'♆', label:'NEPTUNO',  tipo:'Generacional',
+      keywords:'Sueños · Espiritualidad · Ilusión',
+      desc:'Neptuno disuelve fronteras entre lo real y lo ilusorio. Rige la espiritualidad, la creatividad, la empatía y también el engaño. Permanece ~14 años en cada signo.',
+      elemento:'Agua', rige:'Piscis', cualidad:'Yin / Femenino' },
+    { id:'pluton',  emoji:'♇', label:'PLUTÓN',   tipo:'Generacional',
+      keywords:'Transformación · Poder · Renacimiento',
+      desc:'Plutón rige la muerte simbólica, la transformación profunda y el poder. Derrumba para reconstruir desde las raíces. Su ciclo de ~248 años marca eras generacionales.',
+      elemento:'Agua', rige:'Escorpio', cualidad:'Yin / Femenino' },
+  ],
+  signos: [
+    { id:'aries',  emoji:'♈', label:'ARIES',       tipo:'Signo · Fuego · Cardinal',
+      keywords:'Iniciativa · Valor · Impulso',
+      desc:'Aries inicia el zodíaco con energía pionera. Es el arquetipo del Guerrero: valiente, impulsivo y directo. Busca ser el primero. Rige el deseo de existir y afirmarse.',
+      elemento:'Fuego', modalidad:'Cardinal', polaridad:'Positivo/Yang', rige_planeta:'Marte' },
+    { id:'tauro',  emoji:'♉', label:'TAURO',        tipo:'Signo · Tierra · Fijo',
+      keywords:'Estabilidad · Placer · Persistencia',
+      desc:'Tauro busca la seguridad material y el placer sensorial. Arquetipo del Constructor: paciente, fiel y terco. Disfruta la belleza tangible, la naturaleza y el confort.',
+      elemento:'Tierra', modalidad:'Fijo', polaridad:'Negativo/Yin', rige_planeta:'Venus' },
+    { id:'geminis',emoji:'♊', label:'GÉMINIS',      tipo:'Signo · Aire · Mutable',
+      keywords:'Comunicación · Versatilidad · Curiosidad',
+      desc:'Géminis es el arquetipo del Mensajero: ágil, curioso y adaptable. Necesita estimulación mental constante. Rige la dualidad, la palabra y los vínculos cotidianos.',
+      elemento:'Aire', modalidad:'Mutable', polaridad:'Positivo/Yang', rige_planeta:'Mercurio' },
+    { id:'cancer', emoji:'♋', label:'CÁNCER',       tipo:'Signo · Agua · Cardinal',
+      keywords:'Emoción · Hogar · Protección',
+      desc:'Cáncer es el arquetipo de la Madre: protector, sensible e intuitivo. Vive desde el mundo emocional y busca crear refugio. Rige la memoria, la familia y las raíces.',
+      elemento:'Agua', modalidad:'Cardinal', polaridad:'Negativo/Yin', rige_planeta:'Luna' },
+    { id:'leo',    emoji:'♌', label:'LEO',           tipo:'Signo · Fuego · Fijo',
+      keywords:'Creatividad · Liderazgo · Brillo',
+      desc:'Leo es el arquetipo del Rey/Reina: radiante, generoso y dramático. Necesita expresarse y ser reconocido. Rige la creatividad, el juego y el amor propio.',
+      elemento:'Fuego', modalidad:'Fijo', polaridad:'Positivo/Yang', rige_planeta:'Sol' },
+    { id:'virgo',  emoji:'♍', label:'VIRGO',        tipo:'Signo · Tierra · Mutable',
+      keywords:'Análisis · Servicio · Perfección',
+      desc:'Virgo es el arquetipo del Artesano: analítico, meticuloso y dedicado al servicio. Busca la mejora constante. Rige la salud, el trabajo cotidiano y el discernimiento.',
+      elemento:'Tierra', modalidad:'Mutable', polaridad:'Negativo/Yin', rige_planeta:'Mercurio' },
+    { id:'libra',  emoji:'♎', label:'LIBRA',        tipo:'Signo · Aire · Cardinal',
+      keywords:'Equilibrio · Justicia · Relaciones',
+      desc:'Libra es el arquetipo del Diplomático: busca el equilibrio, la armonía y la justicia. Necesita relacionarse. Rige las asociaciones, la estética y la toma de decisiones.',
+      elemento:'Aire', modalidad:'Cardinal', polaridad:'Positivo/Yang', rige_planeta:'Venus' },
+    { id:'escorpio',emoji:'♏',label:'ESCORPIO',     tipo:'Signo · Agua · Fijo',
+      keywords:'Transformación · Intensidad · Misterio',
+      desc:'Escorpio es el arquetipo del Alquimista: profundo, intenso y transformador. No teme a la oscuridad. Rige la muerte simbólica, el poder y los recursos compartidos.',
+      elemento:'Agua', modalidad:'Fijo', polaridad:'Negativo/Yin', rige_planeta:'Plutón/Marte' },
+    { id:'sagitario',emoji:'♐',label:'SAGITARIO',   tipo:'Signo · Fuego · Mutable',
+      keywords:'Expansión · Filosofía · Libertad',
+      desc:'Sagitario es el arquetipo del Filósofo/Aventurero: optimista, curioso e idealista. Busca el significado de la vida. Rige los viajes, la espiritualidad y la búsqueda de verdad.',
+      elemento:'Fuego', modalidad:'Mutable', polaridad:'Positivo/Yang', rige_planeta:'Júpiter' },
+    { id:'capricornio',emoji:'♑',label:'CAPRICORNIO',tipo:'Signo · Tierra · Cardinal',
+      keywords:'Ambición · Responsabilidad · Estructura',
+      desc:'Capricornio es el arquetipo del Gobernante: disciplinado, ambicioso y responsable. Construye con paciencia. Rige la carrera, la autoridad y los logros a largo plazo.',
+      elemento:'Tierra', modalidad:'Cardinal', polaridad:'Negativo/Yin', rige_planeta:'Saturno' },
+    { id:'acuario', emoji:'♒', label:'ACUARIO',     tipo:'Signo · Aire · Fijo',
+      keywords:'Innovación · Colectividad · Originalidad',
+      desc:'Acuario es el arquetipo del Visionario: rebelde, humanitario e innovador. Piensa en el futuro. Rige la amistad, los ideales colectivos y la ruptura de paradigmas.',
+      elemento:'Aire', modalidad:'Fijo', polaridad:'Positivo/Yang', rige_planeta:'Urano/Saturno' },
+    { id:'piscis',  emoji:'♓', label:'PISCIS',      tipo:'Signo · Agua · Mutable',
+      keywords:'Compasión · Espiritualidad · Fusión',
+      desc:'Piscis es el arquetipo del Místico: sensible, compasivo y espiritual. Vive entre dos mundos. Rige la unión con lo divino, la creatividad mística y la disolución del ego.',
+      elemento:'Agua', modalidad:'Mutable', polaridad:'Negativo/Yin', rige_planeta:'Neptuno/Júpiter' },
+  ],
+  casas: [
+    { id:'casa1', emoji:'①', label:'CASA I',    tipo:'Casa · Fuego · Angular',
+      keywords:'Identidad · Apariencia · Inicio',
+      desc:'La Casa 1 es la casa del "Yo". Rige la apariencia física, la personalidad que mostramos al mundo y el punto de partida de la vida. Su comienzo es el Ascendente.',
+      elemento:'Fuego', cualidad:'Angular', area:'Yo / Cuerpo físico' },
+    { id:'casa2', emoji:'②', label:'CASA II',   tipo:'Casa · Tierra · Sucedente',
+      keywords:'Recursos · Valores · Autoestima',
+      desc:'La Casa 2 rige los recursos materiales, el dinero, los valores personales y la autoestima. Muestra cómo nos relacionamos con lo que poseemos.',
+      elemento:'Tierra', cualidad:'Sucedente', area:'Dinero / Posesiones' },
+    { id:'casa3', emoji:'③', label:'CASA III',  tipo:'Casa · Aire · Cadente',
+      keywords:'Comunicación · Mente · Entorno',
+      desc:'La Casa 3 rige la comunicación, los hermanos, el entorno cercano, los estudios básicos y los viajes cortos. Es la casa de la mente cotidiana.',
+      elemento:'Aire', cualidad:'Cadente', area:'Mente / Comunicación' },
+    { id:'casa4', emoji:'④', label:'CASA IV',   tipo:'Casa · Agua · Angular',
+      keywords:'Hogar · Familia · Raíces',
+      desc:'La Casa 4 es el fondo del cielo. Rige el hogar, la familia, las raíces, la infancia y el padre/madre como figura nutritiva. Es el centro emocional de la carta.',
+      elemento:'Agua', cualidad:'Angular', area:'Hogar / Familia' },
+    { id:'casa5', emoji:'⑤', label:'CASA V',    tipo:'Casa · Fuego · Sucedente',
+      keywords:'Creatividad · Amor · Juego',
+      desc:'La Casa 5 rige la creatividad, el romance, los hijos, el juego y el placer. Es la casa de la autoexpresión espontánea y la alegría de vivir.',
+      elemento:'Fuego', cualidad:'Sucedente', area:'Creatividad / Romance' },
+    { id:'casa6', emoji:'⑥', label:'CASA VI',   tipo:'Casa · Tierra · Cadente',
+      keywords:'Salud · Trabajo · Rutina',
+      desc:'La Casa 6 rige la salud, el trabajo cotidiano, las rutinas y el servicio. Muestra cómo cuidamos nuestro cuerpo y cómo nos organizamos día a día.',
+      elemento:'Tierra', cualidad:'Cadente', area:'Salud / Servicio' },
+    { id:'casa7', emoji:'⑦', label:'CASA VII',  tipo:'Casa · Aire · Angular',
+      keywords:'Relaciones · Asociaciones · El Otro',
+      desc:'La Casa 7 es la casa de las relaciones significativas: pareja, socios, contratos. Es el espejo del "Yo". Su comienzo es el Descendente.',
+      elemento:'Aire', cualidad:'Angular', area:'Pareja / Asociaciones' },
+    { id:'casa8', emoji:'⑧', label:'CASA VIII', tipo:'Casa · Agua · Sucedente',
+      keywords:'Transformación · Muerte · Legados',
+      desc:'La Casa 8 rige la transformación profunda, la muerte simbólica, los recursos compartidos, la herencia y la sexualidad. Es la casa del renacimiento.',
+      elemento:'Agua', cualidad:'Sucedente', area:'Transformación / Herencia' },
+    { id:'casa9', emoji:'⑨', label:'CASA IX',   tipo:'Casa · Fuego · Cadente',
+      keywords:'Filosofía · Viajes · Espiritualidad',
+      desc:'La Casa 9 rige los viajes largos, la educación superior, la filosofía, la espiritualidad y la búsqueda de significado. Es la casa de la expansión de la conciencia.',
+      elemento:'Fuego', cualidad:'Cadente', area:'Filosofía / Fe' },
+    { id:'casa10',emoji:'⑩', label:'CASA X',    tipo:'Casa · Tierra · Angular',
+      keywords:'Carrera · Reputación · Vocación',
+      desc:'La Casa 10 es el Medio Cielo: el punto más alto de la carta. Rige la carrera, la reputación pública, la vocación y el legado que dejamos en el mundo.',
+      elemento:'Tierra', cualidad:'Angular', area:'Carrera / Vocación' },
+    { id:'casa11',emoji:'⑪', label:'CASA XI',   tipo:'Casa · Aire · Sucedente',
+      keywords:'Comunidad · Ideales · Amistades',
+      desc:'La Casa 11 rige los amigos, los grupos sociales, los ideales colectivos y los sueños a futuro. Es la casa de la conciencia social y la pertenencia.',
+      elemento:'Aire', cualidad:'Sucedente', area:'Comunidad / Sueños' },
+    { id:'casa12',emoji:'⑫', label:'CASA XII',  tipo:'Casa · Agua · Cadente',
+      keywords:'Inconsciente · Retiro · Karma',
+      desc:'La Casa 12 rige el inconsciente profundo, el karma, el retiro espiritual y los asuntos ocultos. Es la casa del alma antes del nacimiento y la puerta a lo invisible.',
+      elemento:'Agua', cualidad:'Cadente', area:'Inconsciente / Karma' },
+  ],
+  elementos: [
+    { id:'fuego', emoji:'🔥', label:'FUEGO',  tipo:'Elemento',
+      keywords:'Inspiración · Voluntad · Entusiasmo',
+      desc:'El Fuego es el elemento de la acción, el espíritu y la creatividad. Rige la voluntad, el entusiasmo y la capacidad de inspirar. Sus signos son Aries, Leo y Sagitario.',
+      signos:'Aries · Leo · Sagitario', cualidad:'Yang / Activo / Caliente' },
+    { id:'tierra',emoji:'🌍', label:'TIERRA', tipo:'Elemento',
+      keywords:'Materialidad · Estabilidad · Cuerpo',
+      desc:'La Tierra es el elemento de la materia, la practicidad y la estabilidad. Rige el cuerpo, los recursos y la construcción concreta. Sus signos son Tauro, Virgo y Capricornio.',
+      signos:'Tauro · Virgo · Capricornio', cualidad:'Yin / Receptivo / Frío' },
+    { id:'aire',  emoji:'💨', label:'AIRE',   tipo:'Elemento',
+      keywords:'Intelecto · Comunicación · Movimiento',
+      desc:'El Aire es el elemento de la mente, el pensamiento y la comunicación. Rige las ideas, las relaciones y el intercambio. Sus signos son Géminis, Libra y Acuario.',
+      signos:'Géminis · Libra · Acuario', cualidad:'Yang / Activo / Cálido' },
+    { id:'agua',  emoji:'💧', label:'AGUA',   tipo:'Elemento',
+      keywords:'Emoción · Intuición · Profundidad',
+      desc:'El Agua es el elemento de la emoción, la intuición y el alma. Rige el mundo interior, la memoria y la conexión espiritual. Sus signos son Cáncer, Escorpio y Piscis.',
+      signos:'Cáncer · Escorpio · Piscis', cualidad:'Yin / Receptivo / Frío' },
+  ],
+  cualidades: [
+    { id:'angular', emoji:'✚', label:'ANGULAR',   tipo:'Cualidad · Cardinal',
+      keywords:'Iniciación · Acción · Puntos de poder',
+      desc:'Las casas Angulares (I, IV, VII, X) son los cuatro pilares de la carta natal. Corresponden a los puntos cardinales: Ascendente, Fondo de Cielo, Descendente y Medio Cielo. Son los ejes de mayor poder e impacto en la vida.',
+      casas:'Casa I · Casa IV · Casa VII · Casa X',
+      ejes:'ASC · IC · DC · MC',
+      energia:'Fuerte · Directa · Iniciadora' },
+    { id:'sucedente', emoji:'◈', label:'SUCEDENTE', tipo:'Cualidad · Fija',
+      keywords:'Consolidación · Recursos · Estabilidad',
+      desc:'Las casas Sucedentes (II, V, VIII, XI) siguen a las angulares y consolidan su energía. Están asociadas a los signos fijos. Rigen los recursos, los valores y aquello que construimos y acumulamos.',
+      casas:'Casa II · Casa V · Casa VIII · Casa XI',
+      ejes:'—',
+      energia:'Estable · Acumuladora · Fija' },
+    { id:'cadente', emoji:'◇', label:'CADENTE',   tipo:'Cualidad · Mutable',
+      keywords:'Transición · Preparación · Adaptación',
+      desc:'Las casas Cadentes (III, VI, IX, XII) son casas de transición y preparación. Corresponden a los signos mutables. Facilitan el aprendizaje, la adaptación y el paso hacia un nuevo ciclo.',
+      casas:'Casa III · Casa VI · Casa IX · Casa XII',
+      ejes:'—',
+      energia:'Flexible · Transitoria · Mutable' },
+  ]
+};
+
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+let tokens = [];
+let connections = [];
+let selectedToken = null;
+let connectMode = false;
+let connectSource = null;
+let dragging = null;
+let dragOffX = 0, dragOffY = 0;
+
+// ══════════════════════════════════════════════
+//  INIT PALETTE
+// ══════════════════════════════════════════════
+function buildPalette() {
+  const map = {
+    'grid-planetas':   { data: DATA.planetas,   cls: 'planeta' },
+    'grid-signos':     { data: DATA.signos,     cls: 'signo', cols: 3 },
+    'grid-casas':      { data: DATA.casas,      cls: 'casa' },
+    'grid-elementos':  { data: DATA.elementos,  cls: 'elemento' },
+    'grid-cualidades': { data: DATA.cualidades, cls: 'cualidad' },
+  };
+  for (const [gridId, { data, cls, cols }] of Object.entries(map)) {
+    const grid = document.getElementById(gridId);
+    if (cols) grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    data.forEach(item => {
+      const btn = document.createElement('div');
+      btn.className = `item-btn ${cls}`;
+      btn.innerHTML = `<span>${item.emoji}</span><span class="item-label">${item.label}</span>`;
+      btn.title = item.keywords;
+      btn.draggable = true;
+      btn.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('itemId', item.id);
+        e.dataTransfer.setData('category', cls);
+        const ghost = document.getElementById('drag-ghost');
+        ghost.textContent = item.emoji;
+        ghost.style.display = 'block';
+        document.addEventListener('dragover', moveDragGhost);
+      });
+      btn.addEventListener('dragend', () => {
+        document.getElementById('drag-ghost').style.display = 'none';
+        document.removeEventListener('dragover', moveDragGhost);
+      });
+      grid.appendChild(btn);
+    });
+  }
+}
+
+function moveDragGhost(e) {
+  const g = document.getElementById('drag-ghost');
+  g.style.left = e.clientX + 'px';
+  g.style.top  = e.clientY + 'px';
+}
+
+// ══════════════════════════════════════════════
+//  ZODIAC WHEEL SVG
+// ══════════════════════════════════════════════
+function drawZodiacWheel() {
+  const canvasInner = document.getElementById('canvas-inner');
+  const svg = document.getElementById('zodiac-wheel-svg');
+  const W = canvasInner.clientWidth;
+  const H = canvasInner.clientHeight;
+  const cx = W / 2;
+  const cy = H / 2;
+  const maxR = Math.min(W, H) * 0.42;
+  const rOuter = maxR;
+  const rSign  = maxR * 0.85;
+  const rInner = maxR * 0.70;
+  const rHouse = maxR * 0.40;
+  const rCenter= maxR * 0.18;
+
+  svg.setAttribute('width', W);
+  svg.setAttribute('height', H);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.style.left = '0';
+  svg.style.top = '0';
+  svg.style.width = W + 'px';
+  svg.style.height = H + 'px';
+
+  // Colors
+  const strokeMain  = 'rgba(42,42,90,0.9)';
+  const strokeLight = 'rgba(42,42,74,0.5)';
+  const strokeAxis  = 'rgba(255,61,129,0.55)';
+  const strokeMC    = 'rgba(0,217,255,0.55)';
+  const fillOuter   = 'rgba(13,13,34,0.7)';
+  const fillSign    = 'rgba(10,10,27,0.5)';
+  const fillHouse   = 'rgba(5,5,16,0.4)';
+  const fillCenter  = 'rgba(8,8,22,0.85)';
+
+  let html = '';
+
+  // ── Filled rings ──
+  html += `<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="${fillOuter}" stroke="${strokeMain}" stroke-width="1.5"/>`;
+  html += `<circle cx="${cx}" cy="${cy}" r="${rSign}"  fill="${fillSign}"  stroke="${strokeMain}" stroke-width="1"/>`;
+  html += `<circle cx="${cx}" cy="${cy}" r="${rInner}" fill="${fillHouse}" stroke="${strokeMain}" stroke-width="1.5"/>`;
+  html += `<circle cx="${cx}" cy="${cy}" r="${rHouse}" fill="${fillHouse}" stroke="${strokeLight}" stroke-width="0.8"/>`;
+  html += `<circle cx="${cx}" cy="${cy}" r="${rCenter}" fill="${fillCenter}" stroke="${strokeMain}" stroke-width="1.5"/>`;
+
+  // ── 12 divisions ──
+  for (let i = 0; i < 12; i++) {
+    const angle = (i * 30 - 90) * Math.PI / 180;
+    const x1 = cx + rCenter * Math.cos(angle);
+    const y1 = cy + rCenter * Math.sin(angle);
+    const x2 = cx + rOuter  * Math.cos(angle);
+    const y2 = cy + rOuter  * Math.sin(angle);
+    html += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${strokeMain}" stroke-width="1"/>`;
+  }
+
+  // ── Axes: MC/IC (vertical, top/bottom) and AC/DC (horizontal) ──
+  // MC (top, 0°) — cyan
+  const mcAngle = -90 * Math.PI / 180;
+  const icAngle =  90 * Math.PI / 180;
+  const acAngle = 180 * Math.PI / 180;
+  const dcAngle =   0 * Math.PI / 180;
+
+  // Axis lines (full cross through center)
+  const axisExt = rOuter + maxR * 0.07;
+  // Vertical axis MC-IC
+  html += `<line x1="${cx + axisExt * Math.cos(mcAngle)}" y1="${cy + axisExt * Math.sin(mcAngle)}"
+                 x2="${cx + axisExt * Math.cos(icAngle)}" y2="${cy + axisExt * Math.sin(icAngle)}"
+                 stroke="${strokeMC}" stroke-width="1" stroke-dasharray="3 3"/>`;
+  // Horizontal axis AC-DC
+  html += `<line x1="${cx + axisExt * Math.cos(acAngle)}" y1="${cy + axisExt * Math.sin(acAngle)}"
+                 x2="${cx + axisExt * Math.cos(dcAngle)}" y2="${cy + axisExt * Math.sin(dcAngle)}"
+                 stroke="${strokeAxis}" stroke-width="1" stroke-dasharray="3 3"/>`;
+
+  // Axis labels
+  const labelR = rOuter + maxR * 0.12;
+  const labels = [
+    { angle: mcAngle, text: 'MC',  color: '#00D9FF' },
+    { angle: icAngle, text: 'IC',  color: '#00D9FF' },
+    { angle: acAngle, text: 'AC',  color: '#FF3D81' },
+    { angle: dcAngle, text: 'DC',  color: '#FF3D81' },
+  ];
+  labels.forEach(({ angle, text, color }) => {
+    const lx = cx + labelR * Math.cos(angle);
+    const ly = cy + labelR * Math.sin(angle);
+    html += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="central"
+      font-size="${maxR * 0.045}" fill="${color}"
+      style="font-family:'Press Start 2P',cursive;">${text}</text>`;
+  });
+
+  // ── Center star ──
+  html += `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central"
+    font-size="${maxR * 0.09}" fill="rgba(114,76,249,0.4)">✦</text>`;
+
+  svg.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+//  CANVAS DROP — uses canvas-inner now
+// ══════════════════════════════════════════════
+const canvasInner = document.getElementById('canvas-inner');
+
+canvasInner.addEventListener('dragover', e => { e.preventDefault(); });
+canvasInner.addEventListener('drop', e => {
+  e.preventDefault();
+  const itemId   = e.dataTransfer.getData('itemId');
+  const category = e.dataTransfer.getData('category');
+  if (!itemId) return;
+  const rect = canvasInner.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  placeToken(itemId, category, x, y);
+  document.getElementById('drop-hint').style.opacity = '0';
+});
+
+function getCategoryData(category) {
+  const map = { planeta:'planetas', signo:'signos', casa:'casas', elemento:'elementos', cualidad:'cualidades' };
+  return DATA[map[category]];
+}
+
+function placeToken(dataId, category, x, y) {
+  const dataArr = getCategoryData(category);
+  const item = dataArr.find(i => i.id === dataId);
+  if (!item) return;
+
+  const uid = Date.now() + Math.random().toString(36).slice(2,6);
+  const el = document.createElement('div');
+  el.className = 'placed-token';
+  el.style.left = x + 'px';
+  el.style.top  = y + 'px';
+  el.dataset.uid = uid;
+  el.innerHTML = `<span class="emoji">${item.emoji}</span><span class="tok-label">${item.label}</span>`;
+
+  el.addEventListener('mousedown', ev => startTokenDrag(ev, uid));
+  el.addEventListener('click', ev => { ev.stopPropagation(); handleTokenClick(uid); });
+
+  canvasInner.appendChild(el);
+  tokens.push({ uid, dataId, category, x, y, el, item });
+}
+
+// ══════════════════════════════════════════════
+//  TOKEN DRAG (move placed)
+// ══════════════════════════════════════════════
+function startTokenDrag(e, uid) {
+  e.stopPropagation();
+  const tok = tokens.find(t => t.uid === uid);
+  if (!tok) return;
+  dragging = tok;
+  const rect = canvasInner.getBoundingClientRect();
+  dragOffX = e.clientX - rect.left - tok.x;
+  dragOffY = e.clientY - rect.top  - tok.y;
+
+  document.addEventListener('mousemove', onTokenDragMove);
+  document.addEventListener('mouseup',   onTokenDragEnd);
+}
+
+function onTokenDragMove(e) {
+  if (!dragging) return;
+  const rect = canvasInner.getBoundingClientRect();
+  let nx = e.clientX - rect.left - dragOffX;
+  let ny = e.clientY - rect.top  - dragOffY;
+  nx = Math.max(20, Math.min(rect.width  - 20, nx));
+  ny = Math.max(20, Math.min(rect.height - 20, ny));
+  dragging.x = nx; dragging.y = ny;
+  dragging.el.style.left = nx + 'px';
+  dragging.el.style.top  = ny + 'px';
+  redrawConnections();
+}
+
+function onTokenDragEnd() {
+  dragging = null;
+  document.removeEventListener('mousemove', onTokenDragMove);
+  document.removeEventListener('mouseup',   onTokenDragEnd);
+}
+
+// ══════════════════════════════════════════════
+//  TOKEN CLICK / INFO / CONNECT
+// ══════════════════════════════════════════════
+function handleTokenClick(uid) {
+  if (connectMode && connectSource) {
+    if (connectSource !== uid) {
+      const exists = connections.find(c =>
+        (c.from===connectSource && c.to===uid) ||
+        (c.from===uid && c.to===connectSource));
+      if (!exists) {
+        connections.push({ from: connectSource, to: uid });
+        redrawConnections();
+        toast('✦ CONEXIÓN CREADA');
+      }
+    }
+    exitConnectMode();
+    return;
+  }
+  selectToken(uid);
+}
+
+function selectToken(uid) {
+  tokens.forEach(t => t.el.classList.remove('selected'));
+  selectedToken = uid;
+  const tok = tokens.find(t => t.uid === uid);
+  if (!tok) return;
+  tok.el.classList.add('selected');
+  showInfo(tok);
+  document.getElementById('token-actions').style.display = 'flex';
+}
+
+function showInfo(tok) {
+  const d = tok.item;
+  const typeMap = {
+    planeta: 'PLANETA', signo: 'SIGNO ZODIACAL',
+    casa: 'CASA ASTROLÓGICA', elemento: 'ELEMENTO',
+    cualidad: 'CUALIDAD DE CASA'
+  };
+  const colorMap = {
+    planeta: 'var(--purple)', signo: 'var(--gold)',
+    casa: 'var(--cyan)', elemento: 'var(--green)',
+    cualidad: 'var(--orange)'
+  };
+
+  let extraHTML = '';
+
+  if (tok.category === 'signo') {
+    const elemCls = d.elemento.toLowerCase().replace(/\//g,'-');
+    const modCls  = d.modalidad.toLowerCase();
+    const polCls  = d.polaridad.toLowerCase().includes('yang') ? 'positivo' : 'negativo';
+    extraHTML = `
+      <div class="info-row">
+        <div class="lbl">TRIPLICIDAD · MODALIDAD · POLARIDAD</div>
+        <div class="val">
+          <span class="chip chip-${d.elemento.toLowerCase().split('/')[0]}">${d.elemento}</span>
+          <span class="chip chip-${modCls}">${d.modalidad}</span>
+          <span class="chip chip-${polCls}">${d.polaridad.split('/')[0]}</span>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="lbl">PLANETA REGENTE</div>
+        <div class="val">${d.rige_planeta}</div>
+      </div>`;
+  } else if (tok.category === 'planeta') {
+    extraHTML = `
+      <div class="info-row">
+        <div class="lbl">TIPO DE PLANETA</div>
+        <div class="val">${d.tipo}</div>
+      </div>
+      <div class="info-row">
+        <div class="lbl">ELEMENTO · POLARIDAD</div>
+        <div class="val">
+          <span class="chip chip-${d.elemento.toLowerCase().split('/')[0]}">${d.elemento}</span>
+          <span class="chip chip-${d.cualidad.toLowerCase().includes('yang')?'positivo':'negativo'}">${d.cualidad.split(' ')[0]}</span>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="lbl">RIGE</div>
+        <div class="val">${d.rige}</div>
+      </div>`;
+  } else if (tok.category === 'casa') {
+    extraHTML = `
+      <div class="info-row">
+        <div class="lbl">ELEMENTO · CUALIDAD</div>
+        <div class="val">
+          <span class="chip chip-${d.elemento.toLowerCase()}">${d.elemento}</span>
+          <span class="chip chip-${d.cualidad.toLowerCase()}">${d.cualidad}</span>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="lbl">ÁREA DE VIDA</div>
+        <div class="val">${d.area}</div>
+      </div>`;
+  } else if (tok.category === 'elemento') {
+    extraHTML = `
+      <div class="info-row">
+        <div class="lbl">SIGNOS</div>
+        <div class="val">${d.signos}</div>
+      </div>
+      <div class="info-row">
+        <div class="lbl">CUALIDAD</div>
+        <div class="val">${d.cualidad}</div>
+      </div>`;
+  } else if (tok.category === 'cualidad') {
+    const chipCls = d.id; // angular, sucedente, cadente
+    extraHTML = `
+      <div class="info-row">
+        <div class="lbl">TIPO</div>
+        <div class="val"><span class="chip chip-${chipCls}">${d.id.toUpperCase()}</span></div>
+      </div>
+      <div class="info-row">
+        <div class="lbl">CASAS</div>
+        <div class="val">${d.casas}</div>
+      </div>
+      <div class="info-row">
+        <div class="lbl">ENERGÍA</div>
+        <div class="val">${d.energia}</div>
+      </div>`;
+  }
+
+  document.getElementById('info-display').innerHTML = `
+    <div class="info-header" style="border-left: 3px solid ${colorMap[tok.category]}">
+      <div class="info-emoji">${d.emoji}</div>
+      <div class="info-name">${d.label}</div>
+      <div class="info-type">${typeMap[tok.category]}</div>
+    </div>
+    <div class="info-body">
+      <div class="info-row">
+        <div class="lbl">PALABRAS CLAVE</div>
+        <div class="val">${d.keywords}</div>
+      </div>
+      <div class="info-row">
+        <div class="lbl">DESCRIPCIÓN</div>
+        <div class="val" style="font-size:5.5px;color:#B0B0D0">${d.desc}</div>
+      </div>
+      ${extraHTML}
+    </div>
+  `;
+}
+
+// ══════════════════════════════════════════════
+//  CONNECT MODE
+// ══════════════════════════════════════════════
+document.getElementById('btn-start-connect').addEventListener('click', () => {
+  if (!selectedToken) return;
+  connectMode = true;
+  connectSource = selectedToken;
+  document.getElementById('connect-hint').style.display = 'block';
+  toast('✦ MODO CONEXIÓN — HOZ CLIC EN EL TOKEN DESTINO');
+});
+
+document.getElementById('btn-connect-mode').addEventListener('click', () => {
+  toast('✦ SELECCIONA UN TOKEN PRIMERO');
+});
+
+function exitConnectMode() {
+  connectMode = false;
+  connectSource = null;
+  document.getElementById('connect-hint').style.display = 'none';
+}
+
+canvasInner.addEventListener('click', e => {
+  if (e.target === canvasInner || e.target.id === 'svg-overlay' ||
+      e.target.id === 'zodiac-wheel-svg' || e.target.tagName === 'line' ||
+      e.target.tagName === 'circle' || e.target.tagName === 'text') {
+    if (connectMode) { exitConnectMode(); return; }
+    tokens.forEach(t => t.el.classList.remove('selected'));
+    selectedToken = null;
+    document.getElementById('token-actions').style.display = 'none';
+  }
+});
+
+// ══════════════════════════════════════════════
+//  DELETE TOKEN
+// ══════════════════════════════════════════════
+document.getElementById('btn-delete-token').addEventListener('click', () => {
+  if (!selectedToken) return;
+  const idx = tokens.findIndex(t => t.uid === selectedToken);
+  if (idx === -1) return;
+  tokens[idx].el.remove();
+  tokens.splice(idx, 1);
+  connections = connections.filter(c => c.from !== selectedToken && c.to !== selectedToken);
+  selectedToken = null;
+  document.getElementById('token-actions').style.display = 'none';
+  document.getElementById('info-display').innerHTML = `<div class="info-placeholder">✦<br><br>TOKEN ELIMINADO</div>`;
+  redrawConnections();
+  if (tokens.length === 0) document.getElementById('drop-hint').style.opacity = '1';
+});
+
+// ══════════════════════════════════════════════
+//  CONNECTIONS SVG
+// ══════════════════════════════════════════════
+function redrawConnections() {
+  const svg = document.getElementById('svg-overlay');
+  const rect = canvasInner.getBoundingClientRect();
+  svg.setAttribute('width',  rect.width);
+  svg.setAttribute('height', rect.height);
+  svg.innerHTML = '';
+
+  connections.forEach(c => {
+    const from = tokens.find(t => t.uid === c.from);
+    const to   = tokens.find(t => t.uid === c.to);
+    if (!from || !to) return;
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', from.x); line.setAttribute('y1', from.y);
+    line.setAttribute('x2', to.x);   line.setAttribute('y2', to.y);
+    line.setAttribute('stroke', 'rgba(114,76,249,.5)');
+    line.setAttribute('stroke-width', '1.5');
+    line.setAttribute('stroke-dasharray', '4 4');
+    svg.appendChild(line);
+  });
+}
+
+// ══════════════════════════════════════════════
+//  CLEAR BUTTONS
+// ══════════════════════════════════════════════
+document.getElementById('btn-clear-connections').addEventListener('click', () => {
+  connections = [];
+  redrawConnections();
+  toast('✦ LÍNEAS ELIMINADAS');
+});
+
+document.getElementById('btn-clear-all').addEventListener('click', () => {
+  if (!confirm('¿Reiniciar el lienzo? Se perderán todos los tokens.')) return;
+  tokens.forEach(t => t.el.remove());
+  tokens = []; connections = []; selectedToken = null;
+  document.getElementById('info-display').innerHTML = `<div class="info-placeholder">✦<br><br>HAZ CLIC EN<br>CUALQUIER TOKEN<br>DEL LIENZO<br><br>PARA VER SU<br>SIGNIFICADO</div>`;
+  document.getElementById('token-actions').style.display = 'none';
+  redrawConnections();
+  document.getElementById('drop-hint').style.opacity = '1';
+  exitConnectMode();
+});
+
+// ══════════════════════════════════════════════
+//  RESIZE
+// ══════════════════════════════════════════════
+window.addEventListener('resize', () => {
+  redrawConnections();
+  drawZodiacWheel();
+});
+
+// ══════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════
+let toastTimer = null;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.style.opacity = '1';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.style.opacity = '0'; }, 2000);
+}
+
+// ══════════════════════════════════════════════
+//  BOOT
+// ══════════════════════════════════════════════
+buildPalette();
+drawZodiacWheel();
+</script>
+</body>
+</html>

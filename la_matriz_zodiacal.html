@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Matriz Zodiacal - Pixel Art</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0A0A1B;
+            font-family: 'Press Start 2P', cursive;
+            color: #fff;
+            line-height: 1.8;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* scanlines */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg,
+                rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px,
+                transparent 1px, transparent 2px);
+            pointer-events: none;
+            z-index: 9999;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0%   { transform: translateY(0); }
+            100% { transform: translateY(6px); }
+        }
+
+        .stars {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+
+        .star {
+            position: absolute; background: #fff;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50%       { opacity: 1; }
+        }
+
+        .wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== FUENTE ===== */
+        h1 {
+            font-size: clamp(1rem, 3.5vw, 1.8rem);
+            text-align: center;
+            color: #724CF9;
+            text-shadow: 4px 4px 0px #000, 0 0 20px rgba(114,76,249,0.8);
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: clamp(0.45rem, 1.2vw, 0.6rem);
+            color: #F7B801;
+            text-shadow: 2px 2px 0 #000;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            opacity: 0.85;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 4px 4px 0px #000, 0 0 20px rgba(114,76,249,0.5); }
+            to   { text-shadow: 4px 4px 0px #000, 0 0 30px rgba(114,76,249,1); }
+        }
+
+        h2 {
+            font-size: clamp(0.7rem, 2.5vw, 1.1rem);
+            color: #00D9FF;
+            text-shadow: 3px 3px 0px #000;
+            margin: 40px 0 20px 0;
+            padding: 15px;
+            border: 4px solid #2A2A4A;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            box-shadow: 6px 6px 0px #000;
+            position: relative;
+            text-align: center;
+        }
+
+        h2::before { content:'★'; color:#F7B801; margin-right:10px; display:inline-block; animation:spin 4s linear infinite; }
+        h2::after  { content:'★'; color:#F7B801; margin-left:10px;  display:inline-block; animation:spin 4s linear infinite reverse; }
+
+        @keyframes spin {
+            0%   { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== CUADROS ===== */
+        .cuadros {
+            background: #1a1a2e;
+            border: 4px solid #2A2A4A;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 8px 8px 0px #000;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: slideInGlow 0.8s ease-out;
+        }
+
+        @keyframes slideInGlow {
+            0%  { opacity:0; transform:translateY(30px); }
+            50% { box-shadow:8px 8px 0px #000, 0 0 20px rgba(114,76,249,0.4); }
+            100%{ opacity:1; transform:translateY(0); box-shadow:8px 8px 0px #000; }
+        }
+
+        .cuadros:hover {
+            transform: translate(-2px,-2px);
+            box-shadow: 10px 10px 0px #000, 0 0 25px rgba(114,76,249,0.3);
+        }
+
+        .cuadros p {
+            font-size: clamp(0.55rem, 1.4vw, 0.7rem);
+            line-height: 2.2;
+            color: #E0E0E0;
+            margin-bottom: 18px;
+        }
+
+        .cuadros p:last-child { margin-bottom: 0; }
+
+        /* ===== HIGHLIGHTS ===== */
+        .highlight        { color: #F7B801;  text-shadow: 2px 2px 0px #000; }
+        .highlight-cyan   { color: #00D9FF;  text-shadow: 2px 2px 0px #000; }
+        .highlight-pink   { color: #FF3D81;  text-shadow: 2px 2px 0px #000; }
+        .highlight-purple { color: #724CF9;  text-shadow: 2px 2px 0px #000; }
+        .highlight-green  { color: #10b981;  text-shadow: 2px 2px 0px #000; }
+        .highlight-red    { color: #ff6b6b;  text-shadow: 2px 2px 0px #000; }
+
+        .highlight-merged {
+            background: linear-gradient(90deg, #FF3D81, #724CF9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            animation: shineMerge 2s ease-in-out infinite;
+            text-shadow: none;
+        }
+
+        @keyframes shineMerge {
+            0%,100% { filter: brightness(1) drop-shadow(0 0 5px rgba(255,61,129,0.5)); }
+            50%     { filter: brightness(1.8) drop-shadow(0 0 15px rgba(114,76,249,0.9)); }
+        }
+
+        /* ===== CONCEPTOS CLAVE ===== */
+        .concept-lineal     { color: #FF3D81; text-shadow: 0 0 8px rgba(255,61,129,0.7),  2px 2px 0 #000; font-weight:bold; }
+        .concept-matriz     { color: #F7B801; text-shadow: 0 0 8px rgba(247,184,1,0.7),   2px 2px 0 #000; font-weight:bold; }
+        .concept-ciclo      { color: #10b981; text-shadow: 0 0 8px rgba(16,185,129,0.7),  2px 2px 0 #000; font-weight:bold; }
+        .concept-vibra      { color: #00D9FF; text-shadow: 0 0 8px rgba(0,217,255,0.7),   2px 2px 0 #000; font-weight:bold; }
+        .concept-sincro     { color: #724CF9; text-shadow: 0 0 8px rgba(114,76,249,0.7),  2px 2px 0 #000; font-weight:bold; }
+
+        .linea-lineal    { border-left: 4px solid #FF3D81; padding-left:14px; background: rgba(255,61,129,0.05);  margin-bottom:14px; border-radius:0 4px 4px 0; }
+        .linea-ciclo     { border-left: 4px solid #10b981; padding-left:14px; background: rgba(16,185,129,0.05);  margin-bottom:14px; border-radius:0 4px 4px 0; }
+        .linea-vibra     { border-left: 4px solid #00D9FF; padding-left:14px; background: rgba(0,217,255,0.05);   margin-bottom:14px; border-radius:0 4px 4px 0; }
+        .linea-sincro    { border-left: 4px solid #724CF9; padding-left:14px; background: rgba(114,76,249,0.05);  margin-bottom:0;    border-radius:0 4px 4px 0; }
+        .linea-matriz    { border-left: 4px solid #F7B801; padding-left:14px; background: rgba(247,184,1,0.05);   margin-bottom:14px; border-radius:0 4px 4px 0; }
+
+        /* ===== CITA del libro ===== */
+        .cita-box {
+            background: linear-gradient(135deg, #0f0f1e, #1a1a2e);
+            border: 4px solid #F7B801;
+            padding: 20px 25px;
+            margin: 25px 0;
+            box-shadow: 8px 8px 0px #000, 0 0 20px rgba(247,184,1,0.2);
+            position: relative;
+        }
+
+        .cita-box::before {
+            content: '📖';
+            position: absolute;
+            top: -18px; left: 18px;
+            font-size: 1.4em;
+            filter: drop-shadow(0 0 8px #F7B801);
+        }
+
+        .cita-box p {
+            font-size: clamp(0.45rem, 1.1vw, 0.6rem);
+            color: #F7B801;
+            line-height: 2.2;
+            font-style: normal;
+            opacity: 0.9;
+        }
+
+        /* ===== MARIPOSA / METAMORFOSIS ===== */
+        .metamorfosis-box {
+            background: #1a1a2e;
+            border: 4px solid #2A2A4A;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 8px 8px 0px #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metamorfosis-box:hover { transform: translate(-2px,-2px); box-shadow: 10px 10px 0px #000, 0 0 25px rgba(16,185,129,0.3); }
+
+        .metamorfosis-steps {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0 15px 0;
+        }
+
+        .meta-step {
+            text-align: center;
+            padding: 14px 10px;
+            border: 3px solid;
+            min-width: 100px;
+            position: relative;
+            cursor: default;
+            transition: transform 0.2s;
+        }
+
+        .meta-step:hover { transform: translateY(-4px); }
+
+        .meta-step.gusano  { border-color: #10b981; box-shadow: 4px 4px 0 #000, 0 0 14px rgba(16,185,129,0.4); }
+        .meta-step.crisali { border-color: #F7B801; box-shadow: 4px 4px 0 #000, 0 0 14px rgba(247,184,1,0.4); }
+        .meta-step.maripo  { border-color: #FF3D81; box-shadow: 4px 4px 0 #000, 0 0 14px rgba(255,61,129,0.4); }
+
+        .meta-emoji { font-size: 1.8em; display: block; margin-bottom: 8px; }
+        .meta-label { font-size: clamp(0.38rem, 1vw, 0.5rem); color: #E0E0E0; text-shadow: 1px 1px 0 #000; }
+        .meta-arrow { font-size: 1.4em; color: #724CF9; text-shadow: 0 0 8px #724CF9; align-self: center; }
+
+        /* ===== ANILLOS saturno para cuadro cósmico ===== */
+        .saturn-ring-box {
+            position: relative;
+            padding: 28px 25px;
+            margin: 25px 0;
+            background: #1a1a2e;
+            border: 4px solid #2A2A4A;
+            box-shadow: 8px 8px 0px #000;
+            transition: transform 0.2s, box-shadow 0.2s;
+            overflow: visible;
+        }
+
+        .saturn-ring-box:hover { transform: translate(-2px,-2px); box-shadow: 10px 10px 0px #000, 0 0 25px rgba(0,217,255,0.25); }
+
+        .saturn-ring {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            border-style: solid;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%) rotateX(72deg);
+        }
+
+        .saturn-ring-1 {
+            width: calc(100% + 40px); height: 28px; border-width: 3px;
+            border-color: rgba(0,217,255,0.6);
+            box-shadow: 0 0 14px rgba(0,217,255,0.4), inset 0 0 8px rgba(0,217,255,0.2);
+            animation: ringPulse1 6s ease-in-out infinite;
+        }
+
+        .saturn-ring-2 {
+            width: calc(100% + 72px); height: 44px; border-width: 2px;
+            border-color: rgba(114,76,249,0.45);
+            box-shadow: 0 0 10px rgba(114,76,249,0.3);
+            animation: ringPulse2 9s ease-in-out infinite;
+        }
+
+        .saturn-ring-3 {
+            width: calc(100% + 106px); height: 60px; border-width: 2px;
+            border-color: rgba(247,184,1,0.3);
+            box-shadow: 0 0 8px rgba(247,184,1,0.2);
+            animation: ringPulse3 13s ease-in-out infinite;
+        }
+
+        @keyframes ringPulse1 {
+            0%,100% { border-color: rgba(0,217,255,0.6); box-shadow: 0 0 14px rgba(0,217,255,0.4); }
+            50%     { border-color: rgba(0,217,255,1);   box-shadow: 0 0 28px rgba(0,217,255,0.8); }
+        }
+        @keyframes ringPulse2 {
+            0%,100% { box-shadow: 0 0 10px rgba(114,76,249,0.3); }
+            50%     { box-shadow: 0 0 22px rgba(114,76,249,0.7); }
+        }
+        @keyframes ringPulse3 {
+            0%,100% { box-shadow: 0 0 8px rgba(247,184,1,0.2); }
+            50%     { box-shadow: 0 0 18px rgba(247,184,1,0.55); }
+        }
+
+        /* ===== PIXEL DIVIDER ===== */
+        .pixel-divider {
+            height: 4px;
+            background: repeating-linear-gradient(90deg,
+                #724CF9 0px,  #724CF9 8px,
+                #FF3D81 8px,  #FF3D81 16px,
+                #00D9FF 16px, #00D9FF 24px,
+                #F7B801 24px, #F7B801 32px);
+            margin: 30px 0;
+            box-shadow: 0 4px 0px #000;
+        }
+
+        /* ===== DECORACIONES ===== */
+        .corner-deco { position:absolute; width:20px; height:20px; background:#FF3D81; box-shadow:0 0 0 4px #2A2A4A,4px 4px 0px #000; }
+        .corner-tl { top:-2px; left:-2px; }
+        .corner-tr { top:-2px; right:-2px; }
+        .corner-bl { bottom:-2px; left:-2px; }
+        .corner-br { bottom:-2px; right:-2px; }
+
+        /* ===== SIGNOS ejemplos ===== */
+        .signos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .signo-card {
+            background: #0f0f1e;
+            border: 3px solid #2A2A4A;
+            padding: 14px 10px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 4px 4px 0 #000;
+        }
+
+        .signo-card:hover { transform: translate(-2px,-2px); }
+
+        .signo-card.cancer  { border-color: #00D9FF; box-shadow: 4px 4px 0 #000, 0 0 12px rgba(0,217,255,0.3); }
+        .signo-card.escorpio { border-color: #FF3D81; box-shadow: 4px 4px 0 #000, 0 0 12px rgba(255,61,129,0.3); }
+
+        .signo-symbol { font-size: 2em; display:block; margin-bottom:8px; }
+        .signo-name   { font-size: clamp(0.4rem, 1vw, 0.55rem); color: #E0E0E0; margin-bottom:8px; display:block; }
+        .signo-list   { font-size: clamp(0.38rem, 0.9vw, 0.5rem); color: #aaa; line-height: 2; }
+
+        /* ===== BITS animados en caja importancia ===== */
+        #matrizBox { overflow: hidden; }
+        .importance-text { position: relative; z-index: 2; }
+
+        .bit-element {
+            position: absolute;
+            width: 10px; height: 10px;
+            pointer-events: none; z-index: 1;
+            border-radius: 1px;
+            animation: bitFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes bitFloat {
+            0%,100% { transform: translate(0,0) rotate(0deg); }
+            33%     { transform: translate(20px,-15px) rotate(120deg); }
+            66%     { transform: translate(-15px,20px) rotate(240deg); }
+        }
+
+        .importance-light-burst {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none; z-index: 1;
+            background: radial-gradient(circle,rgba(0,217,255,0.65) 0%,rgba(114,76,249,0.35) 40%,transparent 70%);
+            animation: importanceBurst 1.5s ease-out forwards;
+        }
+
+        @keyframes importanceBurst {
+            0%   { transform: scale(0); opacity: 1; }
+            100% { transform: scale(5); opacity: 0; }
+        }
+
+        /* ===== TETRIS zodiacal ===== */
+        .tetris-popup {
+            position: fixed;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            pointer-events: none; z-index: 100;
+            text-shadow: 2px 2px 0 #000;
+            will-change: transform;
+        }
+
+        @keyframes tetrisFall {
+            0%   { transform: translateY(-100px) rotateZ(0deg); opacity: 0; }
+            10%  { opacity: 1; }
+            100% { transform: translateY(100vh) rotateZ(720deg); opacity: 0; }
+        }
+
+        @keyframes popExplode {
+            0%   { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; filter: blur(4px); }
+        }
+
+        @keyframes mergeFlash {
+            0%,100% { transform: scale(1); }
+            50%     { transform: scale(1.3); filter: brightness(2); }
+        }
+
+        @keyframes confettiFall {
+            0%   { transform: translate(0,0) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--tx),200px) rotate(720deg); opacity: 0; }
+        }
+
+        .confetti-piece { position:fixed; width:8px; height:8px; pointer-events:none; z-index:101; }
+
+        .canvas-burst-particle {
+            position:fixed; width:10px; height:10px;
+            pointer-events:none; z-index:102;
+            animation: canvasBurstMove 1.2s ease-out forwards;
+        }
+
+        @keyframes canvasBurstMove {
+            0%   { opacity:1; transform:translate(0,0) scale(1); }
+            100% { opacity:0; transform:translate(var(--tx),var(--ty)) scale(0); }
+        }
+
+        #planetCanvas { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:4; }
+
+        @media (max-width:768px) {
+            .wrapper { padding:20px 10px; }
+            .cuadros { padding:18px; margin:20px 0; }
+            h2 { padding:12px; margin:30px 0 15px 0; }
+            .metamorfosis-steps { flex-direction: column; align-items: center; }
+            .meta-arrow { transform: rotate(90deg); }
+        }
+
+        @media (max-width:480px) {
+            .cuadros p { font-size:0.5rem; }
+        }
+    
+/* ===== RUEDA ZODIACAL MANDALA ===== */
+.zodiac-wheel-box {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    margin: 30px auto 35px;
+    filter: drop-shadow(8px 8px 0px #000);
+}
+
+.zodiac-wheel {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border: 4px solid #724CF9;
+    border-radius: 50%;
+    background: #0A0A1A;
+    animation: mandalaSpin 60s linear infinite, mandalaPulse 4s ease-in-out infinite;
+}
+
+.zodiac-wheel span {
+    position: absolute;
+    font-size: 1.4rem;
+    left: 50%;
+    top: 50%;
+    transform-origin: 0 0;
+    color: #00D9FF;
+    text-shadow: 0 0 8px rgba(0,217,255,0.6);
+}
+
+.zodiac-wheel span:nth-child(1)  { transform: rotate(0deg)   translate(95px) rotate(0deg); }
+.zodiac-wheel span:nth-child(2)  { transform: rotate(30deg)  translate(95px) rotate(-30deg); }
+.zodiac-wheel span:nth-child(3)  { transform: rotate(60deg)  translate(95px) rotate(-60deg); }
+.zodiac-wheel span:nth-child(4)  { transform: rotate(90deg)  translate(95px) rotate(-90deg); }
+.zodiac-wheel span:nth-child(5)  { transform: rotate(120deg) translate(95px) rotate(-120deg); }
+.zodiac-wheel span:nth-child(6)  { transform: rotate(150deg) translate(95px) rotate(-150deg); }
+.zodiac-wheel span:nth-child(7)  { transform: rotate(180deg) translate(95px) rotate(-180deg); }
+.zodiac-wheel span:nth-child(8)  { transform: rotate(210deg) translate(95px) rotate(-210deg); }
+.zodiac-wheel span:nth-child(9)  { transform: rotate(240deg) translate(95px) rotate(-240deg); }
+.zodiac-wheel span:nth-child(10) { transform: rotate(270deg) translate(95px) rotate(-270deg); }
+.zodiac-wheel span:nth-child(11) { transform: rotate(300deg) translate(95px) rotate(-300deg); }
+.zodiac-wheel span:nth-child(12) { transform: rotate(330deg) translate(95px) rotate(-330deg); }
+
+@keyframes mandalaSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+@keyframes mandalaPulse {
+    0%, 100% { box-shadow: 0 0 15px rgba(114,76,249,0.4), inset 0 0 20px rgba(0,217,255,0.1); }
+    50%      { box-shadow: 0 0 30px rgba(114,76,249,0.7), inset 0 0 30px rgba(0,217,255,0.2); }
+}
+
+/* ===== CAJA VIBRATORIA CON ONDAS ===== */
+.vibra-box {
+    position: relative;
+    padding: 28px 25px;
+    margin: 25px 0;
+    background: #1a1a2e;
+    border: 4px solid #2A2A4A;
+    box-shadow: 8px 8px 0px #000;
+    overflow: hidden;
+    animation: boxVibrate 0.15s linear infinite;
+}
+
+.vibra-box:hover { 
+    animation: boxVibrate 0.08s linear infinite;
+    box-shadow: 10px 10px 0px #000, 0 0 25px rgba(0,217,255,0.25); 
+}
+
+#waveCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.vibra-text {
+    position: relative;
+    font-size: clamp(0.55rem,1.4vw,0.7rem);
+    color: #E0E0E0;
+    line-height: 2.2;
+    margin: 0;
+    z-index: 2;
+}
+
+@keyframes boxVibrate {
+    0%   { transform: translate(0, 0); }
+    25%  { transform: translate(0.5px, -0.5px); }
+    50%  { transform: translate(-0.5px, 0.5px); }
+    75%  { transform: translate(0.5px, 0.5px); }
+    100% { transform: translate(0, 0); }
+}
+
+
+/* ===== COLUMNAS QUE CHOCAN + POLVO VIEJO ===== */
+.dualidades-colision {
+    position: relative;
+    padding: 40px 20px;
+    margin: 35px auto;
+    max-width: 600px;
+    background: #1a1a2e;
+    border: 4px solid #2A2A4A;
+    box-shadow: 8px 8px 0px #000;
+    overflow: hidden;
+}
+
+.colision-fila {
+    position: relative;
+    height: 70px;
+    margin: 25px 0;
+    display: flex;
+    align-items: center;
+}
+
+.columna {
+    position: absolute;
+    width: 45%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0A0A1A;
+    border: 3px solid;
+    font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.columna-izq {
+    left: -50%;
+    border-color: #00D9FF;
+    color: #00D9FF;
+    text-shadow: 0 0 8px rgba(0,217,255,0.6);
+    animation: chocarIzq 3s ease-in-out infinite;
+}
+
+.columna-der {
+    right: -50%;
+    border-color: #FF3D81;
+    color: #FF3D81;
+    text-shadow: 0 0 8px rgba(255,61,129,0.6);
+    animation: chocarDer 3s ease-in-out infinite;
+}
+
+/* Polvo que cae al chocar */
+.polvo {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #8B7355;
+    border-radius: 50%;
+    opacity: 0;
+    left: 50%;
+    top: 50%;
+    pointer-events: none;
+}
+
+.polvo-1 { animation: caerPolvo 3s ease-in infinite 1.5s; }
+.polvo-2 { animation: caerPolvo 3s ease-in infinite 1.6s; left: 48%; }
+.polvo-3 { animation: caerPolvo 3s ease-in infinite 1.7s; left: 52%; }
+.polvo-4 { animation: caerPolvo 3s ease-in infinite 1.55s; left: 49%; width: 3px; height: 3px; }
+.polvo-5 { animation: caerPolvo 3s ease-in infinite 1.65s; left: 51%; width: 3px; height: 3px; }
+
+/* Grietas al chocar */
+.colision-fila::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 2px;
+    height: 0;
+    background: #724CF9;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    animation: grietaChoque 3s ease-in-out infinite 1.5s;
+    box-shadow: 0 0 10px rgba(114,76,249,0.8);
+}
+
+@keyframes chocarIzq {
+    0%, 100% { left: -50%; }
+    40%      { left: -50%; }
+    50%      { left: 2%; transform: translateX(0) scaleX(1); }
+    55%      { left: 2%; transform: translateX(-3px) scaleX(0.95); }
+    60%      { left: 2%; transform: translateX(0) scaleX(1); }
+    90%      { left: 2%; }
+}
+
+@keyframes chocarDer {
+    0%, 100% { right: -50%; }
+    40%      { right: -50%; }
+    50%      { right: 2%; transform: translateX(0) scaleX(1); }
+    55%      { right: 2%; transform: translateX(3px) scaleX(0.95); }
+    60%      { right: 2%; transform: translateX(0) scaleX(1); }
+    90%      { right: 2%; }
+}
+
+@keyframes caerPolvo {
+    0%   { opacity: 0; transform: translate(-50%, -50%) translateY(0); }
+    50%  { opacity: 0; }
+    51%  { opacity: 0.8; transform: translate(-50%, -50%) translateY(0) rotate(0deg); }
+    100% { opacity: 0; transform: translate(-50%, -50%) translateY(40px) rotate(360deg); }
+}
+
+@keyframes grietaChoque {
+    0%, 49%  { opacity: 0; height: 0; }
+    50%      { opacity: 1; height: 60%; }
+    60%      { opacity: 0.6; height: 60%; }
+    100%     { opacity: 0; height: 60%; }
+}
+
+/* Efecto de temblor al chocar */
+.dualidades-colision.temblor {
+    animation: temblorImpacto 0.3s ease-in-out;
+}
+
+@keyframes temblorImpacto {
+    0%, 100% { transform: translate(0, 0); }
+    25%      { transform: translate(-2px, 1px); }
+    50%      { transform: translate(2px, -1px); }
+    75%      { transform: translate(-1px, 2px); }
+}
+
+    50%      { transform: scale(1.15) rotate(180deg); box-shadow: 6px 6px 0px #000, 0 0 25px rgba(114,76,249,1); }
+}
+
+/* Línea de choque central */
+.dualidades-choque::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #724CF9, transparent);
+    opacity: 0.3;
+    transform: translateX(-50%);
+}
+
+
+
+
+</style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <canvas id="planetCanvas"></canvas>
+
+    <div class="wrapper">
+
+        <h1>✦ LA MATRIZ ZODIACAL ✦</h1>
+        <p class="subtitle">Eugenio Carutti · Ascendentes en Astrología · Ed. Kier · p. 31</p>
+
+        <!-- ===== CITA FUENTE ===== -->
+        <div class="cita-box">
+            <p>La información de esta lección fue extraída del libro <span class="highlight">"Ascendentes en Astrología, Primera Parte"</span> de <span class="highlight-cyan">Eugenio Carutti</span>, Editorial Kier, página 31.</p>
+        </div>
+
+        <!-- ===== SECCIÓN 1 ===== -->
+        <h2>El Pensamiento Lineal</h2>
+          <!-- Columnas de Dualidades que Chocan -->
+<div class="dualidades-colision" id="colisionBox">
+    <div class="colision-fila">
+        <div class="columna columna-izq">FRÍO</div>
+        <div class="columna columna-der">CALIENTE</div>
+        <span class="polvo polvo-1"></span>
+        <span class="polvo polvo-2"></span>
+        <span class="polvo polvo-3"></span>
+        <span class="polvo polvo-4"></span>
+        <span class="polvo polvo-5"></span>
+    </div>
+    
+    <div class="colision-fila">
+        <div class="columna columna-izq">ABAJO</div>
+        <div class="columna columna-der">ARRIBA</div>
+        <span class="polvo polvo-1"></span>
+        <span class="polvo polvo-2"></span>
+        <span class="polvo polvo-3"></span>
+        <span class="polvo polvo-4"></span>
+        <span class="polvo polvo-5"></span>
+    </div>
+    
+    <div class="colision-fila">
+        <div class="columna columna-izq">NEGRO</div>
+        <div class="columna columna-der">BLANCO</div>
+        <span class="polvo polvo-1"></span>
+        <span class="polvo polvo-2"></span>
+        <span class="polvo polvo-3"></span>
+        <span class="polvo polvo-4"></span>
+        <span class="polvo polvo-5"></span>
+    </div>
+    
+    <div class="colision-fila">
+        <div class="columna columna-izq">PASADO-PRESENTE</div>
+        <div class="columna columna-der">FUTURO</div>
+        <span class="polvo polvo-1"></span>
+        <span class="polvo polvo-2"></span>
+        <span class="polvo polvo-3"></span>
+        <span class="polvo polvo-4"></span>
+        <span class="polvo polvo-5"></span>
+    </div>
+    
+    <div class="colision-fila">
+        <div class="columna columna-izq">BUENO</div>
+        <div class="columna columna-der">MALO</div>
+        <span class="polvo polvo-1"></span>
+        <span class="polvo polvo-2"></span>
+        <span class="polvo polvo-3"></span>
+        <span class="polvo polvo-4"></span>
+        <span class="polvo polvo-5"></span>
+    </div>
+    
+    <div class="colision-fila">
+        <div class="columna columna-izq">LUZ</div>
+        <div class="columna columna-der">SOMBRA</div>
+        <span class="polvo polvo-1"></span>
+        <span class="polvo polvo-2"></span>
+        <span class="polvo polvo-3"></span>
+        <span class="polvo polvo-4"></span>
+        <span class="polvo polvo-5"></span>
+    </div>
+    
+    <div class="colision-fila">
+        <div class="columna columna-izq">ORDEN</div>
+        <div class="columna columna-der">CAOS</div>
+        <span class="polvo polvo-1"></span>
+        <span class="polvo polvo-2"></span>
+        <span class="polvo polvo-3"></span>
+        <span class="polvo polvo-4"></span>
+        <span class="polvo polvo-5"></span>
+    </div>
+</div>
+
+<script>
+// Temblor sincronizado con el choque
+const box = document.getElementById('colisionBox');
+setInterval(() => {
+    box.classList.add('temblor');
+    setTimeout(() => box.classList.remove('temblor'), 300);
+}, 3000);
+</script>
+
+
+<div class="cuadros">
+            <span class="corner-deco corner-tl"></span>
+            <span class="corner-deco corner-tr"></span>
+            <span class="corner-deco corner-bl"></span>
+            <span class="corner-deco corner-br"></span>
+
+            <p>La gran dificultad para aprender astrología está dada por la presencia hegemónica —en todos nosotros— del <span class="concept-lineal">PENSAMIENTO LINEAL</span>, que procesa secuencialmente en términos de <span class="highlight-pink">causalidad unidireccional</span>.</p>
+
+            <p class="linea-lineal">
+                <span class="concept-lineal">¿De dónde surge este nivel de la mente?</span> De la <span class="highlight">identificación con la forma</span>. El sujeto se concibe como una forma separada de todas las demás, abstraída del contexto en que aparece y de los ciclos en que se manifiesta.
+            </p>
+
+            <p>Esta identificación hace que consideremos relevantes proposiciones <span class="highlight-pink">absurdas en sí mismas</span>: «el humano es superior al oxígeno», cuando en realidad no existe tal ser humano escindido del oxígeno. <span class="highlight-cyan">Viviente y oxígeno son una estructura.</span></p>
+
+            <p>Nuestra mente concreta se siente insegura en el mundo de los <span class="concept-matriz">contextos, estructuras, patrones y matrices</span>, y busca aferrarse a la existencia de las formas separadas y las relaciones lineales, aunque estas sean ilusorias.</p>
+        </div>
+
+        <div class="pixel-divider"></div>
+
+        <!-- ===== SECCIÓN 2: METAMORFOSIS ===== -->
+        <h2>La Metamorfosis: Ver la Estructura</h2>
+        <div class="metamorfosis-box cuadros">
+            <span class="corner-deco corner-tl"></span>
+            <span class="corner-deco corner-tr"></span>
+            <span class="corner-deco corner-bl"></span>
+            <span class="corner-deco corner-br"></span>
+
+            <p>Un ejemplo muy visible de nuestra incapacidad de ver una <span class="concept-ciclo">estructura en despliegue secuencial</span> —es decir, cómo una entidad se manifiesta a través de formas diferentes— es:</p>
+
+            <div class="metamorfosis-steps">
+                <div class="meta-step gusano">
+                    <span class="meta-emoji">🐛</span>
+                    <span class="meta-label" style="color:#10b981;">GUSANO</span>
+                </div>
+                <span class="meta-arrow">→</span>
+                <div class="meta-step crisali">
+                    <span class="meta-emoji">🫘</span>
+                    <span class="meta-label" style="color:#F7B801;">CRISÁLIDA</span>
+                </div>
+                <span class="meta-arrow">→</span>
+                <div class="meta-step maripo">
+                    <span class="meta-emoji">🦋</span>
+                    <span class="meta-label" style="color:#FF3D81;">MARIPOSA</span>
+                </div>
+            </div>
+
+            <p>No tenemos una palabra para designar <span class="highlight-merged">eso que se metamorfosea</span>. A la mayoría de las personas que ve una "horrible gata peluda" no le es inmediatamente evidente que se trata de la <span class="highlight-pink">misma mariposa</span> que admirará algún tiempo después.</p>
+
+            <p style="margin-bottom:0;">Esta <span class="highlight">limitación del lenguaje</span> es decisiva cuando se trata de aprender astrología. Desde el Zodiaco sabemos que la energía se manifiesta en una <span class="concept-ciclo">serie de fases</span> que implican formas discernibles, intrínsecamente ligadas unas a otras.</p>
+        </div>
+
+        <div class="pixel-divider"></div>
+
+        <!-- ===== SECCIÓN 3: EL MANDALA ===== -->
+        <h2>El Zodiaco Como Mandala</h2>
+        <!-- Rueda zodiacal nueva -->
+<div class="zodiac-wheel-box">
+    <div class="zodiac-wheel">
+        <span>♈︎</span><span>♉︎</span><span>♊︎</span><span>♋︎</span>
+        <span>♌︎</span><span>♍︎</span><span>♎︎</span><span>♏︎</span>
+        <span>♐︎</span><span>♑︎</span><span>♒︎</span><span>♓︎</span>
+    </div>
+</div>
+
+<div class="cuadros">
+            <span class="corner-deco corner-tl"></span>
+            <span class="corner-deco corner-tr"></span>
+            <span class="corner-deco corner-bl"></span>
+            <span class="corner-deco corner-br"></span>
+
+            <p>Es fundamental poder ver el Zodiaco como un <span class="concept-matriz">PATRÓN ENERGÉTICO GLOBAL</span> y comprender cada uno de sus espacios/fases —aquello que llamamos <span class="highlight-cyan">signos</span>— como <span class="highlight-merged">mutuamente implicados</span>, como en todo mandala.</p>
+
+            <p class="linea-matriz">
+                <span class="concept-matriz">La matriz zodiacal</span> es creadora —o significadora— de <span class="highlight">diferentes niveles de realidad</span>. Esto abarca desde cualidades muy abstractas hasta densificaciones concretas isomorfas entre sí; realidades que obedecen al mismo patrón, en distintos niveles de sustancia.
+            </p>
+
+            <p>En nuestra época, algo resistente a los viejos sistemas de correspondencias, hay que hacer un esfuerzo para <span class="highlight-pink">no reducir la astrología al mundo del psiquismo</span>. Lo humano es sólo un nivel particular de manifestación astrológica.</p>
+        </div>
+
+        <div class="pixel-divider"></div>
+
+        <!-- ===== SECCIÓN 4: SISTEMA VIBRATORIO ===== -->
+        <h2>El Sistema Vibratorio del Zodiaco</h2>
+
+        <!-- Anillos cósmicos en esta sección -->
+        <!-- Anillos cósmicos en esta sección - versión ondas -->
+<div class="vibra-box">
+    <canvas id="waveCanvas"></canvas>
+    <p class="vibra-text">
+        El Zodíaco es un <span class="concept-vibra">SISTEMA VIBRATORIO</span> —por usar una metáfora energética— en el cual cada una de sus zonas, como si fueran los trastes de las cuerdas de una <span class="highlight-cyan">guitarra circular</span>, vibra de una manera específica. Al vibrar cada uno en su nota, materializa formas ligadas a esa cualidad particular.
+    </p>
+</div>
+
+<div class="cuadros">
+            <span class="corner-deco corner-tl"></span>
+            <span class="corner-deco corner-tr"></span>
+            <span class="corner-deco corner-bl"></span>
+            <span class="corner-deco corner-br"></span>
+            <p>Dentro de estas formas, la forma humana y sus características psicológicas son sólo un caso más. Cada signo es <span class="highlight">matriz significadora</span> de realidades en múltiples niveles:</p>
+
+            <div class="signos-grid">
+                <div class="signo-card cancer">
+                    <span class="signo-symbol">♋</span>
+                    <span class="signo-name" style="color:#00D9FF;">CÁNCER</span>
+                    <span class="signo-list">Cuevas<br>Huevos<br>Úteros<br>Casas<br>Personas cálidas<br>y maternales</span>
+                </div>
+                <div class="signo-card escorpio">
+                    <span class="signo-symbol">♏</span>
+                    <span class="signo-name" style="color:#FF3D81;">ESCORPIO</span>
+                    <span class="signo-list">Pantanos<br>Venenos<br>Excreciones<br>Psiquiatras<br>Todo tipo de<br>curadores</span>
+                </div>
+            </div>
+
+            <p style="margin-bottom:0;">Empequeñecer la astrología a lo humano es, a juicio del autor, una tendencia muy peligrosa que surge de querer eludir —en forma inconsciente— el <span class="highlight-purple">misterio del entramado cósmico</span> que la astrología nos propone.</p>
+        </div>
+
+        <div class="pixel-divider"></div>
+
+        <!-- ===== SECCIÓN 5: CONCLUSIÓN con bits ===== -->
+        <h2>Estructura Sincronística y Secuencial</h2>
+        <div class="cuadros" id="matrizBox" style="min-height:220px;">
+            <span class="corner-deco corner-tl"></span>
+            <span class="corner-deco corner-tr"></span>
+            <span class="corner-deco corner-bl"></span>
+            <span class="corner-deco corner-br"></span>
+            <div class="importance-text">
+                <p class="linea-sincro">
+                    <span class="concept-sincro">SINCRONÍSTICO:</span> El zodiaco no es una cadena de causas y efectos. Sus partes se corresponden simultáneamente con múltiples niveles de realidad, como notas de una misma partitura cósmica.
+                </p>
+                <p class="linea-ciclo">
+                    <span class="concept-ciclo">SECUENCIAL:</span> Al mismo tiempo, se despliega en fases discernibles que forman ciclos. Cada signo es una etapa de un proceso único que se expresa a través de formas diferentes.
+                </p>
+                <p>
+                    El Zodiaco es entonces una estructura <span class="highlight-merged">sincronística y, al mismo tiempo, secuencial</span>. Esto tiene que ser recordado continuamente, porque es el punto que la astrología más moderna tiende a oscurecer.
+                </p>
+                <p style="margin-bottom:0;">
+                    Esto es lo que hace posible la astrología: <span class="highlight-cyan">el cosmos no está hecho de objetos separados</span>, sino de patrones que se expresan en todos los niveles de la realidad a la vez.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+    /* ============================================
+       ESTRELLAS
+    ============================================ */
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 150; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 3 + 1;
+        star.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*3}s;animation-duration:${Math.random()*2+2}s`;
+        starsContainer.appendChild(star);
+    }
+
+    /* ============================================
+       LLUVIA TETRIS con términos zodiacales
+    ============================================ */
+    const astroTerms = [
+        { text: 'MATRIZ',        color: '#F7B801' },
+        { text: 'CICLO',         color: '#10b981' },
+        { text: 'ZODIACO',       color: '#00D9FF' },
+        { text: 'VIBRACIÓN',     color: '#724CF9' },
+        { text: 'PATRÓN',        color: '#FF3D81' },
+        { text: 'SINCRONÍA',     color: '#ff6b6b' },
+        { text: 'MANDALA',       color: '#F7B801' },
+    ];
+
+    let rainActive = false;
+
+    function startTetrisRain() {
+        if (rainActive) return;
+        rainActive = true;
+        let count = 0;
+        const iv = setInterval(() => {
+            if (count >= 30) { clearInterval(iv); rainActive = false; return; }
+            createTetrisPopup(); count++;
+        }, 200);
+    }
+
+    function createTetrisPopup() {
+        const term = astroTerms[Math.floor(Math.random() * astroTerms.length)];
+        const el = document.createElement('div');
+        el.className = 'tetris-popup';
+        el.textContent = term.text;
+        el.style.left  = Math.random() * 85 + 2 + '%';
+        el.style.top   = '-50px';
+        el.style.color = term.color;
+        const dur = Math.random() * 3 + 4;
+        el.style.animation = `tetrisFall ${dur}s linear forwards`;
+        document.body.appendChild(el);
+
+        setTimeout(() => {
+            const r = Math.random();
+            if      (r < 0.35) mergePopup(el, term.color);
+            else if (r < 0.65) createConfettiFromPopup(el, term.color);
+            else               explodePopup(el, term.color);
+        }, dur * 600);
+
+        setTimeout(() => el.remove(), dur * 1000 + 500);
+    }
+
+    function mergePopup(el, color) {
+        el.style.animation = 'mergeFlash 0.5s ease-in-out';
+        setTimeout(() => { el.style.fontSize = '14px'; el.style.color = color; el.style.textShadow = `0 0 20px ${color}`; }, 250);
+    }
+
+    function explodePopup(el, color) {
+        el.style.animation = 'popExplode 0.4s ease-out forwards';
+        const r = el.getBoundingClientRect();
+        spawnColorBurst(r.left + r.width/2, r.top + r.height/2, color);
+    }
+
+    function createConfettiFromPopup(src, color) {
+        const r = src.getBoundingClientRect();
+        const pal = ['#10b981','#FF3D81','#F7B801','#724CF9','#00D9FF','#ff6b6b'];
+        for (let i = 0; i < 12; i++) {
+            const c = document.createElement('div');
+            c.className = 'confetti-piece';
+            c.style.cssText = `left:${r.left}px;top:${r.top}px;background:${i===0?color:pal[Math.floor(Math.random()*pal.length)]};`;
+            c.style.setProperty('--tx', (Math.random()-0.5)*200+'px');
+            c.style.animation = `confettiFall ${Math.random()+1}s ease-out forwards`;
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 2000);
+        }
+        src.style.opacity = '0';
+    }
+
+    /* ============================================
+       CANVAS — planetas que aparecen y explotan
+    ============================================ */
+    const canvas = document.getElementById('planetCanvas');
+    const ctx    = canvas.getContext('2d');
+
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const zodNames  = ['♈ ARIES','♉ TAURO','♊ GÉMINIS','♋ CÁNCER','♌ LEO','♍ VIRGO','♎ LIBRA','♏ ESCORPIO','♐ SAGITARIO','♑ CAPRICORNIO','♒ ACUARIO','♓ PISCIS'];
+    const zodColors = {
+        '♈ ARIES':'#ff6b6b','♉ TAURO':'#10b981','♊ GÉMINIS':'#F7B801','♋ CÁNCER':'#00D9FF',
+        '♌ LEO':'#F7B801','♍ VIRGO':'#10b981','♎ LIBRA':'#FF3D81','♏ ESCORPIO':'#ff6b6b',
+        '♐ SAGITARIO':'#724CF9','♑ CAPRICORNIO':'#aaa','♒ ACUARIO':'#00D9FF','♓ PISCIS':'#724CF9'
+    };
+
+    const canvasParticles = [];
+
+    class ZodLabel {
+        constructor() {
+            this.name = zodNames[Math.floor(Math.random()*zodNames.length)];
+            this.color = zodColors[this.name];
+            this.x = Math.random()*(canvas.width-200)+100;
+            this.y = Math.random()*(canvas.height-100)+50;
+            this.alpha = 0; this.scale = 0.3;
+            this.state = 'fadein'; this.age = 0;
+            this.lifetime = Math.random()*120+100;
+            this.exploded = false;
+            this.fontSize = Math.floor(Math.random()*6+8);
+        }
+
+        update() {
+            this.age++;
+            if (this.state==='fadein') {
+                this.alpha+=0.04; this.scale+=0.04;
+                if (this.alpha>=1) { this.alpha=1; this.scale=1; this.state='visible'; }
+            } else if (this.state==='visible') {
+                if (this.age>this.lifetime) this.state='exploding';
+            } else {
+                this.alpha-=0.06; this.scale+=0.08;
+                if (!this.exploded) { this.exploded=true; this.spawnBurst(); }
+                if (this.alpha<=0) return false;
+            }
+            return true;
+        }
+
+        spawnBurst() {
+            for (let i=0;i<18;i++) {
+                const a=(Math.PI*2*i)/18, s=Math.random()*4+2;
+                canvasParticles.push({x:this.x,y:this.y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,
+                    color:this.color,alpha:1,size:Math.random()*6+3,life:1});
+            }
+        }
+
+        draw(c) {
+            c.save(); c.globalAlpha=this.alpha;
+            c.translate(this.x,this.y); c.scale(this.scale,this.scale);
+            c.font=`${this.fontSize}px 'Press Start 2P',monospace`;
+            c.textAlign='center'; c.textBaseline='middle';
+            c.fillStyle='#000'; c.fillText(this.name,2,2);
+            c.shadowColor=this.color; c.shadowBlur=12;
+            c.fillStyle=this.color; c.fillText(this.name,0,0);
+            c.restore();
+        }
+    }
+
+    const activeLabels = []; let labelTimer = 0;
+
+    function updateCanvas() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for (let i=activeLabels.length-1;i>=0;i--) {
+            if (!activeLabels[i].update()) activeLabels.splice(i,1);
+            else activeLabels[i].draw(ctx);
+        }
+        for (let i=canvasParticles.length-1;i>=0;i--) {
+            const p=canvasParticles[i];
+            p.x+=p.vx; p.y+=p.vy; p.vy+=0.1;
+            p.life-=0.025; p.alpha=p.life;
+            if (p.life<=0) { canvasParticles.splice(i,1); continue; }
+            ctx.save(); ctx.globalAlpha=p.alpha;
+            ctx.fillStyle=p.color; ctx.shadowColor=p.color; ctx.shadowBlur=8;
+            ctx.fillRect(p.x-p.size/2,p.y-p.size/2,p.size,p.size);
+            ctx.restore();
+        }
+        labelTimer++;
+        if (labelTimer>90 && activeLabels.length<6) { activeLabels.push(new ZodLabel()); labelTimer=0; }
+        requestAnimationFrame(updateCanvas);
+    }
+    updateCanvas();
+
+    function spawnColorBurst(cx, cy, color) {
+        const pal=[color,'#F7B801','#FF3D81','#724CF9','#00D9FF'];
+        for (let i=0;i<16;i++) {
+            const p=document.createElement('div');
+            p.className='canvas-burst-particle';
+            p.style.cssText=`left:${cx}px;top:${cy}px;background:${pal[i%pal.length]};box-shadow:0 0 6px ${color}`;
+            const a=(Math.PI*2*i)/16, d=Math.random()*100+50;
+            p.style.setProperty('--tx',Math.cos(a)*d+'px');
+            p.style.setProperty('--ty',Math.sin(a)*d+'px');
+            document.body.appendChild(p);
+            setTimeout(()=>p.remove(),1200);
+        }
+    }
+
+    /* ============================================
+       BITS dentro del cuadro conclusión
+    ============================================ */
+    let fusionActive = false;
+
+    function triggerMatrizFusion() {
+        if (fusionActive) return;
+        fusionActive = true;
+
+        const box    = document.getElementById('matrizBox');
+        const colors = ['#724CF9','#00D9FF','#F7B801','#10b981','#FF3D81'];
+        const bits   = [];
+        const count  = 20;
+
+        for (let i=0;i<count;i++) {
+            const bit = document.createElement('div');
+            bit.className = 'bit-element';
+            bit.style.left       = Math.random()*85+5+'%';
+            bit.style.top        = Math.random()*70+15+'%';
+            bit.style.background = colors[Math.floor(Math.random()*colors.length)];
+            bit.style.boxShadow  = `0 0 8px ${colors[Math.floor(Math.random()*colors.length)]}`;
+            bit.style.animationDelay = Math.random()*2+'s';
+            box.appendChild(bit);
+            bits.push(bit);
+        }
+
+        setTimeout(() => {
+            bits.forEach((bit,i) => setTimeout(() => {
+                bit.style.transition = 'all 1s ease-in-out';
+                bit.style.left='50%'; bit.style.top='50%';
+                bit.style.transform='translate(-50%,-50%) scale(0.5)';
+            }, i*50));
+        }, 3500);
+
+        setTimeout(() => {
+            bits.forEach((bit,i) => {
+                bit.style.transition='all 0.8s ease-in-out';
+                bit.style.transform=`translate(-50%,-50%) rotate(${i*(360/count)}deg) scale(0.8)`;
+            });
+        }, 5000);
+
+        setTimeout(() => {
+            const burst = document.createElement('div');
+            burst.className='importance-light-burst';
+            burst.style.cssText='width:80px;height:80px;left:calc(50% - 40px);top:calc(50% - 40px)';
+            box.appendChild(burst);
+            bits.forEach(b=>b.remove());
+            setTimeout(() => { burst.remove(); fusionActive=false; }, 1500);
+        }, 6200);
+    }
+
+    /* ============================================
+       HOVER filas / PARALLAX
+    ============================================ */
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                starsContainer.style.transform=`translateY(${window.pageYOffset*0.5}px)`;
+                ticking=false;
+            });
+            ticking=true;
+        }
+    });
+
+    /* ============================================
+       AUTO-INICIO
+    ============================================ */
+    setTimeout(()=>startTetrisRain(), 800);
+    setTimeout(()=>triggerMatrizFusion(), 4000);
+    setInterval(()=>{ if(!rainActive)   startTetrisRain(); }, 8000);
+    setInterval(()=>{ if(!fusionActive) triggerMatrizFusion(); }, 18000);
+
+    </script>
+
+<script>
+const canvas = document.getElementById('waveCanvas');
+if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let w, h, time = 0;
+
+    function resize() {
+        w = canvas.width = canvas.offsetWidth;
+        h = canvas.height = canvas.offsetHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function drawWave() {
+        ctx.clearRect(0, 0, w, h);
+        ctx.strokeStyle = '#00D9FF';
+        ctx.lineWidth = 2;
+        
+        for(let i = 0; i < 3; i++) {
+            ctx.beginPath();
+            ctx.globalAlpha = 0.4 - i * 0.1;
+            for(let x = 0; x < w; x++) {
+                let y = h/2 + Math.sin((x * 0.02) + (time * 0.05) + i) * (15 - i*3);
+                if(x === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+        time++;
+        requestAnimationFrame(drawWave);
+    }
+    drawWave();
+}
+</script>
+</body>
+</html>

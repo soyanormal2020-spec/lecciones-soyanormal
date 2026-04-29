@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>Astrología: Perspectiva Espiritual</title>
+    <style>
+                
+        
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #0A0A1A;
+            border: 4px solid #2A2A4A;
+            box-shadow: 8px 8px 0px #000;
+            padding: 40px 30px;
+        }
+
+        
+
+        
+            50%      { text-shadow: 0 0 25px rgba(114,76,249,1); }
+        }
+
+        
+
+        
+
+        .highlight-cyan {
+            color: #00D9FF;
+            font-weight: 700;
+            text-shadow: 0 0 6px rgba(0,217,255,0.4);
+        }
+
+        .highlight-pink {
+            color: #FF3D81;
+            font-weight: 700;
+            text-shadow: 0 0 6px rgba(255,61,129,0.4);
+        }
+
+        .highlight-purple {
+            color: #724CF9;
+            font-weight: 700;
+            text-shadow: 0 0 6px rgba(114,76,249,0.4);
+        }
+
+        /* Caja de advertencia matrix */
+        .matrix-box {
+            position: relative;
+            padding: 28px 25px;
+            margin: 30px 0;
+            background: #1a1a2e;
+            border: 4px solid #FF3D81;
+            box-shadow: 8px 8px 0px #000;
+            animation: boxAlert 2s ease-in-out infinite;
+        }
+
+        @keyframes boxAlert {
+            0%, 100% { box-shadow: 8px 8px 0px #000, 0 0 15px rgba(255,61,129,0.3); }
+            50%      { box-shadow: 8px 8px 0px #000, 0 0 25px rgba(255,61,129,0.6); }
+        }
+
+        /* Caja de enfoque espiritual */
+        .spiritual-box {
+            position: relative;
+            padding: 28px 25px;
+            margin: 30px 0;
+            background: #1a1a2e;
+            border: 4px solid #724CF9;
+            box-shadow: 8px 8px 0px #000;
+            animation: spiritualPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes spiritualPulse {
+            0%, 100% { box-shadow: 8px 8px 0px #000, 0 0 15px rgba(114,76,249,0.4); }
+            50%      { box-shadow: 8px 8px 0px #000, 0 0 30px rgba(114,76,249,0.7); }
+        }
+
+        /* Divisor pixel */
+        .pixel-divider {
+            width: 100%;
+            height: 4px;
+            background: repeating-linear-gradient(
+                90deg,
+                #724CF9 0px,
+                #724CF9 8px,
+                #00D9FF 8px,
+                #00D9FF 16px,
+                #FF3D81 16px,
+                #FF3D81 24px
+            );
+            margin: 40px 0;
+            box-shadow: 0 0 10px rgba(114,76,249,0.5);
+        }
+
+        /* Cuadros con esquinas */
+        .cuadros {
+            position: relative;
+            padding: 25px;
+            margin: 25px 0;
+            background: #1a1a2e;
+            border: 2px solid #2A2A4A;
+        }
+
+        .corner-deco {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #724CF9;
+        }
+
+        .corner-tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+        .corner-tr { top: -2px; right: -2px; border-left: none; border-bottom: none; }
+        .corner-bl { bottom: -2px; left: -2px; border-right: none; border-top: none; }
+        .corner-br { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+
+        /* CTA Transformación */
+        .transform-cta {
+            text-align: center;
+            padding: 35px 20px;
+            margin: 40px 0 20px 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0A0A1A 100%);
+            border: 4px solid #00D9FF;
+            box-shadow: 8px 8px 0px #000, 0 0 30px rgba(0,217,255,0.3);
+            animation: ctaGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes ctaGlow {
+            0%, 100% { box-shadow: 8px 8px 0px #000, 0 0 30px rgba(0,217,255,0.3); }
+            50%      { box-shadow: 8px 8px 0px #000, 0 0 50px rgba(0,217,255,0.6); }
+        }
+
+        .transform-cta h3 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+            color: #00D9FF;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(0,217,255,0.7);
+        }
+
+        .transform-cta 
+
+        .transform-cta .pregunta {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            color: #FF3D81;
+            margin-top: 20px;
+            text-shadow: 0 0 15px rgba(255,61,129,0.8);
+            animation: preguntaPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes preguntaPulse {
+            0%, 100% { transform: scale(1); }
+            50%      { transform: scale(1.05); }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 25px 15px; }
+            
+            
+        }
+    
+/* ===== TÍTULO AMARILLO CON DESTELLO ===== */
+
+
+
+
+
+    50%      { text-shadow: 0 0 25px rgba(255,215,0,1), 0 0 50px rgba(255,215,0,0.6); }
+}
+
+
+    100% { left: 100%; }
+}
+
+/* ===== MATRIX BOX CON LLUVIA BINARIA ===== */
+.matrix-box {
+    position: relative;
+    padding: 28px 25px;
+    margin: 30px 0;
+    background: #1a1a2e;
+    border: 4px solid #FF3D81;
+    box-shadow: 8px 8px 0px #000;
+    overflow: hidden;
+}
+
+.matrix-box 
+
+@keyframes matrixTextFade {
+    0%, 100% { opacity: 1; }
+    45%, 55% { opacity: 0.2; }
+}
+
+/* Lluvia binaria */
+.binary-rain {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.15;
+}
+
+.binary-column {
+    position: absolute;
+    top: -100%;
+    font-family: 'Courier New', monospace;
+    font-size: 0.6rem;
+    color: #FF3D81;
+    text-shadow: 0 0 5px rgba(255,61,129,0.8);
+    animation: lluviaCaida linear infinite;
+    white-space: pre;
+}
+
+.binary-column:nth-child(1) { left: 5%; animation-duration: 3s; animation-delay: 0s; }
+.binary-column:nth-child(2) { left: 15%; animation-duration: 4s; animation-delay: 0.5s; }
+.binary-column:nth-child(3) { left: 25%; animation-duration: 3.5s; animation-delay: 1s; }
+.binary-column:nth-child(4) { left: 35%; animation-duration: 4.5s; animation-delay: 0.2s; }
+.binary-column:nth-child(5) { left: 45%; animation-duration: 3s; animation-delay: 1.5s; }
+.binary-column:nth-child(6) { left: 55%; animation-duration: 4s; animation-delay: 0.8s; }
+.binary-column:nth-child(7) { left: 65%; animation-duration: 3.5s; animation-delay: 1.2s; }
+.binary-column:nth-child(8) { left: 75%; animation-duration: 4.5s; animation-delay: 0.3s; }
+.binary-column:nth-child(9) { left: 85%; animation-duration: 3s; animation-delay: 1.8s; }
+.binary-column:nth-child(10) { left: 95%; animation-duration: 4s; animation-delay: 0.6s; }
+
+@keyframes lluviaCaida {
+    0%   { top: -100%; opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+}
+
+/* ===== SPIRITUAL BOX CON COSMOS ===== */
+.spiritual-box {
+    position: relative;
+    padding: 28px 25px;
+    margin: 30px 0;
+    background: #1a1a2e;
+    border: 4px solid #724CF9;
+    box-shadow: 8px 8px 0px #000;
+    overflow: hidden;
+    animation: spiritualBrillo 4s ease-in-out infinite;
+}
+
+@keyframes spiritualBrillo {
+    0%, 100% { box-shadow: 8px 8px 0px #000, 0 0 15px rgba(114,76,249,0.4), inset 0 0 20px rgba(114,76,249,0.1); }
+    50%      { box-shadow: 8px 8px 0px #000, 0 0 40px rgba(114,76,249,0.8), inset 0 0 30px rgba(114,76,249,0.2); }
+}
+
+.spiritual-box 
+
+/* Fondo cosmos con estrellas */
+.cosmos-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.estrella {
+    position: absolute;
+    background: #E0E0E0;
+    border-radius: 50%;
+    animation: titilar ease-in-out infinite;
+}
+
+.estrella-1 { width: 2px; height: 2px; top: 20%; left: 10%; animation-duration: 2s; }
+.estrella-2 { width: 3px; height: 3px; top: 60%; left: 25%; animation-duration: 3s; animation-delay: 0.5s; }
+.estrella-3 { width: 2px; height: 2px; top: 40%; left: 50%; animation-duration: 2.5s; animation-delay: 1s; }
+.estrella-4 { width: 3px; height: 3px; top: 80%; left: 70%; animation-duration: 3s; animation-delay: 0.3s; }
+.estrella-5 { width: 2px; height: 2px; top: 30%; left: 85%; animation-duration: 2s; animation-delay: 1.5s; }
+.estrella-6 { width: 3px; height: 3px; top: 70%; left: 15%; animation-duration: 2.5s; animation-delay: 0.8s; }
+.estrella-7 { width: 2px; height: 2px; top: 50%; left: 90%; animation-duration: 3s; animation-delay: 1.2s; }
+.estrella-8 { width: 3px; height: 3px; top: 15%; left: 60%; animation-duration: 2s; animation-delay: 0.6s; }
+
+@keyframes titilar {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50%      { opacity: 1; transform: scale(1.3); box-shadow: 0 0 8px rgba(255,255,255,0.8); }
+}
+
+/* Meteoros */
+.meteoro {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #00D9FF;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0,217,255,0.8);
+    animation: meteoroCaida linear infinite;
+}
+
+.meteoro::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(0,217,255,0.8), transparent);
+    transform: translateY(-50%);
+}
+
+.meteoro-1 { top: -5%; left: 80%; animation-duration: 6s; animation-delay: 2s; }
+.meteoro-2 { top: -5%; left: 30%; animation-duration: 8s; animation-delay: 5s; }
+
+@keyframes meteoroCaida {
+    0%   { transform: translate(0, 0) rotate(-45deg); opacity: 0; }
+    10%  { opacity: 1; }
+    100% { transform: translate(-300px, 300px) rotate(-45deg); opacity: 0; }
+}
+
+
+/* ===== FUENTE PIXEL ===== */
+
+/* ===== TÍTULO AMARILLO SIN DESTELLO ===== */
+
+
+@keyframes titleGlowGold {
+    0%, 100% { text-shadow: 0 0 15px rgba(255,215,0,0.8), 0 0 30px rgba(255,215,0,0.4); }
+    50%      { text-shadow: 0 0 25px rgba(255,215,0,1), 0 0 50px rgba(255,215,0,0.6); }
+}
+
+/* ===== LLUVIA DE ESTRELLAS GLOBAL ===== */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    background-image: 
+        radial-gradient(2px 2px at 20% 30%, #E0E0E0, transparent),
+        radial-gradient(2px 2px at 60% 70%, #E0E0E0, transparent),
+        radial-gradient(1px 1px at 50% 50%, #E0E0E0, transparent),
+        radial-gradient(1px 1px at 80% 10%, #E0E0E0, transparent),
+        radial-gradient(2px 2px at 90% 60%, #E0E0E0, transparent),
+        radial-gradient(1px 1px at 33% 80%, #E0E0E0, transparent),
+        radial-gradient(2px 2px at 70% 40%, #00D9FF, transparent),
+        radial-gradient(1px 1px at 15% 90%, #724CF9, transparent);
+    background-size: 200% 200%;
+    background-position: 0% 0%;
+    animation: estrellasMover 20s linear infinite, estrellasTitilar 3s ease-in-out infinite;
+    opacity: 0.6;
+}
+
+@keyframes estrellasMover {
+    0%   { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+}
+
+@keyframes estrellasTitilar {
+    0%, 100% { opacity: 0.4; }
+    50%      { opacity: 0.8; }
+}
+
+/* Asegurar que el contenido esté encima */
+.container {
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== ANIMACIÓN PROCESOS EVOLUTIVOS ===== */
+.procesos-evolutivos {
+    position: relative;
+    display: inline-block;
+    animation: cambioColor 6s ease-in-out infinite;
+}
+
+@keyframes cambioColor {
+    0%, 45%   { color: #00D9FF; text-shadow: 0 0 10px rgba(0,217,255,0.7); }
+    50%, 95%  { color: #FF3D81; text-shadow: 0 0 10px rgba(255,61,129,0.7); }
+    100%      { color: #00D9FF; text-shadow: 0 0 10px rgba(0,217,255,0.7); }
+}
+
+.procesos-evolutivos::before,
+.procesos-evolutivos::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.procesos-evolutivos::before {
+    animation: explosionColor1 6s ease-in-out infinite;
+}
+
+.procesos-evolutivos::after {
+    animation: explosionColor2 6s ease-in-out infinite 0.1s;
+}
+
+@keyframes explosionColor1 {
+    0%, 49%   { width: 0; height: 0; opacity: 0; }
+    50%       { width: 0; height: 0; opacity: 1; background: radial-gradient(circle, rgba(255,61,129,0.8), transparent); }
+    55%       { width: 200px; height: 200px; opacity: 0; }
+    100%      { width: 200px; height: 200px; opacity: 0; }
+}
+
+@keyframes explosionColor2 {
+    0%, 49%   { width: 0; height: 0; opacity: 0; }
+    50%       { width: 0; height: 0; opacity: 1; background: radial-gradient(circle, rgba(114,76,249,0.8), transparent); }
+    55%       { width: 250px; height: 250px; opacity: 0; }
+    100%      { width: 250px; height: 250px; opacity: 0; }
+}
+
+
+/* ===== FUENTE PIXEL GLOBAL ===== */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, p, h1, h2, h3, span, div {
+    font-family: 'Press Start 2P', cursive !important;
+}
+
+body {
+    background: #0A0A1A;
+    color: #E0E0E0;
+    line-height: 2;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* Ajuste de tamaños para Press Start 2P */
+h1 {
+    font-size: clamp(0.9rem, 2.5vw, 1.4rem);
+    color: #FFD700;
+    text-align: center;
+    margin-bottom: 40px;
+    text-shadow: 0 0 15px rgba(255,215,0,0.8), 0 0 30px rgba(255,215,0,0.4);
+    line-height: 1.6;
+    animation: titleGlowGold 3s ease-in-out infinite;
+}
+
+h2 {
+    font-size: clamp(0.65rem, 1.8vw, 0.9rem);
+    color: #00D9FF;
+    margin: 40px 0 25px 0;
+    text-shadow: 0 0 10px rgba(0,217,255,0.5);
+    border-left: 4px solid #724CF9;
+    padding-left: 15px;
+    line-height: 1.6;
+}
+
+h3 {
+    font-size: clamp(0.6rem, 1.6vw, 0.8rem);
+    line-height: 1.6;
+}
+
+p {
+    font-size: clamp(0.5rem, 1.3vw, 0.65rem);
+    margin-bottom: 20px;
+    text-align: justify;
+    letter-spacing: 0.05em;
+    line-height: 1.9;
+}
+
+.binary-column {
+    font-family: 'Courier New', monospace !important;
+    font-size: 0.5rem;
+}
+
+
+/* ===== LLUVIA DE ESTRELLAS AL FRENTE ===== */
+.estrellas-frente {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.estrella-caida {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #E0E0E0;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(255,255,255,0.9), 0 0 12px rgba(0,217,255,0.5);
+    animation: caerEstrella linear infinite;
+}
+
+.estrella-caida::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
+    transform: translate(-100%, -50%);
+}
+
+.estrella-caida:nth-child(1) { left: 10%; animation-duration: 3s; animation-delay: 0s; }
+.estrella-caida:nth-child(2) { left: 20%; animation-duration: 4s; animation-delay: 0.5s; }
+.estrella-caida:nth-child(3) { left: 30%; animation-duration: 3.5s; animation-delay: 1s; }
+.estrella-caida:nth-child(4) { left: 40%; animation-duration: 5s; animation-delay: 1.5s; }
+.estrella-caida:nth-child(5) { left: 50%; animation-duration: 3s; animation-delay: 2s; }
+.estrella-caida:nth-child(6) { left: 60%; animation-duration: 4.5s; animation-delay: 0.3s; }
+.estrella-caida:nth-child(7) { left: 70%; animation-duration: 3.5s; animation-delay: 1.2s; }
+.estrella-caida:nth-child(8) { left: 80%; animation-duration: 4s; animation-delay: 0.8s; }
+.estrella-caida:nth-child(9) { left: 90%; animation-duration: 5s; animation-delay: 1.8s; }
+.estrella-caida:nth-child(10) { left: 15%; animation-duration: 3.5s; animation-delay: 2.5s; }
+.estrella-caida:nth-child(11) { left: 35%; animation-duration: 4s; animation-delay: 3s; }
+.estrella-caida:nth-child(12) { left: 55%; animation-duration: 3s; animation-delay: 2.2s; }
+.estrella-caida:nth-child(13) { left: 75%; animation-duration: 4.5s; animation-delay: 3.5s; }
+.estrella-caida:nth-child(14) { left: 85%; animation-duration: 3.5s; animation-delay: 2.8s; }
+.estrella-caida:nth-child(15) { left: 95%; animation-duration: 4s; animation-delay: 3.2s; }
+
+/* Variantes de color */
+.estrella-caida.cyan { background: #00D9FF; box-shadow: 0 0 8px rgba(0,217,255,1), 0 0 15px rgba(0,217,255,0.6); }
+.estrella-caida.rosa { background: #FF3D81; box-shadow: 0 0 8px rgba(255,61,129,1), 0 0 15px rgba(255,61,129,0.6); }
+.estrella-caida.morada { background: #724CF9; box-shadow: 0 0 8px rgba(114,76,249,1), 0 0 15px rgba(114,76,249,0.6); }
+
+@keyframes caerEstrella {
+    0%   { top: -5%; opacity: 0; transform: translateX(0) scale(0.5); }
+    10%  { opacity: 1; transform: translateX(0) scale(1); }
+    90%  { opacity: 1; }
+    100% { top: 105%; opacity: 0; transform: translateX(30px) scale(0.8); }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Lluvia de estrellas al frente -->
+<div class="estrellas-frente">
+    <div class="estrella-caida"></div>
+    <div class="estrella-caida cyan"></div>
+    <div class="estrella-caida"></div>
+    <div class="estrella-caida rosa"></div>
+    <div class="estrella-caida"></div>
+    <div class="estrella-caida morada"></div>
+    <div class="estrella-caida"></div>
+    <div class="estrella-caida cyan"></div>
+    <div class="estrella-caida"></div>
+    <div class="estrella-caida rosa"></div>
+    <div class="estrella-caida"></div>
+    <div class="estrella-caida morada"></div>
+    <div class="estrella-caida"></div>
+    <div class="estrella-caida cyan"></div>
+    <div class="estrella-caida"></div>
+</div>
+
+    <div class="container">
+        <h1>¿A QUÉ NOS REFERIMOS EN QUE LA ASTROLOGÍA NECESITA SER PRACTICADA DESDE UNA PERSPECTIVA ESPIRITUAL?</h1>
+
+        <div class="cuadros">
+            <span class="corner-deco corner-tl"></span>
+            <span class="corner-deco corner-tr"></span>
+            <span class="corner-deco corner-bl"></span>
+            <span class="corner-deco corner-br"></span>
+            <p>Como te compartimos en un inicio de este curso, la <span class="highlight-purple">Astrología que se practica hoy en día</span>, esta cargada de <span class="highlight-pink">teñidura y/o perspectiva matrix</span>, es decir que, desde su narrativa nos presentan a los 12 signos zodiacales como personalidades psicologizadas o características psicológicas que hacen a una persona en relación a su signo solar con el que nace.</p>
+        </div>
+
+        <div class="pixel-divider"></div>
+
+        <h2>La Perspectiva Matrix</h2>
+
+        <div class="matrix-box">
+            <div class="binary-rain">
+                <div class="binary-column">10110<br>01101<br>11001<br>00110</div>
+                <div class="binary-column">01001<br>10110<br>01110<br>11001</div>
+                <div class="binary-column">11100<br>00101<br>10011<br>01010</div>
+                <div class="binary-column">01101<br>11010<br>00111<br>10100</div>
+                <div class="binary-column">10011<br>01001<br>11101<br>00110</div>
+                <div class="binary-column">00110<br>11100<br>01011<br>10010</div>
+                <div class="binary-column">11001<br>00101<br>10110<br>01100</div>
+                <div class="binary-column">01010<br>10011<br>01101<br>11000</div>
+                <div class="binary-column">10101<br>01110<br>11001<br>00101</div>
+                <div class="binary-column">01100<br>10101<br>00111<br>11010</div>
+            </div>
+            <p>Al observar los conocimientos que nos brinda la Astrología desde esta <span class="highlight-pink">perspectiva matrix</span>, no solo caemos en <span class="highlight-pink">determinismos y predicciones fatalistas</span>, sino que además restamos la profundidad de aprendizaje que nos puede otorgar la Astrología.</p>
+        </div>
+
+        <div class="pixel-divider"></div>
+
+        <h2>El Enfoque Espiritual</h2>
+
+        <div class="spiritual-box">
+            <div class="cosmos-bg">
+                <div class="estrella estrella-1"></div>
+                <div class="estrella estrella-2"></div>
+                <div class="estrella estrella-3"></div>
+                <div class="estrella estrella-4"></div>
+                <div class="estrella estrella-5"></div>
+                <div class="estrella estrella-6"></div>
+                <div class="estrella estrella-7"></div>
+                <div class="estrella estrella-8"></div>
+                <div class="meteoro meteoro-1"></div>
+                <div class="meteoro meteoro-2"></div>
+            </div>
+            <p>De ahí que sea necesario incorporar el <span class="highlight-cyan">enfoque espiritual</span> en nuestras prácticas, de esta manera podremos <span class="highlight-purple">regresar a los inicios primarios</span>, en donde la conexión con el cosmos era intrínseca, y de qué manera podemos usar esta fuerza para <span class="highlight-cyan">alinearnos a los ciclos naturales de la existencia</span> y, realizar los cambios necesarios para nuestra transformación.</p>
+        </div>
+
+        <div class="transform-cta">
+            <h3>ESTAMOS VIVIENDO <span class="procesos-evolutivos">PROCESOS EVOLUTIVOS</span></h3>
+            <p>DE CAMBIOS Y RENOVACIÓN</p>
+            <p class="pregunta">¿TE UNES A LA TRANSFORMACIÓN?</p>
+        </div>
+
+    </div>
+</body>
+</html>
