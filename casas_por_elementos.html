@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casas por Elementos - Astrología 8-Bit</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A1B;
+  --white: #F0F0F0;
+  --dim: #666;
+  /* Elementos */
+  --fire:        #FF4E0C;
+  --fire-glow:   #FF8C42;
+  --fire-dim:    #1E0800;
+  --fire-mid:    #3A1000;
+  --earth:       #39FF88;
+  --earth-glow:  #88FFB8;
+  --earth-dim:   #041508;
+  --earth-mid:   #092B10;
+  --air:         #00D9FF;
+  --air-glow:    #88EEFF;
+  --air-dim:     #001820;
+  --air-mid:     #003040;
+  --water:       #724CF9;
+  --water-glow:  #B088FF;
+  --water-dim:   #0D0520;
+  --water-mid:   #1A0A38;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; image-rendering:pixelated; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Press Start 2P', cursive;
+  background: var(--bg);
+  color: var(--white);
+  line-height: 1.9;
+  overflow-x: hidden;
+}
+
+/* ====== BG ====== */
+#bgCanvas { position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+.scanlines { position:fixed; inset:0; pointer-events:none; z-index:999;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 1px, transparent 1px, transparent 2px); }
+.crt { position:fixed; inset:0; pointer-events:none; z-index:998;
+  box-shadow: inset 0 0 140px rgba(114,76,249,0.07); }
+
+/* ====== PAGE ====== */
+.page { position:relative; z-index:2; }
+
+/* ====== HERO ====== */
+.hero {
+  min-height: 80vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 50px 24px 30px;
+  position: relative;
+}
+
+/* Rotating 4-element wheel */
+.wheel-wrap {
+  position: absolute;
+  top:50%; left:50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none; z-index:1;
+  width: 500px; height: 500px;
+}
+@media (max-width:560px) { .wheel-wrap { width:280px; height:280px; } }
+
+.wheel-ring {
+  position: absolute; inset:0;
+  border-radius: 50%;
+  border: 2px dashed;
+  animation: w-spin linear infinite;
+  opacity: 0.15;
+}
+.wheel-ring:nth-child(1) { border-color: var(--fire);  animation-duration:22s; }
+.wheel-ring:nth-child(2) { border-color: var(--earth); animation-duration:34s; animation-direction:reverse; }
+.wheel-ring:nth-child(3) { border-color: var(--air);   animation-duration:48s; inset:30px; }
+.wheel-ring:nth-child(4) { border-color: var(--water); animation-duration:60s; animation-direction:reverse; inset:60px; }
+@keyframes w-spin { to { transform: rotate(360deg); } }
+
+/* 4 element sparks at compass points */
+.spark {
+  position: absolute;
+  width: 10px; height: 10px;
+  top:50%; left:50%;
+  border-radius: 0;
+  animation: spark-orbit linear infinite;
+}
+.spark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  opacity: 0.9;
+}
+.spark-fire  { color:var(--fire);  animation-duration:22s; --orbit-r:230px; }
+.spark-earth { color:var(--earth); animation-duration:34s; animation-direction:reverse; --orbit-r:220px; }
+.spark-air   { color:var(--air);   animation-duration:18s; --orbit-r:210px; }
+.spark-water { color:var(--water); animation-duration:26s; animation-direction:reverse; --orbit-r:215px; }
+
+@media (max-width:560px) {
+  .spark-fire,.spark-earth,.spark-air,.spark-water { --orbit-r:120px; }
+}
+
+@keyframes spark-orbit {
+  from { transform: translateX(calc(var(--orbit-r))) translateY(-50%); }
+  to   { transform: rotate(360deg) translateX(calc(var(--orbit-r))) translateY(-50%); }
+}
+
+.hero-content { position:relative; z-index:2; }
+
+.pre-label {
+  font-size: 7px; color: #888;
+  letter-spacing: 3px; margin-bottom: 14px;
+  animation: fade-up 1s ease both;
+}
+.hero-title {
+  font-size: clamp(13px, 3.5vw, 24px);
+  line-height: 1.7; margin-bottom: 8px;
+  animation: fade-up 1s 0.15s ease both, glitch 5s 1s infinite;
+}
+.hero-title .t-fire  { color:var(--fire);  text-shadow:2px 2px 0 #000, 0 0 12px var(--fire); }
+.hero-title .t-earth { color:var(--earth); text-shadow:2px 2px 0 #000, 0 0 12px var(--earth); }
+.hero-title .t-air   { color:var(--air);   text-shadow:2px 2px 0 #000, 0 0 12px var(--air); }
+.hero-title .t-water { color:var(--water); text-shadow:2px 2px 0 #000, 0 0 12px var(--water); }
+
+.hero-sub {
+  font-size: 8px; color: #777; margin-bottom: 32px;
+  animation: fade-up 1s 0.3s ease both;
+}
+.scroll-cue { font-size:7px; color:#444; animation: bounce 2s ease-in-out infinite; letter-spacing:2px; }
+
+@keyframes fade-up   { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+@keyframes glitch    { 0%,88%,100%{transform:translate(0)} 90%{transform:translate(-2px,1px)} 92%{transform:translate(2px,-1px)} 94%{transform:translate(0)} }
+@keyframes bounce    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+/* ====== INTRO BOX ====== */
+.intro-section { max-width: 760px; margin: 0 auto; padding: 0 20px 50px; }
+
+.intro-box {
+  border: 3px solid #2a2a4a;
+  background: rgba(255,255,255,0.03);
+  padding: 24px 20px;
+  margin-bottom: 50px;
+  position: relative;
+  box-shadow: 5px 5px 0 rgba(0,0,0,0.5);
+  opacity:0; transform:translateY(16px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.intro-box.visible { opacity:1; transform:translateY(0); }
+.intro-box::before {
+  content:'';
+  position:absolute; top:0; left:0;
+  width:100%; height:3px;
+  background: linear-gradient(90deg, var(--fire), var(--earth), var(--air), var(--water), var(--fire));
+  background-size: 300%;
+  animation: rainbow-slide 4s linear infinite;
+}
+@keyframes rainbow-slide { to { background-position: 300%; } }
+.intro-text { font-size:8px; color:#bbb; line-height:2.4; }
+.hl-fire  { color:var(--fire);  text-shadow:0 0 5px var(--fire); }
+.hl-earth { color:var(--earth); text-shadow:0 0 5px var(--earth); }
+.hl-air   { color:var(--air);   text-shadow:0 0 5px var(--air); }
+.hl-water { color:var(--water); text-shadow:0 0 5px var(--water); }
+.hl-gold  { color:#F7B801;      text-shadow:0 0 5px #F7B801; }
+
+/* ====== ELEMENT SECTIONS ====== */
+.elements-container { max-width: 860px; margin: 0 auto; padding: 0 16px 80px; }
+
+.element-block {
+  margin-bottom: 56px;
+  opacity:0; transform:translateY(24px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.element-block.visible { opacity:1; transform:translateY(0); }
+
+/* Header bar */
+.el-header {
+  display: flex; align-items: center; gap: 14px;
+  border: 3px solid;
+  padding: 16px 20px;
+  margin-bottom: 0;
+  position: relative;
+  overflow: hidden;
+}
+.el-header::after {
+  content:'';
+  position:absolute; inset:0;
+  background: linear-gradient(90deg, currentColor 0%, transparent 60%);
+  opacity: 0.07;
+}
+
+.el-symbol {
+  font-size: 32px;
+  flex-shrink: 0;
+  animation: float-sym 4s ease-in-out infinite;
+}
+@keyframes float-sym { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+
+.el-title-col { flex:1; }
+.el-name { font-size: clamp(12px, 2.8vw, 18px); margin-bottom: 4px; }
+.el-subtitle { font-size: 7px; opacity: 0.7; letter-spacing: 1px; }
+.el-badge {
+  font-size: 7px;
+  padding: 5px 10px;
+  border: 2px solid;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* FIRE */
+.el-fire .el-header { border-color: var(--fire); background: var(--fire-mid); }
+.el-fire .el-name   { color: var(--fire-glow); text-shadow: 0 0 10px var(--fire); }
+.el-fire .el-badge  { color: var(--fire); border-color: var(--fire); }
+
+/* EARTH */
+.el-earth .el-header { border-color: var(--earth); background: var(--earth-mid); }
+.el-earth .el-name   { color: var(--earth-glow); text-shadow: 0 0 10px var(--earth); }
+.el-earth .el-badge  { color: var(--earth); border-color: var(--earth); }
+
+/* AIR */
+.el-air .el-header { border-color: var(--air); background: var(--air-mid); }
+.el-air .el-name   { color: var(--air-glow); text-shadow: 0 0 10px var(--air); }
+.el-air .el-badge  { color: var(--air); border-color: var(--air); }
+
+/* WATER */
+.el-water .el-header { border-color: var(--water); background: var(--water-mid); }
+.el-water .el-name   { color: var(--water-glow); text-shadow: 0 0 10px var(--water); }
+.el-water .el-badge  { color: var(--water); border-color: var(--water); }
+
+/* Description band */
+.el-desc {
+  border-left: 3px solid;
+  border-right: 3px solid;
+  border-bottom: 0;
+  padding: 16px 20px;
+  font-size: 8px; color: #bbb; line-height: 2.3;
+}
+.el-fire  .el-desc { border-color: var(--fire);  background: rgba(255,78,12,0.04); }
+.el-earth .el-desc { border-color: var(--earth); background: rgba(57,255,136,0.04); }
+.el-air   .el-desc { border-color: var(--air);   background: rgba(0,217,255,0.04); }
+.el-water .el-desc { border-color: var(--water); background: rgba(114,76,249,0.04); }
+
+/* Houses row */
+.houses-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-left: 3px solid;
+  border-right: 3px solid;
+  border-bottom: 3px solid;
+}
+@media (max-width:520px) {
+  .houses-row { grid-template-columns: 1fr; }
+}
+
+.el-fire  .houses-row { border-color: var(--fire); }
+.el-earth .houses-row { border-color: var(--earth); }
+.el-air   .houses-row { border-color: var(--air); }
+.el-water .houses-row { border-color: var(--water); }
+
+.house-card {
+  padding: 18px 14px;
+  text-align: center;
+  position: relative;
+  cursor: default;
+  transition: transform .2s, background .2s;
+}
+.house-card:not(:last-child) { border-right: 2px solid rgba(255,255,255,0.08); }
+@media (max-width:520px) {
+  .house-card:not(:last-child) { border-right: 0; border-bottom: 2px solid rgba(255,255,255,0.08); }
+}
+.house-card:hover { transform: translateY(-3px); }
+
+.el-fire  .house-card:hover { background: rgba(255,78,12,0.12); }
+.el-earth .house-card:hover { background: rgba(57,255,136,0.1); }
+.el-air   .house-card:hover { background: rgba(0,217,255,0.1); }
+.el-water .house-card:hover { background: rgba(114,76,249,0.1); }
+
+/* Temple pixel art inside card */
+.mini-temple {
+  width: 48px; height: 54px;
+  margin: 0 auto 10px;
+  position: relative;
+}
+
+.house-num {
+  font-size: clamp(22px, 5vw, 36px);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.el-fire  .house-num { color: var(--fire);  text-shadow: 0 0 12px var(--fire); }
+.el-earth .house-num { color: var(--earth); text-shadow: 0 0 12px var(--earth); }
+.el-air   .house-num { color: var(--air);   text-shadow: 0 0 12px var(--air); }
+.el-water .house-num { color: var(--water); text-shadow: 0 0 12px var(--water); }
+
+.house-roman { font-size: 7px; opacity: .5; margin-bottom: 8px; }
+
+.house-keyword {
+  font-size: 7px;
+  padding: 4px 8px;
+  border: 2px solid;
+  display: inline-block;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.el-fire  .house-keyword { color: var(--fire-glow);  border-color: var(--fire);  background: rgba(255,78,12,0.1); }
+.el-earth .house-keyword { color: var(--earth-glow); border-color: var(--earth); background: rgba(57,255,136,0.08); }
+.el-air   .house-keyword { color: var(--air-glow);   border-color: var(--air);   background: rgba(0,217,255,0.08); }
+.el-water .house-keyword { color: var(--water-glow); border-color: var(--water); background: rgba(114,76,249,0.1); }
+
+.house-detail { font-size: 7px; color: #999; line-height: 2; }
+
+/* Glow pulse on hover */
+.house-card::before {
+  content:'';
+  position:absolute; inset:0;
+  opacity:0; transition: opacity .3s;
+  pointer-events:none;
+}
+.el-fire  .house-card::before { background: radial-gradient(circle at 50% 80%, rgba(255,78,12,0.18), transparent 70%); }
+.el-earth .house-card::before { background: radial-gradient(circle at 50% 80%, rgba(57,255,136,0.15), transparent 70%); }
+.el-air   .house-card::before { background: radial-gradient(circle at 50% 80%, rgba(0,217,255,0.15), transparent 70%); }
+.el-water .house-card::before { background: radial-gradient(circle at 50% 80%, rgba(114,76,249,0.18), transparent 70%); }
+.house-card:hover::before { opacity: 1; }
+
+/* ====== SUMMARY WHEEL ====== */
+.summary-section {
+  max-width: 760px; margin: 0 auto; padding: 0 20px 80px;
+  opacity:0; transform:translateY(20px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.summary-section.visible { opacity:1; transform:translateY(0); }
+
+.summary-title {
+  font-size: clamp(9px, 2.5vw, 13px);
+  text-align: center; margin-bottom: 28px;
+  color: #F7B801;
+  text-shadow: 0 0 8px #F7B801;
+  letter-spacing: 2px;
+}
+
+.wheel-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+@media (max-width:560px) { .wheel-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.wheel-cell {
+  border: 2px solid;
+  padding: 14px 8px;
+  text-align: center;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+  transition: transform .2s, box-shadow .2s;
+}
+.wheel-cell:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 rgba(0,0,0,0.5); }
+
+.wc-fire  { border-color:var(--fire);  background:var(--fire-dim); }
+.wc-earth { border-color:var(--earth); background:var(--earth-dim); }
+.wc-air   { border-color:var(--air);   background:var(--air-dim); }
+.wc-water { border-color:var(--water); background:var(--water-dim); }
+
+.wc-icon  { font-size:22px; margin-bottom:8px; display:block; }
+.wc-name  { font-size:8px; margin-bottom:6px; }
+.wc-fire  .wc-name { color:var(--fire-glow); }
+.wc-earth .wc-name { color:var(--earth-glow); }
+.wc-air   .wc-name { color:var(--air-glow); }
+.wc-water .wc-name { color:var(--water-glow); }
+.wc-type  { font-size:6px; color:#888; margin-bottom:8px; letter-spacing:1px; }
+.wc-nums  { font-size:10px; }
+.wc-fire  .wc-nums { color:var(--fire); }
+.wc-earth .wc-nums { color:var(--earth); }
+.wc-air   .wc-nums { color:var(--air); }
+.wc-water .wc-nums { color:var(--water); }
+
+/* ====== NAV BUTTONS ====== */
+.nav-row {
+  display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;
+  padding: 0 20px 60px;
+  position: relative; z-index: 2;
+  opacity:0; transition: opacity .6s .3s ease;
+}
+.nav-row.visible { opacity:1; }
+
+.nav-btn {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 8px; color: #000;
+  padding: 12px 20px;
+  border: 3px solid #000;
+  cursor: pointer; text-decoration: none;
+  box-shadow: 4px 4px 0 #000;
+  transition: transform .1s, box-shadow .1s;
+  display: inline-block;
+}
+.nav-btn:hover   { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #000; }
+.nav-btn:active  { transform: translate(2px,2px);  box-shadow: 2px 2px 0 #000; }
+.nav-btn.prev { background: #888; }
+.nav-btn.next { background: #F7B801; }
+
+footer {
+  position:relative; z-index:2;
+  text-align:center; padding:28px;
+  font-size:7px; color:#333;
+  border-top:1px solid #1a1a2e;
+}
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+<div class="scanlines"></div>
+<div class="crt"></div>
+
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wheel-wrap">
+      <div class="wheel-ring"></div>
+      <div class="wheel-ring"></div>
+      <div class="wheel-ring"></div>
+      <div class="wheel-ring"></div>
+      <div class="spark spark-fire"></div>
+      <div class="spark spark-earth"></div>
+      <div class="spark spark-air"></div>
+      <div class="spark spark-water"></div>
+    </div>
+    <div class="hero-content">
+      <p class="pre-label">MÓDULO III · DIVISIÓN DE LAS CASAS POR ELEMENTOS</p>
+      <h1 class="hero-title">
+        <span class="t-fire">FUEGO</span> ·
+        <span class="t-earth">TIERRA</span><br>
+        <span class="t-air">AIRE</span> ·
+        <span class="t-water">AGUA</span><br>
+        <span style="color:#F7B801;font-size:0.7em;">LAS CASAS POR ELEMENTO</span>
+      </h1>
+      <p class="hero-sub">12 CASAS · 4 ELEMENTOS · 1 CAMINO</p>
+      <p class="scroll-cue">▼ CONTINUAR ▼</p>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <div class="intro-section">
+    <div class="intro-box" data-animate>
+      <p class="intro-text">
+        Como vimos en el <span class="hl-gold">Módulo II</span>, cada signo es parte de una agrupación por elementos. Puesto que cada signo tiene una posición natural en una de las casas, podemos <span class="hl-gold">agrupar las casas del mismo modo</span>, según el elemento en cada una.<br><br>
+        Así, las 12 casas se dividen en cuatro grupos de tres:
+        las casas de <span class="hl-fire">Fuego</span>,
+        las casas de <span class="hl-earth">Tierra</span>,
+        las casas de <span class="hl-air">Aire</span>
+        y las casas de <span class="hl-water">Agua</span>.
+      </p>
+    </div>
+  </div>
+
+  <!-- ELEMENT BLOCKS -->
+  <div class="elements-container">
+
+    <!-- ====== FUEGO ====== -->
+    <div class="element-block el-fire" data-animate>
+      <div class="el-header">
+        <span class="el-symbol">🔥</span>
+        <div class="el-title-col">
+          <div class="el-name">CASAS DE FUEGO</div>
+          <div class="el-subtitle">CASAS DE VIDA · PERSONALES</div>
+        </div>
+        <div class="el-badge">I · V · IX</div>
+      </div>
+      <div class="el-desc">
+        Las personas que tienen muchos planetas en estas casas son <span class="hl-fire">inspiradas y dinámicas</span>.
+        Tienen gran energía y entusiasmo, poder de motivación y convicciones religiosas.
+        La <span class="hl-fire">búsqueda espiritual</span> está especialmente acentuada en este elemento.
+      </div>
+      <div class="houses-row">
+        <div class="house-card">
+          <svg width="48" height="54" viewBox="0 0 48 54" style="display:block;margin:0 auto 8px">
+            <polygon points="24,2 4,16 44,16" fill="#FF4E0C" stroke="#000" stroke-width="1.5"/>
+            <rect x="8" y="16" width="32" height="24" fill="#3A1000" stroke="#000" stroke-width="1.5"/>
+            <rect x="12" y="18" width="4" height="20" fill="#FF4E0C" opacity=".6"/>
+            <rect x="22" y="18" width="4" height="20" fill="#FF4E0C" opacity=".4"/>
+            <rect x="32" y="18" width="4" height="20" fill="#FF4E0C" opacity=".6"/>
+            <rect x="20" y="30" width="8" height="10" fill="#000" opacity=".7"/>
+            <rect x="4" y="40" width="40" height="6" fill="#FF4E0C" stroke="#000" stroke-width="1.5"/>
+            <rect x="22" y="0" width="4" height="4" fill="#FF8C42"/>
+          </svg>
+          <div class="house-num">1</div>
+          <div class="house-roman">CASA I</div>
+          <div class="house-keyword">♈︎ ARIES</div>
+          <div class="house-detail">CUERPO<br>YO SOY</div>
+        </div>
+        <div class="house-card">
+          <svg width="48" height="54" viewBox="0 0 48 54" style="display:block;margin:0 auto 8px">
+            <polygon points="24,2 4,16 44,16" fill="#FF4E0C" stroke="#000" stroke-width="1.5"/>
+            <rect x="8" y="16" width="32" height="24" fill="#3A1000" stroke="#000" stroke-width="1.5"/>
+            <rect x="12" y="18" width="4" height="20" fill="#FF4E0C" opacity=".6"/>
+            <rect x="22" y="18" width="4" height="20" fill="#FF4E0C" opacity=".4"/>
+            <rect x="32" y="18" width="4" height="20" fill="#FF4E0C" opacity=".6"/>
+            <rect x="20" y="30" width="8" height="10" fill="#000" opacity=".7"/>
+            <rect x="4" y="40" width="40" height="6" fill="#FF4E0C" stroke="#000" stroke-width="1.5"/>
+            <rect x="22" y="0" width="4" height="4" fill="#FF8C42"/>
+          </svg>
+          <div class="house-num">5</div>
+          <div class="house-roman">CASA V</div>
+          <div class="house-keyword">♌︎ LEO</div>
+          <div class="house-detail">ALMA<br>YO CREO</div>
+        </div>
+        <div class="house-card">
+          <svg width="48" height="54" viewBox="0 0 48 54" style="display:block;margin:0 auto 8px">
+            <polygon points="24,2 4,16 44,16" fill="#FF4E0C" stroke="#000" stroke-width="1.5"/>
+            <rect x="8" y="16" width="32" height="24" fill="#3A1000" stroke="#000" stroke-width="1.5"/>
+            <rect x="12" y="18" width="4" height="20" fill="#FF4E0C" opacity=".6"/>
+            <rect x="22" y="18" width="4" height="20" fill="#FF4E0C" opacity=".4"/>
+            <rect x="32" y="18" width="4" height="20" fill="#FF4E0C" opacity=".6"/>
+            <rect x="20" y="30" width="8" height="10" fill="#000" opacity=".7"/>
+            <rect x="4" y="40" width="40" height="6" fill="#FF4E0C" stroke="#000" stroke-width="1.5"/>
+            <rect x="22" y="0" width="4" height="4" fill="#FF8C42"/>
+          </svg>
+          <div class="house-num">9</div>
+          <div class="house-roman">CASA IX</div>
+          <div class="house-keyword">♐︎ SAGITARIO</div>
+          <div class="house-detail">ESPÍRITU · MENTE<br>YO EXPLORO</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== TIERRA ====== -->
+    <div class="element-block el-earth" data-animate style="transition-delay:.1s">
+      <div class="el-header">
+        <span class="el-symbol">🌿</span>
+        <div class="el-title-col">
+          <div class="el-name">CASAS DE TIERRA</div>
+          <div class="el-subtitle">CASAS DE SUSTANCIA · POSESIVAS</div>
+        </div>
+        <div class="el-badge">II · VI · X</div>
+      </div>
+      <div class="el-desc">
+        Las personas con muchos planetas en estas casas son <span class="hl-earth">estables y concretas</span>.
+        Son, generalmente, <span class="hl-earth">la columna que sostiene</span> a su familia y a la comunidad.
+        Sus perspectivas y aptitudes vocacionales son concretas y prácticas.
+      </div>
+      <div class="houses-row">
+        <div class="house-card">
+          <svg width="48" height="54" viewBox="0 0 48 54" style="display:block;margin:0 auto 8px">
+            <polygon points="24,2 4,16 44,16" fill="#39FF88" stroke="#000" stroke-width="1.5"/>
+            <rect x="8" y="16" width="32" height="24" fill="#092B10" stroke="#000" stroke-width="1.5"/>
+            <rect x="12" y="18" width="4" height="20" fill="#39FF88" opacity=".6"/>
+            <rect x="22" y="18" width="4" height="20" fill="#39FF88" opacity=".4"/>
+            <rect x="32" y="18" width="4" height="20" fill="#39FF88" opacity=".6"/>
+            <rect x="20" y="30" width="8" height="10" fill="#000" opacity=".7"/>
+            <rect x="4" y="40" width="40" height="6" fill="#39FF88" stroke="#000" stroke-width="1.5"/>
+            <rect x="22" y="0" width="4" height="4" fill="#88FFB8"/>
+          </svg>
+          <div class="house-num">2</div>
+          <div class="house-roman">CASA II</div>
+          <div class="house-keyword">♉︎ TAURO</div>
+          <div class="house-detail">POSESIONES<br>FINANZAS</div>
+        </div>
+        <div class="house-card">
+          <svg width="48" height="54" viewBox="0 0 48 54" style="display:block;margin:0 auto 8px">
+            <polygon points="24,2 4,16 44,16" fill="#39FF88" stroke="#000" stroke-width="1.5"/>
+            <rect x="8" y="16" width="32" height="24" fill="#092B10" stroke="#000" stroke-width="1.5"/>
+            <rect x="12" y="18" width="4" height="20" fill="#39FF88" opacity=".6"/>
+            <rect x="22" y="18" width="4" height="20" fill="#39FF88" opacity=".4"/>
+            <rect x="32" y="18" width="4" height="20" fill="#39FF88" opacity=".6"/>
+            <rect x="20" y="30" width="8" height="10" fill="#000" opacity=".7"/>
+            <rect x="4" y="40" width="40" height="6" fill="#39FF88" stroke="#000" stroke-width="1.5"/>
+            <rect x="22" y="0" width="4" height="4" fill="#88FFB8"/>
+          </svg>
+          <div class="house-num">6</div>
+          <div class="house-roman">CASA VI</div>
+          <div class="house-keyword">♍︎ VIRGO</div>
+          <div class="house-detail">OCUPACIÓN<br>SERVICIO</div>
+        </div>
+        <div class="house-card">
+          <svg width="48" height="54" viewBox="0 0 48 54" style="display:block;margin:0 auto 8px">
+            <polygon points="24,2 4,16 44,16" fill="#39FF88" stroke="#000" stroke-width="1.5"/>
+            <rect x="8" y="16" width="32" height="24" fill="#092B10" stroke="#000" stroke-width="1.5"/>
+            <rect x="12" y="18" width="4" height="20" fill="#39FF88" opacity=".6"/>
+            <rect x="22" y="18" width="4" height="20" fill="#39FF88" opacity=".4"/>
+            <rect x="32" y="18" width="4" height="20" fill="#39FF88" opacity=".6"/>
+            <rect x="20" y="30" width="8" height="10" fill="#000" opacity=".7"/>
+            <rect x="4" y="40" width="40" height="6" fill="#39FF88" stroke="#000" stroke-width="1.5"/>
+            <rect x="22" y="0" width="4" height="4" fill="#88FFB8"/>
+          </svg>
+          <div class="house-num">10</div>
+          <div class="house-roman">CASA X</div>
+          <div class="house-keyword">♑︎ CAPRICORNIO</div>
+          <div class="house-detail">RECONOCIMIENTO<br>ENTORNO</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== AIRE ====== -->
+    <div class="element-block el-air" data-animate style="transition-delay:.2s">
+      <div class="el-header">
+        <span class="el-symbol">💨</span>
+        <div class="el-title-col">
+          <div class="el-name">CASAS DE AIRE</div>
+          <div class="el-subtitle">CASAS DE RELACIONES · RELATIVAS</div>
+        </div>
+        <div class="el-badge">III · VII · XI</div>
+      </div>
+      <div class="el-desc">
+        Las personas con muchos planetas en estas casas son <span class="hl-air">"gente que necesita a otra gente"</span>.
+        Estas casas describen al individuo <span class="hl-air">en relación a otros</span> miembros de la comunidad,
+        desde los lazos de sangre hasta los vínculos elegidos libremente.
+      </div>
+      <div class="houses-row">
+        <div class="house-card">
+          <svg width="48" height="54" viewBox="0 0 48 54" style="display:block;margin:0 auto 8px">
+            <polygon points="24,2 4,16 44,16" fill="#00D9FF" stroke="#000" stroke-width="1.5"/>
+            <rect x="8" y="16" width="32" height="24" fill="#003040" stroke="#000" stroke-width="1.5"/>
+            <rect x="12" y="18" width="4" height="20" fill="#00D9FF" opacity=".6"/>
+            <rect x="22" y="18" width="4" height="20" fill="#00D9FF" opacity=".4"/>
+            <rect x="32" y="18" width="4" height="20" fill="#00D9FF" opacity=".6"/>
+            <rect x="20" y="30" width="8" height="10" fill="#000" opacity=".7"/>
+            <rect x="4" y="40" width="40" height="6" fill="#00D9FF" stroke="#000" stroke-width="1.5"/>
+            <rect x="22" y="0" width="4" height="4" fill="#88EEFF"/>
+          </svg>
+          <div class="house-num">3</div>
+          <div class="house-roman">CASA III</div>
+          <div class="house-keyword">♊︎ GÉMINIS</div>
+          <div class="house-detail">PARIENTES<br>VECINOS</div>
+        </div>
+        <div class="house-card">
+          <svg width="48" height="54" viewBox="0 0 48 54" style="display:block;margin:0 auto 8px">
+            <polygon points="24,2 4,16 44,16" fill="#00D9FF" stroke="#000" stroke-width="1.5"/>
+            <rect x="8" y="16" width="32" height="24" fill="#003040" stroke="#000" stroke-width="1.5"/>
+            <rect x="12" y="18" width="4" height="20" fill="#00D9FF" opacity=".6"/>
+            <rect x="22" y="18" width="4" height="20" fill="#00D9FF" opacity=".4"/>
+            <rect x="32" y="18" width="4" height="20" fill="#00D9FF" opacity=".6"/>
+            <rect x="20" y="30" width="8" height="10" fill="#000" opacity=".7"/>
+            <rect x="4" y="40" width="40" height="6" fill="#00D9FF" stroke="#000" stroke-width="1.5"/>
+            <rect x="22" y="0" width="4" height="4" fill="#88EEFF"/>
+          </svg>
+          <div class="house-num">7</div>
+          <div class="house-roman">CASA VII</div>
+          <div class="house-keyword">♎︎ LIBRA</div>
+          <div class="house-detail">RELACIONES<br>ÍNTIMAS</div>
+        </div>
+        <div class="house-card">
+          <svg width="48" height="54" viewBox="0 0 48 54" style="display:block;margin:0 auto 8px">
+            <polygon points="24,2 4,16 44,16" fill="#00D9FF" stroke="#000" stroke-width="1.5"/>
+            <rect x="8" y="16" width="32" height="24" fill="#003040" stroke="#000" stroke-width="1.5"/>
+            <rect x="12" y="18" width="4" height="20" fill="#00D9FF" opacity=".6"/>
+            <rect x="22" y="18" width="4" height="20" fill="#00D9FF" opacity=".4"/>
+            <rect x="32" y="18" width="4" height="20" fill="#00D9FF" opacity=".6"/>
+            <rect x="20" y="30" width="8" height="10" fill="#000" opacity=".7"/>
+            <rect x="4" y="40" width="40" height="6" fill="#00D9FF" stroke="#000" stroke-width="1.5"/>
+            <rect x="22" y="0" width="4" height="4" fill="#88EEFF"/>
+          </svg>
+          <div class="house-num">11</div>
+          <div class="house-roman">CASA XI</div>
+          <div class="house-keyword">♒︎ ACUARIO</div>
+          <div class="house-detail">RELACIONES<br>SOCIALES</div>
+        </div>
+      </div>
+      <!-- Extra: Air relationship types -->
+      <div style="border:2px solid var(--air);border-top:0;background:rgba(0,217,255,0.03);padding:14px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+        <div style="text-align:center;font-size:7px;color:#888;line-height:2;border-right:1px solid #1a3a4a;padding-right:8px;">
+          <div style="color:var(--air-glow);margin-bottom:6px;">CASA III</div>
+          Los <span style="color:var(--air)">consanguíneos</span>.<br>Dados sin elegir.
+        </div>
+        <div style="text-align:center;font-size:7px;color:#888;line-height:2;border-right:1px solid #1a3a4a;padding-right:8px;">
+          <div style="color:var(--air-glow);margin-bottom:6px;">CASA VII</div>
+          Los <span style="color:var(--air)">cónyuges</span>.<br>Elegidos libremente.
+        </div>
+        <div style="text-align:center;font-size:7px;color:#888;line-height:2;">
+          <div style="color:var(--air-glow);margin-bottom:6px;">CASA XI</div>
+          Los <span style="color:var(--air)">afines</span>.<br>Por interés compartido.
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== AGUA ====== -->
+    <div class="element-block el-water" data-animate style="transition-delay:.3s">
+      <div class="el-header">
+        <span class="el-symbol">🌊</span>
+        <div class="el-title-col">
+          <div class="el-name">CASAS DE AGUA</div>
+          <div class="el-subtitle">CASAS TERMINALES · DEL ALMA</div>
+        </div>
+        <div class="el-badge">IV · VIII · XII</div>
+      </div>
+      <div class="el-desc">
+        Las personas con muchos planetas en estas casas son <span class="hl-water">sensibles y sensitivas</span>.
+        Estas casas describen el <span class="hl-water">espíritu más profundo</span> y el modo probable como
+        abandonaremos la Tierra. No dicen <em>cuándo</em>, solamente <span class="hl-water">cómo</span> sucederá.
+      </div>
+      <div class="houses-row">
+        <div class="house-card">
+          <svg width="48" height="54" viewBox="0 0 48 54" style="display:block;margin:0 auto 8px">
+            <polygon points="24,2 4,16 44,16" fill="#724CF9" stroke="#000" stroke-width="1.5"/>
+            <rect x="8" y="16" width="32" height="24" fill="#1A0A38" stroke="#000" stroke-width="1.5"/>
+            <rect x="12" y="18" width="4" height="20" fill="#724CF9" opacity=".6"/>
+            <rect x="22" y="18" width="4" height="20" fill="#724CF9" opacity=".4"/>
+            <rect x="32" y="18" width="4" height="20" fill="#724CF9" opacity=".6"/>
+            <rect x="20" y="30" width="8" height="10" fill="#000" opacity=".7"/>
+            <rect x="4" y="40" width="40" height="6" fill="#724CF9" stroke="#000" stroke-width="1.5"/>
+            <rect x="22" y="0" width="4" height="4" fill="#B088FF"/>
+          </svg>
+          <div class="house-num">4</div>
+          <div class="house-roman">CASA IV</div>
+          <div class="house-keyword">♋︎ CÁNCER</div>
+          <div class="house-detail">FIN DEL<br>CUERPO FÍSICO</div>
+        </div>
+        <div class="house-card">
+          <svg width="48" height="54" viewBox="0 0 48 54" style="display:block;margin:0 auto 8px">
+            <polygon points="24,2 4,16 44,16" fill="#724CF9" stroke="#000" stroke-width="1.5"/>
+            <rect x="8" y="16" width="32" height="24" fill="#1A0A38" stroke="#000" stroke-width="1.5"/>
+            <rect x="12" y="18" width="4" height="20" fill="#724CF9" opacity=".6"/>
+            <rect x="22" y="18" width="4" height="20" fill="#724CF9" opacity=".4"/>
+            <rect x="32" y="18" width="4" height="20" fill="#724CF9" opacity=".6"/>
+            <rect x="20" y="30" width="8" height="10" fill="#000" opacity=".7"/>
+            <rect x="4" y="40" width="40" height="6" fill="#724CF9" stroke="#000" stroke-width="1.5"/>
+            <rect x="22" y="0" width="4" height="4" fill="#B088FF"/>
+          </svg>
+          <div class="house-num">8</div>
+          <div class="house-roman">CASA VIII</div>
+          <div class="house-keyword">♏︎ ESCORPIO</div>
+          <div class="house-detail">LIBERACIÓN<br>DEL ALMA</div>
+        </div>
+        <div class="house-card">
+          <svg width="48" height="54" viewBox="0 0 48 54" style="display:block;margin:0 auto 8px">
+            <polygon points="24,2 4,16 44,16" fill="#724CF9" stroke="#000" stroke-width="1.5"/>
+            <rect x="8" y="16" width="32" height="24" fill="#1A0A38" stroke="#000" stroke-width="1.5"/>
+            <rect x="12" y="18" width="4" height="20" fill="#724CF9" opacity=".6"/>
+            <rect x="22" y="18" width="4" height="20" fill="#724CF9" opacity=".4"/>
+            <rect x="32" y="18" width="4" height="20" fill="#724CF9" opacity=".6"/>
+            <rect x="20" y="30" width="8" height="10" fill="#000" opacity=".7"/>
+            <rect x="4" y="40" width="40" height="6" fill="#724CF9" stroke="#000" stroke-width="1.5"/>
+            <rect x="22" y="0" width="4" height="4" fill="#B088FF"/>
+          </svg>
+          <div class="house-num">12</div>
+          <div class="house-roman">CASA XII</div>
+          <div class="house-keyword">♓︎ PISCIS</div>
+          <div class="house-detail">MUERTE<br>FILOSÓFICA</div>
+        </div>
+      </div>
+      <!-- Extra: Water depths -->
+      <div style="border:2px solid var(--water);border-top:0;background:rgba(114,76,249,0.04);padding:14px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+        <div style="text-align:center;font-size:7px;color:#888;line-height:2;border-right:1px solid #1a0a30;padding-right:8px;">
+          <div style="color:var(--water-glow);margin-bottom:6px;">CASA IV</div>
+          El fin del<br><span style="color:var(--water)">cuerpo físico</span>.
+        </div>
+        <div style="text-align:center;font-size:7px;color:#888;line-height:2;border-right:1px solid #1a0a30;padding-right:8px;">
+          <div style="color:var(--water-glow);margin-bottom:6px;">CASA VIII</div>
+          <span style="color:var(--water)">Liberación</span><br>del alma.
+        </div>
+        <div style="text-align:center;font-size:7px;color:#888;line-height:2;">
+          <div style="color:var(--water-glow);margin-bottom:6px;">CASA XII</div>
+          El resultado del<br><span style="color:var(--water)">curso elegido</span>.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /elements-container -->
+
+  <!-- SUMMARY WHEEL -->
+  <div class="summary-section" data-animate>
+    <div class="summary-title">✦ RESUMEN DE ELEMENTOS ✦</div>
+    <div class="wheel-grid">
+      <div class="wheel-cell wc-fire">
+        <span class="wc-icon">🔥</span>
+        <div class="wc-name">FUEGO</div>
+        <div class="wc-type">VIDA · PERSONAL</div>
+        <div class="wc-nums">I · V · IX</div>
+      </div>
+      <div class="wheel-cell wc-earth">
+        <span class="wc-icon">🌿</span>
+        <div class="wc-name">TIERRA</div>
+        <div class="wc-type">SUSTANCIA · POSESIVA</div>
+        <div class="wc-nums">II · VI · X</div>
+      </div>
+      <div class="wheel-cell wc-air">
+        <span class="wc-icon">💨</span>
+        <div class="wc-name">AIRE</div>
+        <div class="wc-type">RELACIÓN · RELATIVA</div>
+        <div class="wc-nums">III · VII · XI</div>
+      </div>
+      <div class="wheel-cell wc-water">
+        <span class="wc-icon">🌊</span>
+        <div class="wc-name">AGUA</div>
+        <div class="wc-type">TERMINAL · ALMA</div>
+        <div class="wc-nums">IV · VIII · XII</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav-row" data-animate>
+    
+    <a href="casas_zodiacales.html" class="nav-btn next">CADA ELEMENTO RIGE UN CUERPO DE LA DIMENSIÓN HUMANA</a>
+  </div>
+
+</div><!-- /page -->
+
+<footer>Soy Anormal, Escuela de Salud Emocional para el Despertar Espiritual © 2026</footer>
+
+<!-- ====== JS ====== -->
+<script>
+/* BG CANVAS */
+const bgC = document.getElementById('bgCanvas');
+const bgX = bgC.getContext('2d');
+let W, H;
+function resz() { W = bgC.width = window.innerWidth; H = bgC.height = window.innerHeight; }
+resz(); window.addEventListener('resize', resz);
+
+const stars = Array.from({length:200}, () => ({
+  x:Math.random()*3000, y:Math.random()*3000,
+  sz:Math.random()*2.5+0.5, b:Math.random(), sp:Math.random()*.012+.004,
+  col:['#fff','#F7B801','#00D9FF','#FF3D81','#724CF9','#39FF88','#FF4E0C'][Math.floor(Math.random()*7)],
+}));
+
+const meteors = [];
+function spawnM() {
+  meteors.push({
+    x:Math.random()*W, y:-20,
+    vx:(Math.random()*4+2)*(Math.random()<.5?1:-1), vy:Math.random()*4+3,
+    life:0, max:Math.random()*70+30,
+    col:['#F7B801','#00D9FF','#fff','#FF8C42','#39FF88','#B088FF'][Math.floor(Math.random()*6)],
+  });
+}
+
+let fr = 0;
+function animBg() {
+  requestAnimationFrame(animBg); fr++;
+  bgX.clearRect(0,0,W,H);
+  // nebulas
+  [[.15,.2,260,'rgba(255,78,12,.05)'],[.85,.7,300,'rgba(57,255,136,.04)'],
+   [.5,.4,220,'rgba(0,217,255,.04)'],[.3,.8,200,'rgba(114,76,249,.05)']].forEach(([fx,fy,r,c])=>{
+    const g=bgX.createRadialGradient(fx*W,fy*H,0,fx*W,fy*H,r);
+    g.addColorStop(0,c); g.addColorStop(1,'transparent');
+    bgX.fillStyle=g; bgX.fillRect(0,0,W,H);
+  });
+  // stars
+  stars.forEach(s=>{
+    s.b+=s.sp;
+    bgX.globalAlpha=.1+Math.abs(Math.sin(s.b))*.9;
+    bgX.fillStyle=s.col;
+    bgX.fillRect(Math.round(s.x%W),Math.round(s.y%H),Math.ceil(s.sz),Math.ceil(s.sz));
+  });
+  bgX.globalAlpha=1;
+  // meteors
+  if(fr%100===0&&Math.random()<.7) spawnM();
+  for(let i=meteors.length-1;i>=0;i--){
+    const m=meteors[i]; m.x+=m.vx; m.y+=m.vy; m.life++;
+    const al=m.life<10?m.life/10:m.life>m.max-10?(m.max-m.life)/10:1;
+    bgX.globalAlpha=al*.85; bgX.strokeStyle=m.col; bgX.lineWidth=1.5;
+    bgX.shadowBlur=7; bgX.shadowColor=m.col;
+    bgX.beginPath(); bgX.moveTo(m.x,m.y); bgX.lineTo(m.x-m.vx*10,m.y-m.vy*10); bgX.stroke();
+    bgX.shadowBlur=0; bgX.globalAlpha=1;
+    if(m.life>=m.max||m.y>H+20) meteors.splice(i,1);
+  }
+}
+animBg();
+
+/* SCROLL ANIMATIONS */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{ threshold:.1 });
+document.querySelectorAll('[data-animate]').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

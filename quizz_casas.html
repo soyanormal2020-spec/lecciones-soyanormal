@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz · Casas Zodiacales 8-Bit</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0A0A1B; --gold:#F7B801; --white:#F0F0F0;
+  --fire:#FF4E0C; --fire-glow:#FF8C42; --fire-dim:#3A0A00;
+  --earth:#39FF88; --earth-glow:#88FFB8; --earth-dim:#0A2A10;
+  --air:#00D9FF;   --air-glow:#88EEFF;   --air-dim:#002030;
+  --water:#724CF9; --water-glow:#B088FF; --water-dim:#150A30;
+  --angular:#F7B801; --succedent:#FF3D81; --cadent:#39FF88;
+  --correct:#39FF88; --wrong:#FF4E0C; --neutral:#444;
+}
+*{margin:0;padding:0;box-sizing:border-box;image-rendering:pixelated;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Press Start 2P',cursive;
+  background:var(--bg); color:var(--white);
+  min-height:100vh; overflow-x:hidden;
+}
+
+/* ── BG ── */
+#bgCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+.scanlines{position:fixed;inset:0;pointer-events:none;z-index:999;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,0.10),rgba(0,0,0,0.10) 1px,transparent 1px,transparent 2px);}
+.crt{position:fixed;inset:0;pointer-events:none;z-index:998;
+  box-shadow:inset 0 0 140px rgba(114,76,249,0.07);}
+
+/* ── SCREEN SYSTEM ── */
+.screen{display:none;position:relative;z-index:10;min-height:100vh;}
+.screen.active{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 16px;}
+
+/* ══════════════════════════════
+   INTRO SCREEN
+══════════════════════════════ */
+#screen-intro{text-align:center;}
+.intro-pixel-art{font-size:48px;margin-bottom:20px;animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.intro-title{
+  font-size:clamp(13px,3.5vw,22px);
+  color:var(--gold);
+  text-shadow:3px 3px 0 var(--fire),-1px -1px 0 var(--water);
+  animation:glitch 5s infinite,glow-gold 2s ease-in-out infinite alternate;
+  line-height:1.7; margin-bottom:14px;
+}
+@keyframes glitch{0%,88%,100%{transform:translate(0)}90%{transform:translate(-2px,1px)}92%{transform:translate(2px,-1px)}94%{transform:translate(0)}}
+@keyframes glow-gold{from{filter:drop-shadow(0 0 4px var(--gold))}to{filter:drop-shadow(0 0 16px var(--gold))}}
+.intro-sub{font-size:7px;color:#888;line-height:2.2;max-width:500px;margin:0 auto 28px;}
+.intro-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+  max-width:420px;margin:0 auto 28px;
+}
+.stat-box{border:2px solid;padding:12px 8px;text-align:center;}
+.stat-box.s1{border-color:var(--fire);background:var(--fire-dim);}
+.stat-box.s2{border-color:var(--gold);background:#1a1300;}
+.stat-box.s3{border-color:var(--water);background:var(--water-dim);}
+.stat-num{font-size:20px;margin-bottom:6px;}
+.stat-box.s1 .stat-num{color:var(--fire-glow);}
+.stat-box.s2 .stat-num{color:var(--gold);}
+.stat-box.s3 .stat-num{color:var(--water-glow);}
+.stat-lbl{font-size:6px;color:#888;letter-spacing:1px;}
+
+/* ── BUTTONS ── */
+.btn{
+  font-family:'Press Start 2P',cursive;
+  font-size:8px;padding:13px 24px;
+  border:3px solid #000;cursor:pointer;
+  box-shadow:4px 4px 0 #000;
+  transition:transform .1s,box-shadow .1s;
+  display:inline-block;text-decoration:none;
+  letter-spacing:1px;
+}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #000;}
+.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #000;}
+.btn-gold{background:var(--gold);color:#000;}
+.btn-fire{background:var(--fire);color:#fff;}
+.btn-gray{background:#555;color:#fff;}
+.btn-sm{font-size:7px;padding:10px 16px;}
+
+/* ══════════════════════════════
+   QUIZ SCREEN
+══════════════════════════════ */
+#screen-quiz{justify-content:flex-start;padding-top:16px;}
+
+/* HUD bar */
+.hud{
+  position:sticky;top:0;z-index:50;
+  width:100%;max-width:700px;
+  background:rgba(10,10,27,0.96);
+  border-bottom:3px solid #1a1a3a;
+  padding:10px 16px 8px;
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;gap:10px;
+}
+.hud-lives{display:flex;gap:4px;font-size:12px;}
+.hud-center{text-align:center;}
+.hud-q-label{font-size:6px;color:#888;margin-bottom:4px;}
+.hud-q-num{font-size:10px;color:var(--gold);}
+.hud-score{text-align:right;font-size:8px;color:var(--gold);}
+.hud-score span{font-size:6px;color:#666;display:block;margin-top:2px;}
+
+/* XP bar */
+.xp-bar-wrap{width:100%;max-width:700px;padding:0 16px 0;
+  position:sticky;top:60px;z-index:49;background:rgba(10,10,27,0.9);}
+.xp-bar-bg{height:8px;background:#111;border:2px solid #222;margin:6px 0 10px;}
+.xp-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--fire),var(--gold));
+  transition:width .5s ease;position:relative;}
+.xp-bar-fill::after{content:'';position:absolute;right:0;top:0;width:4px;height:100%;
+  background:#fff;opacity:.7;animation:blink .8s step-end infinite;}
+@keyframes blink{0%,100%{opacity:.7}50%{opacity:0}}
+
+/* Question card */
+.q-card{
+  width:100%;max-width:700px;
+  border:3px solid;
+  background:rgba(255,255,255,0.02);
+  padding:22px 20px;
+  margin:0 16px 16px;
+  position:relative;
+  box-shadow:6px 6px 0 rgba(0,0,0,.6);
+  animation:slideIn .35s ease both;
+}
+@keyframes slideIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.q-card::before{
+  content:'';position:absolute;top:0;left:0;width:100%;height:3px;
+  background:linear-gradient(90deg,currentColor,transparent);
+  opacity:.6;
+}
+.q-type-badge{
+  font-size:6px;letter-spacing:1px;
+  padding:3px 8px;border:2px solid;display:inline-block;
+  margin-bottom:12px;
+}
+.q-number{font-size:7px;color:#666;margin-bottom:8px;}
+.q-text{font-size:8px;color:#ddd;line-height:2.2;margin-bottom:18px;}
+.q-hint{font-size:6px;color:#555;margin-top:-12px;margin-bottom:14px;font-style:italic;}
+
+/* ── TYPE A: Multiple choice ── */
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+@media(max-width:480px){.options-grid{grid-template-columns:1fr;}}
+.opt-btn{
+  font-family:'Press Start 2P',cursive;
+  font-size:7px;padding:12px 10px;
+  border:2px solid #333;background:#111;
+  color:#ccc;cursor:pointer;text-align:left;
+  transition:border-color .15s,background .15s,transform .1s;
+  line-height:1.8;
+}
+.opt-btn:hover{border-color:var(--gold);background:#1a1800;color:var(--gold);}
+.opt-btn.correct{border-color:var(--correct)!important;background:rgba(57,255,136,.15)!important;color:var(--correct)!important;}
+.opt-btn.wrong{border-color:var(--wrong)!important;background:rgba(255,78,12,.12)!important;color:var(--wrong)!important;}
+.opt-btn.disabled{cursor:default;pointer-events:none;}
+.opt-btn .opt-letter{color:var(--gold);margin-right:6px;}
+
+/* ── TYPE B: True / False ── */
+.tf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.tf-btn{
+  font-family:'Press Start 2P',cursive;
+  font-size:11px;padding:18px;border:3px solid;
+  cursor:pointer;text-align:center;
+  transition:transform .15s,filter .15s;
+}
+.tf-btn.t{border-color:var(--correct);color:var(--correct);background:rgba(57,255,136,.07);}
+.tf-btn.f{border-color:var(--wrong);color:var(--wrong);background:rgba(255,78,12,.07);}
+.tf-btn:hover{transform:scale(1.04);}
+.tf-btn.correct{filter:brightness(1.4);box-shadow:0 0 20px currentColor;}
+.tf-btn.wrong{opacity:.5;}
+.tf-btn.disabled{cursor:default;pointer-events:none;}
+
+/* ── TYPE C: Drag & match ── */
+.match-container{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:480px){.match-container{grid-template-columns:1fr;}}
+.match-col{display:flex;flex-direction:column;gap:8px;}
+.match-col-title{font-size:6px;color:#666;letter-spacing:1px;margin-bottom:4px;text-align:center;}
+.match-item{
+  font-size:7px;padding:10px 8px;border:2px solid #333;
+  background:#111;color:#ccc;cursor:pointer;
+  text-align:center;line-height:1.8;
+  transition:border-color .15s,background .15s;
+  user-select:none;
+}
+.match-item.draggable:hover{border-color:var(--gold);background:#1a1800;color:var(--gold);}
+.match-item.selected{border-color:var(--gold);background:#1a1800;color:var(--gold);}
+.match-item.drop-zone{border-style:dashed;min-height:44px;display:flex;align-items:center;justify-content:center;}
+.match-item.drop-zone.filled{border-style:solid;border-color:var(--air);color:var(--air);}
+.match-item.drop-zone.correct-match{border-color:var(--correct);color:var(--correct);background:rgba(57,255,136,.1);}
+.match-item.drop-zone.wrong-match{border-color:var(--wrong);color:var(--wrong);background:rgba(255,78,12,.1);}
+.match-check-btn{margin-top:12px;}
+
+/* ── TYPE D: Fill in blank ── */
+.fill-wrap{position:relative;}
+.fill-input{
+  font-family:'Press Start 2P',cursive;
+  font-size:8px;width:100%;padding:12px;
+  background:#0d0b1e;border:3px solid #333;
+  color:var(--white);outline:none;
+  transition:border-color .2s;
+  text-transform:uppercase;
+}
+.fill-input:focus{border-color:var(--gold);}
+.fill-input.correct{border-color:var(--correct);color:var(--correct);}
+.fill-input.wrong{border-color:var(--wrong);color:var(--wrong);}
+.fill-submit{margin-top:10px;}
+
+/* ── TYPE E: Order / sort ── */
+.order-list{display:flex;flex-direction:column;gap:8px;}
+.order-item{
+  font-size:7px;padding:12px 10px;
+  border:2px solid #333;background:#111;
+  color:#ccc;cursor:grab;
+  display:flex;align-items:center;gap:10px;
+  line-height:1.8;transition:border-color .15s;
+  user-select:none;
+}
+.order-item:active{cursor:grabbing;}
+.order-item.dragging{opacity:.5;border-color:var(--gold);}
+.order-item.over{border-color:var(--air);background:rgba(0,217,255,.07);}
+.order-handle{color:#555;font-size:10px;flex-shrink:0;}
+.order-num{color:var(--gold);flex-shrink:0;font-size:8px;width:16px;}
+.order-check-btn{margin-top:12px;}
+
+/* ── TYPE F: Reveal card ── */
+.reveal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+@media(max-width:420px){.reveal-grid{grid-template-columns:repeat(2,1fr);}}
+.reveal-card{
+  aspect-ratio:1;border:2px solid #333;background:#111;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:20px;transition:transform .3s;
+  position:relative;overflow:hidden;
+}
+.reveal-card:hover{border-color:var(--gold);transform:scale(1.05);}
+.reveal-card .card-front{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:22px;background:#111;
+  transition:transform .4s;backface-visibility:hidden;
+}
+.reveal-card .card-back{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  font-size:6px;padding:6px;line-height:1.8;text-align:center;
+  background:#0d0b1e;color:#ccc;
+  transform:rotateY(180deg);transition:transform .4s;backface-visibility:hidden;
+}
+.reveal-card.flipped .card-front{transform:rotateY(180deg);}
+.reveal-card.flipped .card-back{transform:rotateY(0deg);}
+.reveal-card.correct-pick{border-color:var(--correct)!important;box-shadow:0 0 12px var(--correct)44;}
+.reveal-card.wrong-pick{border-color:var(--wrong)!important;opacity:.6;}
+.reveal-task{font-size:7px;color:var(--gold);margin-bottom:12px;line-height:2;}
+
+/* ── FEEDBACK ── */
+.feedback{
+  margin-top:14px;padding:12px 14px;border:3px solid;
+  font-size:7px;line-height:2;
+  animation:fadeUp .3s ease;
+  display:none;
+}
+.feedback.show{display:block;}
+.feedback.correct-fb{border-color:var(--correct);background:rgba(57,255,136,.08);color:var(--correct);}
+.feedback.wrong-fb{border-color:var(--wrong);background:rgba(255,78,12,.08);color:var(--wrong);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.feedback-icon{font-size:18px;margin-bottom:6px;display:block;}
+.feedback-exp{color:#aaa;margin-top:6px;font-size:6px;}
+
+/* ── NEXT BTN ── */
+.next-wrap{text-align:center;margin-top:16px;}
+
+/* ══════════════════════════════
+   RESULT SCREEN
+══════════════════════════════ */
+#screen-result{text-align:center;}
+.result-art{font-size:56px;margin-bottom:16px;animation:float 3s ease-in-out infinite;}
+.result-title{font-size:clamp(12px,3vw,20px);color:var(--gold);margin-bottom:8px;
+  animation:glow-gold 2s ease-in-out infinite alternate;}
+.result-score{font-size:clamp(32px,8vw,64px);color:var(--gold);margin:16px 0;
+  text-shadow:4px 4px 0 var(--fire);filter:drop-shadow(0 0 16px var(--gold));}
+.result-pct{font-size:9px;color:#888;margin-bottom:20px;}
+.result-rank{
+  display:inline-block;font-size:9px;padding:10px 20px;
+  border:3px solid;margin-bottom:24px;
+}
+.result-breakdown{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:10px;
+  max-width:400px;margin:0 auto 24px;text-align:left;
+}
+.rb-item{border:2px solid #222;padding:10px;font-size:6px;color:#888;}
+.rb-item b{color:var(--gold);font-size:8px;display:block;margin-bottom:4px;}
+.result-msg{font-size:7px;color:#aaa;max-width:400px;line-height:2.2;margin:0 auto 24px;}
+.result-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+
+/* ── COMBO FLASH ── */
+.combo-flash{
+  position:fixed;top:80px;left:50%;transform:translateX(-50%);
+  font-size:12px;color:var(--gold);z-index:500;
+  pointer-events:none;opacity:0;transition:opacity .2s;
+  text-shadow:0 0 10px var(--gold);
+}
+.combo-flash.show{opacity:1;animation:comboUp .8s ease forwards;}
+@keyframes comboUp{0%{opacity:1;transform:translateX(-50%) translateY(0)}100%{opacity:0;transform:translateX(-50%) translateY(-40px)}}
+
+/* ── PIXEL PARTICLE ── */
+.particle{position:fixed;pointer-events:none;z-index:600;width:6px;height:6px;}
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+<div class="scanlines"></div>
+<div class="crt"></div>
+<div class="combo-flash" id="comboFlash"></div>
+
+<!-- ══════════════════════════════
+     INTRO SCREEN
+══════════════════════════════ -->
+<div class="screen active" id="screen-intro">
+  <div class="intro-pixel-art">🔮</div>
+  <h1 class="intro-title">AUTO-EVALUACIÓN<br>CASAS ZODIACALES</h1>
+  <p class="intro-sub">
+    Pon a prueba tus conocimientos sobre las 12 casas, sus elementos,
+    cualidades y palabras clave. 18 preguntas · 6 tipos de retos.
+  </p>
+  <div class="intro-stats">
+    <div class="stat-box s1">
+      <div class="stat-num">18</div>
+      <div class="stat-lbl">PREGUNTAS</div>
+    </div>
+    <div class="stat-box s2">
+      <div class="stat-num">6</div>
+      <div class="stat-lbl">TIPOS DE RETO</div>
+    </div>
+    <div class="stat-box s3">
+      <div class="stat-num">3</div>
+      <div class="stat-lbl">VIDAS ♥</div>
+    </div>
+  </div>
+  <button class="btn btn-gold" onclick="startQuiz()">▶ COMENZAR MISIÓN</button>
+</div>
+
+<!-- ══════════════════════════════
+     QUIZ SCREEN
+══════════════════════════════ -->
+<div class="screen" id="screen-quiz">
+  <!-- HUD -->
+  <div class="hud" id="hud">
+    <div class="hud-lives" id="livesDisplay">♥ ♥ ♥</div>
+    <div class="hud-center">
+      <div class="hud-q-label">PREGUNTA</div>
+      <div class="hud-q-num" id="qNumDisplay">1 / 18</div>
+    </div>
+    <div class="hud-score">
+      <span id="scoreDisplay">0 PTS</span>
+      <span id="comboDisplay"></span>
+    </div>
+  </div>
+  <div class="xp-bar-wrap">
+    <div class="xp-bar-bg"><div class="xp-bar-fill" id="xpBar"></div></div>
+  </div>
+
+  <!-- Question card injected here -->
+  <div id="qCardWrap" style="width:100%;max-width:700px;padding:0 16px;"></div>
+
+  <div class="next-wrap" id="nextWrap" style="display:none;">
+    <button class="btn btn-gold" id="nextBtn" onclick="nextQuestion()">SIGUIENTE ▶</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     RESULT SCREEN
+══════════════════════════════ -->
+<div class="screen" id="screen-result">
+  <div class="result-art" id="resultArt">🏆</div>
+  <h2 class="result-title" id="resultTitle">MISIÓN COMPLETADA</h2>
+  <div class="result-score" id="resultScore">0</div>
+  <div class="result-pct" id="resultPct">de 18 preguntas correctas</div>
+  <div class="result-rank" id="resultRank">—</div>
+  <div class="result-breakdown" id="resultBreakdown"></div>
+  <p class="result-msg" id="resultMsg"></p>
+  <div class="result-btns">
+    <button class="btn btn-gold" onclick="restartQuiz()">↺ INTENTAR DE NUEVO</button>
+    <a href="rueda_zodiacal.html" class="btn btn-gray btn-sm">◀ VOLVER A LA RUEDA</a>
+  </div>
+</div>
+
+<script>
+/* ═════════════════════════════════════════════
+   QUESTIONS DATABASE  (18 questions, 6 types)
+   Types: MC=multiple choice, TF=true/false,
+          MATCH=drag-match, FILL=fill blank,
+          ORDER=sort, REVEAL=flip cards
+═════════════════════════════════════════════ */
+const QUESTIONS = [
+
+  /* ── 1 · MC ── */
+  { id:1, type:'MC', theme:'fire',
+    badge:'OPCIÓN MÚLTIPLE', badgeColor:'#FF4E0C',
+    text:'¿Cuál es el elemento que corresponde a las Casas I, V y IX?',
+    options:['A) TIERRA','B) AGUA','C) FUEGO','D) AIRE'],
+    correct:2,
+    exp:'Las Casas I, V y IX son las CASAS DE FUEGO. Se conocen como casas de VIDA o PERSONALES.'
+  },
+
+  /* ── 2 · TF ── */
+  { id:2, type:'TF', theme:'water',
+    badge:'VERDADERO / FALSO', badgeColor:'#724CF9',
+    text:'Las casas angulares corresponden a los signos FIJOS y confieren estabilidad y propósito.',
+    correct:'F',
+    exp:'FALSO. Las casas ANGULARES corresponden a los signos CARDINALES. Son la 1ª, 4ª, 7ª y 10ª. Las sucedentes corresponden a los signos fijos.'
+  },
+
+  /* ── 3 · MC ── */
+  { id:3, type:'MC', theme:'air',
+    badge:'OPCIÓN MÚLTIPLE', badgeColor:'#00D9FF',
+    text:'¿Cuál de estos ejes del horizonte corresponde al NORTE en las casas angulares?',
+    options:['A) ASCENDENTE (Casa I)','B) DESCENDENTE (Casa VII)','C) IMUM COELI (Casa IV)','D) MEDIO CIELO (Casa X)'],
+    correct:3,
+    exp:'El MEDIO CIELO (MC) o Casa X corresponde al Norte. El Ascendente es el Este, el Descendente el Oeste y el IC el Sur.'
+  },
+
+  /* ── 4 · MATCH ── */
+  { id:4, type:'MATCH', theme:'earth',
+    badge:'UNE CON FLECHAS', badgeColor:'#39FF88',
+    text:'Conecta cada casa con su ELEMENTO correcto:',
+    pairs:[
+      { left:'CASA II',  right:'TIERRA' },
+      { left:'CASA IV',  right:'AGUA'   },
+      { left:'CASA IX',  right:'FUEGO'  },
+      { left:'CASA XI',  right:'AIRE'   },
+    ],
+    exp:'Casa II = Tierra, Casa IV = Agua, Casa IX = Fuego, Casa XI = Aire. Recuerda el patrón: I·V·IX Fuego, II·VI·X Tierra, III·VII·XI Aire, IV·VIII·XII Agua.'
+  },
+
+  /* ── 5 · FILL ── */
+  { id:5, type:'FILL', theme:'gold',
+    badge:'COMPLETA LA FRASE', badgeColor:'#F7B801',
+    text:'La CASA VIII rige la muerte, la regeneración y las herencias. Su signo natural es ______ y su regente es Plutón.',
+    hint:'💡 Pista: el escorpión...',
+    answer:'ESCORPIO',
+    alternates:['ESCORPIÓN'],
+    exp:'La Casa VIII es regida por ESCORPIO y Plutón (también Marte). Es la casa de la transformación profunda.'
+  },
+
+  /* ── 6 · MC ── */
+  { id:6, type:'MC', theme:'fire',
+    badge:'OPCIÓN MÚLTIPLE', badgeColor:'#FF4E0C',
+    text:'¿Cuál es la CLAVE o lema de la Casa I?',
+    options:['A) YO TENGO','B) YO PIENSO','C) YO SOY','D) YO SIENTO'],
+    correct:2,
+    exp:'"YO SOY" es la clave de la CASA I. Representa la personalidad, la apariencia y el Ascendente.'
+  },
+
+  /* ── 7 · ORDER ── */
+  { id:7, type:'ORDER', theme:'water',
+    badge:'ORDENA LA SECUENCIA', badgeColor:'#724CF9',
+    text:'Ordena estas casas de menor a mayor número según su CUALIDAD: primero las Angulares, luego las Sucedentes y finalmente las Cadentes:',
+    hint:'💡 Angulares → Sucedentes → Cadentes',
+    items:[
+      { id:'a', text:'CASA III (Cadente)'   },
+      { id:'b', text:'CASA I (Angular)'     },
+      { id:'c', text:'CASA II (Sucedente)'  },
+      { id:'d', text:'CASA IV (Angular)'    },
+      { id:'e', text:'CASA V (Sucedente)'   },
+      { id:'f', text:'CASA VI (Cadente)'    },
+    ],
+    correctOrder:['b','d','c','e','a','f'],
+    exp:'El orden correcto es: Casa I (Angular) → Casa IV (Angular) → Casa II (Sucedente) → Casa V (Sucedente) → Casa III (Cadente) → Casa VI (Cadente). Las angulares van primero, luego sucedentes, luego cadentes.'
+  },
+
+  /* ── 8 · TF ── */
+  { id:8, type:'TF', theme:'earth',
+    badge:'VERDADERO / FALSO', badgeColor:'#39FF88',
+    text:'"YO ANALIZO" es la clave de la Casa VI (Virgo), y esta casa pertenece al elemento TIERRA.',
+    correct:'T',
+    exp:'VERDADERO. La Casa VI tiene la clave "YO ANALIZO", su signo natural es VIRGO y su elemento es TIERRA. También es una casa cadente.'
+  },
+
+  /* ── 9 · REVEAL ── */
+  { id:9, type:'REVEAL', theme:'air',
+    badge:'DESCUBRE LA CARTA', badgeColor:'#00D9FF',
+    text:'Voltea las cartas y encuentra las DOS que representan palabras clave de la CASA XI (Acuario):',
+    hint:'💡 Piensa en amigos, esperanzas y grupos.',
+    cards:[
+      { face:'♦', label:'HERENCIAS',   correct:false },
+      { face:'★', label:'OBJETIVOS',   correct:true  },
+      { face:'♠', label:'CUERPO FÍSICO',correct:false },
+      { face:'✦', label:'AMIGOS',      correct:true  },
+      { face:'♣', label:'HOGAR',       correct:false },
+      { face:'♥', label:'SALUD',       correct:false },
+    ],
+    totalCorrect:2,
+    exp:'La Casa XI (Acuario) tiene como palabras clave: OBJETIVOS, AMIGOS, esperanza y deseos, amor que se recibe y circunstancias fuera de control.'
+  },
+
+  /* ── 10 · MC ── */
+  { id:10, type:'MC', theme:'water',
+    badge:'OPCIÓN MÚLTIPLE', badgeColor:'#724CF9',
+    text:'¿Cómo se denominan las casas que SIGUEN a las angulares y dan estabilidad?',
+    options:['A) CADENTES','B) CARDINALES','C) SUCEDENTES','D) MUTABLES'],
+    correct:2,
+    exp:'Las casas SUCEDENTES (II, V, VIII, XI) siguen a las angulares. Corresponden a los signos fijos y dan estabilidad y propósito. También se llaman casas financieras.'
+  },
+
+  /* ── 11 · FILL ── */
+  { id:11, type:'FILL', theme:'fire',
+    badge:'COMPLETA LA FRASE', badgeColor:'#F7B801',
+    text:'Las casas cadentes se conocen también como casas ________, porque su cualidad mutable las hace adaptables.',
+    hint:'💡 Pista: actúan con la mente...',
+    answer:'MENTALES',
+    alternates:['MENTAL'],
+    exp:'Las casas cadentes (III, VI, IX, XII) se llaman CASAS MENTALES. Son adaptables y se asocian a la mente, la comunicación y la reflexión.'
+  },
+
+  /* ── 12 · MATCH ── */
+  { id:12, type:'MATCH', theme:'air',
+    badge:'UNE CON FLECHAS', badgeColor:'#00D9FF',
+    text:'Une cada casa con su PALABRA CLAVE principal:',
+    pairs:[
+      { left:'CASA I',   right:'PERSONALIDAD' },
+      { left:'CASA V',   right:'CREATIVIDAD'  },
+      { left:'CASA X',   right:'VOCACIÓN'     },
+      { left:'CASA XII', right:'INCONSCIENTE' },
+    ],
+    exp:'Casa I = Personalidad (YO SOY), Casa V = Creatividad (YO CREO), Casa X = Vocación (YO LOGRO), Casa XII = Inconsciente (YO TRASCIENDO).'
+  },
+
+  /* ── 13 · TF ── */
+  { id:13, type:'TF', theme:'fire',
+    badge:'VERDADERO / FALSO', badgeColor:'#FF4E0C',
+    text:'El ASCENDENTE corresponde a la Casa VII y representa el punto Oeste del horizonte.',
+    correct:'F',
+    exp:'FALSO. El ASCENDENTE es la CASA I y representa el punto ESTE del horizonte. La Casa VII es el DESCENDENTE (Oeste).'
+  },
+
+  /* ── 14 · MC ── */
+  { id:14, type:'MC', theme:'earth',
+    badge:'OPCIÓN MÚLTIPLE', badgeColor:'#39FF88',
+    text:'¿Cuáles son las casas que conforman el grupo de AGUA según su elemento?',
+    options:['A) II · VI · X','B) III · VII · XI','C) I · V · IX','D) IV · VIII · XII'],
+    correct:3,
+    exp:'Las CASAS DE AGUA son la IV (Cáncer), VIII (Escorpio) y XII (Piscis). Se conocen como casas terminales o del alma.'
+  },
+
+  /* ── 15 · REVEAL ── */
+  { id:15, type:'REVEAL', theme:'water',
+    badge:'DESCUBRE LA CARTA', badgeColor:'#724CF9',
+    text:'Voltea las cartas y encuentra la que NO es una palabra clave de la CASA IV:',
+    hint:'💡 La Casa IV es el hogar, las raíces y la familia.',
+    cards:[
+      { face:'🏠', label:'HOGAR',              correct:false },
+      { face:'🌱', label:'FUNDAMENTOS',         correct:false },
+      { face:'⚡', label:'ESPECULACIONES',       correct:true  },
+      { face:'🌙', label:'UN PROGENITOR',        correct:false },
+      { face:'🔚', label:'FINALES',              correct:false },
+      { face:'🏡', label:'PROPIEDAD',            correct:false },
+    ],
+    totalCorrect:1,
+    findWrong:true,
+    exp:'ESPECULACIONES pertenece a la Casa V (Leo), no a la Casa IV. La Casa IV incluye: hogar, finales, propiedad, fundamentos, un progenitor y la última parte de la vida.'
+  },
+
+  /* ── 16 · ORDER ── */
+  { id:16, type:'ORDER', theme:'gold',
+    badge:'ORDENA LA SECUENCIA', badgeColor:'#F7B801',
+    text:'Ordena estos signos según el número de su CASA natural (de menor a mayor):',
+    hint:'💡 Aries = Casa I, Tauro = Casa II...',
+    items:[
+      { id:'a', text:'SAGITARIO ♐'   },
+      { id:'b', text:'ARIES ♈'       },
+      { id:'c', text:'GÉMINIS ♊'     },
+      { id:'d', text:'ESCORPIO ♏'    },
+      { id:'e', text:'LEO ♌'        },
+      { id:'f', text:'CAPRICORNIO ♑' },
+    ],
+    correctOrder:['b','c','e','d','a','f'],
+    exp:'El orden correcto es: ARIES (I) → GÉMINIS (III) → LEO (V) → ESCORPIO (VIII) → SAGITARIO (IX) → CAPRICORNIO (X).'
+  },
+
+  /* ── 17 · FILL ── */
+  { id:17, type:'FILL', theme:'earth',
+    badge:'COMPLETA LA FRASE', badgeColor:'#39FF88',
+    text:'La Casa X (Capricornio) corresponde al punto NORTE del horizonte y se llama _______ _______ (dos palabras).',
+    hint:'💡 También se abrevia MC.',
+    answer:'MEDIO CIELO',
+    alternates:['MC'],
+    exp:'La Casa X corresponde al MEDIO CIELO (MC), el punto Norte del horizonte. Es la casa de la vocación, la reputación y el estatus social.'
+  },
+
+  /* ── 18 · MC ── */
+  { id:18, type:'MC', theme:'water',
+    badge:'PREGUNTA FINAL', badgeColor:'#F7B801',
+    text:'¿Cuántas casas hay en cada grupo de la división por CUALIDADES (angulares, sucedentes y cadentes)?',
+    options:['A) 3 casas en cada grupo','B) 4 casas en cada grupo','C) 6 casas en cada grupo','D) 2 casas en cada grupo'],
+    correct:1,
+    exp:'¡Correcto! Hay 4 casas en cada grupo: 4 Angulares (I, IV, VII, X), 4 Sucedentes (II, V, VIII, XI) y 4 Cadentes (III, VI, IX, XII). En total: 12 casas.'
+  },
+];
+
+/* ═════════════════════════════════════════════
+   STATE
+═════════════════════════════════════════════ */
+let currentQ = 0;
+let score = 0;
+let lives = 3;
+let combo = 0;
+let correctCount = 0;
+let answered = false;
+let audioCtx;
+
+/* theme color map */
+const THEMES = {
+  fire:  { main:'#FF4E0C', glow:'#FF8C42', dim:'#3A0A00' },
+  earth: { main:'#39FF88', glow:'#88FFB8', dim:'#0A2A10' },
+  air:   { main:'#00D9FF', glow:'#88EEFF', dim:'#002030' },
+  water: { main:'#724CF9', glow:'#B088FF', dim:'#150A30' },
+  gold:  { main:'#F7B801', glow:'#FFD966', dim:'#1A1300' },
+};
+
+/* ═════════════════════════════════════════════
+   SOUND
+═════════════════════════════════════════════ */
+function initAudio(){
+  if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+}
+function playTone(freq,type,duration,vol=0.07){
+  initAudio();
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.connect(g);g.connect(audioCtx.destination);
+  o.type=type;o.frequency.value=freq;
+  const t=audioCtx.currentTime;
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(vol,t+0.02);
+  g.gain.exponentialRampToValueAtTime(0.001,t+duration);
+  o.start(t);o.stop(t+duration);
+}
+function playCorrect(){
+  [523,659,784,1047].forEach((f,i)=>setTimeout(()=>playTone(f,'square',.18),i*90));
+}
+function playWrong(){
+  [200,150].forEach((f,i)=>setTimeout(()=>playTone(f,'sawtooth',.3,.1),i*160));
+}
+function playNext(){
+  playTone(440,'triangle',.12);
+}
+
+/* ═════════════════════════════════════════════
+   PARTICLES
+═════════════════════════════════════════════ */
+function burst(color){
+  for(let i=0;i<14;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    p.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*40+30}vh;
+      background:${color};box-shadow:0 0 6px ${color};`;
+    document.body.appendChild(p);
+    const dx=(Math.random()-0.5)*200,dy=(Math.random()-0.5)*200-60;
+    p.animate([
+      {transform:'translate(0,0)',opacity:1},
+      {transform:`translate(${dx}px,${dy}px)`,opacity:0}
+    ],{duration:700+Math.random()*400,easing:'ease-out'}).onfinish=()=>p.remove();
+  }
+}
+
+/* ═════════════════════════════════════════════
+   INIT / NAVIGATION
+═════════════════════════════════════════════ */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startQuiz(){
+  currentQ=0;score=0;lives=3;combo=0;correctCount=0;
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+
+function restartQuiz(){
+  startQuiz();
+}
+
+/* ═════════════════════════════════════════════
+   HUD UPDATE
+═════════════════════════════════════════════ */
+function updateHUD(){
+  document.getElementById('qNumDisplay').textContent=`${currentQ+1} / 18`;
+  document.getElementById('scoreDisplay').textContent=`${score} PTS`;
+  document.getElementById('comboDisplay').textContent=combo>1?`🔥 x${combo} COMBO`:'';
+  const hearts=['♥','♥','♥'].map((h,i)=>i<lives?h:'♡').join(' ');
+  document.getElementById('livesDisplay').textContent=hearts;
+  document.getElementById('xpBar').style.width=`${((currentQ)/18)*100}%`;
+}
+
+function showCombo(txt){
+  const el=document.getElementById('comboFlash');
+  el.textContent=txt;
+  el.classList.remove('show');
+  void el.offsetWidth;
+  el.classList.add('show');
+}
+
+/* ═════════════════════════════════════════════
+   RENDER QUESTION
+═════════════════════════════════════════════ */
+function renderQuestion(){
+  answered=false;
+  const q=QUESTIONS[currentQ];
+  const c=THEMES[q.theme]||THEMES.gold;
+  updateHUD();
+
+  document.getElementById('nextWrap').style.display='none';
+
+  const wrap=document.getElementById('qCardWrap');
+  wrap.innerHTML='';
+
+  const card=document.createElement('div');
+  card.className='q-card';
+  card.style.borderColor=c.main;
+  card.style.setProperty('color',c.main);
+
+  let inner=`
+    <div class="q-type-badge" style="color:${c.main};border-color:${c.main};">${q.badge}</div>
+    <div class="q-number" style="color:${c.glow};">PREGUNTA ${q.id} DE 18</div>
+    <div class="q-text">${q.text}</div>
+    ${q.hint?`<div class="q-hint">${q.hint}</div>`:''}
+  `;
+
+  /* Build question body */
+  if(q.type==='MC')     inner+=buildMC(q,c);
+  if(q.type==='TF')     inner+=buildTF(q,c);
+  if(q.type==='MATCH')  inner+=buildMATCH(q,c);
+  if(q.type==='FILL')   inner+=buildFILL(q,c);
+  if(q.type==='ORDER')  inner+=buildORDER(q,c);
+  if(q.type==='REVEAL') inner+=buildREVEAL(q,c);
+
+  inner+=`<div class="feedback" id="feedback"></div>`;
+  card.innerHTML=inner;
+  wrap.appendChild(card);
+
+  /* Post-render hooks */
+  if(q.type==='MATCH')  initMATCH(q,c);
+  if(q.type==='ORDER')  initORDER(q,c);
+  if(q.type==='REVEAL') initREVEAL(q,c);
+}
+
+/* ─── Multiple Choice ─── */
+function buildMC(q,c){
+  return `<div class="options-grid">${q.options.map((o,i)=>`
+    <button class="opt-btn" onclick="answerMC(${i})">
+      <span class="opt-letter">${['A','B','C','D'][i]})</span>${o.slice(3)}
+    </button>`).join('')}</div>`;
+}
+function answerMC(idx){
+  if(answered)return;
+  answered=true;
+  const q=QUESTIONS[currentQ];
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>b.classList.add('disabled'));
+  const isCorrect=(idx===q.correct);
+  btns[idx].classList.add(isCorrect?'correct':'wrong');
+  if(!isCorrect) btns[q.correct].classList.add('correct');
+  handleResult(isCorrect,q.exp);
+}
+
+/* ─── True / False ─── */
+function buildTF(q,c){
+  return `<div class="tf-row">
+    <button class="tf-btn t" onclick="answerTF('T')">✔ VERDADERO</button>
+    <button class="tf-btn f" onclick="answerTF('F')">✘ FALSO</button>
+  </div>`;
+}
+function answerTF(val){
+  if(answered)return;
+  answered=true;
+  const q=QUESTIONS[currentQ];
+  const isCorrect=(val===q.correct);
+  const btns=document.querySelectorAll('.tf-btn');
+  btns.forEach(b=>{
+    b.classList.add('disabled');
+    if((b.classList.contains('t')&&q.correct==='T')||(b.classList.contains('f')&&q.correct==='F'))
+      b.classList.add('correct');
+    else b.classList.add('wrong');
+  });
+  handleResult(isCorrect,q.exp);
+}
+
+/* ─── Match ─── */
+let matchSelected=null;
+let matchAnswers={};
+function buildMATCH(q,c){
+  const lefts=q.pairs.map(p=>p.left);
+  const rights=[...q.pairs.map(p=>p.right)].sort(()=>Math.random()-.5);
+  return `
+  <div class="match-container">
+    <div class="match-col">
+      <div class="match-col-title">— CASAS —</div>
+      ${lefts.map(l=>`<div class="match-item draggable" data-left="${l}" onclick="selectLeft('${l}')">${l}</div>`).join('')}
+    </div>
+    <div class="match-col">
+      <div class="match-col-title">— RESPUESTAS —</div>
+      ${rights.map(r=>`<div class="match-item drop-zone" data-right="${r}" onclick="selectRight('${r}')">${r}</div>`).join('')}
+    </div>
+  </div>
+  <button class="btn btn-gold btn-sm match-check-btn" onclick="checkMATCH()">✔ VERIFICAR</button>`;
+}
+function initMATCH(){ matchSelected=null; matchAnswers={}; }
+function selectLeft(left){
+  if(answered)return;
+  document.querySelectorAll('.match-item.draggable').forEach(e=>e.classList.remove('selected'));
+  const el=document.querySelector(`.match-item.draggable[data-left="${left}"]`);
+  el.classList.add('selected');
+  matchSelected=left;
+}
+function selectRight(right){
+  if(answered||!matchSelected)return;
+  // find if this right is already assigned, free it
+  for(const k in matchAnswers){ if(matchAnswers[k]===right) delete matchAnswers[k]; }
+  matchAnswers[matchSelected]=right;
+  // update zone display
+  document.querySelectorAll('.match-item.drop-zone').forEach(e=>{
+    e.classList.remove('filled');
+    if(e.dataset.right===right){e.classList.add('filled');e.textContent=right;}
+  });
+  // gray out left
+  document.querySelector(`.match-item.draggable[data-left="${matchSelected}"]`).classList.remove('selected');
+  matchSelected=null;
+}
+function checkMATCH(){
+  if(answered)return;
+  const q=QUESTIONS[currentQ];
+  const total=q.pairs.length;
+  let correct=0;
+  q.pairs.forEach(p=>{
+    const zone=document.querySelector(`.match-item.drop-zone[data-right="${p.right}"]`);
+    const leftEl=document.querySelector(`.match-item.draggable[data-left="${p.left}"]`);
+    if(matchAnswers[p.left]===p.right){
+      correct++;
+      if(zone) zone.classList.add('correct-match');
+    } else {
+      if(zone) zone.classList.add('wrong-match');
+    }
+    if(leftEl) leftEl.classList.add('disabled');
+  });
+  document.querySelectorAll('.match-item.draggable,.match-item.drop-zone').forEach(e=>e.style.pointerEvents='none');
+  answered=true;
+  const isCorrect=correct===total;
+  handleResult(isCorrect,q.exp,isCorrect?correct:correct+` de ${total} correctos`);
+}
+
+/* ─── Fill in blank ─── */
+function buildFILL(q,c){
+  return `<div class="fill-wrap">
+    <input class="fill-input" id="fillInput" type="text" placeholder="ESCRIBE TU RESPUESTA..."
+      maxlength="40" onkeydown="if(event.key==='Enter')checkFILL()">
+    <br><button class="btn btn-gold btn-sm fill-submit" onclick="checkFILL()">✔ VERIFICAR</button>
+  </div>`;
+}
+function checkFILL(){
+  if(answered)return;
+  const q=QUESTIONS[currentQ];
+  const inp=document.getElementById('fillInput');
+  const val=inp.value.trim().toUpperCase();
+  const correct=[q.answer,...(q.alternates||[])].some(a=>val===a.toUpperCase());
+  inp.classList.add(correct?'correct':'wrong');
+  inp.disabled=true;
+  answered=true;
+  handleResult(correct,q.exp);
+}
+
+/* ─── Order ─── */
+let orderItems=[];
+let dragSrc=null;
+function buildORDER(q,c){
+  const shuffled=[...q.items].sort(()=>Math.random()-.5);
+  orderItems=shuffled.map(i=>({...i}));
+  return `<div class="order-list" id="orderList">
+    ${shuffled.map((item,i)=>`
+    <div class="order-item" draggable="true" data-id="${item.id}">
+      <span class="order-handle">⣿</span>
+      <span class="order-num">${i+1}</span>
+      <span>${item.text}</span>
+    </div>`).join('')}
+  </div>
+  <button class="btn btn-gold btn-sm order-check-btn" onclick="checkORDER()">✔ VERIFICAR ORDEN</button>`;
+}
+function initORDER(q,c){
+  const list=document.getElementById('orderList');
+  list.addEventListener('dragstart',e=>{
+    dragSrc=e.target.closest('.order-item');
+    dragSrc.classList.add('dragging');
+  });
+  list.addEventListener('dragover',e=>{
+    e.preventDefault();
+    const over=e.target.closest('.order-item');
+    if(over&&over!==dragSrc){
+      document.querySelectorAll('.order-item').forEach(i=>i.classList.remove('over'));
+      over.classList.add('over');
+    }
+  });
+  list.addEventListener('drop',e=>{
+    e.preventDefault();
+    const over=e.target.closest('.order-item');
+    if(over&&over!==dragSrc){
+      const allItems=[...list.querySelectorAll('.order-item')];
+      const srcI=allItems.indexOf(dragSrc);
+      const tarI=allItems.indexOf(over);
+      if(srcI<tarI) list.insertBefore(dragSrc,over.nextSibling);
+      else list.insertBefore(dragSrc,over);
+      // renumber
+      [...list.querySelectorAll('.order-item')].forEach((el,i)=>{
+        el.querySelector('.order-num').textContent=i+1;
+      });
+    }
+    document.querySelectorAll('.order-item').forEach(i=>i.classList.remove('over','dragging'));
+  });
+  list.addEventListener('dragend',()=>{
+    document.querySelectorAll('.order-item').forEach(i=>i.classList.remove('dragging','over'));
+  });
+
+  /* Touch support */
+  let touchSrc=null,touchClone=null;
+  list.addEventListener('touchstart',e=>{
+    touchSrc=e.target.closest('.order-item');
+    if(!touchSrc)return;
+    touchClone=touchSrc.cloneNode(true);
+    touchClone.style.cssText=`position:fixed;opacity:.7;pointer-events:none;z-index:9999;
+      width:${touchSrc.offsetWidth}px;font-family:'Press Start 2P',cursive;
+      font-size:7px;padding:12px 10px;border:2px solid #F7B801;background:#111;color:#ccc;`;
+    document.body.appendChild(touchClone);
+  },{passive:true});
+  list.addEventListener('touchmove',e=>{
+    if(!touchClone)return;
+    e.preventDefault();
+    const t=e.touches[0];
+    touchClone.style.left=(t.clientX-touchClone.offsetWidth/2)+'px';
+    touchClone.style.top=(t.clientY-touchClone.offsetHeight/2)+'px';
+    const over=document.elementFromPoint(t.clientX,t.clientY)?.closest('.order-item');
+    document.querySelectorAll('.order-item').forEach(i=>i.classList.remove('over'));
+    if(over&&over!==touchSrc)over.classList.add('over');
+  },{passive:false});
+  list.addEventListener('touchend',e=>{
+    if(touchClone){touchClone.remove();touchClone=null;}
+    const t=e.changedTouches[0];
+    const over=document.elementFromPoint(t.clientX,t.clientY)?.closest('.order-item');
+    if(over&&over!==touchSrc&&touchSrc){
+      const allI=[...list.querySelectorAll('.order-item')];
+      const si=allI.indexOf(touchSrc),ti=allI.indexOf(over);
+      if(si<ti)list.insertBefore(touchSrc,over.nextSibling);
+      else list.insertBefore(touchSrc,over);
+      [...list.querySelectorAll('.order-item')].forEach((el,i)=>{
+        el.querySelector('.order-num').textContent=i+1;
+      });
+    }
+    document.querySelectorAll('.order-item').forEach(i=>i.classList.remove('over'));
+    touchSrc=null;
+  });
+}
+function checkORDER(){
+  if(answered)return;
+  const q=QUESTIONS[currentQ];
+  const list=document.getElementById('orderList');
+  const current=[...list.querySelectorAll('.order-item')].map(el=>el.dataset.id);
+  const isCorrect=JSON.stringify(current)===JSON.stringify(q.correctOrder);
+  list.querySelectorAll('.order-item').forEach((el,i)=>{
+    el.draggable=false;
+    el.style.borderColor=el.dataset.id===q.correctOrder[i]?'var(--correct)':'var(--wrong)';
+    el.style.color=el.dataset.id===q.correctOrder[i]?'var(--correct)':'var(--wrong)';
+  });
+  answered=true;
+  handleResult(isCorrect,q.exp);
+}
+
+/* ─── Reveal cards ─── */
+let revealPicked=[];
+function buildREVEAL(q,c){
+  const shuffled=[...q.cards].sort(()=>Math.random()-.5);
+  return `
+  <div class="reveal-task" style="color:${c.glow};">
+    ${q.findWrong?'🃏 Encuentra la que NO pertenece — voltea una sola carta:':'🃏 Voltea las cartas correctas:'}
+    <span style="color:#666;">(${q.totalCorrect} ${q.totalCorrect===1?'carta':'cartas'})</span>
+  </div>
+  <div class="reveal-grid" id="revealGrid">
+    ${shuffled.map((card,i)=>`
+    <div class="reveal-card" data-idx="${i}" data-correct="${card.correct}" onclick="flipCard(this,${q.totalCorrect})">
+      <div class="card-front" style="font-size:26px;color:${c.main};">${card.face}</div>
+      <div class="card-back" style="border:2px solid ${c.main}44;color:${c.glow};">${card.label}</div>
+    </div>`).join('')}
+  </div>`;
+}
+function initREVEAL(){ revealPicked=[]; }
+function flipCard(el,totalCorrect){
+  if(answered)return;
+  if(el.classList.contains('flipped')&&!el.classList.contains('wrong-pick'))return;
+  el.classList.add('flipped');
+  const isC=el.dataset.correct==='true';
+  revealPicked.push({el,correct:isC});
+
+  if(isC){
+    el.classList.add('correct-pick');
+    playTone(880,'triangle',.15);
+    if(revealPicked.filter(p=>p.correct).length===totalCorrect){
+      // all correct picks done
+      answered=true;
+      handleResult(true,QUESTIONS[currentQ].exp);
+    }
+  } else {
+    el.classList.add('wrong-pick');
+    playWrong();
+    // for findWrong: picking the one wrong card = correct!
+    if(QUESTIONS[currentQ].findWrong){
+      answered=true;
+      handleResult(true,QUESTIONS[currentQ].exp);
+    } else {
+      // wrong pick on normal reveal
+      answered=true;
+      handleResult(false,QUESTIONS[currentQ].exp);
+    }
+  }
+}
+
+/* ═════════════════════════════════════════════
+   RESULT HANDLER
+═════════════════════════════════════════════ */
+function handleResult(isCorrect, explanation, detail=''){
+  const q=QUESTIONS[currentQ];
+  const c=THEMES[q.theme]||THEMES.gold;
+  const fb=document.getElementById('feedback');
+  fb.className='feedback show '+(isCorrect?'correct-fb':'wrong-fb');
+
+  if(isCorrect){
+    combo++;
+    correctCount++;
+    const pts=10*(combo>=3?2:combo>=2?1.5:1);
+    score+=Math.round(pts);
+    playCorrect();
+    burst(c.main);
+    if(combo>=3) showCombo(`🔥 COMBO x${combo}! +${Math.round(pts)} PTS`);
+    fb.innerHTML=`
+      <span class="feedback-icon">✨</span>
+      <strong>¡CORRECTO!</strong>${detail?` (${detail})`:''}
+      <div class="feedback-exp">${explanation}</div>`;
+  } else {
+    combo=0;
+    lives--;
+    playWrong();
+    fb.innerHTML=`
+      <span class="feedback-icon">💀</span>
+      <strong>INCORRECTO</strong>${detail?` (${detail})`:''}
+      <div class="feedback-exp">${explanation}</div>`;
+    updateHUD();
+    if(lives<=0){ setTimeout(()=>showResult(true),1800); return; }
+  }
+  updateHUD();
+  document.getElementById('nextWrap').style.display='block';
+  // Scroll to feedback
+  setTimeout(()=>fb.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+}
+
+/* ═════════════════════════════════════════════
+   NEXT QUESTION
+═════════════════════════════════════════════ */
+function nextQuestion(){
+  playNext();
+  currentQ++;
+  if(currentQ>=QUESTIONS.length){ showResult(false); return; }
+  renderQuestion();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ═════════════════════════════════════════════
+   SHOW RESULT
+═════════════════════════════════════════════ */
+function showResult(gameOver=false){
+  showScreen('screen-result');
+  document.getElementById('xpBar').style.width='100%';
+
+  const pct=Math.round((correctCount/18)*100);
+  let art,title,rank,msg,rankColor;
+
+  if(gameOver){
+    art='💀';title='GAME OVER';rank='INICIADO';rankColor='#FF4E0C';
+    msg='Las vidas se agotaron en tu camino. Los astros esperan tu regreso. ¡Inténtalo de nuevo!';
+  } else if(pct>=94){
+    art='🌟';title='MAESTRO ASTRAL';rank='⭐ GRAN MAGO ⭐';rankColor='#F7B801';
+    msg='Impresionante. Dominas las 12 casas, sus elementos, cualidades y palabras clave con maestría. El zodíaco no tiene secretos para ti.';
+  } else if(pct>=78){
+    art='🔮';title='¡MUY BIEN!';rank='✦ ASTRÓNOMO ✦';rankColor='#B088FF';
+    msg='Excelente conocimiento. Dominas la mayoría de las casas. Repasa los detalles que fallaste y serás un maestro.';
+  } else if(pct>=55){
+    art='⭐';title='BUEN TRABAJO';rank='APRENDIZ';rankColor='#00D9FF';
+    msg='Vas por buen camino. Tienes la base sólida pero hay conceptos que reforzar. Revisa la rueda zodiacal y vuelve a intentarlo.';
+  } else {
+    art='🌙';title='SIGUE PRACTICANDO';rank='NOVATO';rankColor='#39FF88';
+    msg='Los astros tienen paciencia. Repasa las lecciones de casas por elementos y cualidades, y regresa cuando estés listo.';
+  }
+
+  document.getElementById('resultArt').textContent=art;
+  document.getElementById('resultTitle').textContent=title;
+  document.getElementById('resultScore').textContent=score+' PTS';
+  document.getElementById('resultPct').textContent=`${correctCount} de 18 preguntas correctas (${pct}%)`;
+  document.getElementById('resultRank').textContent=rank;
+  document.getElementById('resultRank').style.cssText=`color:${rankColor};border-color:${rankColor};`;
+  document.getElementById('resultMsg').textContent=msg;
+
+  const breakdown=[
+    {label:'RESPUESTAS CORRECTAS',val:correctCount,col:'#39FF88'},
+    {label:'RESPUESTAS INCORRECTAS',val:18-correctCount,col:'#FF4E0C'},
+    {label:'PUNTUACIÓN TOTAL',val:score+' pts',col:'#F7B801'},
+    {label:'MEJOR RACHA COMBO',val:`x${Math.max(combo,1)}`,col:'#B088FF'},
+  ];
+  document.getElementById('resultBreakdown').innerHTML=breakdown.map(b=>`
+    <div class="rb-item"><b style="color:${b.col}">${b.val}</b>${b.label}</div>`).join('');
+
+  if(!gameOver) burst('#F7B801');
+}
+
+/* ═════════════════════════════════════════════
+   BACKGROUND CANVAS
+═════════════════════════════════════════════ */
+const bgC=document.getElementById('bgCanvas'),bgX=bgC.getContext('2d');
+let W,H;
+function resz(){W=bgC.width=window.innerWidth;H=bgC.height=window.innerHeight;}
+resz();window.addEventListener('resize',resz);
+const stars=Array.from({length:160},()=>({
+  x:Math.random()*3000,y:Math.random()*3000,sz:Math.random()*2+.5,
+  b:Math.random(),sp:Math.random()*.012+.004,
+  col:['#fff','#F7B801','#00D9FF','#FF3D81','#724CF9','#39FF88'][Math.floor(Math.random()*6)],
+}));
+const meteors=[];
+function spawnM(){
+  meteors.push({x:Math.random()*W,y:-20,
+    vx:(Math.random()*4+2)*(Math.random()<.5?1:-1),vy:Math.random()*4+3,
+    life:0,max:Math.random()*70+30,
+    col:['#F7B801','#00D9FF','#fff','#FF8C42','#B088FF'][Math.floor(Math.random()*5)],
+  });
+}
+let fr=0;
+function animBg(){
+  requestAnimationFrame(animBg);fr++;
+  bgX.clearRect(0,0,W,H);
+  [[.15,.2,240,'rgba(255,78,12,.05)'],[.85,.7,280,'rgba(57,255,136,.04)'],
+   [.5,.4,200,'rgba(0,217,255,.04)'],[.3,.8,180,'rgba(114,76,249,.05)']].forEach(([fx,fy,r,c])=>{
+    const g=bgX.createRadialGradient(fx*W,fy*H,0,fx*W,fy*H,r);
+    g.addColorStop(0,c);g.addColorStop(1,'transparent');
+    bgX.fillStyle=g;bgX.fillRect(0,0,W,H);
+  });
+  stars.forEach(s=>{
+    s.b+=s.sp;bgX.globalAlpha=.1+Math.abs(Math.sin(s.b))*.9;
+    bgX.fillStyle=s.col;
+    bgX.fillRect(Math.round(s.x%W),Math.round(s.y%H),Math.ceil(s.sz),Math.ceil(s.sz));
+  });
+  bgX.globalAlpha=1;
+  if(fr%100===0&&Math.random()<.7)spawnM();
+  for(let i=meteors.length-1;i>=0;i--){
+    const m=meteors[i];m.x+=m.vx;m.y+=m.vy;m.life++;
+    const al=m.life<10?m.life/10:m.life>m.max-10?(m.max-m.life)/10:1;
+    bgX.globalAlpha=al*.85;bgX.strokeStyle=m.col;bgX.lineWidth=1.5;
+    bgX.shadowBlur=7;bgX.shadowColor=m.col;
+    bgX.beginPath();bgX.moveTo(m.x,m.y);bgX.lineTo(m.x-m.vx*10,m.y-m.vy*10);bgX.stroke();
+    bgX.shadowBlur=0;bgX.globalAlpha=1;
+    if(m.life>=m.max||m.y>H+20)meteors.splice(i,1);
+  }
+}
+animBg();
+</script>
+</body>
+</html>

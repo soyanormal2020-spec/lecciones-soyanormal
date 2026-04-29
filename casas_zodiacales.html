@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curso de Astrología - Las 12 Casas Zodiacales 8-Bit</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pixel-size: 4px;
+    --bg-dark: #0d0b1e;
+    --accent-red: #e63946;
+    --accent-gold: #ffd166;
+    --accent-blue: #118ab2;
+    --temple-stone: #e0e0d1;
+    --temple-shadow: #a8a8a0;
+  }
+
+  * {
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: var(--bg-dark);
+    color: #fff;
+    margin: 0;
+    overflow-x: hidden;
+    line-height: 1.8;
+  }
+
+  /* Starry background */
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 0;
+    animation: twinkle 2s infinite alternate;
+  }
+
+  @keyframes twinkle {
+    0% { opacity: 0.2; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .title-main {
+    text-shadow: 4px 4px 0 var(--accent-red), 8px 8px 0 #000;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from { filter: drop-shadow(0 0 5px var(--accent-gold)); }
+    to { filter: drop-shadow(0 0 15px var(--accent-gold)); }
+  }
+
+  /* Temple container */
+  .temple-wrapper {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .temple-wrapper:hover {
+    transform: scale(1.1) translateY(-5px);
+    z-index: 10;
+  }
+
+  .temple-wrapper:hover .temple-glow {
+    opacity: 1;
+  }
+
+  .temple-wrapper:hover .platform {
+    filter: brightness(1.3);
+  }
+
+  .temple-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, var(--accent-gold) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* CSS Pixel Art Temple */
+  .temple {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    margin: 0 auto;
+  }
+
+  .temple-roof {
+    width: 80px;
+    height: 20px;
+    background: var(--accent-red);
+    position: relative;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  }
+
+  .temple-body {
+    width: 64px;
+    height: 40px;
+    background: var(--temple-stone);
+    margin: 0 auto;
+    position: relative;
+    border-left: 4px solid var(--temple-shadow);
+    border-right: 4px solid var(--temple-shadow);
+  }
+
+  .temple-column {
+    position: absolute;
+    width: 8px;
+    height: 40px;
+    background: var(--temple-shadow);
+    top: 0;
+  }
+
+  .temple-column:nth-child(1) { left: 8px; }
+  .temple-column:nth-child(2) { left: 28px; }
+  .temple-column:nth-child(3) { right: 8px; }
+
+  .temple-base {
+    width: 80px;
+    height: 12px;
+    background: var(--temple-shadow);
+    margin: 0 auto;
+  }
+
+  /* Floating platform */
+  .platform {
+    width: 100px;
+    height: 20px;
+    background: linear-gradient(to bottom, #6b5b95 0%, #4a3b6b 100%);
+    margin: 8px auto 0;
+    position: relative;
+    border: 2px solid #000;
+    transition: filter 0.3s ease;
+  }
+
+  .platform::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 10px;
+    right: 10px;
+    height: 8px;
+    background: rgba(0,0,0,0.3);
+    filter: blur(4px);
+  }
+
+  .house-label {
+    font-size: 8px;
+    text-align: center;
+    margin-top: 8px;
+    color: var(--accent-gold);
+    text-shadow: 2px 2px 0 #000;
+  }
+
+  /* Path connector */
+  .path-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .path-line {
+    fill: none;
+    stroke: var(--accent-gold);
+    stroke-width: 3;
+    stroke-dasharray: 8 4;
+    opacity: 0.4;
+    animation: dash 20s linear infinite;
+  }
+
+  @keyframes dash {
+    to { stroke-dashoffset: -1000; }
+  }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+  }
+
+  .modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal-content {
+    background: var(--bg-dark);
+    border: 4px solid var(--accent-red);
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+  }
+
+  .modal-overlay.active .modal-content {
+    transform: scale(1);
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--accent-red);
+    color: white;
+    border: 2px solid #000;
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.1s;
+  }
+
+  .modal-close:active {
+    transform: scale(0.9);
+  }
+
+  /* Circular design for Casa info */
+  .house-circle {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    border: 4px solid var(--accent-red);
+    margin: 20px auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle, rgba(230,57,70,0.1) 0%, transparent 70%);
+  }
+
+  .house-center {
+    text-align: center;
+    z-index: 2;
+  }
+
+  .house-number {
+    font-size: 48px;
+    color: var(--accent-gold);
+    text-shadow: 3px 3px 0 #000;
+    line-height: 1;
+  }
+
+  .house-name {
+    font-size: 12px;
+    color: white;
+    margin-top: 8px;
+  }
+
+  .circle-item {
+    position: absolute;
+    font-size: 7px;
+    width: 80px;
+    text-align: center;
+    color: var(--accent-gold);
+  }
+
+  .circle-item strong {
+    display: block;
+    color: white;
+    font-size: 6px;
+    margin-bottom: 2px;
+  }
+
+  .circle-item.top { top: 10px; left: 50%; transform: translateX(-50%); }
+  .circle-item.right { right: -20px; top: 50%; transform: translateY(-50%); }
+  .circle-item.bottom { bottom: 10px; left: 50%; transform: translateX(-50%); }
+  .circle-item.left { left: -20px; top: 50%; transform: translateY(-50%); }
+
+  .characteristics {
+    border-top: 4px solid var(--accent-red);
+    padding: 20px;
+    background: rgba(230,57,70,0.05);
+  }
+
+  .characteristics h3 {
+    font-size: 10px;
+    color: var(--accent-gold);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .characteristics p {
+    font-size: 8px;
+    line-height: 1.6;
+    color: #ddd;
+  }
+
+  /* Responsive grid */
+  .temples-grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 60px 20px;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 640px) {
+    .temples-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .temples-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 80px 40px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .temples-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .temple-wrapper:nth-child(odd) {
+      margin-top: 40px;
+    }
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+    border-left: 2px solid var(--accent-red);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent-red);
+    border: 2px solid #000;
+  }
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+
+<header class="relative z-10 text-center py-8 px-4">
+  <h1 class="title-main text-2xl md:text-4xl text-white mb-4">LAS 12 CASAS ZODIACALES</h1>
+  <p class="text-xs md:text-sm text-yellow-200 max-w-2xl mx-auto">Recorre el camino sagrado de los 12 templos. Haz click en cada casa para revelar sus secretos astrales.</p>
+</header>
+
+<main class="relative">
+  <svg class="path-svg hidden md:block">
+    <path class="path-line" d="M 100 100 Q 300 50 500 100 T 900 100 Q 1100 150 900 200 T 500 250 Q 300 300 100 250 T 100 400" />
+  </svg>
+  
+  <div class="temples-grid" id="templesGrid"></div>
+</main>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-content">
+    <button class="modal-close" id="closeModal">X</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<footer class="relative z-10 text-center py-8 px-4 text-xs text-gray-400">
+  <p>Curso de Astrología 8-Bit © 2024</p>
+</footer>
+
+<script>
+  const housesData = [
+    {
+      number: 1,
+      name: "CASA I",
+      signoNatural: "ARIES",
+      regenteNatural: "MARTE",
+      palabraClave: "YO SOY",
+      casaDe: "LA PERSONALIDAD",
+      caracteristicas: "Representa el yo, la apariencia física, el cuerpo, el temperamento y la forma en que nos presentamos al mundo. Es el ascendente, la máscara que usamos. Rige los inicios, la iniciativa y la autoafirmación."
+    },
+    {
+      number: 2,
+      name: "CASA II",
+      signoNatural: "TAURO",
+      regenteNatural: "VENUS",
+      palabraClave: "YO TENGO",
+      casaDe: "LOS VALORES",
+      caracteristicas: "Casa de las posesiones, el dinero, los recursos materiales y el autoestima. Indica cómo generamos ingresos, qué valoramos y nuestra relación con la seguridad material. También rige los talentos."
+    },
+    {
+      number: 3,
+      name: "CASA III",
+      signoNatural: "GÉMINIS",
+      regenteNatural: "MERCURIO",
+      palabraClave: "YO PIENSO",
+      casaDe: "LA COMUNICACIÓN",
+      caracteristicas: "Rige la mente concreta, la comunicación, hermanos, vecinos, viajes cortos y el entorno inmediato. Representa el aprendizaje primario, los escritos, y cómo procesamos la información diaria."
+    },
+    {
+      number: 4,
+      name: "CASA IV",
+      signoNatural: "CÁNCER",
+      regenteNatural: "LUNA",
+      palabraClave: "YO SIENTO",
+      casaDe: "EL HOGAR",
+      caracteristicas: "Es el fondo del cielo, las raíces, la familia, el hogar y la madre. Representa nuestro mundo interior, la infancia, las tradiciones y de dónde venimos. Es nuestra base emocional."
+    },
+    {
+      number: 5,
+      name: "CASA V",
+      signoNatural: "LEO",
+      regenteNatural: "SOL",
+      palabraClave: "YO CREO",
+      casaDe: "LA CREATIVIDAD",
+      caracteristicas: "Casa del placer, el romance, los hijos, la creatividad, los juegos y los hobbies. Rige la autoexpresión, el amor que damos y nuestra capacidad de divertirnos. También especulaciones."
+    },
+    {
+      number: 6,
+      name: "CASA VI",
+      signoNatural: "VIRGO",
+      regenteNatural: "MERCURIO",
+      palabraClave: "YO ANALIZO",
+      casaDe: "EL TRABAJO",
+      caracteristicas: "Rige la salud, el trabajo diario, las rutinas, el servicio a otros y las mascotas. Indica nuestra forma de trabajar, hábitos, dietas y cómo cuidamos nuestro cuerpo. Empleados y deberes."
+    },
+    {
+      number: 7,
+      name: "CASA VII",
+      signoNatural: "LIBRA",
+      regenteNatural: "VENUS",
+      palabraClave: "YO EQUILIBRO",
+      casaDe: "LAS RELACIONES",
+      caracteristicas: "Casa del matrimonio, las sociedades, contratos y enemigos declarados. Es el descendente, todo lo que proyectamos en otros. Representa el tú, la pareja, y asociaciones uno a uno."
+    },
+    {
+      number: 8,
+      name: "CASA VIII",
+      signoNatural: "ESCORPIO",
+      regenteNatural: "PLUTÓN/MARTE",
+      palabraClave: "YO DESEO",
+      casaDe: "LA TRANSFORMACIÓN",
+      caracteristicas: "Rige la muerte, el sexo, regeneración, herencias, impuestos y recursos compartidos. Es la casa de las crisis, lo oculto, el poder y la transformación profunda. Misterios y tabúes."
+    },
+    {
+      number: 9,
+      name: "CASA IX",
+      signoNatural: "SAGITARIO",
+      regenteNatural: "JÚPITER",
+      palabraClave: "YO EXPLORO",
+      casaDe: "LA FILOSOFÍA",
+      caracteristicas: "Casa de viajes largos, educación superior, filosofía, religión, leyes y extranjeros. Representa la mente superior, la búsqueda de significado, creencias y expansión de consciencia."
+    },
+    {
+      number: 10,
+      name: "CASA X",
+      signoNatural: "CAPRICORNIO",
+      regenteNatural: "SATURNO",
+      palabraClave: "YO LOGRO",
+      casaDe: "LA VOCACIÓN",
+      caracteristicas: "Es el medio cielo, la carrera, reputación pública, estatus y el padre. Representa nuestras ambiciones, logros profesionales, autoridad y cómo somos vistos por la sociedad."
+    },
+    {
+      number: 11,
+      name: "CASA XI",
+      signoNatural: "ACUARIO",
+      regenteNatural: "URANO/SATURNO",
+      palabraClave: "YO SOCIALIZO",
+      casaDe: "LAS AMISTADES",
+      caracteristicas: "Casa de amigos, grupos, esperanzas, deseos y beneficios de la carrera. Rige la consciencia colectiva, organizaciones, tecnología y nuestras metas a futuro. Humanitarismo."
+    },
+    {
+      number: 12,
+      name: "CASA XII",
+      signoNatural: "PISCIS",
+      regenteNatural: "NEPTUNO/JÚPITER",
+      palabraClave: "YO TRASCIENDO",
+      casaDe: "EL INCONSCIENTE",
+      caracteristicas: "Casa del karma, secretos, enemigos ocultos, hospitales, prisiones y el inconsciente colectivo. Representa la disolución del ego, sacrificio, espiritualidad y lo que está detrás del velo."
+    }
+  ];
+
+  // Generate stars
+  function createStars() {
+    const starsContainer = document.getElementById('stars');
+    const starCount = window.innerWidth < 768 ? 50 : 100;
+    
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = Math.random() * 3 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 2 + 's';
+      star.style.animationDuration = (Math.random() * 3 + 1) + 's';
+      starsContainer.appendChild(star);
+    }
+  }
+
+  // Create temples
+  function createTemples() {
+    const grid = document.getElementById('templesGrid');
+    
+    housesData.forEach((house, index) => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'temple-wrapper';
+      wrapper.style.animationDelay = (index * 0.2) + 's';
+      wrapper.dataset.house = house.number;
+      
+      wrapper.innerHTML = `
+        <div class="temple-glow"></div>
+        <div class="temple">
+          <div class="temple-roof"></div>
+          <div class="temple-body">
+            <div class="temple-column"></div>
+            <div class="temple-column"></div>
+            <div class="temple-column"></div>
+          </div>
+          <div class="temple-base"></div>
+        </div>
+        <div class="platform"></div>
+        <div class="house-label">CASA ${house.number}</div>
+      `;
+      
+      wrapper.addEventListener('click', () => openModal(house));
+      grid.appendChild(wrapper);
+    });
+  }
+
+  // Audio context for 8-bit sound
+  let audioCtx;
+  function playClickSound() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    
+    osc.type = 'square';
+    osc.frequency.value = 440;
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    
+    osc.start(audioCtx.currentTime);
+    osc.stop(audioCtx.currentTime + 0.1);
+  }
+
+  // Modal functions
+  function openModal(house) {
+    playClickSound();
+    const modal = document.getElementById('modal');
+    const modalBody = document.getElementById('modalBody');
+    
+    modalBody.innerHTML = `
+      <div style="padding: 20px 20px 0;">
+        <div class="house-circle">
+          <div class="circle-item top">
+            <strong>SIGNO NATURAL</strong>
+            ${house.signoNatural}
+          </div>
+          <div class="circle-item right">
+            <strong>REGENTE NATURAL</strong>
+            ${house.regenteNatural}
+          </div>
+          <div class="circle-item bottom">
+            <strong>PALABRA CLAVE</strong>
+            ${house.palabraClave}
+          </div>
+          <div class="circle-item left">
+            <strong>CASA DE</strong>
+            ${house.casaDe}
+          </div>
+          <div class="house-center">
+            <div class="house-number">${house.number}</div>
+            <div class="house-name">${house.name}</div>
+          </div>
+        </div>
+      <div class="characteristics">
+        <h3>*** CARACTERÍSTICAS GENERALES ***</h3>
+        <p>${house.caracteristicas}</p>
+      </div>
+    `;
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('modal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Event listeners
+  document.getElementById('closeModal').addEventListener('click', closeModal);
+  document.getElementById('modal').addEventListener('click', (e) => {
+    if (e.target.id === 'modal') closeModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // Init
+  createStars();
+  createTemples();
+
+  // Responsive stars on resize
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      document.getElementById('stars').innerHTML = '';
+      createStars();
+    }, 250);
+  });
+</script>
+</body>
+</html>

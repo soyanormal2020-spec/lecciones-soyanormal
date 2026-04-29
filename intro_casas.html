@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Introducción a las Casas Zodiacales</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A1B;
+  --gold: #F7B801;
+  --cyan: #00D9FF;
+  --pink: #FF3D81;
+  --purple: #724CF9;
+  --fire: #FF4E0C;
+  --green: #39FF88;
+  --white: #F0F0F0;
+  --dim: #888;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Press Start 2P', cursive;
+  background: var(--bg);
+  color: var(--white);
+  line-height: 1.9;
+  overflow-x: hidden;
+}
+
+/* ====== BG CANVAS ====== */
+#bgCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.scanlines {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 999;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 1px, transparent 1px, transparent 2px);
+}
+.crt { position: fixed; inset: 0; pointer-events: none; z-index: 998; box-shadow: inset 0 0 140px rgba(114,76,249,0.07); }
+
+/* ====== LAYOUT ====== */
+.page { position: relative; z-index: 2; }
+
+/* ====== HERO ====== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
+  position: relative;
+}
+
+/* Pixel orrery / orbit rings */
+.orrery {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1;
+}
+.orbit-ring {
+  position: absolute;
+  border: 1px solid;
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: orbit-spin linear infinite;
+  opacity: 0.18;
+}
+.orbit-ring:nth-child(1) { width: 220px; height: 220px; border-color: var(--gold);    animation-duration: 18s; }
+.orbit-ring:nth-child(2) { width: 340px; height: 340px; border-color: var(--cyan);    animation-duration: 28s; animation-direction: reverse; }
+.orbit-ring:nth-child(3) { width: 460px; height: 460px; border-color: var(--purple);  animation-duration: 40s; }
+.orbit-ring:nth-child(4) { width: 580px; height: 580px; border-color: var(--pink);    animation-duration: 55s; animation-direction: reverse; opacity: 0.1; }
+
+@keyframes orbit-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+/* Planet dots on rings */
+.orbit-ring::before {
+  content: '';
+  position: absolute;
+  width: 6px; height: 6px;
+  background: currentColor;
+  border-radius: 0;
+  top: -3px; left: 50%;
+  transform: translateX(-50%);
+}
+
+.hero-content { position: relative; z-index: 2; }
+
+.pre-title {
+  font-size: 7px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  margin-bottom: 18px;
+  opacity: 0.8;
+  animation: fade-in 1s ease both;
+}
+
+.hero-title {
+  font-size: clamp(14px, 4vw, 28px);
+  color: var(--gold);
+  text-shadow: 3px 3px 0 var(--fire), -1px -1px 0 var(--purple);
+  animation: glitch 5s infinite, glow-gold 2s ease-in-out infinite alternate, fade-in 1s 0.2s ease both;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.hero-sub {
+  font-size: clamp(9px, 2vw, 13px);
+  color: var(--purple);
+  text-shadow: 1px 1px 0 #000;
+  animation: fade-in 1s 0.4s ease both;
+  margin-bottom: 40px;
+}
+
+@keyframes glitch {
+  0%,88%,100% { transform: translate(0); }
+  90% { transform: translate(-2px, 1px); }
+  92% { transform: translate(2px, -1px); }
+  94% { transform: translate(0); }
+}
+@keyframes glow-gold {
+  from { filter: drop-shadow(0 0 4px var(--gold)); }
+  to   { filter: drop-shadow(0 0 16px var(--gold)); }
+}
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll indicator */
+.scroll-hint {
+  font-size: 7px;
+  color: var(--dim);
+  animation: bounce 2s ease-in-out infinite;
+  letter-spacing: 2px;
+}
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
+}
+
+/* ====== PIXEL DIVIDER ====== */
+.pixel-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 20px;
+  margin: 0 auto 48px;
+  max-width: 700px;
+}
+.pixel-divider::before,
+.pixel-divider::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--purple) 0, var(--purple) 6px, transparent 6px, transparent 10px);
+}
+.pixel-divider span { font-size: 14px; white-space: nowrap; }
+
+/* ====== CONTENT SECTION ====== */
+.content-section {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+/* ====== INTRO TEXT BLOCK ====== */
+.intro-block {
+  border: 3px solid var(--purple);
+  background: rgba(114,76,249,0.06);
+  box-shadow: 6px 6px 0 rgba(114,76,249,0.25), 0 0 24px rgba(114,76,249,0.1);
+  padding: 28px 24px;
+  margin-bottom: 36px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.intro-block.visible { opacity: 1; transform: translateY(0); }
+
+.intro-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--purple), var(--cyan), var(--purple));
+  animation: shimmer 3s linear infinite;
+}
+@keyframes shimmer {
+  from { background-position: -200px; }
+  to   { background-position: 200px; }
+}
+
+/* ====== ANALOGY CARDS (Theater) ====== */
+.analogy-section { margin-bottom: 40px; }
+
+.analogy-title {
+  font-size: 10px;
+  color: var(--cyan);
+  text-align: center;
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.analogy-title.visible { opacity: 1; transform: translateY(0); }
+
+.cards-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+@media (max-width: 600px) { .cards-row { grid-template-columns: 1fr; } }
+
+.analogy-card {
+  border: 3px solid;
+  padding: 20px 14px;
+  text-align: center;
+  position: relative;
+  box-shadow: 5px 5px 0 rgba(0,0,0,0.4);
+  opacity: 0;
+  transform: translateY(16px) scale(0.97);
+  transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.2s;
+}
+.analogy-card.visible { opacity: 1; transform: translateY(0) scale(1); }
+.analogy-card:hover {
+  transform: translateY(-4px) scale(1.02) !important;
+  box-shadow: 8px 8px 0 rgba(0,0,0,0.5);
+}
+
+.analogy-card.planets {
+  border-color: var(--gold);
+  background: rgba(247,184,1,0.07);
+  box-shadow: 5px 5px 0 rgba(247,184,1,0.2);
+}
+.analogy-card.signs {
+  border-color: var(--pink);
+  background: rgba(255,61,129,0.07);
+  box-shadow: 5px 5px 0 rgba(255,61,129,0.2);
+}
+.analogy-card.houses {
+  border-color: var(--cyan);
+  background: rgba(0,217,255,0.07);
+  box-shadow: 5px 5px 0 rgba(0,217,255,0.2);
+}
+
+.card-icon { font-size: 28px; margin-bottom: 12px; display: block; animation: float-icon 3s ease-in-out infinite; }
+.analogy-card:nth-child(2) .card-icon { animation-delay: 0.5s; }
+.analogy-card:nth-child(3) .card-icon { animation-delay: 1s; }
+@keyframes float-icon {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+
+.card-tag {
+  font-size: 7px;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  opacity: 0.65;
+}
+.analogy-card.planets .card-tag { color: var(--gold); }
+.analogy-card.signs   .card-tag { color: var(--pink); }
+.analogy-card.houses  .card-tag { color: var(--cyan); }
+
+.card-name {
+  font-size: 10px;
+  margin-bottom: 10px;
+}
+.analogy-card.planets .card-name { color: var(--gold); }
+.analogy-card.signs   .card-name { color: var(--pink); }
+.analogy-card.houses  .card-name { color: var(--cyan); }
+
+.card-desc {
+  font-size: 7px;
+  color: #bbb;
+  line-height: 2;
+}
+
+.card-example {
+  margin-top: 12px;
+  font-size: 7px;
+  padding: 6px 8px;
+  background: rgba(255,255,255,0.04);
+  border-left: 3px solid;
+  text-align: left;
+  line-height: 1.8;
+  color: #aaa;
+}
+.analogy-card.planets .card-example { border-color: var(--gold); }
+.analogy-card.signs   .card-example { border-color: var(--pink); }
+.analogy-card.houses  .card-example { border-color: var(--cyan); }
+
+/* ====== KEY CONCEPTS ====== */
+.concepts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 40px;
+}
+@media (max-width: 560px) { .concepts-grid { grid-template-columns: 1fr; } }
+
+.concept-box {
+  border: 2px solid;
+  padding: 16px 14px;
+  position: relative;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.concept-box.visible { opacity: 1; transform: translateX(0); }
+.concept-box:nth-child(even) { transform: translateX(10px); }
+.concept-box:nth-child(even).visible { transform: translateX(0); }
+
+.concept-box:nth-child(1) { border-color: var(--gold);   background: rgba(247,184,1,0.05); }
+.concept-box:nth-child(2) { border-color: var(--fire);   background: rgba(255,78,12,0.05); }
+.concept-box:nth-child(3) { border-color: var(--green);  background: rgba(57,255,136,0.05); }
+.concept-box:nth-child(4) { border-color: var(--pink);   background: rgba(255,61,129,0.05); }
+
+.concept-icon { font-size: 18px; margin-bottom: 8px; display: block; }
+.concept-title { font-size: 8px; margin-bottom: 8px; }
+.concept-box:nth-child(1) .concept-title { color: var(--gold); }
+.concept-box:nth-child(2) .concept-title { color: var(--fire); }
+.concept-box:nth-child(3) .concept-title { color: var(--green); }
+.concept-box:nth-child(4) .concept-title { color: var(--pink); }
+.concept-text { font-size: 7px; color: #bbb; line-height: 2; }
+
+/* ====== MERCURY EXAMPLE BOX ====== */
+.mercury-box {
+  border: 3px solid var(--cyan);
+  background: rgba(0,217,255,0.05);
+  box-shadow: 6px 6px 0 rgba(0,217,255,0.2);
+  padding: 24px 20px;
+  margin-bottom: 40px;
+  position: relative;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.mercury-box.visible { opacity: 1; transform: translateY(0); }
+
+.mercury-title {
+  font-size: 9px;
+  color: var(--cyan);
+  margin-bottom: 18px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.mercury-examples {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+@media (max-width: 480px) { .mercury-examples { grid-template-columns: 1fr; } }
+
+.mercury-card {
+  border: 2px solid;
+  padding: 12px 10px;
+  text-align: center;
+  font-size: 7px;
+  line-height: 2;
+}
+.mercury-card.gem  { border-color: var(--gold);   background: rgba(247,184,1,0.06);   color: #ccc; }
+.mercury-card.lib  { border-color: var(--pink);   background: rgba(255,61,129,0.06);  color: #ccc; }
+.mercury-card.h3   { border-color: var(--cyan);   background: rgba(0,217,255,0.06);   color: #ccc; }
+.mercury-card.h6   { border-color: var(--purple);  background: rgba(114,76,249,0.06); color: #ccc; }
+
+.mercury-card .mc-label { font-size: 8px; margin-bottom: 6px; display: block; }
+.mercury-card.gem  .mc-label { color: var(--gold); }
+.mercury-card.lib  .mc-label { color: var(--pink); }
+.mercury-card.h3   .mc-label { color: var(--cyan); }
+.mercury-card.h6   .mc-label { color: var(--purple); }
+
+/* ====== CTA BUTTON ====== */
+.cta-wrap {
+  text-align: center;
+  margin-top: 20px;
+  opacity: 0;
+  transition: opacity 0.6s 0.3s ease;
+}
+.cta-wrap.visible { opacity: 1; }
+
+.cta-btn {
+  display: inline-block;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 9px;
+  color: #000;
+  background: var(--gold);
+  border: 3px solid #000;
+  padding: 14px 28px;
+  cursor: pointer;
+  box-shadow: 5px 5px 0 #000;
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: transform 0.1s, box-shadow 0.1s;
+  animation: pulse-cta 2s ease-in-out infinite;
+}
+.cta-btn:hover {
+  transform: translate(-2px,-2px);
+  box-shadow: 7px 7px 0 #000;
+}
+.cta-btn:active {
+  transform: translate(2px,2px);
+  box-shadow: 3px 3px 0 #000;
+}
+@keyframes pulse-cta {
+  0%,100% { box-shadow: 5px 5px 0 #000, 0 0 0 rgba(247,184,1,0); }
+  50%      { box-shadow: 5px 5px 0 #000, 0 0 20px rgba(247,184,1,0.4); }
+}
+
+/* ====== BODY TEXT ====== */
+.body-text {
+  font-size: 8px;
+  color: #ccc;
+  line-height: 2.4;
+}
+.hl-gold   { color: var(--gold);   text-shadow: 0 0 6px var(--gold); }
+.hl-cyan   { color: var(--cyan);   text-shadow: 0 0 6px var(--cyan); }
+.hl-pink   { color: var(--pink);   text-shadow: 0 0 5px var(--pink); }
+.hl-purple { color: var(--purple); text-shadow: 0 0 5px var(--purple); }
+.hl-green  { color: var(--green);  text-shadow: 0 0 5px var(--green); }
+.hl-fire   { color: var(--fire);   text-shadow: 0 0 5px var(--fire); }
+
+/* Section titles */
+.section-title {
+  font-size: clamp(9px, 2vw, 12px);
+  text-align: center;
+  margin-bottom: 24px;
+  letter-spacing: 2px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.section-title.visible { opacity: 1; transform: translateY(0); }
+
+footer {
+  position: relative; z-index: 2;
+  text-align: center;
+  padding: 30px;
+  font-size: 7px;
+  color: #444;
+  border-top: 1px solid #222;
+}
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+<div class="scanlines"></div>
+<div class="crt"></div>
+
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="orrery">
+      <div class="orbit-ring" style="color:var(--gold)"></div>
+      <div class="orbit-ring" style="color:var(--cyan)"></div>
+      <div class="orbit-ring" style="color:var(--purple)"></div>
+      <div class="orbit-ring" style="color:var(--pink)"></div>
+    </div>
+    <div class="hero-content">
+      <p class="pre-title"> MÓDULO IV: PRINCIPIOS BÁSICOS DE </p>
+      <h1 class="hero-title">LAS CASAS<br>ZODIACALES</h1>
+      <p class="hero-sub">INTRODUCCIÓN</p>
+      <p class="scroll-hint">▼ COMIENZA LA AVENTURA ▼</p>
+    </div>
+  </section>
+
+  <div class="content-section">
+
+    <!-- DIVIDER -->
+    <div class="pixel-divider"><span> ♈︎ ♉︎ ♊︎ ♋︎ ♌︎ ♍︎ ♎︎ ♏︎ ♐︎ ♑︎ ♒︎ ♓︎</span></div>
+
+    <!-- BLOCK 1: Signos vs Casas -->
+    <div class="section-title" data-animate>⬛ SIGNOS VS CASAS ⬛</div>
+    <div class="intro-block" data-animate>
+      <p class="body-text">
+        Los <span class="hl-gold">signos</span> son <span class="hl-gold">divisiones fijas</span> del espacio celeste.<br><br>
+        Las <span class="hl-cyan">casas</span>, en cambio, son <span class="hl-cyan">divisiones relativas</span> de ese espacio, según el <span class="hl-pink">lugar y hora de nacimiento</span> del individuo.<br><br>
+        La <span class="hl-green">rotación de la Tierra</span> hace que los signos y los planetas pasen a través de las <span class="hl-gold">doce casas cada día</span>.<br><br>
+        El signo que se halla en el <span class="hl-fire">horizonte oriental</span> en el momento exacto del nacimiento se llama <span class="hl-fire">Ascendente</span> o signo saliente.
+      </p>
+    </div>
+
+    <!-- KEY CONCEPTS -->
+    <div class="section-title" data-animate>⬛ CONCEPTOS CLAVE ⬛</div>
+    <div class="concepts-grid">
+      <div class="concept-box" data-animate>
+        <span class="concept-icon">🏛️</span>
+        <div class="concept-title">CAMPO DE ACTIVIDAD</div>
+        <p class="concept-text">Cada casa representa un campo básico de la actividad humana. Sus significados se modifican cuando los planetas las ocupan.</p>
+      </div>
+      <div class="concept-box" data-animate style="transition-delay:0.1s">
+        <span class="concept-icon">⭕</span>
+        <div class="concept-title">CASAS VACÍAS</div>
+        <p class="concept-text">El hecho de no haber planetas en una casa NO significa que no haya actividad en ella. Ninguna casa está realmente vacía.</p>
+      </div>
+      <div class="concept-box" data-animate style="transition-delay:0.15s">
+        <span class="concept-icon">🔑</span>
+        <div class="concept-title">REGENTE DE CÚSPIDE</div>
+        <p class="concept-text">Cada casa tiene un planeta que rige al signo en su cúspide. Con 12 casas y solo 10 planetas, no hay uno por cada casa.</p>
+      </div>
+      <div class="concept-box" data-animate style="transition-delay:0.2s">
+        <span class="concept-icon">🌐</span>
+        <div class="concept-title">CONDICIONES</div>
+        <p class="concept-text">Las casas se refieren a condiciones y situaciones, mientras que los signos nos hablan de rasgos de carácter.</p>
+      </div>
+    </div>
+
+    <!-- THE THEATER ANALOGY -->
+    <div class="analogy-section">
+      <div class="analogy-title" data-animate">✦ LA ANALOGÍA DEL TEATRO ✦</div>
+      <div class="cards-row">
+        <div class="analogy-card planets" data-animate>
+          <span class="card-icon">🪐</span>
+          <div class="card-tag">EN EL TEATRO SON</div>
+          <div class="card-name">LOS ACTORES</div>
+          <p class="card-desc">Los planetas son las energías y principios que actúan en nuestra vida.</p>
+          <div class="card-example">Ej: <span class="hl-gold">Mercurio</span> es siempre Mercurio, sin importar dónde esté.</div>
+        </div>
+        <div class="analogy-card signs" data-animate style="transition-delay:0.1s">
+          <span class="card-icon">🎭</span>
+          <div class="card-tag">EN EL TEATRO SON</div>
+          <div class="card-name">LOS PAPELES</div>
+          <p class="card-desc">Los signos son los roles que los planetas interpretan; su estilo y forma de expresarse.</p>
+          <div class="card-example">Ej: <span class="hl-pink">Mercurio en Géminis</span> tiene un papel distinto al de Mercurio en Libra.</div>
+        </div>
+        <div class="analogy-card houses" data-animate style="transition-delay:0.2s">
+          <span class="card-icon">🎬</span>
+          <div class="card-tag">EN EL TEATRO SON</div>
+          <div class="card-name">LAS ESCENAS</div>
+          <p class="card-desc">Las casas son las situaciones y escenarios donde los personajes desarrollan sus papeles.</p>
+          <div class="card-example">Ej: <span class="hl-cyan">Mercurio en casa III</span> actúa en una escena distinta a casa VI.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MERCURY EXAMPLE -->
+    <div class="mercury-box" data-animate>
+      <div class="mercury-title">☿ EJEMPLO: MERCURIO EN ACCIÓN ☿</div>
+      <div class="mercury-examples">
+        <div class="mercury-card gem">
+          <span class="mc-label">☿ EN GÉMINIS</span>
+          Mente veloz, curiosa, comunicativa. Habla rápido y procesa múltiples ideas a la vez.
+        </div>
+        <div class="mercury-card lib">
+          <span class="mc-label">☿ EN LIBRA</span>
+          Mente diplomática y equilibrada. Busca el consenso y analiza todos los puntos de vista.
+        </div>
+        <div class="mercury-card h3">
+          <span class="mc-label">☿ EN CASA III</span>
+          La escena es el entorno inmediato: comunicación diaria, hermanos, escritura, viajes cortos.
+        </div>
+        <div class="mercury-card h6">
+          <span class="mc-label">☿ EN CASA VI</span>
+          La escena es el trabajo y la salud: rutinas, análisis detallado, servicio y organización.
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-wrap" data-animate>
+      <p class="body-text" style="margin-bottom:24px;text-align:center;">
+       
+      </p>
+      <a class="cta-btn"> ¿LISTA(O) PARA EXPLORAR LAS 12 CASAS?</a>
+    </div>
+
+  </div><!-- /content-section -->
+</div><!-- /page -->
+
+<footer>Soy Anormal, Escuela de Salud Emocional para el Despertar Espiritual © 2026</footer>
+
+<!-- ====== BACKGROUND CANVAS ====== -->
+<script>
+const bgCanvas = document.getElementById('bgCanvas');
+const ctx = bgCanvas.getContext('2d');
+let W, H;
+function resize() { W = bgCanvas.width = window.innerWidth; H = bgCanvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+// Stars
+const stars = Array.from({length: 220}, () => ({
+  x: Math.random() * 3000, y: Math.random() * 3000,
+  sz: Math.random() * 2.5 + 0.5,
+  b: Math.random(), sp: Math.random() * 0.012 + 0.004,
+  col: ['#FFFFFF','#F7B801','#00D9FF','#FF3D81','#724CF9'][Math.floor(Math.random()*5)],
+}));
+
+// Meteors
+const meteors = [];
+function spawnMeteor() {
+  meteors.push({
+    x: Math.random() * W, y: -20,
+    vx: (Math.random()*4+2) * (Math.random()<0.5?1:-1),
+    vy: Math.random()*4+3,
+    life:0, max: Math.random()*70+30,
+    col: ['#F7B801','#00D9FF','#FFFFFF','#FF8C42'][Math.floor(Math.random()*4)],
+  });
+}
+
+// Pixel constellation points (zodiac wheel, evenly spaced)
+const zodiacRing = Array.from({length:12}, (_, i) => {
+  const a = (i / 12) * Math.PI * 2 - Math.PI / 2;
+  const r = 0.38;
+  return { fx: 0.5 + Math.cos(a) * r, fy: 0.5 + Math.sin(a) * r * 1.1 };
+});
+const zodiacSymbols = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+const zodiacColors  = ['#FF4E0C','#39FF88','#00D9FF','#724CF9','#FF4E0C','#39FF88','#00D9FF','#724CF9','#FF4E0C','#39FF88','#00D9FF','#724CF9'];
+
+let frame = 0;
+function animate() {
+  requestAnimationFrame(animate);
+  frame++;
+  ctx.clearRect(0,0,W,H);
+
+  // Nebulas
+  [[0.2,0.2,280,'rgba(114,76,249,0.05)'],[0.8,0.6,320,'rgba(255,78,12,0.04)'],[0.5,0.5,200,'rgba(0,217,255,0.03)']].forEach(([fx,fy,r,c])=>{
+    const grd = ctx.createRadialGradient(fx*W,fy*H,0,fx*W,fy*H,r);
+    grd.addColorStop(0,c); grd.addColorStop(1,'transparent');
+    ctx.fillStyle=grd; ctx.fillRect(0,0,W,H);
+  });
+
+  // Stars
+  stars.forEach(s => {
+    s.b += s.sp;
+    const alpha = 0.15 + Math.abs(Math.sin(s.b)) * 0.85;
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = s.col;
+    ctx.fillRect(Math.round(s.x%W), Math.round(s.y%H), Math.ceil(s.sz), Math.ceil(s.sz));
+  });
+  ctx.globalAlpha = 1;
+
+  // Meteors
+  if (frame % 100 === 0 && Math.random() < 0.65) spawnMeteor();
+  for (let i = meteors.length-1; i>=0; i--) {
+    const m = meteors[i];
+    m.x+=m.vx; m.y+=m.vy; m.life++;
+    const al = m.life<10?m.life/10:m.life>m.max-10?(m.max-m.life)/10:1;
+    ctx.globalAlpha = al*0.85;
+    ctx.strokeStyle = m.col; ctx.lineWidth = 1.5;
+    ctx.shadowBlur = 7; ctx.shadowColor = m.col;
+    ctx.beginPath();
+    ctx.moveTo(m.x, m.y);
+    ctx.lineTo(m.x - m.vx*10, m.y - m.vy*10);
+    ctx.stroke();
+    ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+    if (m.life >= m.max || m.y > H+20) meteors.splice(i,1);
+  }
+
+  // Zodiac wheel background ring
+  const cx2 = W * 0.5, cy2 = H * 0.5;
+  const baseR = Math.min(W, H) * 0.38;
+
+  // Ring line
+  ctx.beginPath();
+  ctx.arc(cx2, cy2, baseR, 0, Math.PI*2);
+  ctx.strokeStyle = 'rgba(247,184,1,0.06)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  // Zodiac dots & connectors
+  zodiacRing.forEach((pt, i) => {
+    const x = pt.fx * W;
+    const y = pt.fy * H;
+    const pulse = 0.4 + 0.6 * Math.abs(Math.sin(frame*0.01 + i*0.55));
+
+    // Connector line to center (faint)
+    ctx.globalAlpha = 0.04;
+    ctx.strokeStyle = zodiacColors[i];
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(cx2, cy2); ctx.lineTo(x, y); ctx.stroke();
+
+    // Dot
+    ctx.globalAlpha = pulse * 0.35;
+    ctx.fillStyle = zodiacColors[i];
+    ctx.fillRect(Math.round(x)-2, Math.round(y)-2, 5, 5);
+    ctx.globalAlpha = 1;
+  });
+}
+animate();
+
+/* ====== SCROLL ANIMATIONS ====== */
+const observables = document.querySelectorAll('[data-animate]');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.15 });
+observables.forEach(el => io.observe(el));
+</script>
+</body>
+</html>

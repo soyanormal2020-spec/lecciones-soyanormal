@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Las 12 Casas Zodiacales, Soy Anormal</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-dark: #0A0A1B;
+  --gold: #F7B801;
+  --white: #F0F0F0;
+  /* Elemento Fuego */
+  --fire: #FF4E0C;
+  --fire-glow: #FF8C42;
+  --fire-dim: #7A1F00;
+  /* Elemento Tierra */
+  --earth: #39FF88;
+  --earth-glow: #88FFB8;
+  --earth-dim: #0A4020;
+  /* Elemento Aire */
+  --air: #00D9FF;
+  --air-glow: #88EEFF;
+  --air-dim: #003A4A;
+  /* Elemento Agua */
+  --water: #724CF9;
+  --water-glow: #B088FF;
+  --water-dim: #1A0A40;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+
+body {
+  font-family: 'Press Start 2P', cursive;
+  background: var(--bg-dark);
+  color: var(--white);
+  line-height: 1.8;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ====== BACKGROUND CANVAS ====== */
+#bgCanvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ====== SCANLINES & CRT ====== */
+.scanlines {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 999;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,0.12), rgba(0,0,0,0.12) 1px, transparent 1px, transparent 2px);
+}
+.crt-glow {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 998;
+  box-shadow: inset 0 0 120px rgba(100,60,255,0.08);
+}
+
+/* ====== HEADER ====== */
+header {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 40px 20px 20px;
+}
+
+.glitch-title {
+  font-size: clamp(13px, 3vw, 22px);
+  color: var(--gold);
+  text-shadow: 3px 3px 0 #FF4E0C, -1px -1px 0 #724CF9;
+  animation: glitch 4s infinite, glow-gold 2s ease-in-out infinite alternate;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+@keyframes glitch {
+  0%, 88%, 100% { transform: translate(0); }
+  90% { transform: translate(-2px, 2px); clip-path: inset(20% 0 30% 0); }
+  92% { transform: translate(2px, -2px); clip-path: inset(50% 0 10% 0); }
+  94% { transform: translate(0); clip-path: none; }
+}
+
+@keyframes glow-gold {
+  from { filter: drop-shadow(0 0 4px var(--gold)); }
+  to   { filter: drop-shadow(0 0 14px var(--gold)); }
+}
+
+.subtitle {
+  font-size: 8px;
+  color: #aaa;
+  line-height: 2;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ====== PROGRESS BAR ====== */
+.progress-wrap {
+  position: relative;
+  z-index: 10;
+  max-width: 700px;
+  margin: 10px auto 0;
+  padding: 0 20px;
+}
+.progress-label {
+  font-size: 7px;
+  color: var(--gold);
+  margin-bottom: 6px;
+  text-align: center;
+}
+.progress-bar-bg {
+  background: #111;
+  border: 2px solid #333;
+  height: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--fire), var(--gold));
+  transition: width 0.6s ease;
+  position: relative;
+}
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 0;
+  width: 6px; height: 100%;
+  background: white;
+  opacity: 0.7;
+  animation: blink-cursor 0.8s step-end infinite;
+}
+@keyframes blink-cursor { 0%, 100% { opacity: 0.7; } 50% { opacity: 0; } }
+
+/* ====== MAP AREA ====== */
+#mapArea {
+  position: relative;
+  z-index: 10;
+  padding: 20px 10px 60px;
+}
+
+#pathCanvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.temples-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px 10px;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  padding: 20px 10px;
+}
+
+@media (max-width: 700px) {
+  .temples-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 480px) {
+  .temples-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ====== TEMPLE WRAPPER ====== */
+.temple-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  animation: float 4s ease-in-out infinite;
+  transition: transform 0.2s;
+  opacity: 0.35;
+  filter: grayscale(0.7);
+}
+
+.temple-wrapper.visited {
+  opacity: 1;
+  filter: none;
+}
+
+.temple-wrapper.current {
+  opacity: 1;
+  filter: none;
+  animation: float 3s ease-in-out infinite, pulse-current 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-current {
+  from { filter: drop-shadow(0 0 6px var(--gold)); }
+  to   { filter: drop-shadow(0 0 18px var(--gold)); }
+}
+
+.temple-wrapper:hover {
+  transform: translateY(-6px) scale(1.05);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+.temple-wrapper:hover { animation: none; transform: translateY(-8px) scale(1.08); }
+
+/* ====== TEMPLE SVG PIXEL ART ====== */
+.temple-svg {
+  width: 72px;
+  height: 80px;
+}
+
+/* ====== PLATFORM ====== */
+.platform {
+  width: 88px;
+  height: 14px;
+  margin-top: 4px;
+  border: 2px solid #000;
+  position: relative;
+}
+.platform::after {
+  content: '';
+  position: absolute;
+  bottom: -6px; left: 12px; right: 12px;
+  height: 6px;
+  background: rgba(0,0,0,0.4);
+  filter: blur(3px);
+}
+
+/* ====== HOUSE LABEL ====== */
+.house-label {
+  font-size: 7px;
+  margin-top: 10px;
+  text-align: center;
+  text-shadow: 1px 1px 0 #000;
+}
+
+/* ====== GLOW ====== */
+.temple-glow {
+  position: absolute;
+  top: 30px; left: 50%;
+  transform: translateX(-50%);
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+  z-index: -1;
+}
+.temple-wrapper.visited .temple-glow,
+.temple-wrapper.current .temple-glow {
+  opacity: 0.55;
+  animation: glow-pulse 2s ease-in-out infinite alternate;
+}
+@keyframes glow-pulse {
+  from { opacity: 0.4; transform: translateX(-50%) scale(0.9); }
+  to   { opacity: 0.7; transform: translateX(-50%) scale(1.1); }
+}
+
+/* ====== VISITED STAR ====== */
+.visited-star {
+  position: absolute;
+  top: -4px; right: 4px;
+  font-size: 10px;
+  display: none;
+}
+.temple-wrapper.visited .visited-star { display: block; animation: spin-star 4s linear infinite; }
+@keyframes spin-star { to { transform: rotate(360deg); } }
+
+/* ====== MODAL ====== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-content {
+  max-width: 640px;
+  width: 100%;
+  max-height: 92vh;
+  overflow-y: auto;
+  position: relative;
+  border: 4px solid;
+  background: #0d0b1e;
+  transform: scale(0.85) translateY(20px);
+  transition: transform 0.3s;
+}
+.modal-overlay.active .modal-content {
+  transform: scale(1) translateY(0);
+}
+
+.modal-close {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: #e63946;
+  color: white;
+  border: 2px solid #000;
+  width: 32px; height: 32px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 12px;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.1s;
+}
+.modal-close:hover { transform: scale(1.1); background: #ff5555; }
+
+/* ====== MODAL INNER ====== */
+.modal-inner {
+  padding: 28px 24px 24px;
+}
+
+.modal-house-number {
+  font-size: clamp(48px, 10vw, 80px);
+  text-align: center;
+  line-height: 1;
+  margin-bottom: 4px;
+  filter: drop-shadow(0 0 12px currentColor);
+}
+
+.modal-house-name {
+  font-size: clamp(10px, 2.5vw, 16px);
+  text-align: center;
+  margin-bottom: 6px;
+  letter-spacing: 2px;
+}
+
+.modal-element-badge {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.badge-pill {
+  display: inline-block;
+  font-size: 8px;
+  padding: 4px 12px;
+  border: 2px solid;
+  letter-spacing: 1px;
+}
+
+/* Info grid */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.info-cell {
+  border: 2px solid;
+  padding: 10px 8px;
+  text-align: center;
+}
+.info-cell-label {
+  font-size: 6px;
+  opacity: 0.7;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+.info-cell-value {
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+/* Características */
+.caracteristicas-title {
+  font-size: 9px;
+  text-align: center;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+.caracteristicas-text {
+  font-size: 8px;
+  line-height: 2.2;
+  color: #ccc;
+  border: 2px solid #333;
+  padding: 14px;
+  background: rgba(255,255,255,0.02);
+}
+
+/* Keyword banner */
+.keyword-banner {
+  text-align: center;
+  margin: 18px 0 10px;
+  font-size: clamp(12px, 3vw, 18px);
+  animation: glow-gold 1.5s ease-in-out infinite alternate;
+}
+
+/* ====== CONSTELLATION CANVAS ====== */
+#constellCanvas {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.18;
+}
+
+footer {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 30px;
+  font-size: 7px;
+  color: #555;
+}
+</style>
+</head>
+<body>
+
+<!-- Background layers -->
+<canvas id="bgCanvas"></canvas>
+<canvas id="constellCanvas"></canvas>
+<div class="scanlines"></div>
+<div class="crt-glow"></div>
+
+<header>
+  <h1 class="glitch-title">✦ LAS 12 CASAS ZODIACALES ✦</h1>
+  <p class="subtitle">Recorre el camino sagrado. Haz clic en cada casa para revelar sus secretos astrales.</p>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-label" id="progressLabel">CASAS VISITADAS: 0 / 12</div>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progressFill"></div>
+  </div>
+</div>
+
+<div id="mapArea">
+  <canvas id="pathCanvas"></canvas>
+  <div class="temples-grid" id="templesGrid"></div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-content" id="modalContent">
+    <button class="modal-close" id="closeModal">✕</button>
+    <div class="modal-inner" id="modalBody"></div>
+  </div>
+</div>
+
+<footer>Soy Anormal, Escuela de Salud Emocional para el Despertar Espiritual © 2026</footer>
+
+<script>
+/* ============================================================
+   DATA
+============================================================ */
+const elementColors = {
+  FUEGO: { main: '#FF4E0C', glow: '#FF8C42', dim: '#3A0A00', platform: '#8B2200', label: '#FF8C42', badge: '#FF4E0C' },
+  TIERRA:{ main: '#39FF88', glow: '#88FFB8', dim: '#0A2A10', platform: '#0D5A20', label: '#39FF88', badge: '#39FF88' },
+  AIRE:  { main: '#00D9FF', glow: '#88EEFF', dim: '#002030', platform: '#005070', label: '#00D9FF', badge: '#00D9FF' },
+  AGUA:  { main: '#724CF9', glow: '#B088FF', dim: '#150A30', platform: '#2A1065', label: '#B088FF', badge: '#724CF9' },
+};
+
+const housesData = [
+  { number:1,  name:"CASA I",    signo:"ARIES",      regente:"MARTE",          clave:"YO SOY",      casaDe:"LA PERSONALIDAD",    elemento:"FUEGO",  emoji:"♈︎",
+    desc:"Representa el yo, la apariencia física, el cuerpo y el temperamento. Es el Ascendente, la máscara que usamos ante el mundo. Rige los inicios, la iniciativa y la autoafirmación personal." },
+  { number:2,  name:"CASA II",   signo:"TAURO",      regente:"VENUS",          clave:"YO TENGO",    casaDe:"LOS VALORES",        elemento:"TIERRA", emoji:"♉︎",
+    desc:"Casa de las posesiones, el dinero y los recursos materiales. Indica cómo generamos ingresos, qué valoramos y nuestra relación con la seguridad material. También rige los talentos y el autoestima." },
+  { number:3,  name:"CASA III",  signo:"GÉMINIS",    regente:"MERCURIO",       clave:"YO PIENSO",   casaDe:"LA COMUNICACIÓN",    elemento:"AIRE",   emoji:"♊︎",
+    desc:"Rige la mente concreta, la comunicación, los hermanos, los vecinos y los viajes cortos. Representa el aprendizaje primario, la escritura y cómo procesamos la información cotidiana." },
+  { number:4,  name:"CASA IV",   signo:"CÁNCER",     regente:"LUNA",           clave:"YO SIENTO",   casaDe:"EL HOGAR",           elemento:"AGUA",   emoji:"♋︎",
+    desc:"Es el Fondo del Cielo, las raíces, la familia y el hogar. Representa nuestro mundo interior, la infancia, las tradiciones y de dónde venimos. Es nuestra base emocional y psicológica." },
+  { number:5,  name:"CASA V",    signo:"LEO",        regente:"SOL",            clave:"YO CREO",     casaDe:"LA CREATIVIDAD",     elemento:"FUEGO",  emoji:"♌︎",
+    desc:"Casa del placer, el romance, los hijos y los hobbies. Rige la autoexpresión, el amor que damos y la capacidad de disfrutar la vida. También gobierna las especulaciones y los juegos." },
+  { number:6,  name:"CASA VI",   signo:"VIRGO",      regente:"MERCURIO",       clave:"YO ANALIZO",  casaDe:"EL TRABAJO",         elemento:"TIERRA", emoji:"♍︎",
+    desc:"Rige la salud, el trabajo diario, las rutinas y el servicio. Indica nuestra forma de trabajar, los hábitos, las dietas y cómo cuidamos el cuerpo. También gobierna a empleados y mascotas." },
+  { number:7,  name:"CASA VII",  signo:"LIBRA",      regente:"VENUS",          clave:"YO EQUILIBRO",casaDe:"LAS RELACIONES",     elemento:"AIRE",   emoji:"♎︎",
+    desc:"Casa del matrimonio, las sociedades y los contratos. Es el Descendente, todo lo que proyectamos en otros. Representa la pareja, las asociaciones uno a uno y los enemigos declarados." },
+  { number:8,  name:"CASA VIII", signo:"ESCORPIO",   regente:"PLUTÓN / MARTE", clave:"YO DESEO",    casaDe:"LA TRANSFORMACIÓN",  elemento:"AGUA",   emoji:"♏︎",
+    desc:"Rige la muerte, la sexualidad, la regeneración y las herencias. Es la casa de las crisis, lo oculto, el poder compartido y la transformación profunda. Misterios, tabúes y recursos ajenos." },
+  { number:9,  name:"CASA IX",   signo:"SAGITARIO",  regente:"JÚPITER",        clave:"YO EXPLORO",  casaDe:"LA FILOSOFÍA",       elemento:"FUEGO",  emoji:"♐︎",
+    desc:"Casa de los viajes largos, la educación superior y la filosofía. Representa la mente superior, la búsqueda de significado, las creencias y la expansión de la consciencia. Leyes y extranjeros." },
+  { number:10, name:"CASA X",    signo:"CAPRICORNIO",regente:"SATURNO",        clave:"YO LOGRO",    casaDe:"LA VOCACIÓN",        elemento:"TIERRA", emoji:"♑︎",
+    desc:"Es el Medio Cielo, la carrera, la reputación pública y el estatus social. Representa nuestras ambiciones, logros profesionales, la figura de autoridad paterna y cómo nos ve la sociedad." },
+  { number:11, name:"CASA XI",   signo:"ACUARIO",    regente:"URANO / SATURNO",clave:"YO SOCIALIZO",casaDe:"LAS AMISTADES",      elemento:"AIRE",   emoji:"♒︎",
+    desc:"Casa de amigos, grupos y organizaciones. Rige las esperanzas, los deseos y los beneficios de la carrera. Representa la consciencia colectiva, la tecnología, el humanitarismo y las metas futuras." },
+  { number:12, name:"CASA XII",  signo:"PISCIS",     regente:"NEPTUNO / JÚPITER",clave:"YO TRASCIENDO",casaDe:"EL INCONSCIENTE", elemento:"AGUA",   emoji:"♓︎",
+    desc:"Casa del karma, los secretos y el inconsciente colectivo. Representa la disolución del ego, el sacrificio, la espiritualidad profunda y lo que existe detrás del velo de la realidad visible." },
+];
+
+/* ============================================================
+   STATE
+============================================================ */
+const visited = new Set();
+let audioCtx;
+let templeNodes = [];
+
+/* ============================================================
+   UTILS
+============================================================ */
+function getElementColor(el) { return elementColors[el] || elementColors.FUEGO; }
+
+/* ============================================================
+   8-BIT SOUND ENGINE
+============================================================ */
+function initAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+function play8bitMelody(element) {
+  initAudio();
+  const c = getElementColor(element);
+  // Each element gets its own melodic signature
+  const melodies = {
+    FUEGO:  [523, 659, 784, 1047],
+    TIERRA: [392, 494, 587, 740],
+    AIRE:   [659, 784, 988, 1175],
+    AGUA:   [440, 554, 659, 880],
+  };
+  const notes = melodies[element] || melodies.FUEGO;
+  const waveTypes = { FUEGO:'square', TIERRA:'sawtooth', AIRE:'triangle', AGUA:'sine' };
+  const waveType = waveTypes[element] || 'square';
+
+  notes.forEach((freq, i) => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.type = waveType;
+    osc.frequency.value = freq;
+    const startTime = audioCtx.currentTime + i * 0.1;
+    gain.gain.setValueAtTime(0, startTime);
+    gain.gain.linearRampToValueAtTime(0.08, startTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.18);
+    osc.start(startTime);
+    osc.stop(startTime + 0.2);
+  });
+}
+
+/* ============================================================
+   BACKGROUND: METEORS & STARS
+============================================================ */
+const bgCanvas = document.getElementById('bgCanvas');
+const bgCtx = bgCanvas.getContext('2d');
+let bgW, bgH;
+
+function resizeBg() {
+  bgW = bgCanvas.width = window.innerWidth;
+  bgH = bgCanvas.height = window.innerHeight;
+}
+resizeBg();
+window.addEventListener('resize', resizeBg);
+
+// Stars
+const bgStars = Array.from({length: 200}, () => ({
+  x: Math.random() * 2000,
+  y: Math.random() * 2000,
+  size: Math.random() * 2 + 0.5,
+  bright: Math.random(),
+  speed: Math.random() * 0.015 + 0.005,
+  color: ['#FFFFFF','#FFD166','#00D9FF','#FF4E0C','#724CF9'][Math.floor(Math.random()*5)],
+}));
+
+// Shooting stars / meteors
+const meteors = [];
+function spawnMeteor() {
+  meteors.push({
+    x: Math.random() * bgW,
+    y: -20,
+    vx: (Math.random() * 3 + 2) * (Math.random() < 0.5 ? 1 : -1),
+    vy: Math.random() * 4 + 3,
+    len: Math.random() * 80 + 40,
+    life: 0,
+    maxLife: Math.random() * 60 + 40,
+    color: ['#FFD166','#00D9FF','#FFFFFF','#FF8C42'][Math.floor(Math.random()*4)],
+  });
+}
+
+let bgFrame = 0;
+function animateBg() {
+  requestAnimationFrame(animateBg);
+  bgFrame++;
+
+  bgCtx.clearRect(0, 0, bgW, bgH);
+
+  // Nebula blobs
+  const nebulaColors = [
+    { x: bgW*0.15, y: bgH*0.2,  r: 300, c: 'rgba(114,76,249,0.06)' },
+    { x: bgW*0.8,  y: bgH*0.7,  r: 350, c: 'rgba(255,78,12,0.05)' },
+    { x: bgW*0.5,  y: bgH*0.5,  r: 250, c: 'rgba(0,217,255,0.04)' },
+  ];
+  nebulaColors.forEach(n => {
+    const grad = bgCtx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r);
+    grad.addColorStop(0, n.c);
+    grad.addColorStop(1, 'transparent');
+    bgCtx.fillStyle = grad;
+    bgCtx.fillRect(0, 0, bgW, bgH);
+  });
+
+  // Stars twinkle
+  bgStars.forEach(s => {
+    s.bright += s.speed;
+    const alpha = 0.2 + Math.abs(Math.sin(s.bright)) * 0.8;
+    bgCtx.globalAlpha = alpha;
+    bgCtx.fillStyle = s.color;
+    bgCtx.fillRect(Math.round(s.x % bgW), Math.round(s.y % bgH), Math.ceil(s.size), Math.ceil(s.size));
+  });
+  bgCtx.globalAlpha = 1;
+
+  // Spawn meteor randomly
+  if (bgFrame % 90 === 0 && Math.random() < 0.6) spawnMeteor();
+
+  // Draw meteors
+  for (let i = meteors.length - 1; i >= 0; i--) {
+    const m = meteors[i];
+    m.x += m.vx;
+    m.y += m.vy;
+    m.life++;
+
+    const alpha = m.life < 10 ? m.life / 10 : m.life > m.maxLife - 10 ? (m.maxLife - m.life) / 10 : 1;
+    bgCtx.globalAlpha = alpha * 0.9;
+    bgCtx.strokeStyle = m.color;
+    bgCtx.lineWidth = 2;
+    bgCtx.shadowBlur = 8;
+    bgCtx.shadowColor = m.color;
+    bgCtx.beginPath();
+    bgCtx.moveTo(m.x, m.y);
+    bgCtx.lineTo(m.x - m.vx * (m.len / 8), m.y - m.vy * (m.len / 8));
+    bgCtx.stroke();
+    bgCtx.shadowBlur = 0;
+    bgCtx.globalAlpha = 1;
+
+    if (m.life >= m.maxLife || m.y > bgH + 20) meteors.splice(i, 1);
+  }
+}
+animateBg();
+
+/* ============================================================
+   PIXEL CONSTELLATIONS
+============================================================ */
+const constellCanvas = document.getElementById('constellCanvas');
+const cCtx = constellCanvas.getContext('2d');
+let cW, cH;
+function resizeConstell() {
+  cW = constellCanvas.width = window.innerWidth;
+  cH = constellCanvas.height = window.innerHeight;
+}
+resizeConstell();
+window.addEventListener('resize', resizeConstell);
+
+// 12 simplified pixel constellations (as dot arrays [x,y] and lines [[from,to]])
+const constellations = [
+  // Aries - triangle-ish
+  { dots:[[0.05,0.08],[0.09,0.05],[0.13,0.09],[0.10,0.13]], lines:[[0,1],[1,2],[2,3]], color:'#FF6B35' },
+  // Taurus - V shape
+  { dots:[[0.2,0.05],[0.24,0.10],[0.28,0.05],[0.24,0.15],[0.24,0.20]], lines:[[0,1],[2,1],[1,3],[3,4]], color:'#39FF88' },
+  // Gemini - two pillars
+  { dots:[[0.4,0.05],[0.4,0.18],[0.46,0.05],[0.46,0.18],[0.4,0.12],[0.46,0.12]], lines:[[0,1],[2,3],[4,5]], color:'#00D9FF' },
+  // Cancer - crab dots
+  { dots:[[0.6,0.06],[0.64,0.09],[0.62,0.14],[0.66,0.14],[0.64,0.19]], lines:[[0,1],[1,2],[1,3],[2,4],[3,4]], color:'#B088FF' },
+  // Leo - sickle
+  { dots:[[0.78,0.05],[0.82,0.06],[0.85,0.10],[0.82,0.14],[0.78,0.12],[0.82,0.19]], lines:[[0,1],[1,2],[2,3],[3,4],[4,0],[3,5]], color:'#FF8C42' },
+  // Virgo
+  { dots:[[0.05,0.3],[0.09,0.28],[0.13,0.31],[0.11,0.36],[0.07,0.38],[0.11,0.42]], lines:[[0,1],[1,2],[2,3],[3,4],[3,5]], color:'#39FF88' },
+  // Libra - scales
+  { dots:[[0.25,0.3],[0.29,0.28],[0.33,0.30],[0.29,0.35],[0.26,0.39],[0.32,0.39]], lines:[[0,1],[1,2],[1,3],[3,4],[3,5]], color:'#00D9FF' },
+  // Scorpio - tail
+  { dots:[[0.45,0.28],[0.49,0.30],[0.53,0.28],[0.55,0.33],[0.53,0.38],[0.56,0.42],[0.59,0.39]], lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6]], color:'#B088FF' },
+  // Sagittarius - arrow
+  { dots:[[0.68,0.30],[0.72,0.28],[0.76,0.32],[0.72,0.36],[0.68,0.40],[0.76,0.40]], lines:[[0,1],[1,2],[2,3],[3,0],[3,4],[2,5]], color:'#FF6B35' },
+  // Capricorn
+  { dots:[[0.05,0.55],[0.09,0.52],[0.13,0.55],[0.13,0.61],[0.09,0.64],[0.05,0.61]], lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,0]], color:'#39FF88' },
+  // Aquarius - waves
+  { dots:[[0.24,0.55],[0.28,0.52],[0.32,0.55],[0.28,0.58],[0.24,0.62],[0.28,0.65],[0.32,0.62]], lines:[[0,1],[1,2],[2,3],[3,0],[3,4],[4,5],[5,6]], color:'#00D9FF' },
+  // Pisces - two fish
+  { dots:[[0.45,0.55],[0.49,0.52],[0.53,0.55],[0.49,0.60],[0.45,0.64],[0.53,0.64],[0.49,0.68]], lines:[[0,1],[1,2],[2,3],[3,4],[3,5],[4,6],[5,6]], color:'#B088FF' },
+];
+
+let cFrame = 0;
+function animateConstell() {
+  requestAnimationFrame(animateConstell);
+  cFrame++;
+  cCtx.clearRect(0, 0, cW, cH);
+
+  constellations.forEach((c, ci) => {
+    const pulse = 0.5 + 0.5 * Math.sin(cFrame * 0.015 + ci * 0.7);
+    cCtx.strokeStyle = c.color;
+    cCtx.lineWidth = 1;
+    cCtx.globalAlpha = 0.25 + pulse * 0.2;
+
+    // Lines
+    c.lines.forEach(([a, b]) => {
+      cCtx.beginPath();
+      cCtx.moveTo(c.dots[a][0] * cW, c.dots[a][1] * cH);
+      cCtx.lineTo(c.dots[b][0] * cW, c.dots[b][1] * cH);
+      cCtx.stroke();
+    });
+
+    // Dots (pixel-style: 3x3 squares)
+    cCtx.globalAlpha = 0.5 + pulse * 0.4;
+    cCtx.fillStyle = c.color;
+    c.dots.forEach(([dx, dy]) => {
+      cCtx.fillRect(Math.round(dx * cW) - 1, Math.round(dy * cH) - 1, 3, 3);
+    });
+  });
+  cCtx.globalAlpha = 1;
+}
+animateConstell();
+
+/* ============================================================
+   PATH CANVAS (illuminated trail)
+============================================================ */
+const pathCanvas = document.getElementById('pathCanvas');
+const pCtx = pathCanvas.getContext('2d');
+
+function resizePath() {
+  pathCanvas.width = pathCanvas.offsetWidth;
+  pathCanvas.height = pathCanvas.offsetHeight;
+}
+
+function getTempleCenter(idx) {
+  const node = templeNodes[idx];
+  if (!node) return null;
+  const rect = node.getBoundingClientRect();
+  const mapRect = document.getElementById('mapArea').getBoundingClientRect();
+  return {
+    x: rect.left - mapRect.left + rect.width / 2,
+    y: rect.top - mapRect.top + rect.height / 2,
+  };
+}
+
+function drawPath() {
+  resizePath();
+  pCtx.clearRect(0, 0, pathCanvas.width, pathCanvas.height);
+  if (templeNodes.length < 2) return;
+
+  for (let i = 0; i < housesData.length - 1; i++) {
+    const a = getTempleCenter(i);
+    const b = getTempleCenter(i + 1);
+    if (!a || !b) continue;
+
+    const isLit = visited.has(i + 1) || visited.has(i + 2);
+    const elemA = housesData[i].elemento;
+    const col = getElementColor(elemA);
+
+    pCtx.setLineDash([6, 5]);
+    pCtx.lineWidth = isLit ? 3 : 2;
+    pCtx.globalAlpha = isLit ? 0.85 : 0.18;
+    pCtx.strokeStyle = isLit ? col.main : '#444';
+
+    if (isLit) {
+      pCtx.shadowBlur = 10;
+      pCtx.shadowColor = col.glow;
+    } else {
+      pCtx.shadowBlur = 0;
+    }
+
+    pCtx.beginPath();
+    pCtx.moveTo(a.x, a.y);
+    pCtx.lineTo(b.x, b.y);
+    pCtx.stroke();
+    pCtx.shadowBlur = 0;
+    pCtx.globalAlpha = 1;
+    pCtx.setLineDash([]);
+  }
+}
+
+/* ============================================================
+   BUILD TEMPLES
+============================================================ */
+function buildTempleSVG(house) {
+  const c = getElementColor(house.elemento);
+  return `
+<svg class="temple-svg" viewBox="0 0 72 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- Roof -->
+  <polygon points="36,4 8,24 64,24" fill="${c.main}" stroke="#000" stroke-width="2"/>
+  <!-- Star on top -->
+  <rect x="33" y="0" width="6" height="6" fill="${c.glow}"/>
+  <!-- Body -->
+  <rect x="14" y="24" width="44" height="34" fill="${c.dim}" stroke="#000" stroke-width="2"/>
+  <!-- Columns (pixel) -->
+  <rect x="18" y="26" width="6" height="30" fill="${c.main}" opacity="0.7"/>
+  <rect x="33" y="26" width="6" height="30" fill="${c.main}" opacity="0.5"/>
+  <rect x="48" y="26" width="6" height="30" fill="${c.main}" opacity="0.7"/>
+  <!-- Door -->
+  <rect x="30" y="42" width="12" height="16" fill="#000" opacity="0.6"/>
+  <!-- Base -->
+  <rect x="8" y="58" width="56" height="8" fill="${c.main}" stroke="#000" stroke-width="2"/>
+  <!-- Windows -->
+  <rect x="20" y="30" width="4" height="4" fill="${c.glow}" opacity="0.8"/>
+  <rect x="48" y="30" width="4" height="4" fill="${c.glow}" opacity="0.8"/>
+  <!-- Emoji sign -->
+  <text x="36" y="52" text-anchor="middle" font-size="10" fill="${c.glow}">${house.emoji}</text>
+</svg>`;
+}
+
+function createTemples() {
+  const grid = document.getElementById('templesGrid');
+  grid.innerHTML = '';
+  templeNodes = [];
+
+  housesData.forEach((house, idx) => {
+    const c = getElementColor(house.elemento);
+    const wrapper = document.createElement('div');
+    wrapper.className = 'temple-wrapper';
+    wrapper.dataset.idx = idx;
+    if (idx === 0) wrapper.classList.add('current');
+
+    wrapper.innerHTML = `
+      <div class="temple-glow" style="background:radial-gradient(circle, ${c.main} 0%, transparent 70%)"></div>
+      <div class="visited-star">⭐</div>
+      ${buildTempleSVG(house)}
+      <div class="platform" style="background:linear-gradient(to bottom, ${c.dim}, #000); border-color:${c.main}33;"></div>
+      <div class="house-label" style="color:${c.label}">${house.name}</div>
+    `;
+
+    wrapper.addEventListener('click', () => openModal(house, idx));
+    grid.appendChild(wrapper);
+    templeNodes.push(wrapper);
+  });
+
+  setTimeout(drawPath, 100);
+}
+
+/* ============================================================
+   PROGRESS
+============================================================ */
+function updateProgress() {
+  const count = visited.size;
+  document.getElementById('progressLabel').textContent = `CASAS VISITADAS: ${count} / 12`;
+  document.getElementById('progressFill').style.width = (count / 12 * 100) + '%';
+
+  // Color the bar based on visited elements
+  if (count > 0) {
+    const fills = ['#FF4E0C','#39FF88','#00D9FF','#724CF9'];
+    const f = fills[Math.floor((count - 1) / 3)] || '#F7B801';
+    document.getElementById('progressFill').style.background = `linear-gradient(90deg, ${f}, #F7B801)`;
+  }
+
+  // Mark current next unvisited
+  templeNodes.forEach((node, i) => {
+    node.classList.remove('current');
+    if (visited.has(i + 1)) {
+      node.classList.add('visited');
+    }
+  });
+  // The next unvisited becomes "current"
+  const nextIdx = [...Array(12).keys()].find(i => !visited.has(i + 1));
+  if (nextIdx !== undefined && templeNodes[nextIdx]) {
+    templeNodes[nextIdx].classList.add('current');
+  }
+
+  setTimeout(drawPath, 50);
+}
+
+/* ============================================================
+   MODAL
+============================================================ */
+function openModal(house, idx) {
+  play8bitMelody(house.elemento);
+  visited.add(house.number);
+  updateProgress();
+
+  const c = getElementColor(house.elemento);
+  const modal = document.getElementById('modal');
+  const modalContent = document.getElementById('modalContent');
+  const modalBody = document.getElementById('modalBody');
+
+  modalContent.style.borderColor = c.main;
+  modalContent.style.boxShadow = `0 0 30px ${c.main}55, 0 0 60px ${c.main}22`;
+
+  modalBody.innerHTML = `
+    <div class="keyword-banner" style="color:${c.glow}">✦ ${house.clave} ✦</div>
+    <div class="modal-house-number" style="color:${c.main}">${house.number}</div>
+    <div class="modal-house-name" style="color:${c.glow}">${house.name}</div>
+    <div class="modal-element-badge">
+      <span class="badge-pill" style="color:${c.main};border-color:${c.main};box-shadow:0 0 10px ${c.main}55;">
+        ${house.emoji} ${house.elemento}
+      </span>
+    </div>
+    <div class="info-grid">
+      <div class="info-cell" style="border-color:${c.main}66;background:${c.dim};">
+        <div class="info-cell-label">SIGNO NATURAL</div>
+        <div class="info-cell-value" style="color:${c.glow}">${house.signo}</div>
+      </div>
+      <div class="info-cell" style="border-color:${c.main}66;background:${c.dim};">
+        <div class="info-cell-label">REGENTE NATURAL</div>
+        <div class="info-cell-value" style="color:${c.glow}">${house.regente}</div>
+      </div>
+      <div class="info-cell" style="border-color:${c.main}66;background:${c.dim}; grid-column: span 2;">
+        <div class="info-cell-label">CASA DE</div>
+        <div class="info-cell-value" style="color:${c.main};font-size:11px;">${house.casaDe}</div>
+      </div>
+    </div>
+    <div class="caracteristicas-title" style="color:${c.glow}">★ CARACTERÍSTICAS GENERALES ★</div>
+    <div class="caracteristicas-text" style="border-color:${c.main}44;">${house.desc}</div>
+  `;
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('closeModal').addEventListener('click', closeModal);
+document.getElementById('modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ============================================================
+   INIT
+============================================================ */
+createTemples();
+window.addEventListener('resize', () => { setTimeout(drawPath, 150); });
+</script>
+</body>
+</html>
