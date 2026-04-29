@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌟 ACTIVIDAD FINAL: MI CARTA NATAL 🌟</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #08081A;
+    --cyan:    #00D9FF;
+    --pink:    #FF3D81;
+    --purple:  #724CF9;
+    --gold:    #F7B801;
+    --green:   #39FF88;
+    --white:   #F0F0F0;
+    --violet:  #BF5FFF;
+    --rose:    #FF6EB4;
+    --indigo:  #5B8CFF;
+    --red:     #FF4444;
+  }
+
+  *, *::before, *::after {
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* ── BG FX ── */
+  .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .star  { position: absolute; width: 2px; height: 2px; background: #fff; animation: twinkle 3s infinite; }
+
+  @keyframes twinkle {
+    0%,100% { opacity:.3; transform:scale(1); }
+    50%      { opacity:1;  transform:scale(1.5); }
+  }
+
+  .scanlines {
+    position: fixed; inset: 0; pointer-events: none; z-index: 999;
+    background: repeating-linear-gradient(0deg,
+      rgba(0,0,0,.13), rgba(0,0,0,.13) 1px,
+      transparent 1px, transparent 2px);
+    opacity: .5;
+  }
+
+  .crt-glow {
+    position: fixed; inset: 0; pointer-events: none; z-index: 998;
+    box-shadow: inset 0 0 120px rgba(255,61,129,.1);
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 24px 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ── HEADER ── */
+  .header-wrap {
+    text-align: center;
+    margin: 20px 0 10px;
+  }
+
+  .module-tag {
+    display: inline-block;
+    font-size: 8px;
+    color: var(--gold);
+    border: 2px solid var(--gold);
+    padding: 4px 10px;
+    margin-bottom: 18px;
+    text-shadow: 0 0 6px var(--gold);
+    animation: tag-pulse 2s infinite;
+  }
+
+  @keyframes tag-pulse {
+    0%,100% { box-shadow: 0 0 4px var(--gold); }
+    50%      { box-shadow: 0 0 14px var(--gold), 0 0 28px rgba(247,184,1,.3); }
+  }
+
+  .main-title {
+    font-size: clamp(14px, 4vw, 26px);
+    color: var(--pink);
+    text-shadow: 3px 3px 0 var(--purple), -2px -2px 0 rgba(0,217,255,.4);
+    animation: glitch 4s infinite;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  @keyframes glitch {
+    0%,88%,100% { transform:translate(0); }
+    90% { transform:translate(-2px, 2px); }
+    92% { transform:translate(2px,-2px); }
+    94% { transform:translate(-2px,-2px); }
+    96% { transform:translate(2px,2px); }
+  }
+
+  .sub-title {
+    font-size: clamp(8px,1.8vw,11px);
+    color: var(--violet);
+    animation: pulse-glow 3s infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%,100% { text-shadow: 0 0 4px var(--violet); }
+    50%      { text-shadow: 0 0 16px var(--violet), 0 0 30px var(--pink); }
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg,
+      transparent, var(--pink), var(--purple), var(--cyan), var(--purple), var(--pink), transparent);
+    margin: 28px 0;
+    box-shadow: 0 0 10px var(--pink);
+  }
+
+  .divider.gold {
+    background: linear-gradient(90deg,
+      transparent, var(--gold), var(--rose), var(--gold), transparent);
+    box-shadow: 0 0 10px var(--gold);
+  }
+
+  /* ── BOXES ── */
+  .box {
+    border: 4px solid;
+    padding: 22px;
+    margin: 22px 0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 8px 8px 0 rgba(0,0,0,.55);
+    transition: transform .2s, box-shadow .2s;
+  }
+
+  .box:hover {
+    transform: translate(-2px,-2px);
+    box-shadow: 10px 10px 0 rgba(0,0,0,.55);
+  }
+
+  .box.intro   { background:#150e2e; border-color:var(--pink);   box-shadow:8px 8px 0 rgba(255,61,129,.2),  0 0 20px rgba(255,61,129,.12); }
+  .box.warning { background:#1a1208; border-color:var(--gold);   box-shadow:8px 8px 0 rgba(247,184,1,.2),   0 0 20px rgba(247,184,1,.12); }
+  .box.products{ background:#0e1228; border-color:var(--indigo); box-shadow:8px 8px 0 rgba(91,140,255,.2),  0 0 20px rgba(91,140,255,.12); }
+  .box.email   { background:#0e2018; border-color:var(--green);  box-shadow:8px 8px 0 rgba(57,255,136,.2),  0 0 20px rgba(57,255,136,.12); }
+  .box.tips    { background:#1e0e14; border-color:var(--rose);   box-shadow:8px 8px 0 rgba(255,110,180,.2), 0 0 20px rgba(255,110,180,.12); }
+  .box.worksheet{ background:#100a28; border-color:var(--purple); box-shadow:8px 8px 0 rgba(114,76,249,.25), 0 0 22px rgba(114,76,249,.15); }
+  .box.question { background:#12102a; border-color:var(--cyan);  box-shadow:8px 8px 0 rgba(0,217,255,.2),   0 0 18px rgba(0,217,255,.10); }
+
+  .box-title {
+    font-size: 10px;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .box.intro    .box-title { color: var(--pink); }
+  .box.warning  .box-title { color: var(--gold); }
+  .box.products .box-title { color: var(--indigo); }
+  .box.email    .box-title { color: var(--green); }
+  .box.tips     .box-title { color: var(--rose); }
+  .box.worksheet .box-title { color: var(--violet); }
+  .box.question  .box-title { color: var(--cyan); }
+
+  .box p {
+    font-size: 8.5px;
+    line-height: 2.1;
+    margin-bottom: 14px;
+    color: #ccc;
+    position: relative;
+    z-index: 2;
+  }
+  .box p:last-child { margin-bottom: 0; }
+
+  /* ── HIGHLIGHTS ── */
+  .hl-pink   { color:var(--pink);   text-shadow:0 0 5px var(--pink); }
+  .hl-gold   { color:var(--gold);   text-shadow:0 0 5px var(--gold); }
+  .hl-cyan   { color:var(--cyan);   text-shadow:0 0 5px var(--cyan); }
+  .hl-green  { color:var(--green);  text-shadow:0 0 5px var(--green); }
+  .hl-violet { color:var(--violet); text-shadow:0 0 5px var(--violet); }
+  .hl-rose   { color:var(--rose);   text-shadow:0 0 5px var(--rose); }
+  .hl-indigo { color:var(--indigo); text-shadow:0 0 5px var(--indigo); }
+
+  /* ── NUMBERED PRODUCT LIST ── */
+  .product-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .product-list > li {
+    font-size: 8.5px;
+    line-height: 2.2;
+    color: #ccc;
+    padding: 10px 10px 10px 36px;
+    margin-bottom: 10px;
+    border-left: 3px solid var(--indigo);
+    background: rgba(91,140,255,.06);
+    position: relative;
+  }
+
+  .product-list > li .num {
+    position: absolute;
+    left: 8px;
+    color: var(--indigo);
+    text-shadow: 0 0 8px var(--indigo);
+    font-size: 10px;
+  }
+
+  /* ── EMAIL STEPS ── */
+  .email-steps {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .email-steps li {
+    font-size: 8.5px;
+    line-height: 2.2;
+    color: #ccc;
+    padding: 8px 10px 8px 30px;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--green);
+    background: rgba(57,255,136,.05);
+    position: relative;
+  }
+
+  .email-steps li .letter {
+    position: absolute;
+    left: 6px;
+    color: var(--green);
+    text-shadow: 0 0 6px var(--green);
+    font-size: 9px;
+  }
+
+  /* ── EMAIL CHIP ── */
+  .email-chip {
+    display: inline-block;
+    font-size: 8px;
+    color: var(--gold);
+    background: rgba(247,184,1,.1);
+    border: 2px solid var(--gold);
+    padding: 5px 10px;
+    margin: 6px 0;
+    text-shadow: 0 0 6px var(--gold);
+    box-shadow: 0 0 10px rgba(247,184,1,.2);
+    animation: chip-glow 2.5s infinite;
+    word-break: break-all;
+  }
+
+  @keyframes chip-glow {
+    0%,100% { box-shadow: 0 0 6px rgba(247,184,1,.2); }
+    50%      { box-shadow: 0 0 18px rgba(247,184,1,.5); }
+  }
+
+  /* ── WORKSHEET SECTION ── */
+  .ws-header {
+    text-align: center;
+    margin: 10px 0 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .ws-header p {
+    font-size: 8px;
+    color: #aaa;
+    margin-bottom: 4px;
+  }
+
+  .ws-header .ws-title {
+    font-size: clamp(10px, 2.5vw, 14px);
+    color: var(--violet);
+    text-shadow: 2px 2px 0 var(--purple);
+    margin-top: 6px;
+  }
+
+  /* ── QUESTION CARDS ── */
+  .questions-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin: 10px 0;
+  }
+
+  .q-card {
+    border: 3px solid var(--purple);
+    background: #0c0a22;
+    padding: 18px 18px 18px 60px;
+    position: relative;
+    overflow: hidden;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 6px 6px 0 rgba(114,76,249,.25);
+  }
+
+  .q-card:hover {
+    transform: translate(-2px,-2px);
+    box-shadow: 8px 8px 0 rgba(114,76,249,.35);
+  }
+
+  .q-card:nth-child(2) { border-color: var(--cyan);   box-shadow:6px 6px 0 rgba(0,217,255,.2); }
+  .q-card:nth-child(3) { border-color: var(--violet);  box-shadow:6px 6px 0 rgba(191,95,255,.2); }
+  .q-card:nth-child(4) { border-color: var(--indigo);  box-shadow:6px 6px 0 rgba(91,140,255,.2); }
+  .q-card:nth-child(5) { border-color: var(--rose);    box-shadow:6px 6px 0 rgba(255,110,180,.2); }
+
+  .q-num {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: clamp(22px,5vw,36px);
+    opacity: .18;
+    pointer-events: none;
+  }
+
+  .q-card:nth-child(1) .q-num { color:var(--purple); }
+  .q-card:nth-child(2) .q-num { color:var(--cyan); }
+  .q-card:nth-child(3) .q-num { color:var(--violet); }
+  .q-card:nth-child(4) .q-num { color:var(--indigo); }
+  .q-card:nth-child(5) .q-num { color:var(--rose); }
+
+  .q-planet {
+    font-size: 18px;
+    display: block;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .q-text {
+    font-size: 8px;
+    line-height: 2.2;
+    color: #ccc;
+    position: relative;
+    z-index: 2;
+  }
+
+  .q-card:nth-child(1) .q-text b { color:var(--purple); }
+  .q-card:nth-child(2) .q-text b { color:var(--cyan); }
+  .q-card:nth-child(3) .q-text b { color:var(--violet); }
+  .q-card:nth-child(4) .q-text b { color:var(--indigo); }
+  .q-card:nth-child(5) .q-text b { color:var(--rose); }
+
+  /* ── CANVAS CARTA NATAL ANIMADA ── */
+  .carta-canvas-wrap {
+    width: 100%;
+    height: 180px;
+    border: 3px solid var(--pink);
+    background: #050510;
+    box-shadow: 0 0 24px rgba(255,61,129,.25);
+    overflow: hidden;
+    margin: 0 0 24px;
+  }
+
+  #cartaCanvas { width:100%; height:100%; display:block; }
+
+  /* ── SHOOTING STARS EN INTRO ── */
+  .shoot-wrap {
+    position: absolute; inset: 0;
+    pointer-events: none; overflow: hidden; z-index: 1;
+  }
+
+  .s-star {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(90deg, var(--pink), transparent);
+    animation: s-fly linear infinite;
+    opacity: 0;
+  }
+
+  @keyframes s-fly {
+    0%   { transform:translateX(-100px) translateY(0) rotate(-25deg); opacity:.9; }
+    100% { transform:translateX(400px) translateY(80px) rotate(-25deg); opacity:0; }
+  }
+
+  /* ── SPARKLES ── */
+  .sp-wrap {
+    position:absolute; inset:0;
+    pointer-events:none; overflow:hidden; z-index:1;
+  }
+  .sp {
+    position:absolute; width:4px; height:4px;
+    animation:sp-rise linear infinite; opacity:0;
+  }
+  @keyframes sp-rise {
+    0%   { transform:translateY(0) scale(0); opacity:0; }
+    20%  { opacity:1; transform:translateY(-12px) scale(1); }
+    100% { transform:translateY(-55px) scale(.1); opacity:0; }
+  }
+
+  /* ── ORBIT RING DECO ── */
+  .o-ring {
+    position:absolute; border:1px solid; border-radius:50%;
+    opacity:.12; animation:o-spin linear infinite; pointer-events:none; z-index:1;
+  }
+  @keyframes o-spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+  .o-dot {
+    position:absolute; width:5px; height:5px; border-radius:50%;
+    top:-2.5px; left:50%; margin-left:-2.5px;
+    box-shadow:0 0 6px currentColor;
+  }
+
+  /* ── CTA FINAL ── */
+  .cta-box {
+    border: 4px solid var(--gold);
+    background: #1a1208;
+    padding: 24px 20px;
+    margin: 22px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 8px 8px 0 rgba(247,184,1,.2), 0 0 30px rgba(247,184,1,.15);
+    animation: cta-border-pulse 3s infinite;
+  }
+
+  @keyframes cta-border-pulse {
+    0%,100% { box-shadow:8px 8px 0 rgba(247,184,1,.2), 0 0 20px rgba(247,184,1,.15); }
+    50%      { box-shadow:8px 8px 0 rgba(247,184,1,.3), 0 0 40px rgba(247,184,1,.3); }
+  }
+
+  .cta-box p {
+    font-size: 8.5px;
+    line-height: 2.2;
+    color: #ccc;
+    position:relative;z-index:2;
+    margin-bottom:10px;
+  }
+  .cta-box p:last-child{margin-bottom:0;}
+</style>
+</head>
+<body>
+
+  <div class="stars" id="stars"></div>
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="header-wrap">
+      <div class="module-tag">★ CURSO ASTROLOGÍA | PRINCIPIOS BÁSICOS ★</div>
+      <h1 class="main-title">ACTIVIDAD FINAL<br><br>¿CÓMO ES MI<br>CARTA NATAL?</h1>
+    </div>
+
+    <!-- CANVAS CARTA NATAL ANIMADA -->
+    <div class="carta-canvas-wrap">
+      <canvas id="cartaCanvas"></canvas>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- INTRO -->
+    <div class="box intro">
+      <div class="shoot-wrap" id="shoots"></div>
+      <div class="box-title">✨ ¡MOMENTO DE PONER EN PRÁCTICA! ✨</div>
+      <p>¡Es momento de poner en práctica el conocimiento que has adquirido en este <span class="hl-pink">curso de principios básicos en Astrología</span>!</p>
+      <p>A continuación te compartiré una <span class="hl-rose">Hoja de Trabajo</span> en donde te explico los puntos que necesitas identificar en tu carta natal. De esta manera te irás adentrando en la siguiente etapa, que es la <span class="hl-violet">interpretación</span>.</p>
+      <p>Es importante que sepas que esta actividad es <span class="hl-pink">fundamental</span> para que puedas recibir tu <span class="hl-gold">constancia de participación</span>, ya que con esta pones en práctica gran parte de lo aprendido en este curso.</p>
+    </div>
+
+    <!-- WARNING CONSTANCIA -->
+    <div class="box warning">
+      <div class="sp-wrap" id="sparkles"></div>
+      <div class="box-title">⚠ IMPORTANTE ⚠</div>
+      <p>La actividad de esta lección es <span class="hl-gold">indispensable</span> para que puedas recibir tu <span class="hl-pink">constancia de participación</span>.</p>
+      <p>Para esto necesitas enviar los productos de esta actividad al correo:</p>
+      <div style="text-align:center; margin: 10px 0; position:relative;z-index:2;">
+        <span class="email-chip">soyanormaltareas@soyanormal.com</span>
+      </div>
+    </div>
+
+    <div class="divider gold"></div>
+
+    <!-- PRODUCTOS -->
+    <div class="box products">
+      <div class="o-ring" style="width:70px;height:70px;border-color:var(--indigo);top:-18px;right:-18px;animation-duration:9s;">
+        <div class="o-dot" style="background:var(--indigo);color:var(--indigo);"></div>
+      </div>
+      <div class="box-title">📋 PRODUCTOS PARA ENVIAR</div>
+      <ul class="product-list">
+        <li>
+          <span class="num">1</span>
+          <span class="hl-indigo">Datos para levantar tu carta:</span> Nombre, fecha, hora exacta o aproximada y lugar de nacimiento.
+        </li>
+        <li>
+          <span class="num">2</span>
+          Tu <span class="hl-cyan">carta natal en PDF</span>.
+        </li>
+        <li>
+          <span class="num">3</span>
+          Los <span class="hl-violet">5 puntos resueltos</span> de la Hoja de Trabajo de esta lección, los cuales se enlistan más abajo.
+        </li>
+        <li>
+          <span class="num">4</span>
+          Para enviar los resultados del punto 3, tu correo debe ir de la siguiente manera:
+        </li>
+      </ul>
+    </div>
+
+    <!-- EMAIL INSTRUCCIONES -->
+    <div class="box email">
+      <div class="o-ring" style="width:80px;height:80px;border-color:var(--green);top:-20px;right:-20px;animation-duration:11s;">
+        <div class="o-dot" style="background:var(--green);color:var(--green);"></div>
+      </div>
+      <div class="box-title">📧 CÓMO ENVIAR TU CORREO</div>
+      <ul class="email-steps">
+        <li>
+          <span class="letter">a)</span>
+          <span class="hl-green">Asunto:</span> Coloca tu <span class="hl-gold">nombre completo</span>
+        </li>
+        <li>
+          <span class="letter">b)</span>
+          <span class="hl-green">Cuerpo:</span> Escribe <span class="hl-gold">ENVÍO TRABAJO FINAL PARA LA CONSTANCIA</span>
+        </li>
+        <li>
+          <span class="letter">c)</span>
+          Recuerda <span class="hl-green">anexar tu documento</span> en formato <span class="hl-gold">Word o PDF</span>
+        </li>
+      </ul>
+      <p style="margin-top:14px;">Envía a: <span class="hl-gold">soyanormaltareas@soyanormal.com</span></p>
+    </div>
+
+    <!-- TIPS -->
+    <div class="box tips">
+      <div class="box-title">⏱ TIPS PARA ESTA ACTIVIDAD</div>
+      <p>Recuerda que esta actividad puede tomar algo de tu tiempo, así que te sugerimos que le dediques por lo menos <span class="hl-rose">una hora</span> (si es más, ¡mucho mejor!).</p>
+      <p>Y por último, <span class="hl-pink">¡Disfruta y diviértete!</span> Con este ejercicio podrás <span class="hl-violet">descubrirte cada día más</span>.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- HOJA DE TRABAJO -->
+    <div class="box worksheet">
+      <div class="o-ring" style="width:100px;height:100px;border-color:var(--purple);top:-30px;right:-30px;animation-duration:14s;">
+        <div class="o-dot" style="background:var(--purple);color:var(--purple);"></div>
+      </div>
+      <div class="ws-header">
+        <p>Curso Astrología | Principios Básicos</p>
+        <div class="ws-title">★ HOJA DE TRABAJO ★<br>Actividad Final</div>
+      </div>
+      <p style="text-align:center;font-size:8.5px;color:#aaa;position:relative;z-index:2;margin-bottom:18px;">
+        Identifica los siguientes puntos en tu carta astral:
+      </p>
+
+      <div class="questions-grid">
+
+        <!-- Q1 -->
+        <div class="q-card">
+          <span class="q-num">1</span>
+          <span class="q-planet">☉ ☽</span>
+          <p class="q-text">
+            ¿En qué <b>signo y casa</b> tienes a tu <b>Sol</b> y a tu <b>Luna</b>?<br>
+            Anótalos en una libreta o memorízalos.
+          </p>
+        </div>
+
+        <!-- Q2 -->
+        <div class="q-card">
+          <span class="q-num">2</span>
+          <span class="q-planet">↑</span>
+          <p class="q-text">
+            ¿Qué <b>ascendente</b> eres? ¿Tienes algún planeta cerca de tu ascendente? ¿Cuál?<br>
+            Busca en qué <b>espacio</b> se encuentra el planeta de tu ascendente.
+          </p>
+        </div>
+
+        <!-- Q3 -->
+        <div class="q-card">
+          <span class="q-num">3</span>
+          <span class="q-planet">♄ ♃ ♂ ♀ ☿</span>
+          <p class="q-text">
+            Ya que identificaste a tu Sol, Luna y Ascendente, busca los <b>demás planetas</b> e identifica en qué <b>signo y casa</b> se encuentran.<br>
+            ¿Existe alguno que esté <b>cerca de otro</b>?
+          </p>
+        </div>
+
+        <!-- Q4 -->
+        <div class="q-card">
+          <span class="q-num">4</span>
+          <span class="q-planet">✦ ✧ ✦</span>
+          <p class="q-text">
+            Acabas de descubrir cada uno de tus planetas y su distribución.<br>
+            ¿Qué <b>agrupación de símbolos</b> te llama más la atención?<br>
+            Observa tu mapa y centra tu atención en ese punto.<br>
+            ¿Qué <b>planetas</b> observas? ¿En qué <b>signo</b> están?<br>
+            <b>Describe con 3 frases</b> las características de esa agrupación.
+          </p>
+        </div>
+
+        <!-- Q5 -->
+        <div class="q-card">
+          <span class="q-num">5</span>
+          <span class="q-planet">🔥 🌍 💨 💧</span>
+          <p class="q-text">
+            ¿Qué <b>elemento</b> es el que predomina en tu carta?<br>
+            ¿Concuerda ese elemento con tu <b>carácter</b>?<br>
+            ¿Te diste cuenta que ocupas integrar la energía de <b>otro elemento</b>?<br>
+            ¿Cómo la <b>integrarías</b>?
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="divider gold"></div>
+
+    <!-- CTA FINAL -->
+    <div class="cta-box">
+      <div class="sp-wrap" id="sparklesCta"></div>
+      <p>Recuerda enviar tus resultados de esta Hoja de Trabajo al correo:</p>
+      <div style="margin:10px 0;position:relative;z-index:2;">
+        <span class="email-chip">soyanormaltareas@soyanormal.com</span>
+      </div>
+      <p>para que puedas recibir tu <span class="hl-gold">★ CONSTANCIA ★</span></p>
+      <p style="margin-top:14px;"><span class="hl-pink">¡Mucho éxito en tu actividad final!</span> 🌟</p>
+    </div>
+
+    <div class="divider"></div>
+
+  </div><!-- /container -->
+
+<script>
+  // ── ESTRELLAS ──
+  const starsEl = document.getElementById('stars');
+  const starColors = ['#fff','#BF5FFF','#00D9FF','#F7B801','#FF3D81','#5B8CFF','#FF6EB4'];
+  for (let i = 0; i < 130; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%';
+    s.style.top  = Math.random()*100+'%';
+    s.style.animationDelay    = Math.random()*3+'s';
+    s.style.animationDuration = (Math.random()*2+2)+'s';
+    s.style.background = starColors[Math.floor(Math.random()*starColors.length)];
+    const sz = Math.random()*2+1;
+    s.style.width = s.style.height = sz+'px';
+    starsEl.appendChild(s);
+  }
+
+  // ── SHOOTING STARS EN INTRO ──
+  const shootWrap = document.getElementById('shoots');
+  for (let i = 0; i < 7; i++) {
+    const ss = document.createElement('div');
+    ss.className = 's-star';
+    ss.style.top  = (10+Math.random()*80)+'%';
+    ss.style.left = (Math.random()*50)+'%';
+    ss.style.width = (40+Math.random()*60)+'px';
+    ss.style.animationDuration = (1.2+Math.random()*2)+'s';
+    ss.style.animationDelay   = (Math.random()*6)+'s';
+    const sc = ['#FF3D81','#BF5FFF','#F7B801','#00D9FF'];
+    ss.style.background = `linear-gradient(90deg,${sc[Math.floor(Math.random()*sc.length)]},transparent)`;
+    shootWrap.appendChild(ss);
+  }
+
+  // ── SPARKLES WARNING ──
+  function makeSparkles(id, colors) {
+    const w = document.getElementById(id);
+    if (!w) return;
+    for (let i = 0; i < 18; i++) {
+      const sp = document.createElement('div');
+      sp.className = 'sp';
+      sp.style.left   = (5+Math.random()*90)+'%';
+      sp.style.bottom = (Math.random()*20)+'px';
+      sp.style.animationDuration = (1.5+Math.random()*2)+'s';
+      sp.style.animationDelay   = (Math.random()*3)+'s';
+      sp.style.background = colors[Math.floor(Math.random()*colors.length)];
+      w.appendChild(sp);
+    }
+  }
+  makeSparkles('sparkles',    ['#F7B801','#FF3D81','#BF5FFF','#00D9FF']);
+  makeSparkles('sparklesCta', ['#F7B801','#FF6EB4','#BF5FFF','#fff']);
+
+  // ── CANVAS: CARTA NATAL PIXEL ──
+  const canvas = document.getElementById('cartaCanvas');
+  const ctx    = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Círculos de la carta natal + planetas
+  const PLANETS = [
+    { sym:'☉', angle: 0.10, ring:0.75, color:'#F7B801', size:8 },
+    { sym:'☽', angle: 0.55, ring:0.75, color:'#D0D0FF', size:7 },
+    { sym:'↑', angle: 0.0,  ring:0.90, color:'#39FF88', size:7 },
+    { sym:'☿', angle: 0.85, ring:0.68, color:'#AAAAAA', size:5 },
+    { sym:'♀', angle: 0.30, ring:0.60, color:'#FF6EB4', size:6 },
+    { sym:'♂', angle: 0.70, ring:0.55, color:'#FF4444', size:6 },
+    { sym:'♃', angle: 0.45, ring:0.48, color:'#E8A070', size:6 },
+    { sym:'♄', angle: 0.20, ring:0.42, color:'#C8B06A', size:6 },
+  ];
+
+  // Aspecto lines (pairs)
+  const ASPECTS = [
+    [0,1,'#5B8CFF'],[0,2,'#39FF88'],[1,3,'#BF5FFF'],[2,4,'#FF3D81'],
+    [3,5,'#F7B801'],[4,6,'#00D9FF'],[5,7,'#FF6EB4'],[0,4,'rgba(255,255,255,.2)'],
+  ];
+
+  let t = 0;
+  const planetAngles = PLANETS.map(p => p.angle * Math.PI * 2);
+
+  function drawCarta() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = '#050510';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    const cx = canvas.width  * 0.5;
+    const cy = canvas.height * 0.5;
+    const R  = Math.min(cx, cy) * 0.88;
+
+    // Anillos de la carta (4 círculos concéntricos)
+    [1, .80, .60, .40].forEach((r, i) => {
+      const alpha = 0.15 + i*0.08;
+      ctx.strokeStyle = `rgba(114,76,249,${alpha})`;
+      ctx.lineWidth = i === 0 ? 2 : 1;
+      ctx.setLineDash(i > 0 ? [3,5] : []);
+      ctx.beginPath();
+      ctx.arc(cx, cy, R*r, 0, Math.PI*2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    });
+
+    // Líneas de casas (12 divisiones)
+    for (let h = 0; h < 12; h++) {
+      const a = (h / 12) * Math.PI * 2;
+      const glow = 0.1 + 0.05*Math.sin(t*0.04 + h);
+      ctx.strokeStyle = `rgba(114,76,249,${glow})`;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2,6]);
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(a)*R*0.40, cy + Math.sin(a)*R*0.40);
+      ctx.lineTo(cx + Math.cos(a)*R, cy + Math.sin(a)*R);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Número de casa
+      const nr = R * 0.88;
+      const tx = cx + Math.cos(a + Math.PI/12)*nr;
+      const ty = cy + Math.sin(a + Math.PI/12)*nr;
+      ctx.globalAlpha = 0.35;
+      ctx.font = '7px "Press Start 2P"';
+      ctx.fillStyle = '#BF5FFF';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(String(h+1), tx, ty);
+      ctx.globalAlpha = 1;
+    }
+
+    // Líneas de aspecto (animadas)
+    const pCoords = PLANETS.map((p, i) => ({
+      x: cx + Math.cos(planetAngles[i] + t*0.003) * R * p.ring,
+      y: cy + Math.sin(planetAngles[i] + t*0.003) * R * p.ring,
+    }));
+
+    ASPECTS.forEach(([a, b, col]) => {
+      const alpha = 0.15 + 0.12*Math.sin(t*0.05 + a);
+      ctx.strokeStyle = col;
+      ctx.globalAlpha = alpha;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3,4]);
+      ctx.beginPath();
+      ctx.moveTo(pCoords[a].x, pCoords[a].y);
+      ctx.lineTo(pCoords[b].x, pCoords[b].y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+    });
+
+    // Planetas
+    PLANETS.forEach((p, i) => {
+      const angle = planetAngles[i] + t * 0.002 * (1/(i+1));
+      const r = R * p.ring;
+      const px = cx + Math.cos(angle)*r;
+      const py = cy + Math.sin(angle)*r;
+
+      const glow = 0.7 + 0.3*Math.sin(t*0.07 + i);
+      ctx.globalAlpha = glow;
+      ctx.shadowColor = p.color;
+      ctx.shadowBlur  = 10;
+      ctx.fillStyle = p.color;
+      const half = p.size/2;
+      ctx.fillRect(Math.round(px-half), Math.round(py-half), p.size, p.size);
+      ctx.shadowBlur = 0;
+
+      ctx.globalAlpha = 0.9;
+      ctx.font = '8px "Press Start 2P"';
+      ctx.fillStyle = p.color;
+      ctx.textAlign  = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(p.sym, Math.round(px), Math.round(py - p.size - 3));
+      ctx.globalAlpha = 1;
+    });
+
+    // Cruz central (eje ascendente/MC)
+    const crossAlpha = 0.3 + 0.2*Math.sin(t*0.04);
+    ctx.globalAlpha = crossAlpha;
+    ctx.strokeStyle = '#39FF88';
+    ctx.lineWidth   = 1;
+    ctx.beginPath();
+    ctx.moveTo(cx - R*0.38, cy); ctx.lineTo(cx + R*0.38, cy);
+    ctx.moveTo(cx, cy - R*0.38); ctx.lineTo(cx, cy + R*0.38);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    t++;
+    requestAnimationFrame(drawCarta);
+  }
+
+  drawCarta();
+</script>
+</body>
+</html>
