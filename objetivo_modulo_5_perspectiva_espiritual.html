@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⭐ MÓDULO V: UNA INDISPENSABLE PERSPECTIVA ESPIRITUAL ⭐</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --white: #F0F0F0;
+    --violet: #9D4EDD;
+    --indigo: #3A86FF;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    animation: twinkle-soft 4s ease-in-out infinite;
+  }
+
+  @keyframes twinkle-soft {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.3); }
+  }
+
+  .spiritual-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.1),
+      rgba(0, 0, 0, 0.1) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.3;
+  }
+
+  .crt-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 150px rgba(157, 78, 221, 0.12);
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 24px);
+    color: var(--violet);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--indigo), -2px -2px 0 var(--pink);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-1px, 1px); }
+    94% { transform: translate(1px, -1px); }
+    96% { transform: translate(-1px, -1px); }
+    98% { transform: translate(1px, 1px); }
+  }
+
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .box.violet {
+    background: #2e1a4d;
+    border-color: var(--violet);
+    box-shadow: 8px 8px 0 rgba(157, 78, 221, 0.3), 0 0 20px rgba(157, 78, 221, 0.2);
+  }
+
+  .box.indigo {
+    background: #1a2e4d;
+    border-color: var(--indigo);
+    box-shadow: 8px 8px 0 rgba(58, 134, 255, 0.3), 0 0 20px rgba(58, 134, 255, 0.2);
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .box.violet .box-title {
+    color: var(--violet);
+  }
+
+  .box.indigo .box-title {
+    color: var(--indigo);
+  }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+  }
+
+  .box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .highlight {
+    color: var(--violet);
+    text-shadow: 0 0 5px var(--violet);
+  }
+
+  .highlight-indigo {
+    color: var(--indigo);
+    text-shadow: 0 0 5px var(--indigo);
+  }
+
+  .highlight-gold {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--violet), var(--indigo), var(--violet), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--violet);
+  }
+
+  .descifrar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    border-radius: 2px;
+  }
+
+  .glifo {
+    position: absolute;
+    font-size: 10px;
+    opacity: 0;
+    animation: descifrar-fade 0.5s ease-out forwards;
+  }
+
+  @keyframes descifrar-fade {
+    0% { opacity: 0.8; transform: translateY(0) scale(1.2); }
+    100% { opacity: 0; transform: translateY(-15px) scale(0.8); }
+  }
+
+  .onda-conexion {
+    margin: 16px 0;
+    overflow: hidden;
+  }
+
+  .onda-svg {
+    width: 100%;
+    height: 32px;
+    display: block;
+  }
+
+  .onda-path {
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    animation: wave-motion 5s linear infinite;
+  }
+
+  @keyframes wave-motion {
+    0% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -100px; }
+  }
+</style>
+</head>
+<body>
+
+  <div id="stars" class="stars"></div>
+  <canvas id="spiritualCanvas" class="spiritual-canvas"></canvas>
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <div class="container">
+    <div class="glitch-title">⭐ MÓDULO V: UNA INDISPENSABLE PERSPECTIVA ESPIRITUAL ⭐</div>
+
+    <div class="divider"></div>
+
+    <!-- ONDA 1 -->
+    <div class="onda-conexion">
+      <svg class="onda-svg" viewBox="0 0 900 32" preserveAspectRatio="none">
+        <path class="onda-path" d="M0,16 Q112,22 225,16 Q337,10 450,16 Q562,22 675,16 Q787,10 900,16" stroke="#9D4EDD" stroke-dashoffset="0"/>
+      </svg>
+    </div>
+
+    <div class="box violet">
+      <div class="descifrar-overlay" id="overlay1"></div>
+      <div class="box-title">◎ OBJETIVO DE ESTE MÓDULO ◎</div>
+      <p>Explorar una <span class="highlight">visión más consciente y espiritual de la Astrología</span>, comprendiendo cómo puede utilizarse como una <span class="highlight-gold">herramienta de reflexión, crecimiento interior, desarrollo personal</span> y <span class="highlight-indigo">autoconocimiento desde una perspectiva espiritual</span>.</p>
+    </div>
+
+    <!-- ONDA 2 -->
+    <div class="onda-conexion">
+      <svg class="onda-svg" viewBox="0 0 900 32" preserveAspectRatio="none">
+        <path class="onda-path" d="M0,16 Q112,10 225,16 Q337,22 450,16 Q562,10 675,16 Q787,22 900,16" stroke="#3A86FF" stroke-dashoffset="0"/>
+      </svg>
+    </div>
+
+    <div class="box indigo">
+      <div class="descifrar-overlay" id="overlay2"></div>
+      <div class="box-title">✨ REFLEXIÓN E INTEGRACIÓN ✨</div>
+      <p>Al finalizar este módulo encontrarás una <span class="highlight-indigo">actividad de autoevaluación</span> orientada a ayudarte a <span class="highlight">reflexionar sobre la perspectiva espiritual del curso</span> y cómo puedes <span class="highlight-gold">integrar esta visión en tu manera de comprender la Astrología</span>.</p>
+    </div>
+
+    <div class="divider"></div>
+  </div>
+
+  <script>
+    // ── ESTRELLAS SUAVES ──
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 80; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 4 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 3) + 's';
+      const colors = ['#FFFFFF','#9D4EDD','#3A86FF','#FFB4E6'];
+      star.style.background = colors[Math.floor(Math.random()*colors.length)];
+      const size = Math.random() * 1.5 + 0.5;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      starsContainer.appendChild(star);
+    }
+
+    // ── CANVAS: AURAS Y ENERGÍA ESPIRITUAL ──
+    const canvas = document.getElementById('spiritualCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Puntos de energía espiritual
+    const energyPoints = [];
+    for(let i = 0; i < 7; i++){
+      energyPoints.push({
+        x: Math.random() * (canvas.width || 800),
+        y: Math.random() * (canvas.height || 600),
+        vx: (Math.random() - 0.5) * 0.15,
+        vy: (Math.random() - 0.5) * 0.15,
+        radius: 40 + Math.random() * 40,
+        color: ['#9D4EDD', '#3A86FF', '#FFB4E6', '#E0AAFF'][Math.floor(Math.random() * 4)],
+        pulsePhase: Math.random() * Math.PI * 2,
+      });
+    }
+
+    let tick = 0;
+
+    function drawSpiritualEnergy(){
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Fondo con degradado muy sutil
+      const gradient = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, Math.max(canvas.width, canvas.height));
+      gradient.addColorStop(0, 'rgba(157, 78, 221, 0.05)');
+      gradient.addColorStop(1, 'rgba(10, 10, 27, 0.2)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Mover puntos lentamente
+      energyPoints.forEach(point => {
+        point.x += point.vx;
+        point.y += point.vy;
+        if(point.x < 0 || point.x > canvas.width) point.vx *= -1;
+        if(point.y < 0 || point.y > canvas.height) point.vy *= -1;
+        point.pulsePhase += 0.02;
+      });
+
+      // Dibujar auras que respiran
+      energyPoints.forEach(point => {
+        const pulse = Math.sin(point.pulsePhase) * 0.5 + 0.5;
+        
+        // Aura externa grande
+        ctx.fillStyle = point.color;
+        ctx.globalAlpha = 0.05 * pulse;
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, point.radius * 2.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Aura media
+        ctx.globalAlpha = 0.15 * pulse;
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, point.radius * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Aura interna
+        ctx.globalAlpha = 0.3 * pulse;
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, point.radius * 0.8, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Centro brillante
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = point.color;
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, point.radius * 0.3, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Conexiones etéreas entre puntos
+      for(let i = 0; i < energyPoints.length; i++){
+        for(let j = i + 1; j < energyPoints.length; j++){
+          const dx = energyPoints[i].x - energyPoints[j].x;
+          const dy = energyPoints[i].y - energyPoints[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          if(dist < 400){
+            ctx.strokeStyle = energyPoints[i].color;
+            ctx.globalAlpha = (1 - dist / 400) * 0.2;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(energyPoints[i].x, energyPoints[i].y);
+            ctx.lineTo(energyPoints[j].x, energyPoints[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Ondas de expansión ocasionales desde el centro
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const waveRadius = (tick % 120) * 2;
+      
+      ctx.strokeStyle = '#9D4EDD';
+      ctx.globalAlpha = Math.max(0, 1 - (tick % 120) / 120) * 0.4;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, waveRadius, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Otra onda desfasada
+      const waveRadius2 = ((tick + 40) % 120) * 2;
+      ctx.strokeStyle = '#3A86FF';
+      ctx.globalAlpha = Math.max(0, 1 - ((tick + 40) % 120) / 120) * 0.3;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, waveRadius2, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.globalAlpha = 1;
+      tick++;
+      requestAnimationFrame(drawSpiritualEnergy);
+    }
+    drawSpiritualEnergy();
+
+    // ── OVERLAYS DESCIFRAR ──
+    const GLIFOS = ['◎','✨','☆','◆','☯','✦','◈','⊙'];
+    for(let id=1;id<=2;id++){
+      const ov = document.getElementById('overlay'+id);
+      if(!ov) continue;
+      for(let i=0;i<60;i++){
+        const g = document.createElement('span');
+        g.className = 'glifo';
+        g.textContent = GLIFOS[Math.floor(Math.random()*GLIFOS.length)];
+        g.style.left = (Math.random()*100)+'%';
+        g.style.top = (Math.random()*100)+'%';
+        g.style.animationDelay = (Math.random()*2.5)+'s';
+        g.style.animationDuration = (0.4+Math.random()*0.6)+'s';
+        const cols = ['#9D4EDD','#3A86FF','#FFB4E6'];
+        g.style.color = cols[Math.floor(Math.random()*cols.length)];
+        ov.appendChild(g);
+      }
+    }
+  </script>
+</body>
+</html>

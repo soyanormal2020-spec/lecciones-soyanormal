@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⭐ MÓDULO III: PRINCIPIOS BÁSICOS DE LOS PLANETAS ⭐</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --white: #F0F0F0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  .planet-network-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  .crt-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 100px rgba(114, 76, 249, 0.1);
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 24px);
+    color: var(--cyan);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--pink), -2px -2px 0 var(--purple);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .box.purple {
+    background: #1a1a2e;
+    border-color: var(--purple);
+    box-shadow: 8px 8px 0 rgba(114, 76, 249, 0.3), 0 0 20px rgba(114, 76, 249, 0.2);
+  }
+
+  .box.gold {
+    background: #2e2416;
+    border-color: var(--gold);
+    box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.3), 0 0 20px rgba(247, 184, 1, 0.2);
+  }
+
+  .box.cyan {
+    background: #0f1a2e;
+    border-color: var(--cyan);
+    box-shadow: 8px 8px 0 rgba(0, 217, 255, 0.3), 0 0 20px rgba(0, 217, 255, 0.2);
+  }
+
+  .box.pink {
+    background: #2e1620;
+    border-color: var(--pink);
+    box-shadow: 8px 8px 0 rgba(255, 61, 129, 0.3), 0 0 20px rgba(255, 61, 129, 0.2);
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .box.purple .box-title {
+    color: var(--cyan);
+  }
+
+  .box.gold .box-title {
+    color: var(--gold);
+  }
+
+  .box.cyan .box-title {
+    color: var(--cyan);
+  }
+
+  .box.pink .box-title {
+    color: var(--pink);
+  }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+  }
+
+  .box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .highlight {
+    color: var(--pink);
+    text-shadow: 0 0 5px var(--pink);
+  }
+
+  .highlight-cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 5px var(--cyan);
+  }
+
+  .highlight-gold {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+  .highlight-green {
+    color: var(--green);
+    text-shadow: 0 0 5px var(--green);
+  }
+
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--purple), var(--pink), var(--purple), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--purple);
+  }
+
+  .descifrar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    border-radius: 2px;
+  }
+
+  .glifo {
+    position: absolute;
+    font-size: 10px;
+    opacity: 0;
+    animation: descifrar-fade 0.5s ease-out forwards;
+  }
+
+  @keyframes descifrar-fade {
+    0% { opacity: 0.8; transform: translateY(0) scale(1.2); }
+    100% { opacity: 0; transform: translateY(-15px) scale(0.8); }
+  }
+
+  .onda-conexion {
+    margin: 16px 0;
+    overflow: hidden;
+  }
+
+  .onda-svg {
+    width: 100%;
+    height: 32px;
+    display: block;
+  }
+
+  .onda-path {
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    animation: wave-motion 4s linear infinite;
+  }
+
+  @keyframes wave-motion {
+    0% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -100px; }
+  }
+</style>
+</head>
+<body>
+
+  <div id="stars" class="stars"></div>
+  <canvas id="planetCanvas" class="planet-network-canvas"></canvas>
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <div class="container">
+    <div class="glitch-title">⭐ MÓDULO III: PRINCIPIOS BÁSICOS DE LOS PLANETAS ⭐</div>
+
+    <div class="divider"></div>
+
+    <!-- ONDA 1 -->
+    <div class="onda-conexion">
+      <svg class="onda-svg" viewBox="0 0 900 32" preserveAspectRatio="none">
+        <path class="onda-path" d="M0,16 Q112,28 225,16 Q337,4 450,16 Q562,28 675,16 Q787,4 900,16" stroke="#FF3D81" stroke-dashoffset="0"/>
+      </svg>
+    </div>
+
+    <div class="box cyan">
+      <div class="descifrar-overlay" id="overlay1"></div>
+      <div class="box-title">★ OBJETIVO DE ESTE MÓDULO ★</div>
+      <p>Aprender qué representa cada planeta dentro de la Astrología, <span class="highlight-cyan">memorizar el alfabeto astrológico</span> de cada planeta, su <span class="highlight">división en relación a sus cualidades energéticas</span>, y las características generales de cada uno.</p>
+    </div>
+
+    <!-- ONDA 2 -->
+    <div class="onda-conexion">
+      <svg class="onda-svg" viewBox="0 0 900 32" preserveAspectRatio="none">
+        <path class="onda-path" d="M0,16 Q112,4 225,16 Q337,28 450,16 Q562,4 675,16 Q787,28 900,16" stroke="#FF3D81" stroke-dashoffset="0"/>
+      </svg>
+    </div>
+
+    <div class="box purple">
+      <div class="descifrar-overlay" id="overlay2"></div>
+      <div class="box-title">◈ INTEGRACIÓN PLANETARIA ◈</div>
+      <p>Al finalizar este módulo encontrarás una <span class="highlight">actividad de autoevaluación</span> pensada para ayudarte a <span class="highlight-cyan">integrar los significados planetarios</span> y reconocer de forma práctica cuánto has comprendido sobre sus funciones dentro de una carta natal.</p>
+    </div>
+
+    <div class="divider"></div>
+  </div>
+
+  <script>
+    // ── ESTRELLAS ──
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      const colors = ['#FFFFFF','#00D9FF','#F7B801','#FF3D81'];
+      star.style.background = colors[Math.floor(Math.random()*colors.length)];
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      starsContainer.appendChild(star);
+    }
+
+    // ── CANVAS: RED PLANETARIA ──
+    const canvas = document.getElementById('planetCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const PLANETAS = ['☉','☽','☿','♀','♂','♃','♄','♅','♆'];
+    const COLORES_PLANETA = ['#F7B801','#FF3D81','#00D9FF','#FF3D81','#F7B801','#724CF9','#39FF88','#00D9FF','#724CF9'];
+    
+    const nodos = [];
+    for(let i=0;i<9;i++){
+      nodos.push({
+        x: Math.random() * (canvas.width||800),
+        y: Math.random() * (canvas.height||600),
+        vx: (Math.random()-0.5)*0.4,
+        vy: (Math.random()-0.5)*0.4,
+        size: 3,
+        color: COLORES_PLANETA[i],
+        planeta: PLANETAS[i],
+        angle: 0,
+      });
+    }
+
+    const DIST_CONEXION = 150;
+    let tick = 0;
+
+    function drawNetworkPlanetas(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      
+      // Fondo muy sutil
+      ctx.fillStyle = '#050510';
+      ctx.globalAlpha = 0.3;
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.globalAlpha = 1;
+
+      // Mover nodos
+      nodos.forEach(n=>{
+        n.x += n.vx;
+        n.y += n.vy;
+        if(n.x<0||n.x>canvas.width)  n.vx*=-1;
+        if(n.y<0||n.y>canvas.height) n.vy*=-1;
+        n.angle += 2;
+      });
+
+      // Conexiones brillantes
+      for(let i=0;i<nodos.length;i++){
+        for(let j=i+1;j<nodos.length;j++){
+          const dx=nodos[i].x-nodos[j].x;
+          const dy=nodos[i].y-nodos[j].y;
+          const dist=Math.sqrt(dx*dx+dy*dy);
+          if(dist<DIST_CONEXION){
+            const alpha = (1-dist/DIST_CONEXION)*0.6;
+            ctx.globalAlpha = alpha;
+            ctx.strokeStyle = nodos[i].color;
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([3,3]);
+            ctx.beginPath();
+            ctx.moveTo(nodos[i].x,nodos[i].y);
+            ctx.lineTo(nodos[j].x,nodos[j].y);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Punto de conexión
+            ctx.fillStyle = nodos[i].color;
+            ctx.globalAlpha = 0.4;
+            const midX = (nodos[i].x + nodos[j].x) / 2;
+            const midY = (nodos[i].y + nodos[j].y) / 2;
+            ctx.fillRect(midX-1, midY-1, 2, 2);
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
+
+      // Nodos con brillo
+      nodos.forEach(n=>{
+        // Aura de brillo
+        ctx.fillStyle = n.color;
+        ctx.globalAlpha = 0.2;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 8, 0, Math.PI*2);
+        ctx.fill();
+        
+        // Núcleo del planeta
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = n.color;
+        ctx.fillRect(Math.round(n.x)-n.size, Math.round(n.y)-n.size, n.size*2, n.size*2);
+        
+        // Símbolo parpadeante
+        if(tick%60 < 40){
+          ctx.font = '9px "Press Start 2P"';
+          ctx.fillStyle = n.color;
+          ctx.globalAlpha = 0.7;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(n.planeta, n.x, n.y);
+        }
+      });
+
+      // Línea de escaneo ocasional
+      if(tick%80 < 20){
+        const scanY = (tick % 80) * canvas.height / 20;
+        ctx.strokeStyle = 'rgba(255,61,129,0.3)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4,4]);
+        ctx.beginPath();
+        ctx.moveTo(0, scanY);
+        ctx.lineTo(canvas.width, scanY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      tick++;
+      requestAnimationFrame(drawNetworkPlanetas);
+    }
+    drawNetworkPlanetas();
+
+    // ── OVERLAYS DESCIFRAR ──
+    const GLIFOS = ['☉','☽','☿','♀','♂','♃','♄','♅','♆','★','◈','✦','◆'];
+    for(let id=1;id<=2;id++){
+      const ov = document.getElementById('overlay'+id);
+      if(!ov) continue;
+      for(let i=0;i<80;i++){
+        const g = document.createElement('span');
+        g.className = 'glifo';
+        g.textContent = GLIFOS[Math.floor(Math.random()*GLIFOS.length)];
+        g.style.left = (Math.random()*100)+'%';
+        g.style.top = (Math.random()*100)+'%';
+        g.style.animationDelay = (Math.random()*2)+'s';
+        g.style.animationDuration = (0.3+Math.random()*0.5)+'s';
+        const cols = ['#724CF9','#FF3D81','#F7B801'];
+        g.style.color = cols[Math.floor(Math.random()*cols.length)];
+        ov.appendChild(g);
+      }
+    }
+  </script>
+</body>
+</html>

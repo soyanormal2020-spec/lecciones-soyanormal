@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⭐ MÓDULO IV: PRINCIPIOS BÁSICOS DE LAS CASAS ⭐</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --white: #F0F0F0;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  .houses-wheel-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  .crt-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    box-shadow: inset 0 0 100px rgba(57, 255, 136, 0.08);
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(14px, 3.5vw, 24px);
+    color: var(--cyan);
+    margin: 30px 0;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--pink), -2px -2px 0 var(--purple);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  .box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 24px 0;
+    position: relative;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .box:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .box.purple {
+    background: #1a1a2e;
+    border-color: var(--purple);
+    box-shadow: 8px 8px 0 rgba(114, 76, 249, 0.3), 0 0 20px rgba(114, 76, 249, 0.2);
+  }
+
+  .box.gold {
+    background: #2e2416;
+    border-color: var(--gold);
+    box-shadow: 8px 8px 0 rgba(247, 184, 1, 0.3), 0 0 20px rgba(247, 184, 1, 0.2);
+  }
+
+  .box.cyan {
+    background: #0f1a2e;
+    border-color: var(--cyan);
+    box-shadow: 8px 8px 0 rgba(0, 217, 255, 0.3), 0 0 20px rgba(0, 217, 255, 0.2);
+  }
+
+  .box.pink {
+    background: #2e1620;
+    border-color: var(--pink);
+    box-shadow: 8px 8px 0 rgba(255, 61, 129, 0.3), 0 0 20px rgba(255, 61, 129, 0.2);
+  }
+
+  .box.green {
+    background: #162e22;
+    border-color: var(--green);
+    box-shadow: 8px 8px 0 rgba(57, 255, 136, 0.3), 0 0 20px rgba(57, 255, 136, 0.2);
+  }
+
+  .box-title {
+    font-size: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  .box.purple .box-title {
+    color: var(--cyan);
+  }
+
+  .box.gold .box-title {
+    color: var(--gold);
+  }
+
+  .box.cyan .box-title {
+    color: var(--cyan);
+  }
+
+  .box.pink .box-title {
+    color: var(--pink);
+  }
+
+  .box.green .box-title {
+    color: var(--green);
+  }
+
+  .box p {
+    font-size: 9px;
+    line-height: 2;
+    margin-bottom: 16px;
+    color: #D0D0D0;
+  }
+
+  .box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .highlight {
+    color: var(--pink);
+    text-shadow: 0 0 5px var(--pink);
+  }
+
+  .highlight-cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 5px var(--cyan);
+  }
+
+  .highlight-gold {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+  .highlight-green {
+    color: var(--green);
+    text-shadow: 0 0 5px var(--green);
+  }
+
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--green), var(--cyan), var(--green), transparent);
+    margin: 32px 0;
+    box-shadow: 0 0 10px var(--green);
+  }
+
+  .descifrar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    border-radius: 2px;
+  }
+
+  .glifo {
+    position: absolute;
+    font-size: 10px;
+    opacity: 0;
+    animation: descifrar-fade 0.5s ease-out forwards;
+  }
+
+  @keyframes descifrar-fade {
+    0% { opacity: 0.8; transform: translateY(0) scale(1.2); }
+    100% { opacity: 0; transform: translateY(-15px) scale(0.8); }
+  }
+
+  .onda-conexion {
+    margin: 16px 0;
+    overflow: hidden;
+  }
+
+  .onda-svg {
+    width: 100%;
+    height: 32px;
+    display: block;
+  }
+
+  .onda-path {
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    animation: wave-motion 4s linear infinite;
+  }
+
+  @keyframes wave-motion {
+    0% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -100px; }
+  }
+</style>
+</head>
+<body>
+
+  <div id="stars" class="stars"></div>
+  <canvas id="housesCanvas" class="houses-wheel-canvas"></canvas>
+  <div class="scanlines"></div>
+  <div class="crt-glow"></div>
+
+  <div class="container">
+    <div class="glitch-title">⭐ MÓDULO IV: PRINCIPIOS BÁSICOS DE LAS CASAS ⭐</div>
+
+    <div class="divider"></div>
+
+    <!-- ONDA 1 -->
+    <div class="onda-conexion">
+      <svg class="onda-svg" viewBox="0 0 900 32" preserveAspectRatio="none">
+        <path class="onda-path" d="M0,16 Q112,28 225,16 Q337,4 450,16 Q562,28 675,16 Q787,4 900,16" stroke="#39FF88" stroke-dashoffset="0"/>
+      </svg>
+    </div>
+
+    <div class="box green">
+      <div class="descifrar-overlay" id="overlay1"></div>
+      <div class="box-title">★ OBJETIVO DE ESTE MÓDULO ★</div>
+      <p>Entender de manera general qué son las <span class="highlight-green">casas astrológicas</span>, descubrir cómo cada una rige y se relaciona con <span class="highlight">diferentes áreas importantes de la vida</span>, por ejemplo: las relaciones, el trabajo, la familia o la pareja.</p>
+    </div>
+
+    <!-- ONDA 2 -->
+    <div class="onda-conexion">
+      <svg class="onda-svg" viewBox="0 0 900 32" preserveAspectRatio="none">
+        <path class="onda-path" d="M0,16 Q112,4 225,16 Q337,28 450,16 Q562,4 675,16 Q787,28 900,16" stroke="#39FF88" stroke-dashoffset="0"/>
+      </svg>
+    </div>
+
+    <div class="box cyan">
+      <div class="descifrar-overlay" id="overlay2"></div>
+      <div class="box-title">◈ RELACIÓN CON LA VIDA ◈</div>
+      <p>Al finalizar este módulo encontrarás una <span class="highlight-cyan">actividad de autoevaluación</span> que te ayudará a <span class="highlight-green">identificar qué tanto logras relacionar las casas astrológicas</span> con las experiencias y áreas de vida que representan.</p>
+    </div>
+
+    <div class="divider"></div>
+  </div>
+
+  <script>
+    // ── ESTRELLAS ──
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      const colors = ['#FFFFFF','#00D9FF','#39FF88','#FF3D81'];
+      star.style.background = colors[Math.floor(Math.random()*colors.length)];
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      starsContainer.appendChild(star);
+    }
+
+    // ── CANVAS: RUEDA DE CASAS ──
+    const canvas = document.getElementById('housesCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const CASAS = [
+      {num: 1, area: 'Yo'},
+      {num: 2, area: 'Recursos'},
+      {num: 3, area: 'Comunicación'},
+      {num: 4, area: 'Familia'},
+      {num: 5, area: 'Creatividad'},
+      {num: 6, area: 'Salud'},
+      {num: 7, area: 'Pareja'},
+      {num: 8, area: 'Transformación'},
+      {num: 9, area: 'Expansión'},
+      {num: 10, area: 'Carrera'},
+      {num: 11, area: 'Comunidad'},
+      {num: 12, area: 'Espíritu'}
+    ];
+
+    const COLORES_CASAS = ['#39FF88', '#00D9FF', '#F7B801', '#FF3D81', '#724CF9', '#39FF88'];
+    let rotation = 0;
+    let tick = 0;
+
+    function drawHousesWheel(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = Math.min(canvas.width, canvas.height) / 3;
+
+      // Fondo muy sutil
+      ctx.fillStyle = 'rgba(5,5,16,0.2)';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      // Rotar suavemente
+      rotation += 0.3;
+
+      // Círculos de referencia
+      for(let r = radius * 0.3; r < radius; r += radius * 0.2){
+        ctx.strokeStyle = 'rgba(57,255,136,0.1)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3,3]);
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, r, 0, Math.PI*2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Dibujar sectores de casas
+      for(let i = 0; i < 12; i++){
+        const angleStart = (i / 12) * Math.PI * 2 + (rotation * Math.PI / 180);
+        const angleEnd = ((i + 1) / 12) * Math.PI * 2 + (rotation * Math.PI / 180);
+        const color = COLORES_CASAS[i % 6];
+
+        // Líneas divisoras
+        ctx.strokeStyle = color;
+        ctx.globalAlpha = 0.4;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(
+          centerX + Math.cos(angleStart) * radius,
+          centerY + Math.sin(angleStart) * radius
+        );
+        ctx.stroke();
+
+        // Sector relleno
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.08;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, angleStart, angleEnd);
+        ctx.lineTo(centerX, centerY);
+        ctx.fill();
+
+        // Número y nombre de la casa
+        const midAngle = (angleStart + angleEnd) / 2;
+        const textRadius = radius * 0.65;
+        const textX = centerX + Math.cos(midAngle) * textRadius;
+        const textY = centerY + Math.sin(midAngle) * textRadius;
+
+        ctx.globalAlpha = 0.7;
+        ctx.fillStyle = color;
+        ctx.font = '8px "Press Start 2P"';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(CASAS[i].num, textX, textY - 6);
+        
+        // Pequeño punto de casa
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = color;
+        ctx.fillRect(textX - 1, textY + 4, 2, 2);
+      }
+
+      // Centro brillante
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = '#39FF88';
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 8, 0, Math.PI*2);
+      ctx.fill();
+
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = '#39FF88';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 8, 0, Math.PI*2);
+      ctx.stroke();
+
+      // Círculo externo pulsante
+      const pulse = Math.sin(tick * 0.05) * 0.3 + 0.7;
+      ctx.globalAlpha = pulse * 0.3;
+      ctx.strokeStyle = '#39FF88';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2,2]);
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius + 20, 0, Math.PI*2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      tick++;
+      requestAnimationFrame(drawHousesWheel);
+    }
+    drawHousesWheel();
+
+    // ── OVERLAYS DESCIFRAR ──
+    const GLIFOS = ['1','2','3','4','5','6','7','8','9','10','11','12','◈','✦','★'];
+    for(let id=1;id<=2;id++){
+      const ov = document.getElementById('overlay'+id);
+      if(!ov) continue;
+      for(let i=0;i<80;i++){
+        const g = document.createElement('span');
+        g.className = 'glifo';
+        g.textContent = GLIFOS[Math.floor(Math.random()*GLIFOS.length)];
+        g.style.left = (Math.random()*100)+'%';
+        g.style.top = (Math.random()*100)+'%';
+        g.style.animationDelay = (Math.random()*2)+'s';
+        g.style.animationDuration = (0.3+Math.random()*0.5)+'s';
+        const cols = ['#39FF88','#00D9FF','#724CF9'];
+        g.style.color = cols[Math.floor(Math.random()*cols.length)];
+        ov.appendChild(g);
+      }
+    }
+  </script>
+</body>
+</html>
