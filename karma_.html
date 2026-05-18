@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔄 KARMA Y VIDAS PASADAS 🔄 — Viaje Interactivo a través de los Ciclos del Alma</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --white: #F0F0F0;
+    --fire-red: #FF4444;
+    --orange: #FF8844;
+    --lime: #00FF88;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* CANVAS COSMICO */
+  canvas#cosmic-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.15),
+      rgba(0,0,0,0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* TITULO PRINCIPAL */
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(24px, 5vw, 48px);
+    color: var(--cyan);
+    margin: 40px 0 20px;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--pink), -2px -2px 0 var(--purple);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+    letter-spacing: 2px;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  /* INTRODUCCION */
+  .intro-section {
+    background: #1a1a2e;
+    border: 4px solid var(--gold);
+    padding: 24px;
+    margin: 30px 0;
+    box-shadow: 8px 8px 0 rgba(247,184,1,0.3), 0 0 20px rgba(247,184,1,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .intro-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 0%, rgba(247,184,1,0.1) 25%, transparent 50%, rgba(0,217,255,0.1) 75%, transparent 100%);
+    background-size: 400% 400%;
+    animation: pixel-shimmer 4s ease infinite;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  @keyframes pixel-shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .intro-text {
+    font-size: 11px;
+    line-height: 2.2;
+    color: #D0D0D0;
+    margin-bottom: 16px;
+  }
+
+  .intro-text p {
+    margin-bottom: 12px;
+  }
+
+  .intro-highlight {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+    font-weight: bold;
+  }
+
+  .intro-interactive {
+    background: rgba(0,217,255,0.1);
+    border-left: 4px solid var(--cyan);
+    padding: 12px;
+    margin: 16px 0;
+    border-radius: 0;
+    animation: pulse-intro 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-intro {
+    0%, 100% { box-shadow: inset 0 0 10px rgba(0,217,255,0.3); }
+    50% { box-shadow: inset 0 0 20px rgba(0,217,255,0.6); }
+  }
+
+  .intro-cita {
+    color: var(--cyan);
+    font-size: 12px;
+    text-align: center;
+    margin: 20px 0;
+    text-shadow: 0 0 10px rgba(0,217,255,0.5);
+  }
+
+  /* BOXES COLAPSABLES */
+  .section-box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 20px 0;
+    position: relative;
+    cursor: pointer;
+    background: #1a1a2e;
+    border-color: var(--purple);
+    box-shadow: 8px 8px 0 rgba(114,76,249,0.3), 0 0 20px rgba(114,76,249,0.2);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    max-height: 100px;
+    overflow-y: hidden;
+  }
+
+  .section-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 0%, rgba(114, 76, 249, 0.1) 25%, transparent 50%, rgba(0, 217, 255, 0.1) 75%, transparent 100%);
+    background-size: 400% 400%;
+    animation: pixel-shimmer 4s ease infinite;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .section-box:hover {
+    transform: translate(-2px, -2px) scale(1.02);
+    box-shadow: 10px 10px 0 rgba(114,76,249,0.5), 0 0 30px rgba(114,76,249,0.3);
+    border-color: var(--cyan);
+  }
+
+  .section-box.open {
+    max-height: 10000px;
+    border-color: var(--gold);
+    box-shadow: 8px 8px 0 rgba(247,184,1,0.4), 0 0 20px rgba(247,184,1,0.3);
+    animation: pixel-open 0.4s ease;
+  }
+
+  @keyframes pixel-open {
+    0% { transform: scale(0.98); }
+    50% { transform: scale(1.01); }
+    100% { transform: scale(1); }
+  }
+
+  /* CANVAS EN BOXES */
+  .section-canvas {
+    width: 100%;
+    height: 150px;
+    margin-bottom: 16px;
+    border: 2px solid rgba(0,217,255,0.3);
+    background: rgba(0,0,0,0.3);
+    display: block;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    margin-bottom: 0;
+    color: var(--cyan);
+    letter-spacing: 1px;
+    user-select: none;
+    animation: pixel-glow-text 2s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+  }
+
+  @keyframes pixel-glow-text {
+    0%, 100% { text-shadow: 0 0 5px rgba(0,217,255,0.5); }
+    50% { text-shadow: 0 0 15px rgba(0,217,255,1); }
+  }
+
+  .section-content {
+    font-size: 11px;
+    line-height: 1.8;
+    color: #D0D0D0;
+    margin-top: 16px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .section-content p {
+    margin-bottom: 12px;
+  }
+
+  .section-content strong {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+  .divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    margin: 16px 0;
+    opacity: 0.6;
+  }
+
+  /* WHEEL CONTAINER */
+  .wheel-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .wheel-container {
+    position: relative;
+    flex: 1;
+    min-width: 250px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .karma-wheel-svg {
+    width: 300px;
+    height: 300px;
+    filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.6));
+  }
+
+  /* TAROT CARD */
+  .tarot-card {
+    background: #1a1a2e;
+    border: 3px solid var(--gold);
+    padding: 20px;
+    width: 200px;
+    min-height: 280px;
+    box-shadow: 8px 8px 0 rgba(247,184,1,0.4), 0 0 20px rgba(247,184,1,0.3);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    animation: float-card 3s ease-in-out infinite;
+  }
+
+  @keyframes float-card {
+    0%, 100% { transform: translateY(0) rotateZ(-2deg); }
+    50% { transform: translateY(-15px) rotateZ(2deg); }
+  }
+
+  .card-title {
+    color: var(--gold);
+    font-size: 10px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(247,184,1,0.6);
+    letter-spacing: 1px;
+  }
+
+  .card-number {
+    color: var(--cyan);
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .card-symbol {
+    font-size: 80px;
+    margin: 15px 0;
+    animation: pulse-symbol 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-symbol {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  .card-meaning {
+    font-size: 9px;
+    color: #B0B0D0;
+    line-height: 1.6;
+  }
+
+  /* GRID DE CONCEPTOS */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+  }
+
+  .concept-box {
+    background: rgba(0, 217, 255, 0.1);
+    border: 2px solid var(--cyan);
+    padding: 15px;
+    text-align: center;
+    font-size: 10px;
+    color: #D0D0D0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .concept-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(0,217,255,0.1) 50%, transparent 70%);
+    animation: shimmer 3s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translate(-100%, -100%); }
+    100% { transform: translate(100%, 100%); }
+  }
+
+  .concept-box-title {
+    color: var(--cyan);
+    font-weight: bold;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .concept-box-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* PROGRESS BAR */
+  .progress-container {
+    background: rgba(114, 76, 249, 0.2);
+    border: 2px solid var(--purple);
+    height: 20px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan), var(--pink), var(--purple));
+    width: 0%;
+    transition: width 0.5s ease;
+    animation: progress-glow 1.5s ease-in-out infinite;
+  }
+
+  @keyframes progress-glow {
+    0%, 100% { box-shadow: inset 0 0 10px rgba(0,217,255,0.3); }
+    50% { box-shadow: inset 0 0 20px rgba(0,217,255,0.6); }
+  }
+
+  .progress-text {
+    position: absolute;
+    top: 2px;
+    left: 10px;
+    font-size: 9px;
+    color: var(--cyan);
+    z-index: 2;
+    text-shadow: 0 0 5px rgba(0,217,255,0.8);
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    margin-top: 60px;
+    padding: 30px;
+    border-top: 2px dashed var(--cyan);
+    font-size: 10px;
+    color: #A0A0B0;
+  }
+
+  .footer-highlight {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+    font-weight: bold;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .glitch-title {
+      font-size: 20px;
+    }
+    
+    .section-header {
+      font-size: 12px;
+    }
+    
+    .karma-wheel-svg {
+      width: 200px;
+      height: 200px;
+    }
+    
+    .tarot-card {
+      width: 160px;
+      min-height: 220px;
+    }
+    
+    .card-symbol {
+      font-size: 60px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- CANVAS COSMICO -->
+<canvas id="cosmic-canvas"></canvas>
+<div class="scanlines"></div>
+
+<div class="container">
+  
+  <!-- TITULO PRINCIPAL -->
+  <div class="glitch-title">🔄 KARMA Y VIDAS PASADAS 🔄</div>
+  <div style="text-align: center; color: var(--cyan); font-size: 12px; margin-bottom: 30px; text-shadow: 0 0 10px rgba(0,217,255,0.5); letter-spacing: 2px;">LAS HUELLAS INVISIBLES QUE MOLDEAN TU EXISTENCIA</div>
+
+  <!-- INTRO SECTION -->
+  <div class="intro-section">
+    <div class="intro-text">
+      <p>Bienvenido a un <span class="intro-highlight">VIAJE INTERACTIVO</span> a través de los ciclos eternos de tu alma.</p>
+      
+      <div class="intro-interactive">
+        Este no es un artículo ordinario que leerás pasivamente.
+        <br><br>
+        Es una <span class="intro-highlight">EXPERIENCIA VIVIDA</span> donde explorarás la <span class="intro-highlight">RUEDA KÁRMICA</span> y descubrirás cómo las huellas invisibles del pasado moldean tu presente.
+      </div>
+
+      <p>¿De dónde provienen las experiencias que moldean tu consciencia?</p>
+      <p>¿Por qué ciertos patrones se repiten en tu vida?</p>
+      <p>¿Existe realmente el karma, o es simplemente la memoria del alma buscando sanar?</p>
+
+      <div class="intro-cita">
+        "El destino no es lo que sucede, sino lo que aprendes de lo que sucede"
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCION 1: KARMA COMO MEMORIA -->
+  <div class="section-box">
+    <div class="section-header">
+      ▶ LA LEY DEL KARMA: MEMORIA DEL ALMA
+      <span>↻</span>
+    </div>
+    <div class="section-content">
+      <canvas class="section-canvas" data-canvas="karma-wheel"></canvas>
+      
+      <p><strong>KARMA</strong> proviene del sánscrito y significa <strong>ACCIÓN</strong>.</p>
+      <p>Pero no es un castigo divino. Es <strong>MEMORIA</strong>.</p>
+      
+      <div class="divider"></div>
+
+      <p>Toda experiencia intensa deja una <strong>huella invisible</strong> en tu consciencia:</p>
+
+      <div class="concept-grid">
+        <div class="concept-box">
+          <div class="concept-box-title">🔥 EMOCIONES</div>
+          <div class="concept-box-text">Registros intensos grabados en el alma</div>
+        </div>
+        <div class="concept-box">
+          <div class="concept-box-title">💔 TRAUMAS</div>
+          <div class="concept-box-text">Heridas que buscan ser sanadas</div>
+        </div>
+        <div class="concept-box">
+          <div class="concept-box-title">🔗 VÍNCULOS</div>
+          <div class="concept-box-text">Conexiones que perduran en el tiempo</div>
+        </div>
+        <div class="concept-box">
+          <div class="concept-box-title">⚡ REACCIONES</div>
+          <div class="concept-box-text">Respuestas automáticas que se repiten</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <p>Estas huellas continúan <strong>influyendo en tus decisiones, emociones y relaciones</strong> incluso si no eres consciente de ellas.</p>
+
+      <div class="progress-container">
+        <div class="progress-bar" style="width: 25%;"></div>
+        <div class="progress-text">Consciencia Kármica: 25%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCION 2: HERIDAS INCONSCIENTES -->
+  <div class="section-box">
+    <div class="section-header">
+      ▶ HERIDAS INCONSCIENTES: MEMORIAS QUE VUELVEN
+      <span>↻</span>
+    </div>
+    <div class="section-content">
+      <p><strong>El tiempo psicológico NO es lineal.</strong></p>
+      <p>Puedes dejar atrás un evento años atrás, pero tu alma sigue <strong>viviendo emocionalmente dentro de él</strong>.</p>
+      
+      <div class="divider"></div>
+
+      <p>Una <strong>herida no resuelta</strong> permanece activa en tu inconsciente, condicionando:</p>
+
+      <div class="concept-grid">
+        <div class="concept-box" style="border-color: var(--fire-red); background: rgba(255,68,68,0.1);">
+          <div class="concept-box-title" style="color: var(--fire-red);">❌ MIEDOS</div>
+          <div class="concept-box-text">Sin origen aparente</div>
+        </div>
+        <div class="concept-box" style="border-color: var(--orange); background: rgba(255,136,68,0.1);">
+          <div class="concept-box-title" style="color: var(--orange);">🔄 PATRONES</div>
+          <div class="concept-box-text">Que se repiten constantemente</div>
+        </div>
+        <div class="concept-box" style="border-color: var(--pink); background: rgba(255,61,129,0.1);">
+          <div class="concept-box-title" style="color: var(--pink);">💔 BLOQUEOS</div>
+          <div class="concept-box-text">Emocionales y relacionales</div>
+        </div>
+        <div class="concept-box" style="border-color: var(--lime); background: rgba(0,255,136,0.1);">
+          <div class="concept-box-title" style="color: var(--lime);">⚡ REACCIONES</div>
+          <div class="concept-box-text">Automáticas e inconscientes</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <p>Mientras esas heridas <strong>permanezcan inconscientes</strong>, seguirán moldeando tu percepción de la realidad, tu autoestima y tus decisiones.</p>
+
+      <p style="margin-top: 16px; color: var(--cyan); text-shadow: 0 0 5px rgba(0,217,255,0.6);"><strong>El pasado continúa viviendo dentro de ti.</strong></p>
+
+      <div class="progress-container">
+        <div class="progress-bar" style="width: 50%;"></div>
+        <div class="progress-text">Consciencia Kármica: 50%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCION 3: RUEDA DE LA FORTUNA -->
+  <div class="section-box">
+    <div class="section-header">
+      ▶ LA RUEDA DE LA FORTUNA: ARCANO MAYOR X
+      <span>↻</span>
+    </div>
+    <div class="section-content">
+      <div class="wheel-section">
+        <div class="wheel-container">
+          <svg class="karma-wheel-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- Círculo externo -->
+            <circle cx="150" cy="150" r="140" fill="none" stroke="#F7B801" stroke-width="3"/>
+            
+            <!-- Rueda de 8 segmentos con colores -->
+            <g id="wheel-segments">
+              <path d="M 150 150 L 150 10 A 140 140 0 0 1 249 51" fill="none" stroke="#FF4444" stroke-width="4" opacity="0.7"/>
+              <path d="M 150 150 L 249 51 A 140 140 0 0 1 290 150" fill="none" stroke="#FF8844" stroke-width="4" opacity="0.7"/>
+              <path d="M 150 150 L 290 150 A 140 140 0 0 1 249 249" fill="none" stroke="#39FF88" stroke-width="4" opacity="0.7"/>
+              <path d="M 150 150 L 249 249 A 140 140 0 0 1 150 290" fill="none" stroke="#00D9FF" stroke-width="4" opacity="0.7"/>
+              <path d="M 150 150 L 150 290 A 140 140 0 0 1 51 249" fill="none" stroke="#724CF9" stroke-width="4" opacity="0.7"/>
+              <path d="M 150 150 L 51 249 A 140 140 0 0 1 10 150" fill="none" stroke="#FF3D81" stroke-width="4" opacity="0.7"/>
+              <path d="M 150 150 L 10 150 A 140 140 0 0 1 51 51" fill="none" stroke="#F7B801" stroke-width="4" opacity="0.7"/>
+              <path d="M 150 150 L 51 51 A 140 140 0 0 1 150 10" fill="none" stroke="#00FF88" stroke-width="4" opacity="0.7"/>
+            </g>
+
+            <!-- Centro dorado -->
+            <circle cx="150" cy="150" r="30" fill="#F7B801" opacity="0.8"/>
+            <circle cx="150" cy="150" r="30" fill="none" stroke="#0A0A1B" stroke-width="2"/>
+            <text x="150" y="160" text-anchor="middle" font-size="20" fill="#0A0A1B" font-weight="bold">♻</text>
+
+            <!-- Símbolos en la rueda -->
+            <g id="wheel-symbols" opacity="0.8">
+              <text x="150" y="45" text-anchor="middle" font-size="16">🔥</text>
+              <text x="250" y="165" text-anchor="middle" font-size="16">⚡</text>
+              <text x="150" y="275" text-anchor="middle" font-size="16">💧</text>
+              <text x="50" y="165" text-anchor="middle" font-size="16">💨</text>
+            </g>
+
+            <!-- Línea de animación -->
+            <circle cx="150" cy="150" r="150" fill="none" stroke="none" stroke-dasharray="942" stroke-dashoffset="0" id="wheel-animation"/>
+          </svg>
+        </div>
+
+        <div class="tarot-card">
+          <div class="card-number">X</div>
+          <div class="card-title">LA RUEDA DE LA FORTUNA</div>
+          <div class="card-symbol">🎡</div>
+          <div class="card-meaning">
+            Los ciclos eternos.
+            <br><br>
+            Lo que sube debe bajar.
+            <br><br>
+            La rueda gira sin cesar.
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <p><strong>La Rueda de la Fortuna</strong> representa los <strong>CICLOS ETERNOS</strong> de la existencia.</p>
+      
+      <p style="margin-top: 12px;">No es que la "suerte" te controle. Es que <strong>TODO tiene ciclos</strong>: abundancia y carencia, alegría y tristeza, éxito y aprendizaje.</p>
+
+      <p style="margin-top: 12px;">La rueda <strong>SIEMPRE gira</strong>. Nada permanece estático. El <strong>KARMA es la LEY</strong> que hace girar esa rueda.</p>
+
+      <div class="divider"></div>
+
+      <p style="color: var(--gold); text-shadow: 0 0 5px var(--gold);">Cada ciclo completo trae una oportunidad de aprendizaje y transformación.</p>
+
+      <div class="progress-container">
+        <div class="progress-bar" style="width: 75%;"></div>
+        <div class="progress-text">Consciencia Kármica: 75%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCION 4: DESPERTAR ESPIRITUAL -->
+  <div class="section-box">
+    <div class="section-header">
+      ▶ DESPERTAR ESPIRITUAL: TRANSMUTACIÓN CONSCIENTE
+      <span>↻</span>
+    </div>
+    <div class="section-content">
+      <p><strong>DESPERTAR no significa ser especial.</strong></p>
+      <p>Significa <strong>OBSERVARTE CON HONESTIDAD</strong> y asumir responsabilidad sobre tu proceso interno.</p>
+      
+      <div class="divider"></div>
+
+      <p>El despertar comienza cuando:</p>
+
+      <div class="concept-grid">
+        <div class="concept-box" style="border-color: var(--lime); background: rgba(0,255,136,0.1);">
+          <div class="concept-box-title" style="color: var(--lime);">👁 OBSERVAS</div>
+          <div class="concept-box-text">Sin juzgarte</div>
+        </div>
+        <div class="concept-box" style="border-color: var(--cyan); background: rgba(0,217,255,0.1);">
+          <div class="concept-box-title" style="color: var(--cyan);">🧠 ENTIENDES</div>
+          <div class="concept-box-text">El origen de tus patrones</div>
+        </div>
+        <div class="concept-box" style="border-color: var(--pink); background: rgba(255,61,129,0.1);">
+          <div class="concept-box-title" style="color: var(--pink);">💚 INTEGRAS</div>
+          <div class="concept-box-text">Tus heridas y sombras</div>
+        </div>
+        <div class="concept-box" style="border-color: var(--gold); background: rgba(247,184,1,0.1);">
+          <div class="concept-box-title" style="color: var(--gold);">✨ TRANSMUDAS</div>
+          <div class="concept-box-text">Tu dolor en sabiduría</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <p style="color: var(--cyan); text-shadow: 0 0 5px rgba(0,217,255,0.6);"><strong>El verdadero viaje espiritual no es escapar de tu realidad.</strong></p>
+
+      <p style="margin-top: 12px;">Es <strong>transformarla conscientemente</strong>, hasta que las huellas invisibles del pasado dejen de controlarte.</p>
+
+      <div class="progress-container">
+        <div class="progress-bar" style="width: 90%;"></div>
+        <div class="progress-text">Consciencia Kármica: 90%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCION 5: REFLEXION FINAL -->
+  <div class="section-box">
+    <div class="section-header">
+      ▶ REFLEXIÓN FINAL: EL VIAJE COMPLETADO
+      <span>↻</span>
+    </div>
+    <div class="section-content">
+      <p style="font-size: 12px; color: var(--gold); text-shadow: 0 0 10px rgba(247,184,1,0.8); margin-bottom: 16px; letter-spacing: 1px;"><strong>LAS EXPERIENCIAS DEJAN HUELLAS</strong></p>
+
+      <div class="divider"></div>
+
+      <p>Mientras esas huellas <strong>permanezcan INCONSCIENTES</strong>, seguirán moldeando tu percepción, tus emociones y tus decisiones.</p>
+
+      <p style="margin-top: 12px;">El <strong>VERDADERO KARMA</strong> no es un castigo.</p>
+
+      <p style="margin-top: 12px; color: var(--lime); text-shadow: 0 0 5px rgba(0,255,136,0.6);"><strong>Es la oportunidad de la consciencia.</strong></p>
+
+      <p style="margin-top: 12px;">Cada experiencia difícil contiene una <strong>posibilidad de transformación</strong>. Cada crisis es una <strong>oportunidad de despertar</strong>.</p>
+
+      <div class="divider"></div>
+
+      <p style="margin-top: 16px; color: var(--cyan); text-shadow: 0 0 10px rgba(0,217,255,0.8); text-align: center; line-height: 2;"><strong>El verdadero viaje espiritual no consiste en descubrir quién FUISTE.</strong>
+      <br><br>
+      <strong style="color: var(--gold); text-shadow: 0 0 10px rgba(247,184,1,0.8);">Sino en comprender quién ERES AHORA</strong>
+      <br><br>
+      <strong style="color: var(--lime); text-shadow: 0 0 10px rgba(0,255,136,0.6);">y qué puedes TRANSFORMAR consci</strong><strong style="color: var(--pink); text-shadow: 0 0 10px rgba(255,61,129,0.6);">entemente en ESTA EXISTENCIA.</strong></p>
+
+      <div class="progress-container">
+        <div class="progress-bar" style="width: 100%;"></div>
+        <div class="progress-text">Consciencia Kármica: 100% ✨</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p style="margin-bottom: 16px;">Fin del Viaje Interactivo</p>
+    <p>Este artículo fue diseñado como una <span class="footer-highlight">experiencia viva y participativa</span> para explorar los ciclos eternos del karma.</p>
+    <p style="margin-top: 16px; font-size: 9px; color: #888888;">Que la consciencia ilumine tu camino.</p>
+  </div>
+
+</div>
+
+<script>
+// =================== CANVAS COSMICO ANIMADO ===================
+const cosmicCanvas = document.getElementById('cosmic-canvas');
+const ctx = cosmicCanvas.getContext('2d');
+
+cosmicCanvas.width = window.innerWidth;
+cosmicCanvas.height = window.innerHeight;
+
+let particles = [];
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * cosmicCanvas.width;
+    this.y = Math.random() * cosmicCanvas.height;
+    this.z = Math.random() * cosmicCanvas.width;
+    this.vx = (Math.random() - 0.5) * 2;
+    this.vy = (Math.random() - 0.5) * 2;
+    this.vz = -2;
+    this.size = Math.random() * 2 + 1;
+    this.color = ['rgba(0, 217, 255,', 'rgba(255, 61, 129,', 'rgba(114, 76, 249,', 'rgba(247, 184, 1,'][Math.floor(Math.random() * 4)];
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.z += this.vz;
+
+    if (this.x > cosmicCanvas.width) this.x = 0;
+    if (this.x < 0) this.x = cosmicCanvas.width;
+    if (this.y > cosmicCanvas.height) this.y = 0;
+    if (this.y < 0) this.y = cosmicCanvas.height;
+    if (this.z <= 0) {
+      this.z = cosmicCanvas.width;
+      this.x = Math.random() * cosmicCanvas.width;
+      this.y = Math.random() * cosmicCanvas.height;
+    }
+  }
+
+  draw() {
+    const scale = cosmicCanvas.width / this.z;
+    const x = (this.x - cosmicCanvas.width / 2) * scale + cosmicCanvas.width / 2;
+    const y = (this.y - cosmicCanvas.height / 2) * scale + cosmicCanvas.height / 2;
+    const size = this.size * scale;
+    const alpha = (1 - this.z / cosmicCanvas.width) * 0.8;
+
+    ctx.fillStyle = this.color + alpha + ')';
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 100; i++) {
+  particles.push(new Particle());
+}
+
+function animateCosmic() {
+  ctx.fillStyle = 'rgba(10, 10, 27, 0.1)';
+  ctx.fillRect(0, 0, cosmicCanvas.width, cosmicCanvas.height);
+
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+
+  requestAnimationFrame(animateCosmic);
+}
+
+animateCosmic();
+
+window.addEventListener('resize', () => {
+  cosmicCanvas.width = window.innerWidth;
+  cosmicCanvas.height = window.innerHeight;
+});
+
+// =================== ANIMACION DE SECCIONES COLAPSABLES ===================
+const sectionBoxes = document.querySelectorAll('.section-box');
+
+sectionBoxes.forEach(box => {
+  box.addEventListener('click', function() {
+    this.classList.toggle('open');
+  });
+});
+
+// Abrir primera sección por defecto
+if (sectionBoxes.length > 0) {
+  sectionBoxes[0].classList.add('open');
+}
+
+// =================== ANIMACION DE LA RUEDA KARMICA ===================
+function animateKarmaWheel() {
+  const wheelAnimation = document.getElementById('wheel-animation');
+  if (!wheelAnimation) return;
+  
+  let rotation = 0;
+  
+  function rotate() {
+    rotation += 0.5;
+    wheelAnimation.parentElement.style.transform = `rotate(${rotation}deg)`;
+    requestAnimationFrame(rotate);
+  }
+  
+  rotate();
+}
+
+setTimeout(animateKarmaWheel, 500);
+
+// =================== ANIMACION DE CANVAS EN BOXES ===================
+function animateKarmaWheelCanvas() {
+  const canvas = document.querySelector('[data-canvas="karma-wheel"]');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth;
+  canvas.height = 150;
+
+  let time = 0;
+
+  function animate() {
+    time += 1;
+    
+    // Fondo
+    ctx.fillStyle = 'rgba(10, 10, 27, 0.3)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = 40;
+
+    // Dibujar rueda
+    ctx.strokeStyle = '#F7B801';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Segmentos giratorios
+    ctx.lineWidth = 2;
+    const colors = ['#FF4444', '#FF8844', '#39FF88', '#00D9FF', '#724CF9', '#FF3D81', '#F7B801', '#00FF88'];
+    
+    for (let i = 0; i < 8; i++) {
+      const angle = (time * 2 + i * 45) * Math.PI / 180;
+      ctx.strokeStyle = colors[i];
+      ctx.globalAlpha = 0.7;
+      
+      const x1 = centerX + Math.cos(angle) * (radius - 15);
+      const y1 = centerY + Math.sin(angle) * (radius - 15);
+      const x2 = centerX + Math.cos(angle) * (radius + 15);
+      const y2 = centerY + Math.sin(angle) * (radius + 15);
+      
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+    }
+
+    // Centro dorado
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = '#F7B801';
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 12, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+}
+
+setTimeout(animateKarmaWheelCanvas, 500);
+
+</script>
+
+</body>
+</html>

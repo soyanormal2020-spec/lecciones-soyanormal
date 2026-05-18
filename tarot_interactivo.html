@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarot: ARTÍCULO INTERACTIVO</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Lato:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #08060F;
+    --gold: #F5C842;
+    --violet: #9B5DE5;
+    --crimson: #E63946;
+    --teal: #06D6A0;
+    --cream: #F2E9D8;
+    --moon: #C8B8E8;
+    --fire: #FF6B35;
+    --dark: #130D1F;
+    --dim: #6B5F7A;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Lato', sans-serif;
+    font-size: 18px;
+    line-height: 1.8;
+    overflow-x: hidden;
+    image-rendering: pixelated;
+}
+
+/* CRT SCANLINES */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 2px);
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.3;
+}
+
+/* CRT GLOW */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(8, 6, 15, 0.4) 100%);
+    pointer-events: none;
+    z-index: 9998;
+}
+
+#bgCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.4;
+}
+
+#blackHoleCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0;
+    display: none;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* HERO SECTION */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 20px;
+    position: relative;
+}
+
+.badge {
+    display: inline-block;
+    background: var(--dark);
+    border: 3px solid var(--gold);
+    padding: 8px 16px;
+    font-size: 10px;
+    font-family: 'Press Start 2P', cursive;
+    color: var(--gold);
+    margin-bottom: 24px;
+    box-shadow: 4px 4px 0 var(--violet), 0 0 20px rgba(245, 200, 66, 0.3);
+    animation: glow-gold 2s ease-in-out infinite;
+    letter-spacing: 1px;
+}
+
+@keyframes glow-gold {
+    0%, 100% { box-shadow: 4px 4px 0 var(--violet), 0 0 20px rgba(245, 200, 66, 0.3); }
+    50% { box-shadow: 4px 4px 0 var(--violet), 0 0 40px rgba(245, 200, 66, 0.6); }
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-family: 'Press Start 2P', cursive;
+    color: var(--gold);
+    margin-bottom: 24px;
+    text-shadow: 3px 3px 0 var(--crimson), 0 0 30px rgba(245, 200, 66, 0.5);
+    animation: glitch 3s ease-in-out infinite;
+    letter-spacing: 2px;
+}
+
+@keyframes glitch {
+    0%, 100% { text-shadow: 3px 3px 0 var(--crimson), 0 0 30px rgba(245, 200, 66, 0.5); }
+    92% { text-shadow: 3px 3px 0 var(--crimson), 0 0 30px rgba(245, 200, 66, 0.5); }
+    93% { text-shadow: -3px 0 var(--teal), 3px 0 var(--crimson); }
+    94% { text-shadow: 3px 3px 0 var(--crimson), 0 0 30px rgba(245, 200, 66, 0.5); }
+}
+
+.subtitle {
+    font-size: 20px;
+    color: var(--cream);
+    max-width: 700px;
+    margin: 0 auto 40px;
+    opacity: 0.9;
+    font-style: italic;
+}
+
+.moon-container {
+    width: 120px;
+    height: 120px;
+    margin: 40px auto;
+    position: relative;
+}
+
+.moon-circle {
+    width: 100%;
+    height: 100%;
+    border: 4px solid var(--moon);
+    border-radius: 50%;
+    position: relative;
+    animation: float 4s ease-in-out infinite;
+    box-shadow: 0 0 30px var(--moon), inset 0 0 30px rgba(200, 184, 232, 0.3);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.moon-orbit {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--gold);
+    border-radius: 50%;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: orbit 8s linear infinite;
+    box-shadow: 0 0 15px var(--gold);
+}
+
+@keyframes orbit {
+    from { transform: translateX(-50%) rotate(0deg) translateX(60px) rotate(0deg); }
+    to { transform: translateX(-50%) rotate(360deg) translateX(60px) rotate(-360deg); }
+}
+
+/* COLOR SHIFTER ANIMATION */
+@keyframes colorShift {
+    0% { color: var(--gold); text-shadow: 0 0 10px rgba(245, 200, 66, 0.5); }
+    25% { color: var(--teal); text-shadow: 0 0 10px rgba(6, 214, 160, 0.5); }
+    50% { color: var(--violet); text-shadow: 0 0 10px rgba(155, 93, 229, 0.5); }
+    75% { color: #FF6B35; text-shadow: 0 0 10px rgba(255, 107, 53, 0.5); }
+    100% { color: var(--gold); text-shadow: 0 0 10px rgba(245, 200, 66, 0.5); }
+}
+
+.color-shifter {
+    animation: colorShift 4s ease-in-out infinite;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-family: 'Press Start 2P', cursive;
+    color: var(--gold);
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 0 var(--dark);
+    position: relative;
+    display: inline-block;
+    letter-spacing: 2px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--teal);
+    box-shadow: 0 0 10px var(--teal);
+}
+
+/* MÓDULO COLLAPSIBLE */
+.module-container {
+    background: var(--dark);
+    border: 3px solid var(--dim);
+    margin-bottom: 32px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.module-container:hover {
+    border-color: var(--violet);
+    box-shadow: 6px 6px 0 rgba(155, 93, 229, 0.3);
+}
+
+.module-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    cursor: pointer;
+    user-select: none;
+    background: linear-gradient(135deg, rgba(155, 93, 229, 0.1), rgba(6, 214, 160, 0.1));
+}
+
+.module-header:hover {
+    background: linear-gradient(135deg, rgba(155, 93, 229, 0.2), rgba(6, 214, 160, 0.2));
+}
+
+.module-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.module-number {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background: var(--gold);
+    color: var(--dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 0 15px var(--gold);
+}
+
+.module-btn {
+    background: var(--dark);
+    border: 3px solid var(--dim);
+    padding: 10px 16px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+}
+
+.module-btn:hover {
+    transform: translate(-2px, -2px);
+}
+
+.module-btn.mod1 { border-color: var(--gold); color: var(--gold); }
+.module-btn.mod1:hover { box-shadow: 6px 6px 0 var(--gold), 0 0 20px var(--gold); }
+
+.module-btn.mod2 { border-color: var(--crimson); color: var(--crimson); }
+.module-btn.mod2:hover { box-shadow: 6px 6px 0 var(--crimson), 0 0 20px var(--crimson); }
+
+.module-btn.mod3 { border-color: var(--teal); color: var(--teal); }
+.module-btn.mod3:hover { box-shadow: 6px 6px 0 var(--teal), 0 0 20px var(--teal); }
+
+.module-btn.mod4 { border-color: var(--violet); color: var(--violet); }
+.module-btn.mod4:hover { box-shadow: 6px 6px 0 var(--violet), 0 0 20px var(--violet); }
+
+.toggle-icon {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+.module-container.active .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.module-content {
+    display: none;
+    padding: 32px;
+    border-top: 2px solid var(--dim);
+    animation: slideDown 0.4s ease;
+}
+
+.module-content.active {
+    display: block;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+    background: var(--dark);
+    border: 3px solid var(--dim);
+    padding: 24px;
+    margin-bottom: 24px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 rgba(155, 93, 229, 0.3);
+    border-color: var(--violet);
+}
+
+.card-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16px;
+    color: var(--teal);
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+}
+
+.card-content {
+    font-size: 17px;
+    line-height: 1.9;
+    color: var(--cream);
+}
+
+.quote-box {
+    background: linear-gradient(135deg, rgba(155, 93, 229, 0.1), rgba(6, 214, 160, 0.1));
+    border-left: 4px solid var(--gold);
+    border-top: 2px solid var(--violet);
+    border-right: 2px solid var(--teal);
+    padding: 20px;
+    margin: 24px 0;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 2;
+    color: var(--moon);
+    box-shadow: inset 0 0 20px rgba(155, 93, 229, 0.2);
+}
+
+.quote-author {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    font-family: 'Press Start 2P', cursive;
+    letter-spacing: 1px;
+}
+
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 24px 0;
+}
+
+@media (max-width: 768px) {
+    .two-col {
+        grid-template-columns: 1fr;
+    }
+}
+
+.col-box {
+    background: var(--dark);
+    border: 3px solid var(--dim);
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.col-box:hover {
+    border-color: var(--violet);
+    box-shadow: 6px 6px 0 rgba(155, 93, 229, 0.3);
+}
+
+.col-box h3 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 13px;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+}
+
+.col-box.positive h3 { color: var(--teal); }
+.col-box.negative h3 { color: var(--crimson); }
+
+.col-box ul { list-style: none; }
+
+.col-box li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--cream);
+}
+
+.col-box li:last-child { border: none; }
+
+.col-box.positive li::before { content: '꩜ '; color: var(--teal); font-weight: bold; margin-right: 8px; }
+.col-box.negative li::before { content: '✕ '; color: var(--crimson); font-weight: bold; margin-right: 8px; }
+
+.pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 24px 0;
+}
+
+@media (max-width: 768px) {
+    .pillars {
+        grid-template-columns: 1fr;
+    }
+}
+
+.pillar {
+    background: var(--dark);
+    border: 3px solid var(--dim);
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.pillar:hover {
+    border-color: var(--teal);
+    box-shadow: 6px 6px 0 rgba(6, 214, 160, 0.3);
+}
+
+.pillar-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.pillar h4 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 11px;
+    color: var(--teal);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+.pillar p {
+    font-size: 14px;
+    color: var(--cream);
+    line-height: 1.7;
+}
+
+footer {
+    background: var(--dark);
+    border-top: 3px solid var(--gold);
+    padding: 30px 20px;
+    text-align: center;
+    margin-top: 80px;
+    color: var(--dim);
+    font-size: 13px;
+    font-family: 'Press Start 2P', cursive;
+    letter-spacing: 1px;
+}
+
+.footer-stars {
+    color: var(--gold);
+    letter-spacing: 8px;
+    margin-bottom: 16px;
+    font-size: 12px;
+}
+
+.floating-word {
+    position: fixed;
+    font-family: 'Press Start 2P', cursive;
+    color: var(--gold);
+    font-size: 12px;
+    text-shadow: 0 0 15px var(--gold);
+    pointer-events: none;
+    z-index: 9997;
+    animation: floatUp 3s ease-out forwards;
+}
+
+@keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-200px); }
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+    z-index: 9997;
+}
+
+/* TAROT CARD STYLE */
+.tarot-card {
+    position: fixed;
+    width: 60px;
+    height: 90px;
+    background: linear-gradient(135deg, var(--gold), var(--fire));
+    border: 2px solid var(--gold);
+    border-radius: 4px;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 9997;
+    box-shadow: 0 0 20px rgba(245, 200, 66, 0.6);
+    animation: cardFloat 3s ease-in infinite;
+}
+
+@keyframes cardFloat {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(200px) rotate(360deg); opacity: 0; }
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    .hero-title { font-size: 2rem; }
+    .section-title { font-size: 1.5rem; }
+    .module-header { flex-direction: column; align-items: flex-start; }
+}
+
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+<canvas id="blackHoleCanvas"></canvas>
+
+<div class="container">
+    <!-- HERO SECTION -->
+    <section class="hero fade-in">
+        <div class="badge"> ARTÍCULO INTERACTIVO</div>
+        <h1 class="hero-title">TAROT</h1>
+        <p class="subtitle">Guía completa: desde tus primeros pasos hasta la práctica ética y transformadora</p>
+        
+        <div class="moon-container">
+            <div class="moon-circle">
+                <div class="moon-orbit"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INTRODUCCIÓN -->
+    <section class="fade-in" style="padding: 60px 20px; background: linear-gradient(135deg, rgba(155, 93, 229, 0.08), rgba(6, 214, 160, 0.08)); border-top: 3px solid var(--gold); border-bottom: 3px solid var(--gold);">
+        <div style="max-width: 900px; margin: 0 auto;">
+            <h2 class="section-title" style="margin-bottom: 40px;">Primeros Pasos para la Práctica de un Tarot CONSCIENTE</h2>
+            
+            <div style="font-size: 18px; line-height: 2; color: var(--cream); text-align: justify;">
+                <p style="margin-bottom: 24px;">Hay algo extraño que pasa con el Tarot.</p>
+                
+                <p style="margin-bottom: 24px;">Aunque muchas personas sienten curiosidad por él, también existe muchísimo miedo, confusión y desinformación alrededor del tema.</p>
+                
+                <p style="margin-bottom: 24px;">Algunos creen que es magia. Otros creen que sirve para "adivinar el futuro". Hay quienes piensan que las cartas tienen poderes oscuros. Y también están quienes simplemente miran una baraja y piensan: <em style="color: var(--teal);">"No entiendo absolutamente nada de esto."</em></p>
+                
+                <p style="margin-bottom: 24px;">Y honestamente… es normal.</p>
+                
+                <p style="margin-bottom: 24px;">Porque cuando alguien se acerca por primera vez al Tarot, suele encontrarse con un universo lleno de símbolos, nombres extraños, arcanos, números, imágenes y significados que parecen imposibles de memorizar.</p>
+                
+                <p style="margin-bottom: 24px;">Entonces aparece la gran pregunta: <strong style="color: var(--gold);">"¿Por dónde empiezo?"</strong></p>
+                
+                <p style="margin-bottom: 24px;">Este espacio fue creado exactamente para eso.</p>
+                
+                <p style="margin-bottom: 24px;">No para convertirte en "vidente". No para llenarte de supersticiones. Y mucho menos para enseñarte a depender de las cartas para vivir tu vida.</p>
+                
+                <p style="margin-bottom: 24px;">La intención es otra.</p>
+                
+                <p style="margin-bottom: 24px;"><strong style="color: var(--teal);">Aprender a mirar el Tarot como un lenguaje simbólico de autoconocimiento, consciencia y transformación personal.</strong></p>
+                
+                <p style="margin-bottom: 24px;">Porque el Tarot no sólo habla de "lo que pasará".</p>
+                
+                <p style="margin-bottom: 24px;">Habla de emociones. De heridas. De patrones. De decisiones. De procesos internos. De la manera en que vivimos nuestra propia historia.</p>
+                
+                <p style="margin-bottom: 24px;">Y cuando comienzas a comprender sus símbolos, algo cambia: <em style="color: var(--teal); font-weight: bold;">las cartas dejan de sentirse como objetos misteriosos… y empiezan a convertirse en espejos.</em></p>
+                
+                <div style="background: var(--dark); border: 3px solid var(--teal); padding: 28px; margin: 30px 0; border-radius: 4px;">
+                    <p style="margin-bottom: 20px;"><strong style="color: var(--teal); font-size: 19px;">Aquí podrás aprender desde cero:</strong></p>
+                    <ul style="list-style: none; margin: 0;">
+                        <li style="margin-bottom: 16px; font-size: 17px;">꩜ Qué son los Arcanos</li>
+                        <li style="margin-bottom: 16px; font-size: 17px;">꩜ Cómo funciona una baraja</li>
+                        <li style="margin-bottom: 16px; font-size: 17px;">꩜ Cómo comenzar a interpretar símbolos</li>
+                        <li style="margin-bottom: 16px; font-size: 17px;">꩜ Cómo desarrollar intuición con coherencia</li>
+                        <li style="margin-bottom: 0; font-size: 17px;">꩜ Cómo acercarte al Tarot de una manera ética, consciente y humana</li>
+                    </ul>
+                </div>
+                
+                <p style="margin-bottom: 24px;">Y sí… también queremos que el proceso sea divertido.</p>
+                
+                <p style="margin-bottom: 24px;">Porque aprender Tarot no tiene que sentirse rígido, solemne o inaccesible.</p>
+                
+                <p style="margin-bottom: 24px;">Puede sentirse como abrir una puerta hacia un universo simbólico lleno de imaginación, reflexión y descubrimiento personal.</p>
+                
+                <p style="margin-bottom: 24px;">Así que tranquilo. No necesitas "tener dones". No necesitas saber nada todavía.</p>
+                
+                <p style="font-size: 20px; color: var(--gold); font-weight: bold; text-align: center; margin: 40px 0;">Solo curiosidad. 🃏✨</p>
+
+                <p style="font-size: 16px; color: var(--dim); font-family: 'Press Start 2P', cursive; letter-spacing: 1px; text-align: center; margin: 50px 0 40px;">↓ SELECCIONA UN MÓDULO ↓</p>
+
+                <div style="background: linear-gradient(135deg, rgba(6, 214, 160, 0.15), rgba(155, 93, 229, 0.1)); border: 2px solid var(--teal); padding: 28px; border-radius: 4px;">
+                    <p style="margin-bottom: 20px; font-size: 18px; text-align: center;"><strong style="color: var(--teal); font-size: 19px;">Porque todo gran viaje comienza con una pregunta… y el Tarot está lleno de ellas.</strong></p>
+                    <p style="margin-bottom: 20px; font-size: 18px;">En este artículo interactivo encontrarás <span class="color-shifter" style="font-weight: bold;">4 módulos esenciales</span> para comenzar a comprender el Tarot desde una visión más consciente, simbólica y transformadora.</p>
+                    <p style="margin-bottom: 20px; font-size: 18px;">Cada módulo fue diseñado para que puedas explorar, aprender y reflexionar paso a paso:</p>
+                    <p style="margin-bottom: 20px; font-size: 18px; line-height: 2.4;">
+                        <span class="color-shifter" style="font-weight: bold;">Primeros pasos en el Tarot</span> ꩜ 
+                        <span class="color-shifter" style="font-weight: bold;">Tarot ético vs Tarot superficial</span> ꩜ 
+                        <span class="color-shifter" style="font-weight: bold;">Trabajo personal e intuición</span> ꩜ 
+                        <span class="color-shifter" style="font-weight: bold;">Consideraciones éticas en la lectura</span>
+                    </p>
+                    <p style="font-size: 19px; text-align: center; color: var(--teal); font-weight: bold; margin-top: 20px;">Haz clic en cada módulo y continúa el viaje.🚪꩜</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MÓDULOS DESPLEGABLES -->
+    <section style="padding: 60px 20px;">
+        <div style="max-width: 900px; margin: 0 auto;">
+
+            <!-- MÓDULO 1: PRIMEROS PASOS -->
+            <div class="module-container fade-in">
+                <div class="module-header" onclick="toggleModule(0)">
+                    <h3 class="module-title">
+                        <span class="module-number">1</span>
+                        PRIMEROS PASOS EN EL TAROT
+                    </h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="module-content" id="module-0">
+                    <canvas id="arcanoRainCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.1;"></canvas>
+                    
+                    <div class="card" style="margin-bottom: 40px;">
+                        <div class="card-title">¿QUÉ ES EL TAROT?</div>
+                        <div class="card-content">
+                            El Tarot no es solo un juego de cartas: es un oráculo vivo. Compuesto por <strong style="color: var(--gold);">22 Arcanos mayores</strong> y <strong style="color: var(--gold);">56 Arcanos menores</strong>, cada carta combina nombre, número, símbolos y color en un lenguaje simbólico que accede a nuestra percepción más profunda.
+                        </div>
+                    </div>
+
+                    <div class="two-col">
+                        <div class="col-box">
+                            <h3 style="color: var(--gold); text-align: center; font-size: 28px; margin-bottom: 8px;">22</h3>
+                            <p style="text-align: center; font-size: 15px;">ARCANOS MAYORES<br><span style="font-size: 13px;">arquetipos universales · viaje de la consciencia</span></p>
+                        </div>
+                        <div class="col-box">
+                            <h3 style="color: var(--gold); text-align: center; font-size: 28px; margin-bottom: 8px;">56</h3>
+                            <p style="text-align: center; font-size: 15px;">ARCANOS MENORES<br><span style="font-size: 13px;">4 palos · 4 elementos · 4 dimensiones del ser</span></p>
+                        </div>
+                    </div>
+
+                    <div class="quote-box">
+                        <p>"El Tarot es un ser que nos permite descifrar los aprendizajes que la consciencia debe recorrer en su proceso de individuación. A través de los arcanos mayores, los arcanos menores y los arquetipos simbólicos correspondientes, se nos revelan los escenarios y sucesos de nuestra vida que necesitan ser observados para tomar la responsabilidad y soberanía del estado de nuestro ser."</p>
+                        <div class="quote-author">— Octavio · Astrólogo y Tarotista</div>
+                    </div>
+
+                    <h3 style="font-family: 'Press Start 2P', cursive; font-size: 15px; color: var(--teal); margin-top: 40px; margin-bottom: 28px; letter-spacing: 1px;">LOS PRIMEROS PASOS</h3>
+
+                    <div style="background: var(--dark); border-left: 4px solid var(--gold); padding: 20px; margin-bottom: 24px;">
+                        <h4 style="font-family: 'Press Start 2P', cursive; color: var(--teal); font-size: 14px; margin-bottom: 12px;">Paso 1: ¿Autodidacta o con acompañamiento?</h4>
+                        <p style="font-size: 16px; margin-bottom: 16px;">Este es el paso más crucial. Si aprendes solo, estos libros son una guía profunda para comenzar:</p>
+                        <div style="background: rgba(155, 93, 229, 0.1); padding: 12px; margin: 8px 0; border-left: 3px solid var(--teal); font-size: 15px;">
+                            <strong style="color: var(--teal);">Jung y el Tarot</strong> - Sallie Nichols
+                        </div>
+                        <div style="background: rgba(155, 93, 229, 0.1); padding: 12px; margin: 8px 0; border-left: 3px solid var(--teal); font-size: 15px;">
+                            <strong style="color: var(--teal);">La vía del Tarot</strong> - Jodorowsky · Costa, Marianne
+                        </div>
+                    </div>
+
+                    <div style="background: var(--dark); border-left: 4px solid var(--gold); padding: 20px; margin-bottom: 24px;">
+                        <h4 style="font-family: 'Press Start 2P', cursive; color: var(--teal); font-size: 14px; margin-bottom: 12px;">Paso 2: Elige tu baraja y tu corriente</h4>
+                        <p style="font-size: 16px; margin-bottom: 16px;">Existen miles de barajas. El tarot que elijas será una extensión de tu percepción.</p>
+                        <div class="two-col">
+                            <div class="col-box">
+                                <h3 style="color: var(--teal);">TAROT DE MARSELLA</h3>
+                                <p style="font-size: 15px;">Arte escénico que invita a la imaginación e intuición. Ideal para quienes trabajan con imágenes arquetípicas.</p>
+                            </div>
+                            <div class="col-box">
+                                <h3 style="color: var(--teal);">TAROT RIDER</h3>
+                                <p style="font-size: 15px;">Rico en simbolismo. Ideal si te inclinas hacia el mundo simbólico y la interpretación intuitiva.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--dark); border-left: 4px solid var(--gold); padding: 20px; margin-bottom: 24px;">
+                        <h4 style="font-family: 'Press Start 2P', cursive; color: var(--teal); font-size: 14px; margin-bottom: 12px;">Paso 3: Estudia - La intuición necesita vocabulario</h4>
+                        <p style="font-size: 16px;">El Tarot no se reduce a "lo que siento". Para llegar a sus significados profundos, es necesario integrar nuevos conceptos que amplíen tu percepción.</p>
+                        <div style="background: linear-gradient(135deg, rgba(6, 214, 160, 0.15), rgba(155, 93, 229, 0.1)); border: 2px solid var(--teal); padding: 16px; margin-top: 16px; font-style: italic; font-size: 15px;">
+                            La intuición sin conocimiento es como leer en un idioma que no dominas: captas fragmentos, pero pierdes la historia completa.
+                        </div>
+                    </div>
+                </div>
+                <button class="module-btn mod1" onclick="toggleModule(0)">EXPLORAR MÓDULO</button>
+            </div>
+
+            <!-- MÓDULO 2: ÉTICO VS SUPERFICIAL -->
+            <div class="module-container fade-in" style="margin-top: 32px;">
+                <div class="module-header" onclick="toggleModule(1)">
+                    <h3 class="module-title">
+                        <span class="module-number">2</span>
+                        TAROT ÉTICO vs SUPERFICIAL
+                    </h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="module-content" id="module-1">
+                    <div style="font-size: 17px; color: var(--cream); margin-bottom: 30px; text-align: center; max-width: 800px; margin-left: auto; margin-right: auto;">
+                        <p>No todas las lecturas son iguales. Aquí la diferencia crucial entre una práctica superficial y una que realmente transforma.</p>
+                    </div>
+
+                    <div class="two-col" style="margin-bottom: 40px;">
+                        <div class="col-box negative">
+                            <h3>⚠ TAROT SUPERFICIAL</h3>
+                            <p style="font-size: 15px; margin-bottom: 16px;">Lo que NO transforma</p>
+                            <ul>
+                                <li>"¿Mi pareja me quiere o me engaña?"</li>
+                                <li>Predicciones fatalistas y dramáticas</li>
+                                <li>Las cartas "deciden" por la persona</li>
+                                <li>Lecturas semanales sin consciencia</li>
+                                <li>Interpretaciones cargadas de prejuicio</li>
+                                <li>Datos vanos sin crecimiento interno</li>
+                            </ul>
+                        </div>
+                        <div class="col-box positive">
+                            <h3>꩜ TAROT ÉTICO</h3>
+                            <p style="font-size: 15px; margin-bottom: 16px;">Lo que SÍ transforma</p>
+                            <ul>
+                                <li>Preguntas que generan autoconocimiento</li>
+                                <li>Las dificultades como aprendizajes</li>
+                                <li>La persona toma soberanía de su proceso</li>
+                                <li>Espacios seguros y libres de juicio</li>
+                                <li>Intuición con coherencia y orden</li>
+                                <li>Herramienta de transformación real</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">DEFINICIÓN</div>
+                        <div class="card-content">
+                            <strong style="color: var(--gold);">Tarot superficial</strong> es toda práctica orientada sólo a determinar circunstancias del futuro sin trascendencia en el crecimiento interno. El fatalismo no existe: todo aspecto difícil en la tirada es un <strong style="color: var(--teal);">desafío evolutivo</strong> que necesita aprenderse.
+                        </div>
+                    </div>
+
+                    <div class="quote-box">
+                        <p>"El Tarot es un ser que nos permite descifrar los aprendizajes que la consciencia debe recorrer en su proceso de individuación. Se nos revelan los escenarios y sucesos de nuestra vida que necesitan ser observados para tomar la responsabilidad y soberanía del estado de nuestro ser."</p>
+                        <div class="quote-author">— Octavio · Astrólogo y Tarotista</div>
+                    </div>
+
+                    <div style="background: var(--dark); border: 3px solid var(--teal); padding: 24px; margin-top: 30px;">
+                        <h3 style="font-family: 'Press Start 2P', cursive; font-size: 13px; color: var(--teal); margin-bottom: 20px; letter-spacing: 1px;">PREGUNTAS QUE SÍ TRANSFORMAN</h3>
+                        <div style="display: grid; gap: 16px;">
+                            <div style="display: flex; gap: 12px; align-items: flex-start;">
+                                <span style="color: var(--teal); font-size: 18px; flex-shrink: 0;">🌙</span>
+                                <p style="font-size: 16px; color: var(--cream);">¿Qué necesito observar de esta situación para crecer?</p>
+                            </div>
+                            <div style="display: flex; gap: 12px; align-items: flex-start;">
+                                <span style="color: var(--teal); font-size: 18px; flex-shrink: 0;">🌙</span>
+                                <p style="font-size: 16px; color: var(--cream);">¿Qué parte de mí está siendo llamada a responsabilizarse?</p>
+                            </div>
+                            <div style="display: flex; gap: 12px; align-items: flex-start;">
+                                <span style="color: var(--teal); font-size: 18px; flex-shrink: 0;">🌙</span>
+                                <p style="font-size: 16px; color: var(--cream);">¿Qué aprendizaje trae este escenario para mi proceso evolutivo?</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="module-btn mod2" onclick="toggleModule(1)">EXPLORAR MÓDULO</button>
+            </div>
+
+            <!-- MÓDULO 3: TRABAJO PERSONAL -->
+            <div class="module-container fade-in" style="margin-top: 32px;">
+                <div class="module-header" onclick="toggleModule(2)">
+                    <h3 class="module-title">
+                        <span class="module-number">3</span>
+                        TRABAJO PERSONAL E INTUICIÓN
+                    </h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="module-content" id="module-2">
+                    <div class="card">
+                        <div class="card-title">ANTES DE LEER A OTROS, LÉETE A TI MISMO</div>
+                        <div class="card-content">
+                            El Tarot es un espejo. Para que ese espejo funcione con honestidad, quien lo sostiene necesita haber mirado primero <strong style="color: var(--teal);">su propio reflejo</strong>. Sin trabajo personal, la lectura proyecta heridas propias sobre el consultante.
+                        </div>
+                    </div>
+
+                    <div class="pillars">
+                        <div class="pillar">
+                            <span class="pillar-icon">🌑</span>
+                            <h4>Reconocer la sombra</h4>
+                            <p>Sanar las heridas del mundo interno antes de guiar el de otros.</p>
+                        </div>
+                        <div class="pillar">
+                            <span class="pillar-icon">🪞</span>
+                            <h4>Introspección honesta</h4>
+                            <p>Observar sin juzgar, empezando por uno mismo.</p>
+                        </div>
+                        <div class="pillar">
+                            <span class="pillar-icon">⚖️</span>
+                            <h4>Ética y empatía</h4>
+                            <p>Ofrecer espacios seguros, libres de prejuicios.</p>
+                        </div>
+                    </div>
+
+                    <div class="quote-box">
+                        <p>"El Tarot es un ser que nos permite descifrar los aprendizajes que la consciencia debe recorrer en su proceso de individuación. Para llegar a sus significados profundos es necesario integrar nuevos conceptos que amplíen la percepción."</p>
+                        <div class="quote-author">— Octavio · Astrólogo y Tarotista</div>
+                    </div>
+
+                    <div class="two-col" style="margin-top: 40px;">
+                        <div class="col-box negative">
+                            <h3>SIN TRABAJO PERSONAL</h3>
+                            <ul>
+                                <li>Lecturas cargadas de prejuicios</li>
+                                <li>Etiquetas que encierran al ser</li>
+                                <li>Proyección de heridas propias</li>
+                                <li>Fatalismo y drama innecesario</li>
+                            </ul>
+                        </div>
+                        <div class="col-box positive">
+                            <h3>CON TRABAJO PERSONAL</h3>
+                            <ul>
+                                <li>Espacios empáticos y seguros</li>
+                                <li>Guía hacia el autoconocimiento</li>
+                                <li>Intuición con orden y coherencia</li>
+                                <li>Transformación real y consciente</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <button class="module-btn mod3" onclick="toggleModule(2)">EXPLORAR MÓDULO</button>
+            </div>
+
+            <!-- MÓDULO 4: CONSIDERACIONES ÉTICAS -->
+            <div class="module-container fade-in" style="margin-top: 32px;">
+                <div class="module-header" onclick="toggleModule(3)">
+                    <h3 class="module-title">
+                        <span class="module-number">4</span>
+                        CONSIDERACIONES ÉTICAS
+                    </h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="module-content" id="module-3">
+                    <div class="card">
+                        <div class="card-title">CLAVES PARA UNA LECTURA ÉTICA Y RESPONSABLE</div>
+                        <div class="card-content">
+                            La práctica del Tarot es un acto de poder compartido. Cada lectura es una ventana al inconsciente, y eso requiere responsabilidad.
+                        </div>
+                    </div>
+
+                    <div style="background: var(--dark); border-left: 4px solid var(--gold); padding: 20px; margin-bottom: 24px;">
+                        <h4 style="font-family: 'Press Start 2P', cursive; color: var(--teal); font-size: 14px; margin-bottom: 12px;">1. Intención clara</h4>
+                        <p style="font-size: 16px;">Toda lectura debe comenzar con una <strong>intención consciente</strong>. La intención define la calidad de lo que el Tarot revelará.</p>
+                    </div>
+
+                    <div style="background: var(--dark); border-left: 4px solid var(--gold); padding: 20px; margin-bottom: 24px;">
+                        <h4 style="font-family: 'Press Start 2P', cursive; color: var(--teal); font-size: 14px; margin-bottom: 12px;">2. Espacio sagrado</h4>
+                        <p style="font-size: 16px;">Crea un espacio limpio, ordenado y libre de energías caóticas. El espacio físico refleja el espacio mental y emocional.</p>
+                    </div>
+
+                    <div style="background: var(--dark); border-left: 4px solid var(--gold); padding: 20px; margin-bottom: 24px;">
+                        <h4 style="font-family: 'Press Start 2P', cursive; color: var(--teal); font-size: 14px; margin-bottom: 12px;">3. Presencia empática</h4>
+                        <p style="font-size: 16px;">El Tarotista es un <strong>guía, no un oráculo</strong>. Tu rol es escuchar activamente y acompañar sin juzgar.</p>
+                    </div>
+
+                    <div style="background: var(--dark); border-left: 4px solid var(--gold); padding: 20px; margin-bottom: 24px;">
+                        <h4 style="font-family: 'Press Start 2P', cursive; color: var(--teal); font-size: 14px; margin-bottom: 12px;">4. Lectura de conjunto</h4>
+                        <p style="font-size: 16px;">Ninguna carta habla sola. Observa los diálogos entre arcanos, los elementos, los números. El mensaje está en la trama.</p>
+                    </div>
+
+                    <div style="background: var(--dark); border-left: 4px solid var(--gold); padding: 20px; margin-bottom: 24px;">
+                        <h4 style="font-family: 'Press Start 2P', cursive; color: var(--teal); font-size: 14px; margin-bottom: 12px;">5. Cierre consciente</h4>
+                        <p style="font-size: 16px;">Agradecer a las cartas, al consultante y a la energía. Un buen cierre ancla el mensaje y evita que queden hilos abiertos.</p>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(245, 200, 66, 0.15), rgba(155, 93, 229, 0.1)); border: 3px solid var(--gold); padding: 24px; margin-top: 40px; text-align: center;">
+                        <p style="font-size: 12px; font-family: 'Press Start 2P', cursive; color: var(--gold); letter-spacing: 1px; margin-bottom: 16px;">MENSAJE FINAL</p>
+                        <p style="font-size: 17px; line-height: 2; color: var(--cream);">El tarot no predice un destino inamovible: revela energías presentes y caminos posibles. El arte de <strong style="color: var(--teal);">descifrar</strong> está en traducir símbolos en consciencia, y consciencia en libertad.</p>
+                    </div>
+                </div>
+                <button class="module-btn mod4" onclick="toggleModule(3)">EXPLORAR MÓDULO</button>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-stars">꩜ ꩜ ꩜</div>
+    <div style="margin-bottom: 16px;">TAROT · MASTERCLASS INTERACTIVA</div>
+    <div style="font-size: 12px; color: var(--dim);">Fuente principal: Octavio · Astrólogo y Tarotista<br>Diseño: Pixel Art Retro Interactivo</div>
+</footer>
+
+<script>
+// ===== BACKGROUND PARTICLES =====
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const particles = [];
+const particleCount = 60;
+const colors = ['#F5C842', '#9B5DE5', '#06D6A0', '#C8B8E8'];
+
+class Particle {
+    constructor() {
+        this.reset();
+    }
+    
+    reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.speedY = (Math.random() - 0.5) * 0.3;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.opacity = Math.random() * 0.5 + 0.2;
+    }
+    
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        
+        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+            this.reset();
+        }
+    }
+    
+    draw() {
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = this.opacity;
+        ctx.fillRect(Math.floor(this.x), Math.floor(this.y), this.size, this.size);
+    }
+}
+
+for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(particle => {
+        particle.update();
+        particle.draw();
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(animate);
+}
+animate();
+
+// ===== MODULE TOGGLE =====
+function toggleModule(index) {
+    const content = document.getElementById(`module-${index}`);
+    const container = content.parentElement;
+    
+    content.classList.toggle('active');
+    container.classList.toggle('active');
+    
+    // Trigger animation for specific module
+    if (content.classList.contains('active')) {
+        if (index === 0) startArcanoRain();
+        if (index === 1) spawnConfettiWords();
+        if (index === 2) startBlackHole();
+        if (index === 3) spawnEthicalCards();
+    }
+}
+
+// ===== ANIMACIÓN 1: LLUVIA DE ARCANOS =====
+function startArcanoRain() {
+    const canvas = document.getElementById('arcanoRainCanvas');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    
+    const arcanos = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX', 'XXI', '0'];
+    const rainParticles = [];
+    
+    for (let i = 0; i < 15; i++) {
+        rainParticles.push({
+            x: Math.random() * canvas.width,
+            y: -20,
+            text: arcanos[Math.floor(Math.random() * arcanos.length)],
+            speed: 2 + Math.random() * 2,
+            opacity: 1
+        });
+    }
+    
+    function drawRain() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.font = 'bold 20px Arial';
+        ctx.textAlign = 'center';
+        
+        rainParticles.forEach(p => {
+            ctx.fillStyle = `rgba(245, 200, 66, ${p.opacity})`;
+            ctx.fillText(p.text, p.x, p.y);
+            p.y += p.speed;
+            p.opacity -= 0.01;
+            
+            if (p.y > canvas.height || p.opacity <= 0) {
+                p.y = -20;
+                p.opacity = 1;
+            }
+        });
+        
+        requestAnimationFrame(drawRain);
+    }
+    
+    drawRain();
+}
+
+// ===== ANIMACIÓN 2: CONFETTI PALABRAS =====
+function spawnConfettiWords() {
+    const words = ['CONSCIENCIA', 'TRANSFORMACIÓN', 'ÉTICA', 'TAROT', 'SABIDURÍA'];
+    
+    for (let i = 0; i < 12; i++) {
+        setTimeout(() => {
+            const word = document.createElement('div');
+            word.className = 'floating-word';
+            word.textContent = words[Math.floor(Math.random() * words.length)];
+            word.style.left = Math.random() * window.innerWidth + 'px';
+            word.style.top = window.innerHeight - 100 + 'px';
+            document.body.appendChild(word);
+            
+            setTimeout(() => {
+                createExplosion(parseFloat(word.style.left), parseFloat(word.style.top));
+                word.remove();
+            }, 2000);
+        }, i * 200);
+    }
+}
+
+// ===== ANIMACIÓN 3: AGUJERO NEGRO =====
+function startBlackHole() {
+    const blackHoleCanvas = document.getElementById('blackHoleCanvas');
+    if (!blackHoleCanvas) return;
+    
+    blackHoleCanvas.style.display = 'block';
+    blackHoleCanvas.width = window.innerWidth;
+    blackHoleCanvas.height = window.innerHeight;
+    
+    const ctx = blackHoleCanvas.getContext('2d');
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    const pixels = [];
+    
+    for (let i = 0; i < 200; i++) {
+        pixels.push({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            size: Math.random() * 3 + 1,
+            opacity: Math.random() * 0.5 + 0.3
+        });
+    }
+    
+    let rotation = 0;
+    
+    function drawBlackHole() {
+        ctx.clearRect(0, 0, blackHoleCanvas.width, blackHoleCanvas.height);
+        rotation += 0.02;
+        
+        pixels.forEach(p => {
+            const dx = centerX - p.x;
+            const dy = centerY - p.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const pull = Math.max(0, 500 / distance);
+            
+            p.x += (dx / distance) * pull * 0.5;
+            p.y += (dy / distance) * pull * 0.5;
+            p.opacity = Math.max(0, p.opacity - 0.005);
+            
+            ctx.fillStyle = `rgba(155, 93, 229, ${p.opacity})`;
+            ctx.fillRect(Math.floor(p.x), Math.floor(p.y), p.size, p.size);
+            
+            if (p.opacity <= 0) {
+                p.x = Math.random() * window.innerWidth;
+                p.y = Math.random() * window.innerHeight;
+                p.opacity = Math.random() * 0.5 + 0.3;
+            }
+        });
+        
+        requestAnimationFrame(drawBlackHole);
+    }
+    
+    drawBlackHole();
+}
+
+// ===== ANIMACIÓN 4: TARJETAS ÉTICAS =====
+function spawnEthicalCards() {
+    const phrases = ['CONSCIENCIA', 'ÉTICA', 'RESPONSABILIDAD', 'EMPATÍA', 'TRANSFORMACIÓN', 'LIBERTAD', 'VERDAD', 'HONESTIDAD'];
+    
+    for (let i = 0; i < 8; i++) {
+        setTimeout(() => {
+            const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+            const card = document.createElement('div');
+            card.className = 'tarot-card';
+            card.textContent = '🃏';
+            card.style.left = Math.random() * (window.innerWidth - 60) + 'px';
+            card.style.top = window.innerHeight - 100 + 'px';
+            card.title = phrase;
+            document.body.appendChild(card);
+            
+            setTimeout(() => {
+                createExplosion(parseFloat(card.style.left), parseFloat(card.style.top));
+                card.remove();
+            }, 2000);
+        }, i * 250);
+    }
+}
+
+// ===== UTILIDADES =====
+function createExplosion(x, y) {
+    const colors = ['#F5C842', '#9B5DE5', '#06D6A0', '#C8B8E8', '#FF6B35'];
+    for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.style.position = 'fixed';
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+        particle.style.width = '6px';
+        particle.style.height = '6px';
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.zIndex = '9997';
+        particle.style.pointerEvents = 'none';
+        document.body.appendChild(particle);
+        
+        const angle = (Math.PI * 2 * i) / 15;
+        const velocity = 3 + Math.random() * 3;
+        let posX = x;
+        let posY = y;
+        let opacity = 1;
+        
+        const animateParticle = () => {
+            posX += Math.cos(angle) * velocity;
+            posY += Math.sin(angle) * velocity;
+            opacity -= 0.03;
+            particle.style.left = posX + 'px';
+            particle.style.top = posY + 'px';
+            particle.style.opacity = opacity;
+            
+            if (opacity > 0) {
+                requestAnimationFrame(animateParticle);
+            } else {
+                particle.remove();
+            }
+        };
+        animateParticle();
+    }
+}
+
+// ===== FADE IN ON SCROLL =====
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.fade-in').forEach(el => {
+    observer.observe(el);
+});
+
+</script>
+
+</body>
+</html>

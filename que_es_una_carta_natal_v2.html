@@ -1,0 +1,2060 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⭐ TU CARTA NATAL ⭐ — Viaje Interactivo al Universo</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0A0A1B;
+    --cyan: #00D9FF;
+    --pink: #FF3D81;
+    --purple: #724CF9;
+    --gold: #F7B801;
+    --green: #39FF88;
+    --white: #F0F0F0;
+    --dark-cyan: #004d7a;
+    --fire-red: #FF4444;
+    --earth-green: #44AA44;
+    --air-yellow: #FFDD44;
+    --water-blue: #44AAFF;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--bg-dark);
+    color: var(--white);
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* CANVAS COSMICO */
+  canvas#cosmic-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.15),
+      rgba(0,0,0,0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.5;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* TITULO PRINCIPAL */
+  .glitch-title {
+    text-align: center;
+    font-size: clamp(24px, 5vw, 48px);
+    color: var(--cyan);
+    margin: 40px 0 20px;
+    position: relative;
+    text-shadow: 2px 2px 0 var(--pink), -2px -2px 0 var(--purple);
+    animation: glitch 3s infinite;
+    line-height: 1.4;
+    letter-spacing: 2px;
+  }
+
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 2px); }
+    94% { transform: translate(2px, -2px); }
+    96% { transform: translate(-2px, -2px); }
+    98% { transform: translate(2px, 2px); }
+  }
+
+  /* INTRODUCCION */
+  .intro-section {
+    background: #1a1a2e;
+    border: 4px solid var(--gold);
+    padding: 24px;
+    margin: 30px 0;
+    box-shadow: 8px 8px 0 rgba(247,184,1,0.3), 0 0 20px rgba(247,184,1,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .intro-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 0%, rgba(247,184,1,0.1) 25%, transparent 50%, rgba(0,217,255,0.1) 75%, transparent 100%);
+    background-size: 400% 400%;
+    animation: pixel-shimmer 4s ease infinite;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  @keyframes pixel-shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .intro-text {
+    font-size: 11px;
+    line-height: 2.2;
+    color: #D0D0D0;
+    margin-bottom: 16px;
+  }
+
+  .intro-text p {
+    margin-bottom: 12px;
+  }
+
+  .intro-highlight {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+    font-weight: bold;
+  }
+
+  .intro-interactive {
+    background: rgba(0,217,255,0.1);
+    border-left: 4px solid var(--cyan);
+    padding: 12px;
+    margin: 16px 0;
+    border-radius: 0;
+    animation: pulse-intro 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-intro {
+    0%, 100% { box-shadow: inset 0 0 10px rgba(0,217,255,0.3); }
+    50% { box-shadow: inset 0 0 20px rgba(0,217,255,0.6); }
+  }
+
+  .intro-cita {
+    color: var(--cyan);
+    font-size: 12px;
+    text-align: center;
+    margin: 20px 0;
+    text-shadow: 0 0 10px rgba(0,217,255,0.5);
+  }
+
+  /* BOXES COLAPSABLES */
+  .section-box {
+    border: 4px solid;
+    padding: 20px;
+    margin: 20px 0;
+    position: relative;
+    cursor: pointer;
+    background: #1a1a2e;
+    border-color: var(--purple);
+    box-shadow: 8px 8px 0 rgba(114,76,249,0.3), 0 0 20px rgba(114,76,249,0.2);
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .section-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 0%, rgba(114, 76, 249, 0.1) 25%, transparent 50%, rgba(0, 217, 255, 0.1) 75%, transparent 100%);
+    background-size: 400% 400%;
+    animation: pixel-shimmer 4s ease infinite;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .section-box:hover {
+    transform: translate(-2px, -2px) scale(1.02);
+    box-shadow: 10px 10px 0 rgba(114,76,249,0.5), 0 0 30px rgba(114,76,249,0.3);
+    border-color: var(--cyan);
+    animation: pixel-pulse-hover 0.6s ease infinite;
+  }
+
+  @keyframes pixel-pulse-hover {
+    0%, 100% { 
+      text-shadow: 0 0 10px rgba(114,76,249,0.5);
+      box-shadow: 10px 10px 0 rgba(114,76,249,0.5), 0 0 30px rgba(114,76,249,0.3);
+    }
+    50% { 
+      text-shadow: 0 0 20px rgba(0,217,255,0.8);
+      box-shadow: 10px 10px 0 rgba(0,217,255,0.5), 0 0 40px rgba(0,217,255,0.4);
+    }
+  }
+
+  .section-box.open {
+    border-color: var(--gold);
+    box-shadow: 8px 8px 0 rgba(247,184,1,0.4), 0 0 20px rgba(247,184,1,0.3);
+    animation: pixel-open 0.4s ease;
+  }
+
+  @keyframes pixel-open {
+    0% { transform: scale(0.98); }
+    50% { transform: scale(1.01); }
+    100% { transform: scale(1); }
+  }
+
+  /* CANVAS EN BOXES */
+  .section-canvas {
+    width: 100%;
+    height: 150px;
+    margin-bottom: 16px;
+    border: 2px solid rgba(0,217,255,0.3);
+    background: rgba(0,0,0,0.3);
+    display: block;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    margin-bottom: 0;
+    color: var(--cyan);
+    letter-spacing: 1px;
+    user-select: none;
+    animation: pixel-glow-text 2s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+  }
+
+  @keyframes pixel-glow-text {
+    0%, 100% { text-shadow: 0 0 5px rgba(0,217,255,0.5); }
+    50% { text-shadow: 0 0 15px rgba(0,217,255,1); }
+  }
+
+  .section-header .toggle {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+    animation: pixel-float 1.5s ease-in-out infinite;
+    display: inline-block;
+  }
+
+  @keyframes pixel-float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+  }
+
+  .section-box.open .section-header .toggle {
+    transform: rotate(180deg) translateY(-4px);
+    animation: pixel-spin 0.5s ease;
+  }
+
+  @keyframes pixel-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(180deg); }
+  }
+
+  .section-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    margin-top: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .section-box.open .section-content {
+    max-height: 3000px;
+    margin-top: 16px;
+  }
+
+  .section-content p {
+    font-size: 10px;
+    line-height: 2;
+    margin-bottom: 12px;
+    color: #D0D0D0;
+  }
+
+  /* HIGHLIGHTS */
+  .highlight {
+    color: var(--pink);
+    text-shadow: 0 0 5px var(--pink);
+  }
+
+  .highlight-cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 5px var(--cyan);
+  }
+
+  .highlight-gold {
+    color: var(--gold);
+    text-shadow: 0 0 5px var(--gold);
+  }
+
+  .highlight-green {
+    color: var(--green);
+    text-shadow: 0 0 5px var(--green);
+  }
+
+  /* SUBSECCIONES */
+  .subsection {
+    border-left: 3px solid var(--cyan);
+    padding-left: 16px;
+    margin: 16px 0;
+    background: rgba(0, 217, 255, 0.05);
+    padding: 12px;
+    border-left: 4px solid var(--cyan);
+  }
+
+  .subsection h4 {
+    font-size: 11px;
+    color: var(--gold);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+
+  .subsection p {
+    font-size: 9px;
+    line-height: 1.8;
+    color: #B0B0B0;
+    margin-bottom: 8px;
+  }
+
+  /* GRID ELEMENTOS */
+  .elements-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .element-card {
+    border: 3px solid;
+    padding: 16px;
+    text-align: center;
+    background: #161a2e;
+    box-shadow: 6px 6px 0 rgba(0,217,255,0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .element-card.fuego {
+    border-color: var(--fire-red);
+    box-shadow: 6px 6px 0 rgba(255,68,68,0.3);
+  }
+
+  .element-card.tierra {
+    border-color: var(--earth-green);
+    box-shadow: 6px 6px 0 rgba(68,170,68,0.3);
+  }
+
+  .element-card.aire {
+    border-color: var(--air-yellow);
+    box-shadow: 6px 6px 0 rgba(255,221,68,0.3);
+  }
+
+  .element-card.agua {
+    border-color: var(--water-blue);
+    box-shadow: 6px 6px 0 rgba(68,170,255,0.3);
+  }
+
+  .element-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 rgba(247,184,1,0.3);
+  }
+
+  .element-card h3 {
+    font-size: 12px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+
+  .element-card.fuego h3 {
+    color: var(--fire-red);
+  }
+
+  .element-card.tierra h3 {
+    color: var(--earth-green);
+  }
+
+  .element-card.aire h3 {
+    color: var(--air-yellow);
+  }
+
+  .element-card.agua h3 {
+    color: var(--water-blue);
+  }
+
+  .element-card p {
+    font-size: 9px;
+    line-height: 1.6;
+    color: #B0B0B0;
+  }
+
+  /* WHEEL CONTAINER */
+  .wheel-container {
+    background: #161a2e;
+    border: 4px solid var(--gold);
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 8px 8px 0 rgba(247,184,1,0.3);
+    text-align: center;
+  }
+
+  .wheel-container h3 {
+    font-size: 14px;
+    color: var(--gold);
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+  }
+
+  .wheel-svg {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .wheel-info {
+    font-size: 9px;
+    margin-top: 16px;
+    color: var(--cyan);
+    line-height: 1.8;
+  }
+
+  /* ANIMACIÓN DE LÍNEAS EN ASPECTOS */
+  #aspects-animation-canvas {
+    width: 100%;
+    height: 120px;
+    border: 2px solid rgba(0, 217, 255, 0.2);
+    background: rgba(10, 10, 27, 0.5);
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  @keyframes line-flow {
+    0% {
+      stroke-dashoffset: 1000;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* GLOW EN LÍNEAS */
+  .aspect {
+    filter: drop-shadow(0 0 2px currentColor);
+    animation: aspect-pulse 2s ease-in-out infinite;
+  }
+
+  .aspect[stroke="#39FF88"] {
+    animation: aspect-pulse-green 2s ease-in-out infinite;
+  }
+
+  .aspect[stroke="#FF8844"] {
+    animation: aspect-pulse-orange 2s ease-in-out infinite;
+  }
+
+  .aspect[stroke="#FF3D81"] {
+    animation: aspect-pulse-pink 2s ease-in-out infinite;
+  }
+
+  .aspect[stroke="#00D9FF"] {
+    animation: aspect-pulse-cyan 2s ease-in-out infinite;
+  }
+
+  .aspect[stroke="#F7B801"] {
+    animation: aspect-pulse-gold 2s ease-in-out infinite;
+  }
+
+  @keyframes aspect-pulse-green {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes aspect-pulse-orange {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes aspect-pulse-pink {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes aspect-pulse-cyan {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes aspect-pulse-gold {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, var(--purple), var(--cyan), var(--pink), var(--gold));
+    margin: 40px 0;
+    box-shadow: 0 0 20px rgba(114,76,249,0.5);
+  }
+
+  /* FOOTER FINAL */
+  .footer-final {
+    background: #1a1a2e;
+    border: 4px solid var(--cyan);
+    padding: 24px;
+    margin: 40px 0 20px;
+    box-shadow: 8px 8px 0 rgba(0,217,255,0.3), 0 0 20px rgba(0,217,255,0.2);
+    text-align: center;
+  }
+
+  .footer-final h2 {
+    font-size: 16px;
+    color: var(--cyan);
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0,217,255,0.5);
+  }
+
+  .footer-final p {
+    font-size: 10px;
+    line-height: 2;
+    color: #D0D0D0;
+    margin-bottom: 12px;
+  }
+
+  .footer-final .highlight-gold {
+    color: var(--gold);
+  }
+
+  /* FOOTER REGULAR */
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 11px;
+    color: var(--gold);
+    border-top: 2px solid var(--purple);
+    margin-top: 40px;
+  }
+
+  .footer p {
+    margin: 8px 0;
+  }
+
+  /* CURSOR PERSONALIZADO */
+  body {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="none" stroke="%23FF64C8" stroke-width="2"/><circle cx="16" cy="16" r="10" fill="none" stroke="%2300D9FF" stroke-width="1.5"/><circle cx="16" cy="16" r="6" fill="%23000000" opacity="0.8"/><circle cx="16" cy="16" r="3" fill="%23FF64C8"/></svg>') 16 16, auto;
+  }
+
+  /* TOOLTIP STYLES */
+  .wheel-tooltip {
+    position: absolute;
+    background: #1a1a2e;
+    border: 2px solid var(--gold);
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 10px;
+    color: var(--white);
+    pointer-events: none;
+    z-index: 1000;
+    max-width: 200px;
+    box-shadow: 0 0 20px rgba(247, 184, 1, 0.5);
+    display: none;
+    letter-spacing: 1px;
+    line-height: 1.8;
+  }
+
+  .wheel-tooltip.visible {
+    display: block;
+  }
+
+  .wheel-tooltip .label {
+    color: var(--cyan);
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  .wheel-tooltip .value {
+    color: var(--gold);
+  }
+  @media (max-width: 600px) {
+    .elements-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .glitch-title {
+      font-size: clamp(18px, 3vw, 28px);
+    }
+
+    .section-header {
+      font-size: 12px;
+    }
+
+    .section-content p {
+      font-size: 9px;
+    }
+
+    .intro-text {
+      font-size: 10px;
+    }
+
+    .footer-final p {
+      font-size: 9px;
+    }
+  }
+
+  /* ANIMACIÓN DE ENTRADA */
+  .section-box {
+    animation: slideIn 0.5s ease backwards;
+  }
+
+  .section-box:nth-child(1) { animation-delay: 0.1s; }
+  .section-box:nth-child(2) { animation-delay: 0.2s; }
+  .section-box:nth-child(3) { animation-delay: 0.3s; }
+  .section-box:nth-child(4) { animation-delay: 0.4s; }
+  .section-box:nth-child(5) { animation-delay: 0.5s; }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- CANVAS COSMICO -->
+<canvas id="cosmic-canvas"></canvas>
+<div class="scanlines"></div>
+
+<div class="container">
+
+  <!-- TITULO PRINCIPAL -->
+  <div class="glitch-title">✦ TU CARTA NATAL ✦</div>
+
+  <!-- INTRODUCCION COMPLETA -->
+  <div class="intro-section">
+    <div class="intro-text">
+      <p>En algún momento de la vida, casi todos nos hacemos preguntas parecidas:</p>
+      <p style="color: var(--gold); margin-top: 12px;">
+        ¿Quién soy realmente? ¿Por qué siento ciertas cosas con tanta intensidad? ¿Por qué algunas experiencias se repiten? ¿Tengo una misión, un propósito o una dirección en esta vida?
+      </p>
+      <p>Y es justamente ahí donde muchas personas se encuentran por primera vez con la Astrología y con algo llamado <span class="intro-highlight">Carta Natal</span>.</p>
+      <p>Pero cuando intentan entenderla… aparece el caos. Símbolos extraños. Planetas. Casas. Aspectos. Palabras raras. Muchísima información.</p>
+      <p>Y entonces surge la pregunta más importante:</p>
+      <p style="color: var(--cyan); text-align: center; font-size: 12px; margin: 16px 0;">
+        "¿Por dónde empiezo?"
+      </p>
+      <p>Este espacio fue creado exactamente para eso. No para convertirte en astrólogo en una noche. No para llenarte de conceptos técnicos imposibles de entender. Y mucho menos para decirte quién eres o cómo "deberías" vivir tu vida.</p>
+      <p>La idea es mucho más simple —y más profunda—: <span class="intro-highlight">explorar tu carta natal como una herramienta de autoconocimiento, consciencia y descubrimiento personal</span>.</p>
+    </div>
+
+    <div class="intro-interactive">
+      <p style="color: var(--cyan); font-size: 10px; line-height: 2;">
+        Aquí podrás aprender poco a poco qué significa una carta natal, cómo funciona, qué representan los signos, planetas y casas, y por qué millones de personas encuentran en la astrología una forma distinta de comprender su mundo interior.
+      </p>
+    </div>
+
+    <div class="intro-text">
+      <p>Y sí… también queremos que el proceso sea <span class="intro-highlight">divertido</span>. Porque aprender astrología no tiene que sentirse como estudiar algo frío o rígido. Puede sentirse como explorar un universo simbólico lleno de significado, imaginación y posibilidades.</p>
+      <p>Así que respira. No necesitas saber nada para comenzar. Solo curiosidad. ✨</p>
+      <p style="margin-top: 20px; border-top: 2px solid rgba(0,217,255,0.3); padding-top: 16px;">
+        Y antes de comenzar, queremos contarte algo importante: <span class="intro-highlight">Este artículo es interactivo</span>.
+      </p>
+      <p style="margin-top: 12px;">A lo largo del recorrido encontrarás distintos cuadros, módulos y secciones diseñadas para que puedas dar clic, explorar, leer y aprender de una manera más dinámica e inmersiva.</p>
+      <p>La intención no es solamente darte información, sino ayudarte a vivir el aprendizaje mientras descubres el universo simbólico de tu carta natal.</p>
+      <p style="margin-top: 16px; color: var(--gold); text-align: center;">
+        En <span class="intro-highlight">Soy Anormal</span> creemos que aprender también puede ser:<br>
+        ✦ diferente ✦ creativo ✦ diverso ✦ disruptivo ✦ y profundamente humano
+      </p>
+      <p style="margin-top: 12px;">así que gracias por abrirte a integrar conocimiento desde una manera distinta. 🚀✨</p>
+      <p style="margin-top: 20px; text-align: center; color: var(--cyan); font-size: 12px; text-shadow: 0 0 10px rgba(0,217,255,0.5);">
+        Ahora sí… comienza el viaje por tu carta natal. 🌌
+      </p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓN 1: QUÉ ES LA ASTROLOGÍA -->
+  <div class="section-box" data-animation="planets">
+    <div class="section-header">
+      <span>¿QUÉ ES LA ASTROLOGÍA?</span>
+      <span class="toggle">▼</span>
+    </div>
+    <div class="section-content">
+      <canvas class="section-canvas" data-canvas="planets"></canvas>
+      <p>
+        La Astrología es una <span class="highlight-cyan">ciencia que habla a través del lenguaje simbólico</span>. 
+        Puede aplicarse a cualquier clase de fenómenos.
+      </p>
+      <p>
+        Es una <span class="highlight-gold">técnica de comprensión y una disciplina del pensamiento</span>, 
+        gracias a la cual una persona podrá obtener una <span class="highlight">nueva perspectiva</span> 
+        de su vida entera y una comprensión más objetiva y estructurada del lugar y de la función 
+        de sus experiencias y crisis vitales más importantes.
+      </p>
+      <p style="margin-top: 16px; color: var(--cyan); font-size: 10px; letter-spacing: 1px;">
+        💫 La astrología no predice el futuro.<br>
+        🌟 La astrología ilumina tu potencial.<br>
+        ✨ La astrología es autoconocimiento cósmico.
+      </p>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2: QUÉ ES UNA CARTA NATAL -->
+  <div class="section-box" data-animation="ghost-words">
+    <div class="section-header">
+      <span>¿QUÉ ES UNA CARTA NATAL?</span>
+      <span class="toggle">▼</span>
+    </div>
+    <div class="section-content">
+      <canvas class="section-canvas" data-canvas="ghost-words"></canvas>
+      <p>
+        Es una <span class="highlight-gold">herramienta poderosa</span> con la que cuenta la Astrología. 
+        Un <span class="highlight-cyan">mapa o diagrama de la posición de los astros</span> al momento de nacimiento 
+        o de la creación de algo, ya sea un evento, objeto o acontecimiento importante.
+      </p>
+      <p>
+        Este mapa sirve para <span class="highlight">identificar el patrón de desarrollo</span> que el humano 
+        debe de seguir para desbloquear todo su potencial y ser capaz de ser él mismo. 
+        Así mismo describe el <span class="highlight-green">campo energético presente</span> en ese acontecimiento 
+        o fenómeno creado.
+      </p>
+      <p style="margin-top: 16px; color: var(--gold); font-size: 10px; letter-spacing: 1px;">
+        🔮 Un mapa de tu esencia.<br>
+        🌌 Un diagrama de tu energía.<br>
+        🎯 Tu hoja de ruta cósmica.
+      </p>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3: CARTA NATAL COMO HERRAMIENTA ESPIRITUAL -->
+  <div class="section-box" data-animation="pillars">
+    <div class="section-header">
+      <span>CARTA NATAL → AUTOCONOCIMIENTO</span>
+      <span class="toggle">▼</span>
+    </div>
+    <div class="section-content">
+      <canvas class="section-canvas" data-canvas="pillars"></canvas>
+      <p>
+        La carta natal es mucho más que un mapa astrológico. 
+        Es una <span class="highlight-gold">hoja de ruta que nos conecta con nuestra esencia más profunda</span>, 
+        nuestra misión de vida y las lecciones que el alma ha elegido experimentar en esta encarnación.
+      </p>
+
+      <div class="subsection">
+        <h4>🌟 ILUMINA TUS FORTALEZAS</h4>
+        <p>
+          La carta natal es una potente herramienta de autoconocimiento porqué ilumina nuestras 
+          fortalezas, talentos y dones innatos.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h4>💎 REVELA TUS DESAFÍOS</h4>
+        <p>
+          Muestra los desafíos que nos brindan la oportunidad de crecer. No son limitaciones, 
+          sino invitaciones a la transformación.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h4>⭐ TRES PILARES CLAVE</h4>
+        <p>
+          <span class="highlight-gold">El Sol:</span> Tu esencia, tu identidad, quién eres. <br>
+          <span class="highlight-cyan">La Luna:</span> Tus emociones y necesidades más profundas. <br>
+          <span class="highlight-green">El Ascendente:</span> Cómo interactúas con el mundo.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4: DESPERTAR ESPIRITUAL -->
+  <div class="section-box" data-animation="galaxy">
+    <div class="section-header">
+      <span>DESPERTAR ESPIRITUAL</span>
+      <span class="toggle">▼</span>
+    </div>
+    <div class="section-content">
+      <canvas class="section-canvas" data-canvas="galaxy"></canvas>
+      <p>
+        Para una comprensión más amplia sobre la Astrología y la carta natal, es primordial recordar que: 
+        <span class="highlight-gold">la humanidad atraviesa un cambio de ciclo evolutivo</span>.
+      </p>
+
+      <div class="subsection">
+        <h4>🌍 LAS ERAS CÓSMICAS</h4>
+        <p>
+          A lo largo de la historia, la Tierra ha transitado grandes periodos determinados por la 
+          <span class="highlight-cyan">Precesión de los Equinoccios</span>. Actualmente nos encontramos en una 
+          transición asociada simbólicamente con la <span class="highlight-gold">Era de Acuario</span>.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h4>✨ CONSCIENCIA EN TRANSICIÓN</h4>
+        <p>
+          Este cambio no es solamente astronómico-astrológico; es <span class="highlight-green">vibracional y de consciencia</span>. 
+          Cuando hablamos de Despertar Espiritual, nos referimos a la activación progresiva de una 
+          consciencia más amplia dentro del individuo.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h4>🔄 CUESTIONAR Y TRANSFORMAR</h4>
+        <p>
+          Una consciencia que comienza a cuestionar <span class="highlight">patrones heredados</span>, 
+          <span class="highlight">estructuras colectivas</span> y <span class="highlight">formas antiguas</span> 
+          de relacionarse con la vida.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h4>🌌 TÚ + COSMOS = EVOLUCIÓN</h4>
+        <p>
+          La carta natal, en este contexto, no es solo una ruta. Es un 
+          <span class="highlight-gold">diseño energético que muestra cómo tu alma participa en este momento evolutivo</span>. 
+          El despertar no ocurre fuera de ti. Pero tampoco ocurre aislado del movimiento cósmico. 
+          Es la intersección entre tu estructura personal y el ciclo mayor que atraviesa la humanidad.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 5: PARA QUÉ ME SIRVE ENTENDER ESTO -->
+  <div class="section-box" data-animation="orbit">
+    <div class="section-header">
+      <span>¿PARA QUÉ ME SIRVE ENTENDER ESTO?</span>
+      <span class="toggle">▼</span>
+    </div>
+    <div class="section-content">
+      <canvas class="section-canvas" data-canvas="orbit"></canvas>
+      <p>
+        Comprender el Despertar Espiritual desde tu carta natal implica adquirir 
+        <span class="highlight-cyan">información nueva</span> y situarte conscientemente dentro del 
+        <span class="highlight-gold">ciclo evolutivo que atraviesa la humanidad</span>.
+      </p>
+
+      <div class="subsection">
+        <h4>🎯 ENTENDER TU FRICCIÓN</h4>
+        <p>
+          Tu diseño natal revela dónde sientes mayor fricción entre lo viejo y lo nuevo. 
+          No todas las personas despiertan de la misma manera, ni atraviesan las mismas tensiones.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h4>🔧 RECONFIGURA TU ESTRUCTURA</h4>
+        <p>
+          Descubre qué estructuras internas necesitan reconfigurarse. 
+          Identifica qué patrones heredados piden ser trascendidos.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h4>⚡ ACTIVA TU POTENCIAL</h4>
+        <p>
+          Reconoce qué potenciales están listos para activarse en esta etapa evolutiva. 
+          No todas las personas son llamadas a transformar lo mismo.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h4>👁️ CONSCIENCIA DE TUS ENERGÍAS</h4>
+        <p>
+          La carta natal no describe un destino fijo, sino un <span class="highlight-cyan">campo de resonancia</span>. 
+          Las energías planetarias simbolizan dinámicas que se manifiestan en pensamientos, emociones y decisiones. 
+          Cuando estas dinámicas operan inconscientemente, tienden a repetirse como patrones automáticos.
+        </p>
+        <p style="margin-top: 8px;">
+          El despertar comienza cuando observas esos patrones <span class="highlight-gold">sin identificarte completamente con ellos</span>. 
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h4>🔄 TRANSFORMACIÓN DE LO HEREDADO</h4>
+        <p>
+          Cada carta muestra una historia previa: <span class="highlight">condicionamientos familiares, culturales y colectivos</span>. 
+          La transformación no ocurre por negar lo heredado, sino por <span class="highlight-cyan">integrarlo conscientemente</span>.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h4>🌟 PROPÓSITO COMO PARTICIPACIÓN</h4>
+        <p>
+          Tu propósito se manifiesta en la manera en que respondes a las tensiones de tu tiempo. 
+          Tu configuración energética <span class="highlight-gold">participa en este cambio de ciclo</span>.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h4>♾️ LIBERACIÓN COMO PROCESO</h4>
+        <p>
+          El Despertar Espiritual es un <span class="highlight-cyan">proceso gradual de reajuste</span>. 
+          Cada tránsito, cada crisis, cada decisión se convierte en una oportunidad de alineación.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECCIÓN 6: ELEMENTOS DE LA CARTA NATAL -->
+  <div class="section-box" style="border-color: var(--gold); box-shadow: 8px 8px 0 rgba(247,184,1,0.3), 0 0 20px rgba(247,184,1,0.2);" data-animation="elements">
+    <div class="section-header" style="color: var(--gold);">
+      <span>ELEMENTOS DE UNA CARTA NATAL</span>
+      <span class="toggle">▼</span>
+    </div>
+    <div class="section-content">
+      <canvas class="section-canvas" data-canvas="elements"></canvas>
+      <p style="color: var(--gold); margin-bottom: 20px;">
+        Una carta natal está compuesta por cuatro elementos fundamentales que trabajan juntos 
+        para formar tu perfil energético completo.
+      </p>
+
+      <!-- SIGNOS ZODIACALES -->
+      <div class="subsection" style="border-left-color: var(--pink);">
+        <h4 style="color: var(--pink);">1. SIGNOS ZODIACALES: El "Cómo" de la Energía</h4>
+        <p>
+          Los signos representan diferentes cualidades energéticas y estilos de expresión de la consciencia. 
+          Cada signo tiene características específicas que influencian cómo se manifiestan los planetas y las casas.
+        </p>
+        <p style="margin-top: 12px; font-size: 9px; color: var(--cyan); line-height: 2;">
+          <span class="highlight-pink">● Modalidades:</span> Cardinal (iniciadora), Fijo (consolidador), Mutable (adaptable)<br>
+          <span class="highlight-pink">● Elementos:</span> Fuego, Tierra, Aire, Agua
+        </p>
+      </div>
+
+      <!-- PLANETAS -->
+      <div class="subsection" style="border-left-color: var(--cyan);">
+        <h4 style="color: var(--cyan);">2. PLANETAS: El "Qué" de la Energía</h4>
+        <p>
+          Los planetas simbolizan diferentes áreas de la psique y de la vida. Cada planeta tiene un 
+          papel único en la expresión de tu energía.
+        </p>
+      </div>
+
+      <!-- CASAS -->
+      <div class="subsection" style="border-left-color: var(--green);">
+        <h4 style="color: var(--green);">3. CASAS: El "Dónde" de la Energía</h4>
+        <p>
+          Las casas dividen la carta en 12 áreas que representan diferentes aspectos de la vida. 
+          Son los escenarios donde actúan los planetas.
+        </p>
+      </div>
+
+      <!-- ASPECTOS -->
+      <div class="subsection" style="border-left-color: var(--gold);">
+        <h4 style="color: var(--gold);">4. ASPECTOS: Las Relaciones entre Energías</h4>
+        <p>
+          Los aspectos son los ángulos entre los planetas que revelan cómo interactúan sus energías.
+        </p>
+      </div>
+
+      <!-- ELEMENTOS DE LOS SIGNOS -->
+      <p style="margin-top: 24px; margin-bottom: 16px; color: var(--gold); font-size: 11px; letter-spacing: 1px; border-bottom: 2px solid var(--gold); padding-bottom: 12px;">
+        🔥 ⭐ ELEMENTOS Y SUS SIGNIFICADOS ⭐ 💧
+      </p>
+
+      <div class="elements-grid">
+        <div class="element-card fuego">
+          <h3>🔥 FUEGO</h3>
+          <p>Aries, Leo, Sagitario<br><br>Energía, pasión e inspiración.</p>
+        </div>
+        <div class="element-card tierra">
+          <h3>🌍 TIERRA</h3>
+          <p>Tauro, Virgo, Capricornio<br><br>Practicidad, estabilidad y conexión.</p>
+        </div>
+        <div class="element-card aire">
+          <h3>💨 AIRE</h3>
+          <p>Géminis, Libra, Acuario<br><br>Comunicación, ideas y conexión mental.</p>
+        </div>
+        <div class="element-card agua">
+          <h3>💧 AGUA</h3>
+          <p>Cáncer, Escorpio, Piscis<br><br>Emociones, intuición y sensibilidad.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHEEL INTERACTIVA COMPLETA -->
+  <div class="wheel-container">
+    <h3>⭐ LA RUEDA DE TU CARTA NATAL ⭐</h3>
+    
+    <div style="position: relative; display: inline-block; width: 100%; max-width: 700px; margin: 0 auto;">
+      <div id="wheel-tooltip" class="wheel-tooltip"></div>
+      
+      <svg class="wheel-svg" viewBox="0 0 600 650" xmlns="http://www.w3.org/2000/svg">
+        <!-- BACKGROUND CIRCLES -->
+        <circle cx="300" cy="300" r="280" fill="none" stroke="rgba(0,217,255,0.2)" stroke-width="1"/>
+        <circle cx="300" cy="300" r="240" fill="none" stroke="rgba(114,76,249,0.3)" stroke-width="2"/>
+        <circle cx="300" cy="300" r="200" fill="none" stroke="rgba(247,184,1,0.2)" stroke-width="1"/>
+        <circle cx="300" cy="300" r="140" fill="none" stroke="rgba(0,217,255,0.2)" stroke-width="1"/>
+        <circle cx="300" cy="300" r="100" fill="none" stroke="rgba(247,184,1,0.15)" stroke-width="1"/>
+        
+        <!-- EJES PRINCIPALES -->
+        <line x1="300" y1="20" x2="300" y2="580" stroke="rgba(0,217,255,0.4)" stroke-width="2"/>
+        <line x1="20" y1="300" x2="580" y2="300" stroke="rgba(0,217,255,0.4)" stroke-width="2"/>
+        
+        <!-- DIAGONAL LINES FOR 45 DEGREES -->
+        <line x1="125" y1="125" x2="475" y2="475" stroke="rgba(114,76,249,0.15)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="475" y1="125" x2="125" y2="475" stroke="rgba(114,76,249,0.15)" stroke-width="1" stroke-dasharray="3,3"/>
+
+        <!-- PUNTOS CARDINALES (MOVIDOS) -->
+        <g id="cardinal-points">
+          <!-- MC (Top) - MÁS ARRIBA -->
+          <text x="300" y="30" text-anchor="middle" fill="#00D9FF" font-size="14" font-weight="bold" class="cardinal-point" data-type="MC">MC</text>
+          <text x="300" y="42" text-anchor="middle" fill="rgba(0,217,255,0.6)" font-size="9">Medio Cielo</text>
+          
+          <!-- IC (Bottom) -->
+          <text x="300" y="630" text-anchor="middle" fill="#00D9FF" font-size="14" font-weight="bold" class="cardinal-point" data-type="IC">IC</text>
+          <text x="300" y="615" text-anchor="middle" fill="rgba(0,217,255,0.6)" font-size="9">Fondo Cielo</text>
+          
+          <!-- DC (Right) - BAJADO -->
+          <text x="560" y="340" text-anchor="start" fill="#00D9FF" font-size="14" font-weight="bold" class="cardinal-point" data-type="DC">DC</text>
+          <text x="520" y="325" text-anchor="middle" fill="rgba(0,217,255,0.6)" font-size="9">Descendente</text>
+          
+          <!-- AC (Left - ASCENDENTE, BAJADO) -->
+          <text x="30" y="340" text-anchor="end" fill="#00D9FF" font-size="14" font-weight="bold" class="cardinal-point" data-type="AC">AC</text>
+          <text x="75" y="325" text-anchor="middle" fill="rgba(0,217,255,0.6)" font-size="9">Ascendente</text>
+        </g>
+
+        <!-- SIGNOS ZODIACALES GRANDES (Anillo externo) -->
+        <g id="zodiac-signs" class="interactive-element">
+          <!-- Aries (0°) -->
+          <text x="300" y="35" text-anchor="middle" fill="#FF4444" font-size="22" font-weight="bold" class="zodiac-sign" data-sign="Aries" data-element="Fuego">♈</text>
+          <text x="300" y="90" text-anchor="middle" fill="#FF4444" font-size="11" font-weight="bold">ARIES</text>
+          
+          <!-- Tauro (30°) -->
+          <text x="415" y="98" text-anchor="middle" fill="#44AA44" font-size="22" font-weight="bold" class="zodiac-sign" data-sign="Tauro" data-element="Tierra">♉</text>
+          <text x="430" y="130" text-anchor="middle" fill="#44AA44" font-size="11" font-weight="bold">TAURO</text>
+          
+          <!-- Géminis (60°) -->
+          <text x="500" y="200" text-anchor="middle" fill="#FFDD44" font-size="22" font-weight="bold" class="zodiac-sign" data-sign="Géminis" data-element="Aire">♊</text>
+          <text x="535" y="210" text-anchor="middle" fill="#FFDD44" font-size="11" font-weight="bold">GÉMINIS</text>
+          
+          <!-- Cáncer (90°) -->
+          <text x="565" y="305" text-anchor="middle" fill="#44AAFF" font-size="22" font-weight="bold" class="zodiac-sign" data-sign="Cáncer" data-element="Agua">♋</text>
+          <text x="550" y="345" text-anchor="middle" fill="#44AAFF" font-size="11" font-weight="bold">CÁNCER</text>
+          
+          <!-- Leo (120°) -->
+          <text x="500" y="400" text-anchor="middle" fill="#FF4444" font-size="22" font-weight="bold" class="zodiac-sign" data-sign="Leo" data-element="Fuego">♌</text>
+          <text x="535" y="410" text-anchor="middle" fill="#FF4444" font-size="11" font-weight="bold">LEO</text>
+          
+          <!-- Virgo (150°) -->
+          <text x="415" y="502" text-anchor="middle" fill="#44AA44" font-size="22" font-weight="bold" class="zodiac-sign" data-sign="Virgo" data-element="Tierra">♍</text>
+          <text x="430" y="535" text-anchor="middle" fill="#44AA44" font-size="11" font-weight="bold">VIRGO</text>
+          
+          <!-- Libra (180°) -->
+          <text x="300" y="565" text-anchor="middle" fill="#FFDD44" font-size="22" font-weight="bold" class="zodiac-sign" data-sign="Libra" data-element="Aire">♎</text>
+          <text x="300" y="585" text-anchor="middle" fill="#FFDD44" font-size="11" font-weight="bold">LIBRA</text>
+          
+          <!-- Escorpio (210°) -->
+          <text x="185" y="502" text-anchor="middle" fill="#44AAFF" font-size="22" font-weight="bold" class="zodiac-sign" data-sign="Escorpio" data-element="Agua">♏</text>
+          <text x="170" y="535" text-anchor="middle" fill="#44AAFF" font-size="11" font-weight="bold">ESCORPIO</text>
+          
+          <!-- Sagitario (240°) -->
+          <text x="100" y="400" text-anchor="middle" fill="#FF4444" font-size="22" font-weight="bold" class="zodiac-sign" data-sign="Sagitario" data-element="Fuego">♐</text>
+          <text x="65" y="410" text-anchor="middle" fill="#FF4444" font-size="11" font-weight="bold">SAGITARIO</text>
+          
+          <!-- Capricornio (270°) -->
+          <text x="35" y="305" text-anchor="middle" fill="#44AA44" font-size="22" font-weight="bold" class="zodiac-sign" data-sign="Capricornio" data-element="Tierra">♑</text>
+          <text x="50" y="345" text-anchor="middle" fill="#44AA44" font-size="11" font-weight="bold">CAPRICORNIO</text>
+          
+          <!-- Acuario (300°) -->
+          <text x="100" y="200" text-anchor="middle" fill="#FFDD44" font-size="22" font-weight="bold" class="zodiac-sign" data-sign="Acuario" data-element="Aire">♒</text>
+          <text x="65" y="210" text-anchor="middle" fill="#FFDD44" font-size="11" font-weight="bold">ACUARIO</text>
+          
+          <!-- Piscis (330°) -->
+          <text x="185" y="98" text-anchor="middle" fill="#44AAFF" font-size="22" font-weight="bold" class="zodiac-sign" data-sign="Piscis" data-element="Agua">♓</text>
+          <text x="170" y="130" text-anchor="middle" fill="#44AAFF" font-size="11" font-weight="bold">PISCIS</text>
+        </g>
+
+        <!-- CASAS (números 1-12) -->
+        <g id="houses" font-size="12" fill="rgba(255,255,255,0.5)" class="interactive-element">
+          <text x="300" y="160" text-anchor="middle" class="house-number" data-house="1">I</text>
+          <text x="380" y="190" text-anchor="middle" class="house-number" data-house="2">II</text>
+          <text x="430" y="240" text-anchor="middle" class="house-number" data-house="3">III</text>
+          <text x="450" y="300" text-anchor="middle" class="house-number" data-house="4">IV</text>
+          <text x="430" y="360" text-anchor="middle" class="house-number" data-house="5">V</text>
+          <text x="380" y="410" text-anchor="middle" class="house-number" data-house="6">VI</text>
+          <text x="300" y="440" text-anchor="middle" class="house-number" data-house="7">VII</text>
+          <text x="220" y="410" text-anchor="middle" class="house-number" data-house="8">VIII</text>
+          <text x="170" y="360" text-anchor="middle" class="house-number" data-house="9">IX</text>
+          <text x="150" y="300" text-anchor="middle" class="house-number" data-house="10">X</text>
+          <text x="170" y="240" text-anchor="middle" class="house-number" data-house="11">XI</text>
+          <text x="220" y="190" text-anchor="middle" class="house-number" data-house="12">XII</text>
+        </g>
+
+        <!-- ASPECTOS COLOREADOS POR TIPO -->
+        <g id="aspects" stroke-width="2" opacity="0.7">
+          <!-- TRÍGONOS (120°) - VERDE -->
+          <line x1="300" y1="100" x2="420" y2="240" stroke="#39FF88" class="aspect" data-aspect="Trígono (120°)"/>
+          <line x1="300" y1="100" x2="180" y2="240" stroke="#39FF88" class="aspect" data-aspect="Trígono (120°)"/>
+          <line x1="420" y1="240" x2="180" y2="240" stroke="#39FF88" class="aspect" data-aspect="Trígono (120°)"/>
+          
+          <!-- CUADRATURAS (90°) - NARANJA/ROJO -->
+          <line x1="300" y1="100" x2="450" y2="300" stroke="#FF8844" class="aspect" data-aspect="Cuadratura (90°)"/>
+          <line x1="300" y1="100" x2="150" y2="300" stroke="#FF8844" class="aspect" data-aspect="Cuadratura (90°)"/>
+          <line x1="420" y1="240" x2="300" y2="380" stroke="#FF8844" class="aspect" data-aspect="Cuadratura (90°)"/>
+          <line x1="180" y1="240" x2="300" y2="380" stroke="#FF8844" class="aspect" data-aspect="Cuadratura (90°)"/>
+          
+          <!-- OPOSICIONES (180°) - ROJO -->
+          <line x1="420" y1="240" x2="150" y2="300" stroke="#FF3D81" class="aspect" data-aspect="Oposición (180°)"/>
+          <line x1="180" y1="240" x2="450" y2="300" stroke="#FF3D81" class="aspect" data-aspect="Oposición (180°)"/>
+          <line x1="300" y1="100" x2="300" y2="380" stroke="#FF3D81" class="aspect" data-aspect="Oposición (180°)"/>
+          
+          <!-- SEXTILES (60°) - AZUL -->
+          <line x1="300" y1="100" x2="380" y2="170" stroke="#00D9FF" class="aspect" data-aspect="Sextil (60°)"/>
+          <line x1="300" y1="100" x2="220" y2="170" stroke="#00D9FF" class="aspect" data-aspect="Sextil (60°)"/>
+          <line x1="380" y1="170" x2="450" y2="300" stroke="#00D9FF" class="aspect" data-aspect="Sextil (60°)"/>
+          <line x1="220" y1="170" x2="150" y2="300" stroke="#00D9FF" class="aspect" data-aspect="Sextil (60°)"/>
+          
+          <!-- CONJUNCIONES (0°) - AMARILLO/GOLD -->
+          <line x1="420" y1="240" x2="300" y2="240" stroke="#F7B801" class="aspect" data-aspect="Conjunción (0°)"/>
+          <line x1="180" y1="240" x2="300" y2="240" stroke="#F7B801" class="aspect" data-aspect="Conjunción (0°)"/>
+        </g>
+
+        <!-- PLANETAS EN ÓRBITA MEDIA -->
+        <g id="planets" class="interactive-element">
+          <!-- SOL - Signo Leo (120°) -->
+          <circle cx="420" cy="240" r="5" fill="none" stroke="#FFD700" stroke-width="2"/>
+          <text x="420" y="235" text-anchor="middle" fill="#FFD700" font-size="14" font-weight="bold" class="planet" data-planet="Sol" data-sign="Leo" data-symbol="☉">☉</text>
+          
+          <!-- LUNA - Signo Piscis (330°) -->
+          <circle cx="180" cy="240" r="5" fill="none" stroke="#E0E0E0" stroke-width="2"/>
+          <text x="180" y="235" text-anchor="middle" fill="#E0E0E0" font-size="14" font-weight="bold" class="planet" data-planet="Luna" data-sign="Piscis" data-symbol="☽">☽</text>
+          
+          <!-- MERCURIO - Signo Virgo (150°) -->
+          <circle cx="380" cy="360" r="4" fill="none" stroke="#FFB847" stroke-width="1.5"/>
+          <text x="380" y="356" text-anchor="middle" fill="#FFB847" font-size="12" class="planet" data-planet="Mercurio" data-sign="Virgo" data-symbol="☿">☿</text>
+          
+          <!-- VENUS - Signo Libra (180°) -->
+          <circle cx="300" cy="380" r="4" fill="none" stroke="#FF69B4" stroke-width="1.5"/>
+          <text x="300" y="376" text-anchor="middle" fill="#FF69B4" font-size="12" class="planet" data-planet="Venus" data-sign="Libra" data-symbol="♀">♀</text>
+          
+          <!-- MARTE - Signo Aries (0°) -->
+          <circle cx="300" cy="120" r="4" fill="none" stroke="#FF5555" stroke-width="1.5"/>
+          <text x="300" y="116" text-anchor="middle" fill="#FF5555" font-size="12" class="planet" data-planet="Marte" data-sign="Aries" data-symbol="♂">♂</text>
+          
+          <!-- JÚPITER - Signo Sagitario (240°) -->
+          <circle cx="150" cy="310" r="5" fill="none" stroke="#9D5D0D" stroke-width="2"/>
+          <text x="150" y="305" text-anchor="middle" fill="#9D5D0D" font-size="13" class="planet" data-planet="Júpiter" data-sign="Sagitario" data-symbol="♃">♃</text>
+          
+          <!-- SATURNO - Signo Capricornio (270°) -->
+          <circle cx="220" cy="330" r="5" fill="none" stroke="#8B7355" stroke-width="2"/>
+          <text x="220" y="325" text-anchor="middle" fill="#8B7355" font-size="13" class="planet" data-planet="Saturno" data-sign="Capricornio" data-symbol="♄">♄</text>
+          
+          <!-- URANO - Signo Tauro (30°) -->
+          <circle cx="360" cy="170" r="4" fill="none" stroke="#47BEE0" stroke-width="1.5"/>
+          <text x="360" y="166" text-anchor="middle" fill="#47BEE0" font-size="11" class="planet" data-planet="Urano" data-sign="Tauro" data-symbol="♅">♅</text>
+          
+          <!-- NEPTUNO - Signo Géminis (60°) -->
+          <circle cx="420" cy="180" r="4" fill="none" stroke="#4169E1" stroke-width="1.5"/>
+          <text x="420" y="176" text-anchor="middle" fill="#4169E1" font-size="11" class="planet" data-planet="Neptuno" data-sign="Géminis" data-symbol="♆">♆</text>
+          
+          <!-- PLUTÓN - Signo Escorpio (210°) -->
+          <circle cx="230" cy="340" r="4" fill="none" stroke="#663399" stroke-width="1.5"/>
+          <text x="230" y="336" text-anchor="middle" fill="#663399" font-size="11" class="planet" data-planet="Plutón" data-sign="Escorpio" data-symbol="♇">♇</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="wheel-info">
+      <p>🔮 <span style="color: var(--gold);">SIGNOS:</span> Coloreados por elemento | <span style="color: var(--gold);">CASAS:</span> Números I-XII</p>
+      <p>🌟 <span style="color: var(--gold);">PLANETAS:</span> Posicionados en sus signos | <span style="color: var(--gold);">ASPECTOS:</span> Líneas doradas</p>
+      <p style="margin-top: 12px; font-size: 10px; color: var(--cyan); text-shadow: 0 0 5px rgba(0,217,255,0.5);">✨ Acerca el cursor (agujero negro) a cualquier elemento para ver su información</p>
+    </div>
+  </div>
+
+  <!-- SECCIÓN DE ASPECTOS EXPLICADOS -->
+  <div class="section-box" style="border-color: var(--cyan); box-shadow: 8px 8px 0 rgba(0,217,255,0.3), 0 0 20px rgba(0,217,255,0.2);">
+    <div class="section-header" style="color: var(--cyan);">
+      <span>ASPECTOS: CÓMO SE RELACIONAN LOS PLANETAS</span>
+      <span class="toggle">▼</span>
+    </div>
+    <div class="section-content">
+      <!-- CANVAS ANIMADO DE LÍNEAS -->
+      <canvas id="aspects-animation-canvas"></canvas>
+      
+      <p style="color: var(--cyan); margin-bottom: 20px;">
+        Los aspectos son los ángulos entre los planetas que revelan cómo interactúan sus energías. 
+        Aquí están los cinco aspectos principales:
+      </p>
+
+      <div class="subsection" style="border-left-color: var(--gold);">
+        <h4 style="color: var(--gold);">☉ CONJUNCIÓN (0°)</h4>
+        <p>
+          Los planetas se encuentran en el mismo lugar. Sus energías se fusionan completamente.
+          El resultado puede ser muy potente, para bien o para mal. Es una <span class="highlight-gold">intensificación extrema</span>.
+        </p>
+      </div>
+
+      <div class="subsection" style="border-left-color: #44AA44;">
+        <h4 style="color: #44AA44;">✦ TRÍGONO (120°)</h4>
+        <p>
+          Los planetas forman un ángulo de 120°. Es el aspecto más <span class="highlight-green">armonioso y favorable</span>. 
+          Las energías fluyen naturalmente, sin resistencia. Talento, oportunidad y facilidad.
+        </p>
+      </div>
+
+      <div class="subsection" style="border-left-color: #FFDD44;">
+        <h4 style="color: #FFDD44;">◆ SEXTIL (60°)</h4>
+        <p>
+          Los planetas forman un ángulo de 60°. Es un aspecto <span class="highlight-gold">armónico pero que requiere esfuerzo</span>. 
+          Oportunidades que necesitas reconocer y aprovechar activamente.
+        </p>
+      </div>
+
+      <div class="subsection" style="border-left-color: #FF4444;">
+        <h4 style="color: #FF4444;">▲ CUADRATURA (90°)</h4>
+        <p>
+          Los planetas forman un ángulo de 90°. Es un aspecto <span class="highlight">desafiante y tenso</span>. 
+          Las energías chocan, pero este conflicto es una <span class="highlight">invitación al crecimiento</span>. 
+          Fricción que genera transformación.
+        </p>
+      </div>
+
+      <div class="subsection" style="border-left-color: #FF3D81;">
+        <h4 style="color: #FF3D81;">◇ OPOSICIÓN (180°)</h4>
+        <p>
+          Los planetas están en lados opuestos. Es el aspecto más <span class="highlight">polar y desafiante</span>. 
+          Dos energías que se miran cara a cara. El reto es <span class="highlight-gold">integrar ambas perspectivas</span>, 
+          no elegir una sobre la otra.
+        </p>
+      </div>
+
+      <p style="margin-top: 20px; color: var(--cyan); font-size: 10px; border-top: 2px solid rgba(0,217,255,0.3); padding-top: 16px;">
+        <span style="color: var(--gold);">💡 RECUERDA:</span> Los aspectos desafiantes no son "malos". Son oportunidades de transformación. 
+        Los aspectos armoniosos no son "buenos" automáticamente. Requieren que los actives.
+      </p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- MENSAJE FINAL -->
+  <div class="footer-final">
+    <h2>✨ MENSAJE FINAL ✨</h2>
+    <p>Gracias por sumergirte en esta aventura interactiva. 🌌</p>
+    <p>Esperamos que este recorrido haya despertado tu curiosidad, expandido tu percepción y, sobre todo, que hayas disfrutado esta nueva forma de aprender junto a nosotros.</p>
+    <p style="margin-top: 16px;">
+      En <span class="highlight-gold">Soy Anormal</span> creemos que el conocimiento no tiene que sentirse rígido, aburrido o distante.
+    </p>
+    <p>Puede ser <span class="intro-highlight">inmersivo. Creativo. Emocional. Disruptivo. Y profundamente humano</span>.</p>
+    <p style="margin-top: 16px;">Este es apenas uno de muchos viajes que iremos construyendo.</p>
+    <p>Así que esperamos que, al igual que nosotros, esperes con emoción los próximos números y experiencias de estos artículos interactivos, donde seguiremos explorando astrología, tarot, consciencia, simbolismo y desarrollo humano desde una perspectiva diferente. 🚀✨</p>
+    <p style="margin-top: 20px; color: var(--gold); font-weight: bold;">Gracias por formar parte de esta experiencia.</p>
+    <p style="color: var(--cyan);">Con cariño cósmico,</p>
+    <p style="color: var(--gold);">Equipo Soy Anormal</p>
+  </div>
+
+  <!-- FOOTER REGULAR -->
+  <div class="footer">
+    <p>✦ Tu carta natal es el mapa de tu potencial ✦</p>
+    <p>No define tu destino. Define tu camino de consciencia y crecimiento.</p>
+    <p style="margin-top: 20px; font-size: 10px;">Hecho con 💫 por Soy Anormal</p>
+  </div>
+
+</div>
+
+<!-- SCRIPTS -->
+<script>
+// =================== CANVAS COSMICO GLOBAL ===================
+const canvas = document.getElementById('cosmic-canvas');
+const ctx = canvas.getContext('2d');
+
+let W = canvas.width = window.innerWidth;
+let H = canvas.height = window.innerHeight;
+
+window.addEventListener('resize', () => {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+});
+
+// Clase para cometas
+class Comet {
+  constructor() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H * 0.7;
+    this.vx = (Math.random() - 0.5) * 3;
+    this.vy = Math.random() * 2 + 1;
+    this.life = 0;
+    this.maxLife = Math.random() * 200 + 100;
+    this.size = Math.random() * 3 + 1;
+    this.trail = [];
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life++;
+    this.trail.push({x: this.x, y: this.y});
+    if (this.trail.length > 20) this.trail.shift();
+    if (this.y > H || this.x > W || this.x < 0 || this.life > this.maxLife) return false;
+    return true;
+  }
+
+  draw(ctx) {
+    const alpha = 1 - (this.life / this.maxLife);
+    for (let i = 0; i < this.trail.length; i++) {
+      const trailAlpha = (i / this.trail.length) * alpha;
+      ctx.fillStyle = `rgba(0, 217, 255, ${trailAlpha * 0.6})`;
+      ctx.fillRect(this.trail[i].x, this.trail[i].y, 2, 2);
+    }
+    ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+    ctx.fillRect(this.x - this.size/2, this.y - this.size/2, this.size, this.size);
+    ctx.fillStyle = `rgba(255, 215, 0, ${alpha * 0.8})`;
+    ctx.fillRect(this.x - 1, this.y - 1, 2, 2);
+  }
+}
+
+class ShootingStar {
+  constructor() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H * 0.5;
+    this.angle = Math.random() * Math.PI / 4 + Math.PI / 6;
+    this.speed = Math.random() * 8 + 5;
+    this.vx = Math.cos(this.angle) * this.speed;
+    this.vy = Math.sin(this.angle) * this.speed;
+    this.life = 0;
+    this.maxLife = Math.random() * 150 + 80;
+    this.length = Math.random() * 40 + 30;
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life++;
+    if (this.life > this.maxLife || this.x > W || this.y > H) return false;
+    return true;
+  }
+
+  draw(ctx) {
+    const alpha = Math.sin((this.life / this.maxLife) * Math.PI);
+    for (let i = 0; i < this.length; i += 3) {
+      const px = this.x - (this.vx / this.speed) * i;
+      const py = this.y - (this.vy / this.speed) * i;
+      const pixelAlpha = (1 - i / this.length) * alpha;
+      ctx.fillStyle = `rgba(255, 200, 100, ${pixelAlpha})`;
+      ctx.fillRect(px, py, 2, 2);
+    }
+    ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+    ctx.fillRect(this.x - 1.5, this.y - 1.5, 3, 3);
+  }
+}
+
+class BlackHole {
+  constructor() {
+    this.x = W * 0.8;
+    this.y = H * 0.2;
+    this.radius = 40;
+    this.rotation = 0;
+    this.particles = [];
+    for (let i = 0; i < 30; i++) {
+      this.particles.push({
+        angle: (i / 30) * Math.PI * 2,
+        distance: this.radius + 20 + Math.random() * 30,
+        speed: Math.random() * 0.02 + 0.01,
+        size: Math.random() * 1.5 + 0.5,
+        brightness: Math.random() * 0.5 + 0.5
+      });
+    }
+  }
+
+  update() {
+    this.rotation += 0.015;
+  }
+
+  draw(ctx) {
+    for (let p of this.particles) {
+      p.angle += p.speed;
+      const px = this.x + Math.cos(p.angle) * p.distance;
+      const py = this.y + Math.sin(p.angle) * p.distance;
+      const glow = Math.sin(this.rotation * 0.5 + p.angle) * 0.3 + 0.7;
+      ctx.fillStyle = `rgba(255, 100, 200, ${glow * p.brightness * 0.8})`;
+      ctx.fillRect(px - p.size/2, py - p.size/2, p.size, p.size);
+    }
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+    for (let i = -this.radius/4; i < this.radius/4; i += 4) {
+      for (let j = -this.radius/4; j < this.radius/4; j += 4) {
+        if (i*i + j*j < (this.radius/4) * (this.radius/4)) {
+          ctx.fillRect(this.x + i, this.y + j, 3, 3);
+        }
+      }
+    }
+    ctx.strokeStyle = `rgba(255, 100, 200, ${0.6 + Math.sin(this.rotation) * 0.3})`;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.strokeStyle = `rgba(0, 217, 255, ${0.4 + Math.sin(this.rotation + 1) * 0.2})`;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius + 15, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+}
+
+const comets = [];
+const shootingStars = [];
+const blackHole = new BlackHole();
+
+for (let i = 0; i < 3; i++) {
+  comets.push(new Comet());
+}
+
+function animateCanvas() {
+  requestAnimationFrame(animateCanvas);
+  ctx.fillStyle = 'rgba(10, 10, 27, 0.1)';
+  ctx.fillRect(0, 0, W, H);
+
+  for (let i = comets.length - 1; i >= 0; i--) {
+    if (comets[i].update()) {
+      comets[i].draw(ctx);
+    } else {
+      comets.splice(i, 1);
+    }
+  }
+  if (Math.random() < 0.02 && comets.length < 6) comets.push(new Comet());
+
+  for (let i = shootingStars.length - 1; i >= 0; i--) {
+    if (shootingStars[i].update()) {
+      shootingStars[i].draw(ctx);
+    } else {
+      shootingStars.splice(i, 1);
+    }
+  }
+  if (Math.random() < 0.01 && shootingStars.length < 3) shootingStars.push(new ShootingStar());
+
+  blackHole.update();
+  blackHole.draw(ctx);
+}
+
+animateCanvas();
+
+function createStars() {
+  for (let i = 0; i < 150; i++) {
+    const x = Math.random() * W;
+    const y = Math.random() * H;
+    const size = Math.random() * 1.5 + 0.5;
+    const brightness = Math.random() * 0.7 + 0.3;
+    ctx.fillStyle = `rgba(255, 255, 255, ${brightness})`;
+    ctx.fillRect(x, y, size, size);
+  }
+}
+
+function drawNebulas(ctx) {
+  const gradPink = ctx.createRadialGradient(W * 0.1, H * 0.1, 0, W * 0.1, H * 0.1, 300);
+  gradPink.addColorStop(0, 'rgba(255, 61, 129, 0.15)');
+  gradPink.addColorStop(1, 'rgba(255, 61, 129, 0)');
+  ctx.fillStyle = gradPink;
+  ctx.beginPath();
+  ctx.arc(W * 0.1, H * 0.1, 300, 0, Math.PI * 2);
+  ctx.fill();
+
+  const gradCyan = ctx.createRadialGradient(W * 0.9, H * 0.8, 0, W * 0.9, H * 0.8, 350);
+  gradCyan.addColorStop(0, 'rgba(0, 217, 255, 0.12)');
+  gradCyan.addColorStop(1, 'rgba(0, 217, 255, 0)');
+  ctx.fillStyle = gradCyan;
+  ctx.beginPath();
+  ctx.arc(W * 0.9, H * 0.8, 350, 0, Math.PI * 2);
+  ctx.fill();
+
+  const gradPurple = ctx.createRadialGradient(W * 0.5, H * 0.5, 0, W * 0.5, H * 0.5, 250);
+  gradPurple.addColorStop(0, 'rgba(114, 76, 249, 0.1)');
+  gradPurple.addColorStop(1, 'rgba(114, 76, 249, 0)');
+  ctx.fillStyle = gradPurple;
+  ctx.beginPath();
+  ctx.arc(W * 0.5, H * 0.5, 250, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+createStars();
+drawNebulas(ctx);
+
+// =================== ANIMACIONES POR CANVAS EN SECTIONS ===================
+
+// Función para animar planetas cayendo
+function animatePlanets(canvas) {
+  const ctx = canvas.getContext('2d');
+  const planets = [];
+  let animationId;
+
+  class Planet {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = -20;
+      this.vy = Math.random() * 2 + 1;
+      this.size = Math.random() * 4 + 2;
+      this.color = ['#FFD700', '#FF6B6B', '#4ECDC4', '#95E1D3'][Math.floor(Math.random() * 4)];
+    }
+    update() {
+      this.y += this.vy;
+      return this.y < canvas.height;
+    }
+    draw(ctx) {
+      ctx.fillStyle = this.color;
+      ctx.fillRect(this.x - this.size/2, this.y - this.size/2, this.size, this.size);
+      ctx.fillStyle = `rgba(255, 255, 255, 0.6)`;
+      ctx.fillRect(this.x - 1, this.y - 1, 2, 2);
+    }
+  }
+
+  function animate() {
+    ctx.fillStyle = 'rgba(10, 10, 27, 0.2)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = planets.length - 1; i >= 0; i--) {
+      if (!planets[i].update()) {
+        planets.splice(i, 1);
+      } else {
+        planets[i].draw(ctx);
+      }
+    }
+
+    if (Math.random() < 0.3) planets.push(new Planet());
+
+    animationId = requestAnimationFrame(animate);
+  }
+  animate();
+  return animationId;
+}
+
+// Función para palabras fantasma
+function animateGhostWords(canvas) {
+  const ctx = canvas.getContext('2d');
+  const words = ['autoconocimiento', 'consciencia', 'transformación', 'esencia', 'propósito'];
+  const ghostWords = [];
+  let animationId;
+
+  class GhostWord {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 1;
+      this.vy = (Math.random() - 0.5) * 1;
+      this.word = words[Math.floor(Math.random() * words.length)];
+      this.opacity = Math.random() * 0.3 + 0.1;
+      this.life = 0;
+      this.maxLife = Math.random() * 200 + 100;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.life++;
+      this.opacity = Math.sin((this.life / this.maxLife) * Math.PI) * 0.4 + 0.1;
+      return this.life < this.maxLife;
+    }
+    draw(ctx) {
+      ctx.fillStyle = `rgba(0, 217, 255, ${this.opacity})`;
+      ctx.font = '8px Press Start 2P';
+      ctx.textAlign = 'center';
+      ctx.fillText(this.word, this.x, this.y);
+    }
+  }
+
+  function animate() {
+    ctx.fillStyle = 'rgba(10, 10, 27, 0.15)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = ghostWords.length - 1; i >= 0; i--) {
+      if (!ghostWords[i].update()) {
+        ghostWords.splice(i, 1);
+      } else {
+        ghostWords[i].draw(ctx);
+      }
+    }
+
+    if (Math.random() < 0.2) ghostWords.push(new GhostWord());
+
+    animationId = requestAnimationFrame(animate);
+  }
+  animate();
+  return animationId;
+}
+
+// Función para pilares en construcción
+function animatePillars(canvas) {
+  const ctx = canvas.getContext('2d');
+  let animationId;
+  let pillars = [{x: 80, height: 0}, {x: 250, height: 0}, {x: 420, height: 0}];
+  let maxHeight = 120;
+
+  function animate() {
+    ctx.fillStyle = 'rgba(10, 10, 27, 0.2)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let pillar of pillars) {
+      if (pillar.height < maxHeight) {
+        pillar.height += 2;
+      }
+      const y = canvas.height - pillar.height;
+      ctx.fillStyle = `rgba(247, 184, 1, ${0.3 + (pillar.height / maxHeight) * 0.7})`;
+      ctx.fillRect(pillar.x - 20, y, 40, pillar.height);
+      ctx.strokeStyle = `rgba(0, 217, 255, 0.6)`;
+      ctx.strokeRect(pillar.x - 20, y, 40, pillar.height);
+    }
+
+    animationId = requestAnimationFrame(animate);
+  }
+  animate();
+  return animationId;
+}
+
+// Función para galaxia
+function animateGalaxy(canvas) {
+  const ctx = canvas.getContext('2d');
+  let animationId;
+  const stars = [];
+  
+  for (let i = 0; i < 50; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 1.5,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      brightness: Math.random()
+    });
+  }
+
+  function animate() {
+    ctx.fillStyle = 'rgba(10, 10, 27, 0.15)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let star of stars) {
+      star.x += star.vx;
+      star.y += star.vy;
+      star.brightness = 0.3 + Math.sin(Date.now() * 0.002 + star.x) * 0.4;
+
+      if (star.x < 0) star.x = canvas.width;
+      if (star.x > canvas.width) star.x = 0;
+      if (star.y < 0) star.y = canvas.height;
+      if (star.y > canvas.height) star.y = 0;
+
+      ctx.fillStyle = `rgba(114, 76, 249, ${star.brightness})`;
+      ctx.fillRect(star.x - star.size/2, star.y - star.size/2, star.size, star.size);
+    }
+
+    animationId = requestAnimationFrame(animate);
+  }
+  animate();
+  return animationId;
+}
+
+// Función para órbita
+function animateOrbit(canvas) {
+  const ctx = canvas.getContext('2d');
+  let animationId;
+  let rotation = 0;
+
+  function animate() {
+    ctx.fillStyle = 'rgba(10, 10, 27, 0.2)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    rotation += 0.01;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+
+    // Órbita exterior
+    ctx.strokeStyle = 'rgba(0, 217, 255, 0.3)';
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 80, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Puntos en órbita
+    for (let i = 0; i < 5; i++) {
+      const angle = rotation + (i / 5) * Math.PI * 2;
+      const x = centerX + Math.cos(angle) * 80;
+      const y = centerY + Math.sin(angle) * 80;
+      ctx.fillStyle = ['#FFD700', '#00D9FF', '#FF3D81', '#724CF9', '#39FF88'][i];
+      ctx.fillRect(x - 2, y - 2, 4, 4);
+    }
+
+    // Centro
+    ctx.fillStyle = 'rgba(247, 184, 1, 0.8)';
+    ctx.fillRect(centerX - 3, centerY - 3, 6, 6);
+
+    animationId = requestAnimationFrame(animate);
+  }
+  animate();
+  return animationId;
+}
+
+// Función para elementos
+function animateElements(canvas) {
+  const ctx = canvas.getContext('2d');
+  let animationId;
+  const elements = [
+    {label: '🔥', color: '#FF4444', x: 60},
+    {label: '🌍', color: '#44AA44', x: 180},
+    {label: '💨', color: '#FFDD44', x: 300},
+    {label: '💧', color: '#44AAFF', x: 420}
+  ];
+
+  function animate() {
+    ctx.fillStyle = 'rgba(10, 10, 27, 0.2)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let elem of elements) {
+      const bob = Math.sin(Date.now() * 0.004 + elem.x) * 10;
+      ctx.fillStyle = elem.color;
+      ctx.font = 'bold 24px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(elem.label, elem.x, 80 + bob);
+
+      ctx.strokeStyle = elem.color;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(elem.x, 80 + bob, 25, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    animationId = requestAnimationFrame(animate);
+  }
+  animate();
+  return animationId;
+}
+
+// =================== SECCIONES COLAPSABLES - TODOS LOS BOXES ===================
+
+// Hacer que TODAS las secciones sean colapsables
+document.querySelectorAll('.section-box').forEach((box, index) => {
+  const header = box.querySelector('.section-header');
+  
+  // Agregar evento de click al header
+  if (header) {
+    header.style.cursor = 'pointer';
+    header.addEventListener('click', function(e) {
+      box.classList.toggle('open');
+    });
+  }
+
+  // Si tiene animación de canvas, iniciarla cuando se abre
+  const animType = box.dataset.animation;
+  const canvasEl = box.querySelector('[data-canvas]');
+
+  if (canvasEl && animType) {
+    let animId;
+
+    box.addEventListener('click', function(e) {
+      if (e.target.closest('.section-header')) {
+        if (this.classList.contains('open') && !animId) {
+          switch(animType) {
+            case 'planets':
+              animId = animatePlanets(canvasEl);
+              break;
+            case 'ghost-words':
+              animId = animateGhostWords(canvasEl);
+              break;
+            case 'pillars':
+              animId = animatePillars(canvasEl);
+              break;
+            case 'galaxy':
+              animId = animateGalaxy(canvasEl);
+              break;
+            case 'orbit':
+              animId = animateOrbit(canvasEl);
+              break;
+            case 'elements':
+              animId = animateElements(canvasEl);
+              break;
+          }
+        }
+      }
+    });
+  }
+});
+
+// =================== WHEEL INTERACTIVA - TOOLTIPS ===================
+
+const wheelSvg = document.querySelector('.wheel-svg');
+const tooltip = document.getElementById('wheel-tooltip');
+
+// Información de elementos
+const elementInfo = {
+  // SIGNOS
+  'Aries': { type: 'Signo Zodiacal', element: 'Fuego', quality: 'Cardinal' },
+  'Tauro': { type: 'Signo Zodiacal', element: 'Tierra', quality: 'Fijo' },
+  'Géminis': { type: 'Signo Zodiacal', element: 'Aire', quality: 'Mutable' },
+  'Cáncer': { type: 'Signo Zodiacal', element: 'Agua', quality: 'Cardinal' },
+  'Leo': { type: 'Signo Zodiacal', element: 'Fuego', quality: 'Fijo' },
+  'Virgo': { type: 'Signo Zodiacal', element: 'Tierra', quality: 'Mutable' },
+  'Libra': { type: 'Signo Zodiacal', element: 'Aire', quality: 'Cardinal' },
+  'Escorpio': { type: 'Signo Zodiacal', element: 'Agua', quality: 'Fijo' },
+  'Sagitario': { type: 'Signo Zodiacal', element: 'Fuego', quality: 'Mutable' },
+  'Capricornio': { type: 'Signo Zodiacal', element: 'Tierra', quality: 'Cardinal' },
+  'Acuario': { type: 'Signo Zodiacal', element: 'Aire', quality: 'Fijo' },
+  'Piscis': { type: 'Signo Zodiacal', element: 'Agua', quality: 'Mutable' },
+
+  // PLANETAS
+  'Sol': { type: 'Planeta', symbol: '☉', meaning: 'Identidad, propósito, esencia' },
+  'Luna': { type: 'Planeta', symbol: '☽', meaning: 'Emociones, necesidades, intuición' },
+  'Mercurio': { type: 'Planeta', symbol: '☿', meaning: 'Comunicación, pensamiento, ideas' },
+  'Venus': { type: 'Planeta', symbol: '♀', meaning: 'Amor, valores, conexión' },
+  'Marte': { type: 'Planeta', symbol: '♂', meaning: 'Acción, deseo, energía' },
+  'Júpiter': { type: 'Planeta', symbol: '♃', meaning: 'Expansión, oportunidad, crecimiento' },
+  'Saturno': { type: 'Planeta', symbol: '♄', meaning: 'Límites, lecciones, madurez' },
+  'Urano': { type: 'Planeta', symbol: '♅', meaning: 'Innovación, cambio, liberación' },
+  'Neptuno': { type: 'Planeta', symbol: '♆', meaning: 'Imaginación, sueños, trascendencia' },
+  'Plutón': { type: 'Planeta', symbol: '♇', meaning: 'Transformación, poder, renacimiento' },
+
+  // CASAS
+  '1': { type: 'Casa', name: 'Casa 1', meaning: 'Identidad, apariencia, comienzos' },
+  '2': { type: 'Casa', name: 'Casa 2', meaning: 'Recursos, valores, posesiones' },
+  '3': { type: 'Casa', name: 'Casa 3', meaning: 'Comunicación, hermanos, viajes cortos' },
+  '4': { type: 'Casa', name: 'Casa 4', meaning: 'Hogar, familia, raíces' },
+  '5': { type: 'Casa', name: 'Casa 5', meaning: 'Creatividad, romance, expresión' },
+  '6': { type: 'Casa', name: 'Casa 6', meaning: 'Trabajo, salud, servicio' },
+  '7': { type: 'Casa', name: 'Casa 7', meaning: 'Relaciones, sociedad, equilibrio' },
+  '8': { type: 'Casa', name: 'Casa 8', meaning: 'Transformación, misterio, recursos compartidos' },
+  '9': { type: 'Casa', name: 'Casa 9', meaning: 'Educación, viajes, expansión mental' },
+  '10': { type: 'Casa', name: 'Casa 10', meaning: 'Carrera, reputación, destino' },
+  '11': { type: 'Casa', name: 'Casa 11', meaning: 'Amistad, comunidad, ideales' },
+  '12': { type: 'Casa', name: 'Casa 12', meaning: 'Espiritualidad, lo inconsciente, aislamiento' },
+
+  // PUNTOS CARDINALES
+  'MC': { type: 'Punto Cardinal', name: 'Medio Cielo', meaning: 'Carrera, destino público, punto más alto' },
+  'IC': { type: 'Punto Cardinal', name: 'Fondo Cielo', meaning: 'Hogar, raíces, base emocional' },
+  'AC': { type: 'Punto Cardinal', name: 'Ascendente', meaning: 'Personalidad, apariencia, cómo te ves' },
+  'DC': { type: 'Punto Cardinal', name: 'Descendente', meaning: 'Relaciones, proyecciones, pareja' }
+};
+
+// Agregar event listeners a elementos interactivos
+const interactiveElements = document.querySelectorAll('.interactive-element *');
+
+interactiveElements.forEach(element => {
+  const key = element.getAttribute('data-sign') || 
+              element.getAttribute('data-planet') || 
+              element.getAttribute('data-house') ||
+              element.getAttribute('data-type');
+
+  if (key && elementInfo[key]) {
+    element.style.cursor = 'pointer';
+    element.classList.add('interactive');
+
+    element.addEventListener('mouseenter', function(e) {
+      const info = elementInfo[key];
+      const rect = element.getBoundingClientRect();
+      const wheelRect = wheelSvg.getBoundingClientRect();
+
+      let html = `<div class="label">${key}</div>`;
+      
+      if (info.type === 'Signo Zodiacal') {
+        html += `<div>${info.type}</div>`;
+        html += `<div style="margin-top: 6px;">🔥 Elemento: <span class="value">${info.element}</span></div>`;
+        html += `<div>✦ Modalidad: <span class="value">${info.quality}</span></div>`;
+      } else if (info.type === 'Planeta') {
+        html += `<div>${info.type}: ${info.symbol}</div>`;
+        html += `<div style="margin-top: 6px;"><span class="value">${info.meaning}</span></div>`;
+      } else if (info.type === 'Casa') {
+        html += `<div>${info.name}</div>`;
+        html += `<div style="margin-top: 6px;"><span class="value">${info.meaning}</span></div>`;
+      } else if (info.type === 'Punto Cardinal') {
+        html += `<div>${info.name}</div>`;
+        html += `<div style="margin-top: 6px;"><span class="value">${info.meaning}</span></div>`;
+      }
+
+      tooltip.innerHTML = html;
+      tooltip.classList.add('visible');
+
+      const x = rect.left - wheelRect.left + rect.width / 2;
+      const y = rect.top - wheelRect.top - 80;
+
+      tooltip.style.left = Math.max(10, Math.min(x - 100, wheelRect.width - 210)) + 'px';
+      tooltip.style.top = Math.max(10, y) + 'px';
+    });
+
+    element.addEventListener('mouseleave', function() {
+      tooltip.classList.remove('visible');
+    });
+  }
+});
+
+// Agregar event listeners a puntos cardinales
+const cardinalPoints = document.querySelectorAll('.cardinal-point');
+cardinalPoints.forEach(point => {
+  const type = point.getAttribute('data-type');
+  
+  if (type && elementInfo[type]) {
+    point.style.cursor = 'pointer';
+
+    point.addEventListener('mouseenter', function(e) {
+      const info = elementInfo[type];
+      const rect = point.getBoundingClientRect();
+      const wheelRect = wheelSvg.getBoundingClientRect();
+
+      let html = `<div class="label">${type}</div>`;
+      html += `<div>${info.name}</div>`;
+      html += `<div style="margin-top: 6px;"><span class="value">${info.meaning}</span></div>`;
+
+      tooltip.innerHTML = html;
+      tooltip.classList.add('visible');
+
+      const x = rect.left - wheelRect.left + rect.width / 2;
+      const y = rect.top - wheelRect.top - 80;
+
+      tooltip.style.left = Math.max(10, Math.min(x - 100, wheelRect.width - 210)) + 'px';
+      tooltip.style.top = Math.max(10, y) + 'px';
+    });
+
+    point.addEventListener('mouseleave', function() {
+      tooltip.classList.remove('visible');
+    });
+  }
+});
+
+// Agregar event listeners a líneas de aspectos
+const aspects = document.querySelectorAll('.aspect');
+aspects.forEach(aspect => {
+  const aspectType = aspect.getAttribute('data-aspect');
+  
+  aspect.style.cursor = 'pointer';
+  aspect.addEventListener('mouseenter', function(e) {
+    const rect = aspect.getBoundingClientRect();
+    const wheelRect = wheelSvg.getBoundingClientRect();
+
+    let html = `<div class="label">Aspecto</div>`;
+    html += `<div class="value">${aspectType}</div>`;
+
+    tooltip.innerHTML = html;
+    tooltip.classList.add('visible');
+
+    const x = rect.left - wheelRect.left + rect.width / 2;
+    const y = rect.top - wheelRect.top - 80;
+
+    tooltip.style.left = Math.max(10, Math.min(x - 100, wheelRect.width - 210)) + 'px';
+    tooltip.style.top = Math.max(10, y) + 'px';
+  });
+
+  aspect.addEventListener('mouseleave', function() {
+    tooltip.classList.remove('visible');
+  });
+});
+
+// =================== ANIMACIÓN DE LÍNEAS EN ASPECTOS ===================
+
+function animateAspectsCanvas() {
+  const canvas = document.getElementById('aspects-animation-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let time = 0;
+
+  // Ajustar tamaño del canvas
+  canvas.width = canvas.offsetWidth;
+  canvas.height = 120;
+
+  const aspectTypes = [
+    { name: 'Trígono', color: '#39FF88', angle: '120°' },
+    { name: 'Sextil', color: '#00D9FF', angle: '60°' },
+    { name: 'Cuadratura', color: '#FF8844', angle: '90°' },
+    { name: 'Oposición', color: '#FF3D81', angle: '180°' },
+    { name: 'Conjunción', color: '#F7B801', angle: '0°' }
+  ];
+
+  function animate() {
+    time += 2;
+    
+    // Limpiar canvas
+    ctx.fillStyle = 'rgba(10, 10, 27, 0.3)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const boxWidth = canvas.width / aspectTypes.length;
+    
+    // Dibujar líneas para cada aspecto
+    aspectTypes.forEach((aspect, index) => {
+      const x = index * boxWidth;
+      
+      // Línea vertical izquierda
+      ctx.strokeStyle = aspect.color;
+      ctx.lineWidth = 2;
+      ctx.globalAlpha = 0.6;
+      ctx.beginPath();
+      ctx.moveTo(x + 10, 20);
+      ctx.lineTo(x + 10, 100);
+      ctx.stroke();
+
+      // Líneas diagonales con animación
+      const offset = (time % 60) / 60;
+      
+      for (let i = 0; i < 5; i++) {
+        const yPos = 20 + (i * 16) - (offset * 96);
+        
+        ctx.strokeStyle = aspect.color;
+        ctx.globalAlpha = Math.sin((time + i * 15) * 0.03) * 0.5 + 0.5;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x + 10, yPos);
+        ctx.lineTo(x + boxWidth - 10, yPos + 60);
+        ctx.stroke();
+      }
+
+      // Línea vertical derecha
+      ctx.strokeStyle = aspect.color;
+      ctx.globalAlpha = 0.6;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x + boxWidth - 10, 20);
+      ctx.lineTo(x + boxWidth - 10, 100);
+      ctx.stroke();
+
+      // Texto con nombre del aspecto
+      ctx.fillStyle = aspect.color;
+      ctx.globalAlpha = 1;
+      ctx.font = 'bold 10px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(aspect.name, x + boxWidth / 2, 15);
+      ctx.font = '9px Arial';
+      ctx.fillText(aspect.angle, x + boxWidth / 2, 110);
+    });
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+}
+
+// Iniciar animación de aspectos cuando la página carga
+setTimeout(animateAspectsCanvas, 500);
+
+// =================== INICIALIZAR SECCIONES ===================
+// Abrir primera sección por defecto
+document.querySelector('.section-box').classList.add('open');
+// Animar el canvas de la primera sección
+const firstCanvas = document.querySelector('[data-canvas="planets"]');
+if (firstCanvas) animatePlanets(firstCanvas);
+</script>
+</script>
+
+</body>
+</html>
