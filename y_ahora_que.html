@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✦ ¿Y AHORA QUÉ? ✦ — Tu Guía Post-Lectura</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #05030f;
+  --bg2: #0a0620;
+  --panel: #110d2e;
+  --panel2: #0d0a22;
+  --border: #2a1f5e;
+  --gold: #f0c040;
+  --gold2: #c8922a;
+  --violet: #9b6dff;
+  --violet2: #6b3dcc;
+  --teal: #40d4c8;
+  --teal2: #208878;
+  --rose: #ff6b9b;
+  --cyan: #00D9FF;
+  --pink: #FF3D81;
+  --green: #39FF88;
+  --white: #e8e0ff;
+  --dim: #6a5a9a;
+  --fire: #ff7a3a;
+  --earth: #a8c060;
+  --air: #70d0f0;
+  --water: #7090ff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'VT323', monospace;
+  font-size: 22px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);
+  pointer-events: none; z-index: 9998;
+}
+
+canvas#bg-canvas {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+
+.container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── HERO ── */
+.hero {
+  text-align: center;
+  padding: 50px 20px 30px;
+  position: relative;
+}
+.hero-pre {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  color: var(--violet);
+  letter-spacing: 4px;
+  margin-bottom: 16px;
+  opacity: 0.8;
+}
+.hero-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(30px, 7vw, 62px);
+  color: var(--gold);
+  text-shadow: 4px 4px 0 var(--gold2), 0 0 40px rgba(240,192,64,0.5);
+  animation: glitch-title 4s infinite;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+@keyframes glitch-title {
+  0%, 88%, 100% { transform: translate(0); }
+  90% { transform: translate(-3px, 2px); text-shadow: 4px 4px 0 var(--rose), 0 0 40px rgba(255,107,155,0.5); }
+  92% { transform: translate(3px, -2px); text-shadow: 4px 4px 0 var(--teal), 0 0 40px rgba(64,212,200,0.5); }
+  94% { transform: translate(-2px, -2px); }
+  96% { transform: translate(2px, 2px); }
+}
+.hero-subtitle {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(9px, 2vw, 13px);
+  color: var(--teal);
+  letter-spacing: 2px;
+  margin-top: 8px;
+  text-shadow: 0 0 10px rgba(64,212,200,0.5);
+}
+.hero-desc {
+  font-size: 22px;
+  color: var(--dim);
+  max-width: 620px;
+  margin: 20px auto 0;
+  line-height: 1.7;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  border: none;
+  border-top: 2px solid var(--border);
+  margin: 30px 0;
+  position: relative;
+}
+.divider::after {
+  content: '✦ ✦ ✦';
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg);
+  padding: 0 12px;
+  color: var(--gold2);
+  font-size: 16px;
+}
+
+/* ── INTRO BOX ── */
+.intro-box {
+  background: rgba(17,13,46,0.9);
+  border: 3px solid var(--gold2);
+  padding: 26px;
+  margin: 30px 0;
+  box-shadow: 6px 6px 0 rgba(200,146,42,0.3), 0 0 30px rgba(240,192,64,0.1);
+  position: relative;
+  overflow: hidden;
+}
+.intro-box::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(240,192,64,0.05) 50%, transparent 100%);
+  background-size: 300% 300%;
+  animation: shimmer 6s ease infinite;
+  pointer-events: none;
+}
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.intro-box p { font-size: 22px; line-height: 1.8; color: #c0b8e0; margin-bottom: 14px; }
+.intro-box p:last-child { margin-bottom: 0; }
+.hl-gold { color: var(--gold); }
+.hl-violet { color: var(--violet); }
+.hl-teal { color: var(--teal); }
+.hl-rose { color: var(--rose); }
+
+/* ── SECTION CARDS ── */
+.section-card {
+  background: rgba(17,13,46,0.9);
+  border: 3px solid var(--border);
+  margin: 16px 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 5px 5px 0 rgba(42,31,94,0.5);
+}
+.section-card:hover {
+  border-color: var(--violet);
+  box-shadow: 5px 5px 0 rgba(155,109,255,0.3), 0 0 20px rgba(155,109,255,0.1);
+}
+.section-card.open {
+  border-color: var(--gold);
+  box-shadow: 5px 5px 0 rgba(240,192,64,0.3), 0 0 20px rgba(240,192,64,0.1);
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 22px;
+  cursor: pointer;
+  user-select: none;
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(8px, 1.6vw, 11px);
+  letter-spacing: 1px;
+  color: var(--teal);
+  gap: 12px;
+}
+.section-header:hover { color: var(--gold); }
+.section-card.open .section-header { color: var(--gold); }
+.section-header .icon { font-size: 22px; flex-shrink: 0; }
+.section-header .title { flex: 1; }
+.section-header .toggle { font-size: 16px; transition: transform 0.3s ease; flex-shrink: 0; }
+.section-card.open .section-header .toggle { transform: rotate(180deg); }
+.section-body { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; }
+.section-card.open .section-body { max-height: 9999px; }
+.section-inner { padding: 0 22px 22px; border-top: 1px solid var(--border); }
+.section-inner p { font-size: 21px; line-height: 1.8; color: #b0a8d0; margin-bottom: 14px; }
+
+/* ── SUBSECTIONS ── */
+.sub-block {
+  border-left: 3px solid var(--violet2);
+  padding: 12px 16px;
+  margin: 16px 0;
+  background: rgba(107,61,204,0.08);
+}
+.sub-block h4 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--gold);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+.sub-block p { font-size: 20px; color: #9a92c0; margin-bottom: 8px; line-height: 1.7; }
+.sub-block p:last-child { margin-bottom: 0; }
+
+/* ── TIPOS DE LECTURA ── */
+.lectura-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+  margin: 18px 0;
+}
+.lectura-card {
+  border: 2px solid;
+  padding: 18px 14px;
+  text-align: center;
+  background: var(--panel2);
+  transition: all 0.2s ease;
+}
+.lectura-card:hover { transform: translate(-2px,-2px); box-shadow: 4px 4px 0 rgba(255,255,255,0.1); }
+.lectura-card .lc-icon { font-size: 34px; margin-bottom: 10px; display: block; }
+.lectura-card h3 { font-family: 'Press Start 2P', monospace; font-size: 8px; margin-bottom: 10px; letter-spacing: 1px; }
+.lectura-card p { font-size: 17px; color: #888; line-height: 1.6; }
+.lectura-card.tarot { border-color: var(--rose); }
+.lectura-card.tarot h3 { color: var(--rose); }
+.lectura-card.carta { border-color: var(--gold); }
+.lectura-card.carta h3 { color: var(--gold); }
+.lectura-card.solar { border-color: var(--violet); }
+.lectura-card.solar h3 { color: var(--violet); }
+.lectura-card.sinastria { border-color: var(--teal); }
+.lectura-card.sinastria h3 { color: var(--teal); }
+
+/* ── PASOS ── */
+.steps-list { margin: 16px 0; }
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 14px;
+  border-left: 3px solid var(--teal2);
+  margin-bottom: 12px;
+  background: rgba(32,136,120,0.07);
+}
+.step-num {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  color: var(--teal);
+  flex-shrink: 0;
+  min-width: 30px;
+}
+.step-text { font-size: 20px; color: #a0a8c8; line-height: 1.7; }
+.step-text strong { color: var(--white); font-style: normal; font-family: 'Press Start 2P', monospace; font-size: 9px; display: block; margin-bottom: 6px; }
+
+/* ── ELEMENTS GRID ── */
+.elem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+.elem-card { border: 2px solid; padding: 16px; text-align: center; background: var(--panel2); }
+.elem-card h4 { font-family: 'Press Start 2P', monospace; font-size: 9px; margin-bottom: 8px; }
+.elem-card p { font-size: 17px; color: #888; line-height: 1.6; }
+.elem-card.fuego { border-color: #ff4444; }
+.elem-card.fuego h4 { color: #ff4444; }
+.elem-card.tierra { border-color: #44aa44; }
+.elem-card.tierra h4 { color: #44aa44; }
+.elem-card.aire { border-color: #ffdd44; }
+.elem-card.aire h4 { color: #ffdd44; }
+.elem-card.agua { border-color: var(--water); }
+.elem-card.agua h4 { color: var(--water); }
+
+/* ── SELECTOR SOL / LUNA / ASC ── */
+#selector-section {
+  background: rgba(17,13,46,0.95);
+  border: 3px solid var(--gold);
+  padding: 30px 26px;
+  margin: 30px 0;
+  box-shadow: 6px 6px 0 rgba(200,146,42,0.4), 0 0 40px rgba(240,192,64,0.1);
+}
+.selector-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(10px, 2vw, 14px);
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 8px;
+  text-shadow: 0 0 20px rgba(240,192,64,0.5);
+  letter-spacing: 2px;
+}
+.selector-sub { text-align: center; font-size: 20px; color: var(--dim); margin-bottom: 26px; }
+.sla-tabs { display: flex; gap: 6px; margin-bottom: 22px; flex-wrap: wrap; }
+.sla-tab {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  padding: 11px 18px;
+  border: 2px solid var(--border);
+  color: var(--dim);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 1px;
+  flex: 1;
+  text-align: center;
+}
+.sla-tab:hover { border-color: var(--gold); color: var(--gold); }
+.sla-tab.active { border-color: var(--gold); color: var(--gold); background: rgba(240,192,64,0.1); }
+.sign-picker-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--teal);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+.signs-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 7px;
+  margin-bottom: 18px;
+}
+@media(max-width: 600px) { .signs-grid { grid-template-columns: repeat(4, 1fr); } }
+.sign-btn {
+  border: 2px solid var(--border);
+  padding: 10px 4px;
+  text-align: center;
+  cursor: pointer;
+  background: var(--panel2);
+  transition: all 0.15s;
+}
+.sign-btn:hover { border-color: var(--violet); transform: translate(-1px,-1px); }
+.sign-btn.selected { border-color: var(--gold); background: rgba(240,192,64,0.12); }
+.sign-btn .sb-icon { font-size: 24px; display: block; }
+.sign-btn .sb-name { font-family: 'Press Start 2P', monospace; font-size: 6px; color: var(--dim); display: block; margin-top: 5px; line-height: 1.5; }
+.sign-btn.selected .sb-name { color: var(--gold); }
+.house-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--teal);
+  margin: 18px 0 12px;
+  letter-spacing: 1px;
+}
+.houses-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 7px;
+  margin-bottom: 18px;
+}
+@media(max-width: 600px) { .houses-grid { grid-template-columns: repeat(4, 1fr); } }
+.house-btn {
+  border: 2px solid var(--border);
+  padding: 10px 4px;
+  text-align: center;
+  cursor: pointer;
+  background: var(--panel2);
+  transition: all 0.15s;
+}
+.house-btn:hover { border-color: var(--teal); transform: translate(-1px,-1px); }
+.house-btn.selected { border-color: var(--teal); background: rgba(64,212,200,0.12); }
+.house-btn .hb-icon { font-size: 20px; display: block; }
+.house-btn .hb-name { font-family: 'Press Start 2P', monospace; font-size: 6px; color: var(--dim); display: block; margin-top: 5px; line-height: 1.5; }
+.house-btn.selected .hb-name { color: var(--teal); }
+
+/* ── INFO RESULT ── */
+#info-result { margin-top: 22px; min-height: 60px; }
+.result-card {
+  border: 3px solid var(--gold);
+  background: rgba(5,3,15,0.85);
+  padding: 22px;
+  animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.rc-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 14px; }
+.rc-icon { font-size: 40px; }
+.rc-type { font-family: 'Press Start 2P', monospace; font-size: 8px; color: var(--dim); letter-spacing: 2px; margin-bottom: 5px; }
+.rc-name { font-family: 'Press Start 2P', monospace; font-size: clamp(10px,2vw,14px); text-shadow: 0 0 10px rgba(240,192,64,0.4); }
+.rc-badges { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.rc-badge { font-family: 'Press Start 2P', monospace; font-size: 7px; padding: 3px 9px; border: 1px solid; }
+.badge-fire { color: #ff7a3a; border-color: #ff7a3a; }
+.badge-earth { color: #a8c060; border-color: #a8c060; }
+.badge-air { color: #70d0f0; border-color: #70d0f0; }
+.badge-water { color: #7090ff; border-color: #7090ff; }
+.badge-violet { color: var(--violet); border-color: var(--violet); }
+.badge-teal { color: var(--teal); border-color: var(--teal); }
+.badge-gold { color: var(--gold); border-color: var(--gold); }
+.badge-rose { color: var(--rose); border-color: var(--rose); }
+.rc-desc { font-size: 21px; color: #b0a8d0; line-height: 1.8; margin-bottom: 14px; }
+.rc-rudhyar { font-size: 19px; color: var(--gold2); padding: 10px 14px; border-left: 2px solid var(--gold2); font-style: italic; line-height: 1.6; margin-bottom: 14px; }
+.house-result-card {
+  border: 3px solid var(--teal);
+  background: rgba(5,3,15,0.85);
+  padding: 22px;
+  margin-top: 14px;
+  animation: fadeIn 0.4s ease;
+}
+.hrc-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+.hrc-icon { font-size: 30px; }
+.hrc-type { font-family: 'Press Start 2P', monospace; font-size: 8px; color: var(--teal); letter-spacing: 2px; }
+.hrc-name { font-family: 'Press Start 2P', monospace; font-size: clamp(9px,1.8vw,12px); color: var(--white); }
+.hrc-desc { font-size: 21px; color: #a0b8b0; line-height: 1.8; margin-bottom: 12px; }
+.hrc-rudhyar { font-size: 18px; color: var(--teal2); padding: 8px 12px; border-left: 2px solid var(--teal2); font-style: italic; line-height: 1.6; }
+.no-selection { text-align: center; padding: 34px; color: var(--dim); font-size: 21px; border: 2px dashed var(--border); }
+.no-selection .ns-icon { font-size: 44px; margin-bottom: 14px; display: block; }
+
+/* ── BIBLIOTECA ── */
+#biblioteca-section { margin: 30px 0; }
+.biblio-title { font-family: 'Press Start 2P', monospace; font-size: clamp(11px,2vw,15px); color: var(--violet); text-align: center; margin-bottom: 8px; text-shadow: 0 0 20px rgba(155,109,255,0.4); }
+.biblio-tabs { display: flex; gap: 4px; margin-bottom: 18px; flex-wrap: wrap; }
+.biblio-tab {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  padding: 10px 16px;
+  border: 2px solid var(--border);
+  color: var(--dim);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 1px;
+}
+.biblio-tab:hover { border-color: var(--violet); color: var(--violet); }
+.biblio-tab.active { border-color: var(--violet); color: var(--violet); background: rgba(155,109,255,0.08); }
+.biblio-panel { display: none; }
+.biblio-panel.active { display: block; animation: fadeIn 0.3s ease; }
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+.bcard {
+  border: 2px solid;
+  padding: 16px 14px;
+  background: var(--panel2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.bcard:hover { transform: translate(-2px,-2px); box-shadow: 4px 4px 0 rgba(255,255,255,0.08); }
+.bcard.planet { border-color: var(--gold2); }
+.bcard.sign { border-color: var(--violet2); }
+.bcard.house { border-color: var(--teal2); }
+.bcard.aspect { border-color: var(--rose); }
+.bcard-type { font-family: 'Press Start 2P', monospace; font-size: 7px; opacity: 0.6; margin-bottom: 5px; }
+.bcard.planet .bcard-type { color: var(--gold); }
+.bcard.sign .bcard-type { color: var(--violet); }
+.bcard.house .bcard-type { color: var(--teal); }
+.bcard.aspect .bcard-type { color: var(--rose); }
+.bcard-icon { font-size: 30px; display: block; text-align: center; margin: 8px 0; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-5px);} }
+.bcard-name { font-family: 'Press Start 2P', monospace; font-size: 8px; text-align: center; margin: 7px 0; line-height: 1.7; }
+.bcard.planet .bcard-name { color: var(--gold); }
+.bcard.sign .bcard-name { color: var(--violet); }
+.bcard.house .bcard-name { color: var(--teal); }
+.bcard.aspect .bcard-name { color: var(--rose); }
+.bcard-desc { font-size: 16px; color: var(--dim); line-height: 1.6; margin-top: 8px; }
+.bcard-quote { font-size: 15px; color: var(--gold2); margin-top: 10px; padding: 6px 10px; border-left: 2px solid var(--gold2); font-style: italic; line-height: 1.5; }
+.bcard-stat { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 7px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 15px; }
+.bcard-stat-lbl { color: var(--dim); }
+.bcard-stat-val { font-family: 'Press Start 2P', monospace; font-size: 8px; }
+.bcard.planet .bcard-stat-val { color: var(--gold); }
+.bcard.sign .bcard-stat-val { color: var(--violet); }
+.bcard.house .bcard-stat-val { color: var(--teal); }
+.bcard.aspect .bcard-stat-val { color: var(--rose); }
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center;
+  padding: 44px 20px;
+  border-top: 2px solid var(--border);
+  margin-top: 44px;
+  color: var(--dim);
+  font-size: 19px;
+  line-height: 2.1;
+}
+.footer strong { font-family: 'Press Start 2P', monospace; font-size: 10px; color: var(--gold); display: block; margin-bottom: 12px; }
+
+@media(max-width: 600px) {
+  .lectura-grid { grid-template-columns: 1fr 1fr; }
+  .elem-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="container">
+
+  <div class="hero">
+    <p class="hero-pre">POST-LECTURA GUIDE</p>
+    <h1 class="hero-title">¿Y AHORA QUÉ?</h1>
+    <p class="hero-subtitle">✦ GUÍA INTERACTIVA POST-LECTURA ✦</p>
+    <p class="hero-desc">Terminaste tu sesión. Ahora viene la parte más importante: ¿qué haces con todo lo que recibiste?</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="intro-box">
+    <p>Una lectura —ya sea de <span class="hl-rose">Tarot</span>, <span class="hl-gold">Carta Natal</span>, <span class="hl-violet">Revolución Solar</span> o <span class="hl-teal">Sinastría</span>— no es el final del proceso. <strong>Es el comienzo.</strong></p>
+    <p>Lo que recibiste en sesión es información simbólica poderosa. Pero la información sola no transforma. Lo que transforma es lo que <span class="hl-gold">haces con ella</span>, cómo la integras, cómo la vives, cómo la llevas a tu cotidianidad.</p>
+    <p>Esta guía fue creada para acompañarte en ese proceso. Aquí encontrarás los pasos que te recomendamos después de cada lectura, junto con herramientas para que puedas profundizar en los elementos de tu carta natal cuando estés listo/a. ✨</p>
+  </div>
+
+  <!-- S1 -->
+  <div class="section-card" data-section="astrologia">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="icon">🌌</span><span class="title">¿QUÉ ES LA ASTROLOGÍA?</span><span class="toggle">▼</span>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <p>La Astrología es una <span class="hl-teal">ciencia que habla a través del lenguaje simbólico</span>. Puede aplicarse a cualquier clase de fenómenos.</p>
+      <p>Es una <span class="hl-gold">técnica de comprensión y una disciplina del pensamiento</span>, gracias a la cual una persona podrá obtener una <span class="hl-rose">nueva perspectiva</span> de su vida entera y una comprensión más objetiva y estructurada del lugar y la función de sus experiencias y crisis vitales más importantes.</p>
+      <div class="sub-block">
+        <p>💫 La astrología no predice el futuro.</p>
+        <p>🌟 La astrología ilumina tu potencial.</p>
+        <p>✨ La astrología es autoconocimiento cósmico.</p>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- S2 -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="icon">🗺️</span><span class="title">¿QUÉ ES UNA CARTA NATAL?</span><span class="toggle">▼</span>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <p>Es una <span class="hl-gold">herramienta poderosa</span> con la que cuenta la Astrología. Un <span class="hl-teal">mapa o diagrama de la posición de los astros</span> al momento de nacimiento o de la creación de algo, ya sea un evento, objeto o acontecimiento importante.</p>
+      <p>Este mapa sirve para <span class="hl-rose">identificar el patrón de desarrollo</span> que el ser humano debe seguir para desbloquear todo su potencial y ser capaz de ser él mismo.</p>
+      <div class="sub-block">
+        <p>🔮 Un mapa de tu esencia.</p>
+        <p>🌌 Un diagrama de tu energía.</p>
+        <p>🎯 Tu hoja de ruta cósmica.</p>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- S3 -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="icon">⭐</span><span class="title">CARTA NATAL → AUTOCONOCIMIENTO</span><span class="toggle">▼</span>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <p>La carta natal es mucho más que un mapa astrológico. Es una <span class="hl-gold">hoja de ruta que nos conecta con nuestra esencia más profunda</span>, nuestra misión de vida y las lecciones que el alma ha elegido experimentar en esta encarnación.</p>
+      <div class="sub-block"><h4>🌟 ILUMINA TUS FORTALEZAS</h4><p>La carta natal ilumina nuestras fortalezas, talentos y dones innatos. Revela aquello que traes como potencial activado desde el inicio.</p></div>
+      <div class="sub-block"><h4>💎 REVELA TUS DESAFÍOS</h4><p>Muestra los desafíos que nos brindan la oportunidad de crecer. No son limitaciones, sino invitaciones a la transformación.</p></div>
+      <div class="sub-block"><h4>⭐ LOS TRES PILARES CLAVE</h4>
+        <p><span class="hl-gold">El Sol:</span> Tu esencia, tu identidad, quién eres.</p>
+        <p><span class="hl-teal">La Luna:</span> Tus emociones y necesidades más profundas.</p>
+        <p><span class="hl-rose">El Ascendente:</span> Cómo interactúas con el mundo.</p>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- S4 -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="icon">🌀</span><span class="title">DESPERTAR ESPIRITUAL</span><span class="toggle">▼</span>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <p>Para una comprensión más amplia sobre la Astrología y la carta natal, es primordial recordar que <span class="hl-gold">la humanidad atraviesa un cambio de ciclo evolutivo</span>.</p>
+      <div class="sub-block"><h4>🌍 LAS ERAS CÓSMICAS</h4><p>A lo largo de la historia, la Tierra ha transitado grandes periodos determinados por la <span class="hl-teal">Precesión de los Equinoccios</span>. Actualmente nos encontramos en una transición asociada simbólicamente con la <span class="hl-gold">Era de Acuario</span>.</p></div>
+      <div class="sub-block"><h4>✨ CONSCIENCIA EN TRANSICIÓN</h4><p>Este cambio no es solo astronómico-astrológico; es <span class="hl-rose">vibracional y de consciencia</span>. El Despertar Espiritual hace referencia a la activación progresiva de una consciencia más amplia dentro del individuo.</p></div>
+      <div class="sub-block"><h4>🌌 TÚ + COSMOS = EVOLUCIÓN</h4><p>La carta natal, en este contexto, es un <span class="hl-gold">diseño energético que muestra cómo tu alma participa en este momento evolutivo</span>. El despertar no ocurre fuera de ti, pero tampoco ocurre aislado del movimiento cósmico.</p></div>
+    </div></div>
+  </div>
+
+  <!-- S5 -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="icon">🎯</span><span class="title">¿PARA QUÉ ME SIRVE ENTENDER ESTO?</span><span class="toggle">▼</span>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <p>Comprender el Despertar Espiritual desde tu carta natal implica adquirir <span class="hl-teal">información nueva</span> y situarte conscientemente dentro del <span class="hl-gold">ciclo evolutivo que atraviesa la humanidad</span>.</p>
+      <div class="sub-block"><h4>🎯 ENTENDER TU FRICCIÓN</h4><p>Tu diseño natal revela dónde sientes mayor fricción entre lo viejo y lo nuevo. No todas las personas despiertan de la misma manera.</p></div>
+      <div class="sub-block"><h4>🔧 RECONFIGURA TU ESTRUCTURA</h4><p>Descubre qué estructuras internas necesitan reconfigurarse. Identifica qué patrones heredados piden ser trascendidos.</p></div>
+      <div class="sub-block"><h4>⚡ ACTIVA TU POTENCIAL</h4><p>Reconoce qué potenciales están listos para activarse en esta etapa evolutiva. No todas las personas son llamadas a transformar lo mismo.</p></div>
+      <div class="sub-block"><h4>🔄 TRANSFORMACIÓN DE LO HEREDADO</h4><p>Cada carta muestra una historia previa: <span class="hl-rose">condicionamientos familiares, culturales y colectivos</span>. La transformación ocurre al <span class="hl-teal">integrarlos conscientemente</span>.</p></div>
+      <div class="sub-block"><h4>♾️ LIBERACIÓN COMO PROCESO</h4><p>El Despertar Espiritual es un <span class="hl-teal">proceso gradual de reajuste</span>. Cada tránsito, cada crisis, cada decisión se convierte en una oportunidad de alineación.</p></div>
+    </div></div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- S6 PASOS -->
+  <div class="section-card open">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="icon">📋</span><span class="title">¿Y AHORA QUÉ? — PASOS POST-LECTURA</span><span class="toggle">▼</span>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <p>Dependiendo del tipo de lectura que recibiste, aquí te compartimos lo que te recomendamos hacer después de tu sesión:</p>
+      <div class="lectura-grid" style="margin:20px 0;">
+        <div class="lectura-card tarot"><span class="lc-icon">🃏</span><h3>TAROT</h3><p>Lectura de energías presentes, bloqueos y potenciales en el ahora.</p></div>
+        <div class="lectura-card carta"><span class="lc-icon">🌌</span><h3>CARTA NATAL</h3><p>Mapa de tu esencia, talentos, desafíos y propósito de vida.</p></div>
+        <div class="lectura-card solar"><span class="lc-icon">☀️</span><h3>REV. SOLAR</h3><p>Energías y temas que marcarán tu año personal desde tu cumpleaños.</p></div>
+        <div class="lectura-card sinastria"><span class="lc-icon">🤝</span><h3>SINASTRÍA</h3><p>La interacción energética entre dos cartas natales en una relación.</p></div>
+      </div>
+      <div class="steps-list">
+        <div class="step-item"><span class="step-num">01</span><div class="step-text"><strong>INTEGRA — NO ACTÚES DE INMEDIATO</strong>Dale un par de días antes de tomar decisiones grandes. La información simbólica necesita asentarse. Anota lo que resonó contigo justo después de la sesión.</div></div>
+        <div class="step-item"><span class="step-num">02</span><div class="step-text"><strong>ESCRIBE TUS RESONANCIAS</strong>¿Qué te movió por dentro? ¿Qué te generó incomodidad? ¿Qué te generó alivio? Tus reacciones emocionales son datos tan valiosos como el contenido de la lectura.</div></div>
+        <div class="step-item"><span class="step-num">03</span><div class="step-text"><strong>IDENTIFICA UN SOLO PUNTO DE ACCIÓN</strong>No intentes trabajar todo al mismo tiempo. Elige una sola cosa que la lectura te reveló y que puedas comenzar a explorar o integrar esta semana.</div></div>
+        <div class="step-item"><span class="step-num">04</span><div class="step-text"><strong>REGRESA A ESTE ESPACIO</strong>Usa esta guía para profundizar en los planetas, signos y casas que se mencionaron en tu sesión. La información cobra más sentido cuando la exploras con calma.</div></div>
+        <div class="step-item"><span class="step-num">05</span><div class="step-text"><strong>OBSERVA SIN JUZGAR</strong>La carta natal no te define. Te muestra energías y patrones. La conciencia de esos patrones es lo que te da libertad para trabajarlos o transformarlos.</div></div>
+        <div class="step-item"><span class="step-num">06</span><div class="step-text"><strong>AGENDA TU PRÓXIMA SESIÓN</strong>La astrología y el tarot son herramientas de proceso, no de una sola visita. Considera regresar en momentos de tránsitos importantes, en tu cumpleaños (RS) o cuando sientas que necesitas orientación.</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- S7 ELEMENTOS -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="icon">🔮</span><span class="title">ELEMENTOS DE UNA CARTA NATAL</span><span class="toggle">▼</span>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <p style="color:var(--gold);">Una carta natal está compuesta por cuatro elementos fundamentales que trabajan juntos para formar tu perfil energético completo.</p>
+      <div class="sub-block" style="border-left-color:var(--rose);"><h4 style="color:var(--rose);">1. SIGNOS ZODIACALES: El "Cómo" de la Energía</h4><p>Los signos representan diferentes cualidades energéticas y estilos de expresión de la consciencia. Cada signo influencia cómo se manifiestan los planetas y las casas.</p><p style="color:var(--teal);font-size:18px;margin-top:8px;">● Modalidades: Cardinal (iniciadora), Fijo (consolidador), Mutable (adaptable)</p><p style="color:var(--teal);font-size:18px;">● Elementos: Fuego, Tierra, Aire, Agua</p></div>
+      <div class="sub-block" style="border-left-color:var(--gold);"><h4 style="color:var(--gold);">2. PLANETAS: El "Qué" de la Energía</h4><p>Los planetas simbolizan diferentes áreas de la psique y de la vida. Cada planeta tiene un papel único en la expresión de tu energía y tu manera de relacionarte con el mundo.</p></div>
+      <div class="sub-block" style="border-left-color:var(--teal);"><h4 style="color:var(--teal);">3. CASAS: El "Dónde" de la Energía</h4><p>Las casas dividen la carta en 12 áreas que representan diferentes aspectos de la vida. Son los escenarios donde actúan los planetas y se expresan los signos.</p></div>
+      <div class="sub-block" style="border-left-color:var(--violet);"><h4 style="color:var(--violet);">4. ASPECTOS: Las Relaciones entre Energías</h4><p>Los aspectos son los ángulos entre los planetas que revelan cómo interactúan sus energías. Pueden ser armoniosos o tensos, pero todos invitan al crecimiento.</p></div>
+      <p style="margin:22px 0 16px;color:var(--gold);font-family:'Press Start 2P',monospace;font-size:10px;text-align:center;letter-spacing:2px;">🔥 ELEMENTOS Y SUS SIGNIFICADOS 💧</p>
+      <div class="elem-grid">
+        <div class="elem-card fuego"><h4>🔥 FUEGO</h4><p>Aries, Leo, Sagitario<br><br>Energía, pasión e inspiración.</p></div>
+        <div class="elem-card tierra"><h4>🌍 TIERRA</h4><p>Tauro, Virgo, Capricornio<br><br>Practicidad, estabilidad y conexión.</p></div>
+        <div class="elem-card aire"><h4>💨 AIRE</h4><p>Géminis, Libra, Acuario<br><br>Comunicación, ideas y conexión mental.</p></div>
+        <div class="elem-card agua"><h4>💧 AGUA</h4><p>Cáncer, Escorpio, Piscis<br><br>Emociones, intuición y sensibilidad.</p></div>
+      </div>
+    </div></div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SELECTOR -->
+  <div id="selector-section">
+    <p class="selector-title">✦ TU TRÍO NATAL ✦</p>
+    <p class="selector-sub">Selecciona Sol, Luna o Ascendente — elige tu signo y casa para ver tu información</p>
+    <div class="sla-tabs">
+      <button class="sla-tab active" onclick="selectSLA('sol',this)">☉ SOL</button>
+      <button class="sla-tab" onclick="selectSLA('luna',this)">☽ LUNA</button>
+      <button class="sla-tab" onclick="selectSLA('asc',this)">⬆ ASC</button>
+    </div>
+    <p class="sign-picker-label" id="sla-label">☉ SOL — Elige tu signo solar:</p>
+    <div class="signs-grid" id="signs-grid"></div>
+    <p class="house-label" id="house-label">☉ SOL — ¿En qué casa se encuentra? (opcional)</p>
+    <div class="houses-grid" id="houses-grid-sel"></div>
+    <div id="info-result"><div class="no-selection"><span class="ns-icon">🌌</span>Selecciona un signo arriba para ver tu información</div></div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- BIBLIOTECA -->
+  <div id="biblioteca-section">
+    <p class="biblio-title" style="margin-bottom:8px;">📚 BIBLIOTECA DE TU CARTA NATAL</p>
+    <p style="text-align:center;font-size:20px;color:var(--dim);margin-bottom:22px;">Explora en profundidad todos los elementos que componen tu carta</p>
+    <div class="biblio-tabs">
+      <button class="biblio-tab active" onclick="selectBiblioTab('planets',this)">🪐 PLANETAS</button>
+      <button class="biblio-tab" onclick="selectBiblioTab('signs',this)">♈ SIGNOS</button>
+      <button class="biblio-tab" onclick="selectBiblioTab('houses',this)">🏠 CASAS</button>
+      <button class="biblio-tab" onclick="selectBiblioTab('aspects',this)">✦ ASPECTOS</button>
+    </div>
+    <div class="biblio-panel active" id="biblio-planets"><div class="cards-grid" id="planets-grid"></div></div>
+    <div class="biblio-panel" id="biblio-signs"><div class="cards-grid" id="signs-grid-biblio"></div></div>
+    <div class="biblio-panel" id="biblio-houses"><div class="cards-grid" id="houses-grid-biblio"></div></div>
+    <div class="biblio-panel" id="biblio-aspects"><div class="cards-grid" id="aspects-grid-biblio"></div></div>
+  </div>
+
+  <div class="footer">
+    <strong>✦ TU CARTA NATAL ES EL MAPA DE TU POTENCIAL ✦</strong>
+    No define tu destino. Define tu camino de consciencia y crecimiento.<br>
+    Gracias por confiar en este espacio. 🌌<br><br>
+    Hecho con 💫 por Soy Anormal
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// AGUJERO NEGRO PIXEL — ANIMACIÓN DE FONDO
+// ═══════════════════════════════════════════
+const bgCanvas = document.getElementById('bg-canvas');
+const bgCtx = bgCanvas.getContext('2d');
+let bW, bH;
+
+function resizeBg() {
+  bW = bgCanvas.width = window.innerWidth;
+  bH = bgCanvas.height = window.innerHeight;
+}
+resizeBg();
+window.addEventListener('resize', resizeBg);
+
+// Símbolos que el agujero negro devorará
+const SYMBOLS = ['☉','☽','☿','♀','♂','♃','♄','⛢','♆','♇',
+                  '♈︎','♉︎','♊︎','♋︎','♌︎','♍︎','♎︎','♏︎','♐︎','♑︎','♒︎','♓︎',
+                  '★','✦','✧','◆','△','□','☌','☍'];
+
+// Estrellas de fondo (estáticas)
+const stars = [];
+for (let i = 0; i < 180; i++) {
+  stars.push({
+    x: Math.random(),
+    y: Math.random(),
+    r: Math.random() * 1.2 + 0.3,
+    t: Math.random() * Math.PI * 2,
+    sp: 0.008 + Math.random() * 0.015
+  });
+}
+
+// Partículas de símbolos orbitando
+const particles = [];
+function spawnParticle(cx, cy) {
+  const angle = Math.random() * Math.PI * 2;
+  const dist  = 120 + Math.random() * 300;
+  particles.push({
+    sym:    SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+    angle:  angle,
+    dist:   dist,
+    speed:  (0.004 + Math.random() * 0.008) * (Math.random() < 0.5 ? 1 : -1),
+    size:   12 + Math.floor(Math.random() * 14),
+    alpha:  0.6 + Math.random() * 0.4,
+    color:  ['#f0c040','#9b6dff','#40d4c8','#ff6b9b','#e8e0ff'][Math.floor(Math.random()*5)],
+    cx, cy,
+    spiraling: false,
+    spiralT: 0,
+    spiralDist: dist,
+  });
+}
+
+// Estados del agujero negro
+// PHASES: IDLE → DEVOUR → EXPLODE → REBUILD → IDLE
+let phase = 'IDLE';
+let phaseTimer = 0;
+let explosionParticles = [];
+let holeRadius = 0;
+let holeGlow = 0;
+let rebuildAlpha = 0;
+let time = 0;
+
+function initHole() {
+  particles.length = 0;
+  explosionParticles.length = 0;
+  const cx = bW / 2, cy = bH / 2;
+  for (let i = 0; i < 28; i++) spawnParticle(cx, cy);
+  phase = 'IDLE';
+  phaseTimer = 0;
+  holeRadius = 32;
+  holeGlow = 0;
+  rebuildAlpha = 0;
+}
+
+function triggerDevour() {
+  phase = 'DEVOUR';
+  phaseTimer = 0;
+  particles.forEach(p => {
+    p.spiraling = true;
+    p.spiralT = 0;
+    p.spiralDist = p.dist;
+  });
+}
+
+function triggerExplosion(cx, cy) {
+  phase = 'EXPLODE';
+  phaseTimer = 0;
+  explosionParticles = [];
+  for (let i = 0; i < 60; i++) {
+    const angle = (i / 60) * Math.PI * 2 + Math.random() * 0.4;
+    const speed = 2 + Math.random() * 5;
+    explosionParticles.push({
+      x: cx, y: cy,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      sym: SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+      color: ['#f0c040','#9b6dff','#40d4c8','#ff6b9b','#e8e0ff','#ff7a3a'][Math.floor(Math.random()*6)],
+      size: 10 + Math.floor(Math.random() * 16),
+      alpha: 1,
+      life: 1,
+      decay: 0.008 + Math.random() * 0.012,
+    });
+  }
+}
+
+function drawPixelCircle(ctx, cx, cy, r, color, alpha, pixSize) {
+  // Dibuja un círculo como cuadraditos pixelados
+  ctx.fillStyle = color;
+  ctx.globalAlpha = alpha;
+  const step = pixSize;
+  for (let dx = -r; dx <= r; dx += step) {
+    for (let dy = -r; dy <= r; dy += step) {
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist <= r && dist >= r - pixSize * 2.5) {
+        ctx.fillRect(
+          Math.round((cx + dx) / step) * step,
+          Math.round((cy + dy) / step) * step,
+          step, step
+        );
+      }
+    }
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawHole(cx, cy, r) {
+  const pixSize = 4;
+  const layers = [
+    { rMult: 1.0,  color: '#ffffff', alpha: 0.06 + holeGlow * 0.04 },
+    { rMult: 0.85, color: '#9b6dff', alpha: 0.12 + holeGlow * 0.08 },
+    { rMult: 0.65, color: '#6b3dcc', alpha: 0.2  + holeGlow * 0.1 },
+    { rMult: 0.45, color: '#3a1a88', alpha: 0.35 + holeGlow * 0.15 },
+    { rMult: 0.25, color: '#1a0844', alpha: 0.6  + holeGlow * 0.2 },
+    { rMult: 0.10, color: '#000000', alpha: 1.0 },
+  ];
+  layers.forEach(l => drawPixelCircle(bgCtx, cx, cy, r * l.rMult, l.color, l.alpha, pixSize));
+
+  // Anillo de acreción: rayos giratorios de píxeles
+  bgCtx.globalAlpha = 0.3 + holeGlow * 0.3;
+  for (let i = 0; i < 12; i++) {
+    const a = (time * 0.02 + i * (Math.PI * 2 / 12));
+    const x1 = cx + Math.cos(a) * r * 0.9;
+    const y1 = cy + Math.sin(a) * r * 0.9;
+    const x2 = cx + Math.cos(a) * r * 1.4;
+    const y2 = cy + Math.sin(a) * r * 1.4;
+    bgCtx.strokeStyle = i % 2 === 0 ? '#9b6dff' : '#40d4c8';
+    bgCtx.lineWidth = 3;
+    bgCtx.beginPath();
+    bgCtx.moveTo(Math.round(x1/4)*4, Math.round(y1/4)*4);
+    bgCtx.lineTo(Math.round(x2/4)*4, Math.round(y2/4)*4);
+    bgCtx.stroke();
+  }
+  bgCtx.globalAlpha = 1;
+}
+
+function animate() {
+  time++;
+  bgCtx.clearRect(0, 0, bW, bH);
+
+  const cx = bW / 2, cy = bH / 2;
+
+  // Fondo: estrellas parpadeantes
+  stars.forEach(s => {
+    s.t += s.sp;
+    const alpha = 0.15 + 0.35 * Math.abs(Math.sin(s.t));
+    bgCtx.beginPath();
+    bgCtx.arc(s.x * bW, s.y * bH, s.r, 0, Math.PI * 2);
+    bgCtx.fillStyle = `rgba(155,109,255,${alpha})`;
+    bgCtx.fill();
+  });
+
+  // ── PHASE MACHINE ──
+  if (phase === 'IDLE') {
+    phaseTimer++;
+    holeGlow = 0.3 + 0.3 * Math.sin(time * 0.03);
+
+    // Órbita normal
+    particles.forEach(p => {
+      p.angle += p.speed;
+      const x = p.cx + Math.cos(p.angle) * p.dist;
+      const y = p.cy + Math.sin(p.angle) * p.dist;
+      bgCtx.globalAlpha = p.alpha * 0.55;
+      bgCtx.fillStyle = p.color;
+      bgCtx.font = `${p.size}px 'Press Start 2P', monospace`;
+      bgCtx.textAlign = 'center';
+      bgCtx.textBaseline = 'middle';
+      bgCtx.fillText(p.sym, x, y);
+    });
+    bgCtx.globalAlpha = 1;
+
+    drawHole(cx, cy, holeRadius);
+
+    if (phaseTimer > 200) triggerDevour();
+
+  } else if (phase === 'DEVOUR') {
+    phaseTimer++;
+    // Pulso del agujero negro
+    holeGlow = 0.5 + 0.5 * Math.sin(time * 0.08);
+    const holeR = holeRadius + Math.sin(time * 0.1) * 4;
+
+    let allDone = true;
+    particles.forEach(p => {
+      if (p.spiraling) {
+        p.spiralT += 0.018;
+        p.spiralDist = Math.max(0, p.spiralDist - 1.4 - p.spiralT * 0.8);
+        p.angle += p.speed * 3;
+        p.alpha = Math.max(0, p.alpha - 0.005);
+        if (p.spiralDist > 5) allDone = false;
+      }
+      if (p.spiralDist > 2) {
+        const x = p.cx + Math.cos(p.angle) * p.spiralDist;
+        const y = p.cy + Math.sin(p.angle) * p.spiralDist;
+        bgCtx.globalAlpha = p.alpha;
+        bgCtx.fillStyle = p.color;
+        bgCtx.font = `${p.size}px 'Press Start 2P', monospace`;
+        bgCtx.textAlign = 'center';
+        bgCtx.textBaseline = 'middle';
+        bgCtx.fillText(p.sym, x, y);
+      }
+    });
+    bgCtx.globalAlpha = 1;
+
+    drawHole(cx, cy, holeR);
+
+    if (allDone && phaseTimer > 40) triggerExplosion(cx, cy);
+
+  } else if (phase === 'EXPLODE') {
+    phaseTimer++;
+    holeGlow = 1.0;
+
+    // Flash inicial
+    if (phaseTimer < 15) {
+      const flashA = (15 - phaseTimer) / 15 * 0.4;
+      bgCtx.fillStyle = '#ffffff';
+      bgCtx.globalAlpha = flashA;
+      bgCtx.fillRect(0, 0, bW, bH);
+      bgCtx.globalAlpha = 1;
+    }
+
+    // Onda de choque pixelada
+    if (phaseTimer < 50) {
+      const shockR = phaseTimer * 5;
+      const shockAlpha = Math.max(0, 1 - phaseTimer / 50);
+      drawPixelCircle(bgCtx, cx, cy, shockR, '#9b6dff', shockAlpha * 0.5, 6);
+      drawPixelCircle(bgCtx, cx, cy, shockR * 0.7, '#40d4c8', shockAlpha * 0.4, 6);
+    }
+
+    // Partículas de explosión
+    let anyAlive = false;
+    explosionParticles.forEach(ep => {
+      ep.x += ep.vx;
+      ep.y += ep.vy;
+      ep.vx *= 0.97;
+      ep.vy *= 0.97;
+      ep.life -= ep.decay;
+      ep.alpha = Math.max(0, ep.life);
+      if (ep.life > 0) {
+        anyAlive = true;
+        bgCtx.globalAlpha = ep.alpha;
+        bgCtx.fillStyle = ep.color;
+        bgCtx.font = `${ep.size}px 'Press Start 2P', monospace`;
+        bgCtx.textAlign = 'center';
+        bgCtx.textBaseline = 'middle';
+        bgCtx.fillText(ep.sym, ep.x, ep.y);
+      }
+    });
+    bgCtx.globalAlpha = 1;
+
+    // El agujero negro parpadea y se achica
+    const exR = holeRadius * Math.max(0, 1 - phaseTimer / 80);
+    if (exR > 0) drawHole(cx, cy, exR);
+
+    if (!anyAlive && phaseTimer > 80) {
+      phase = 'REBUILD';
+      phaseTimer = 0;
+      rebuildAlpha = 0;
+      particles.length = 0;
+      for (let i = 0; i < 28; i++) spawnParticle(cx, cy);
+    }
+
+  } else if (phase === 'REBUILD') {
+    phaseTimer++;
+    rebuildAlpha = Math.min(1, phaseTimer / 120);
+    holeGlow = rebuildAlpha * 0.8;
+
+    // El agujero negro reaparece gradualmente
+    drawHole(cx, cy, holeRadius * rebuildAlpha);
+
+    // Los símbolos reaparecen orbitando suavemente
+    particles.forEach(p => {
+      p.angle += p.speed * 0.5;
+      const x = p.cx + Math.cos(p.angle) * p.dist;
+      const y = p.cy + Math.sin(p.angle) * p.dist;
+      bgCtx.globalAlpha = rebuildAlpha * 0.5 * p.alpha;
+      bgCtx.fillStyle = p.color;
+      bgCtx.font = `${p.size}px 'Press Start 2P', monospace`;
+      bgCtx.textAlign = 'center';
+      bgCtx.textBaseline = 'middle';
+      bgCtx.fillText(p.sym, x, y);
+    });
+    bgCtx.globalAlpha = 1;
+
+    if (phaseTimer > 150) {
+      phase = 'IDLE';
+      phaseTimer = 0;
+      particles.forEach(p => { p.alpha = 0.6 + Math.random() * 0.4; });
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+initHole();
+animate();
+
+// ═══════════════════════════════════════════
+// SECTIONS TOGGLE
+// ═══════════════════════════════════════════
+function toggleSection(header) {
+  header.closest('.section-card').classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════
+const SIGNS_DATA = [
+  {id:'aries',icon:'♈︎',nameES:'Aries',element:'FIRE',quality:'CARDINAL',
+   descSol:'Energía de iniciación pura. Primer impulso de autoafirmación del ser individual en el ciclo del zodiaco. El ser irradia hacia el mundo con voluntad de acción directa y autonomía.',
+   rudhyarSol:'La conjunción marca el inicio de un nuevo ciclo — en Aries, ese ciclo es el nacimiento mismo del yo.',
+   descLuna:'La persona entra a la existencia a través de una energía centrada en la acción, que le otorga un fuerte sentido de la autonomía y capacidad de iniciativa. Esta Luna puede imaginarse como una explosión roja, penetrante y activa; siempre lanzada con potencia y velocidad hacia adelante.',
+   rudhyarLuna:'Carutti: "Para una Luna en Aries, la seguridad está ligada al movimiento, a la acción inmediata. El mecanismo de refugio es siempre la iniciativa: cuando se siente insegura, actúa."',
+   descAsc:'El Ascendente en Aries convoca situaciones de vida en las que la persona descubre —frecuentemente a través de choques y confrontaciones— una energía ariana que le pertenece pero que aún no reconoce como propia. Las "hadas madrinas" le regalan escenas de desafío y urgencia para que despierte su capacidad de iniciativa.',
+   rudhyarAsc:'Carutti: "La sensación general de las personas con Ascendente en Aries es que la vida se hace muy rápida. Necesitan un destino sin apoyos permanentes, porque de esa manera aprenden a descubrir su propia energía."',
+   keyword:'INICIATIVA'},
+  {id:'tauro',icon:'♉︎',nameES:'Tauro',element:'EARTH',quality:'FIXED',
+   descSol:'Energía de estabilización y valoración. La potencialidad se hace sustancia — el ser aprende a habitar el mundo físico y a reconocer su propio valor con solidez y constancia.',
+   rudhyarSol:'La potencialidad se hace sustancia en Tauro. El ser aprende a valorar lo que es.',
+   descLuna:'La Luna en Tauro es una Luna en exaltación. Puede imaginarse como una plataforma maciza, pesada, a la que no hay manera de mover. El afecto se vivencia a través del contacto corporal, la presencia nutricia, el alimento y la continuidad. Su mayor temor es el cambio imprevisto.',
+   rudhyarLuna:'Carutti: "La Luna en Tauro privilegiará inconscientemente las necesidades de estabilidad y sustancia a todo lo demás. Su mayor temor es el cambio imprevisto que amenaza el mundo que ha construido."',
+   descAsc:'El Ascendente en Tauro implica una matriz de fuego desde las Casas XII, IV y VIII. La persona aprende a materializar, a traer lo potencial a la forma concreta. El proceso de materialización de la energía es un misterio profundo que este Ascendente encarna.',
+   rudhyarAsc:'Carutti: "El Ascendente en Tauro siente que la vida se hace muy lenta. Su cruz es aprender a soltar lo acumulado para que la energía fluya, y descubrir que la riqueza real no está en acumular sino en circular."',
+   keyword:'SUSTANCIA'},
+  {id:'geminis',icon:'♊︎',nameES:'Géminis',element:'AIR',quality:'MUTABLE',
+   descSol:'Energía de relación y diferenciación. La conciencia se vuelve relacional, capaz de nombrar y conectar. El pensamiento como herramienta de puentes entre mundos.',
+   rudhyarSol:'La conciencia se vuelve relacional, capaz de nombrar y conectar en Géminis.',
+   descLuna:'Géminis es energía que se autoescinde y vuelve a encontrarse en campos de interacciones continuas. Para el niño con Luna en Géminis, separar y volver a relacionar lo separado es su matriz de seguridad básica. La afectividad está mediatizada por la palabra: mostrarse rápido, inteligente y curioso fue premiado con afecto.',
+   rudhyarLuna:'Carutti: "La sensación de protección en la Luna en Géminis está asociada al movimiento, a las múltiples posibilidades, a la simultaneidad y a la palabra. Su presencia brinda la vivencia de estar en casa, en un mundo conocido y libre de peligros."',
+   descAsc:'El Ascendente en Géminis trae recurrentemente situaciones múltiples y sensaciones de división y fragmentación. La persona tiene que aprender a vivir esta energía y a mostrarse adaptable, comunicar y relacionar correctamente en cualquier escenario de su vida.',
+   rudhyarAsc:'Carutti: "Para un Ascendente en Géminis, cualquier situación de su vida tendrá siempre este trasfondo: la multiplicidad en movimiento. Toda cualidad que no se expresa implica un destino compensatorio."',
+   keyword:'RELACIÓN'},
+  {id:'cancer',icon:'♋︎',nameES:'Cáncer',element:'WATER',quality:'CARDINAL',
+   descSol:'Energía de nutrición y memoria. La primera experiencia de hogar interior — raíces emocionales del ser. El pasado como fundamento desde el que emerge toda creación.',
+   rudhyarSol:'La primera experiencia de hogar interior — raíces emocionales del ser en Cáncer.',
+   descLuna:'La Luna en Cáncer refuerza las afinidades entre signo y planeta: una energía extremadamente sensible, tierna y suave. Es pura interioridad. Apenas algo la toca, se cierra sobre sí. La modalidad protectiva es un repliegue generador de fuerte interioridad. La energía básica se corresponde directamente con lo arquetípicamente maternal.',
+   rudhyarLuna:'Carutti: "El vínculo con la madre es muy estrecho e íntimo. La sensación arquetípica de máximo bienestar infantil aquí se confirma, haciendo que el niño prefiera permanecer con los ojos cerrados, fantaseando el mundo externo desde el calor del abrazo."',
+   descAsc:'El Ascendente en Cáncer nos entrena en percibir estructuras invisibles que sostienen la vida. Siempre hay una constante que reúne los acontecimientos: la necesidad de pertenencia, de nutrir y ser nutrido, de construir un hogar interior que sostenga la aventura exterior.',
+   rudhyarAsc:'Carutti: "El Ascendente en Cáncer aprende a percibir la constante de sus movimientos. La conciencia puede quedar fijada en uno de ellos y no lograr recorrer las formas fluidamente; ese es el desafío: crecer sin perder la raíz."',
+   keyword:'RAÍCES'},
+  {id:'leo',icon:'♌︎',nameES:'Leo',element:'FIRE',quality:'FIXED',
+   descSol:'Energía de autoexpresión creadora. El ser irradia desde su centro con voluntad de manifestación. La identidad se hace visible y luminosa, generando resonancia en el mundo.',
+   rudhyarSol:'El ser irradia desde su centro con voluntad de manifestación en Leo.',
+   descLuna:'Una persona con Luna en Leo nació en un ambiente familiar que creía en personas excepcionales con trato preferencial. El niño recibe el mensaje inequívoco de que es "único y diferente", centralizando la atención del entorno. La "reina madre" inviste a su hijito con la certeza de ser el elegido.',
+   rudhyarLuna:'Carutti: "La Luna en Leo ocupa el lugar del favorito, recibiendo desde el origen el mensaje de ser único. Su desafío: pasar de necesitar ser el centro a convertirse en fuente generosa de vitalidad para los demás."',
+   descAsc:'La energía de Leo en el Ascendente expresa el momento en que la nueva realidad toma conciencia de sí como identidad creadora. Implica salir del mundo de la pertenencia canceriana y construir un mundo propio, capaz de generar resonancia auténtica con el exterior.',
+   rudhyarAsc:'Carutti: "El pasaje de Cáncer a Leo es un viaje desde el mundo de la pertenencia hacia la irradiación de una diferencia creadora. Si no hay sensación de diferencia en la pertenencia, eso no es Leo."',
+   keyword:'CREACIÓN'},
+  {id:'virgo',icon:'♍︎',nameES:'Virgo',element:'EARTH',quality:'MUTABLE',
+   descSol:'Energía de análisis y perfeccionamiento. La conciencia discrimina para purificar y servir. El detalle como camino de excelencia y el orden funcional como vocación profunda.',
+   rudhyarSol:'La conciencia discrimina para purificar y servir en Virgo.',
+   descLuna:'La Luna en Virgo nace envuelta en una energía que retiene la espontaneidad y valora el orden y la prolijidad por encima de todo. El niño aprende que solo los comportamientos que indiquen madurez serán premiados con afecto, ocupando desde temprano un lugar para el que no está preparado.',
+   rudhyarLuna:'Carutti: "En la Luna en Virgo lo afectivizado es todo lo contrario de un comportamiento ingenuo y espontáneo. El niño aprende que ser útil es mucho más importante que expresarse. La madurez precoz fue el precio del afecto."',
+   descAsc:'El Ascendente en Virgo recuerda que la astrología no es un paradigma ni un deber ser existencial. Estamos aprendiendo a sensibilizarnos a formas dinámicas que existen en el aquí y ahora. Lo que va a pasar es lo que se vive; de lo contrario, la astrología se convierte en tiranía.',
+   rudhyarAsc:'Carutti: "Es muy útil darnos cuenta de lo pernicioso de medirnos con un modelo. Lo que me va a pasar es lo que vivo. El Ascendente en Virgo aprende la forma real de su destino en la práctica cotidiana, no en el ideal."',
+   keyword:'SERVICIO'},
+  {id:'libra',icon:'♎︎',nameES:'Libra',element:'AIR',quality:'CARDINAL',
+   descSol:'Energía de equilibrio y relación consciente. El primer encuentro real con el "otro" como espejo del yo. La justicia como necesidad profunda y la belleza como lenguaje del alma.',
+   rudhyarSol:'El primer encuentro real con el otro como espejo del yo en Libra.',
+   descLuna:'La Luna en Libra trae al niño la necesidad de que el entorno busque naturalmente el acuerdo. La "madre" es extremadamente sociable y complaciente. Siempre hay gente entre la madre y el hijo: complacer a los otros queda registrado como supuesto básico de la existencia desde el origen.',
+   rudhyarLuna:'Carutti: "La Luna en Libra crea un entorno muy exigente: la criatura se ve forzada a sobreadaptarse al medio. La presencia de los otros en la intimidad hará que siempre haya alguien entre la madre y el hijo."',
+   descAsc:'Libra expresa que toda actividad presupone un encuentro. El Ascendente en Libra aprende que toda manifestación solo puede nacer de una solicitud anterior que la provoca. En el universo libriano no existen entidades aisladas; el encuentro es el fundamento de la realidad.',
+   rudhyarAsc:'Carutti: "Afirmar que toda creación está necesariamente asociada a un complementario que genera las condiciones para la manifestación, parece atentar contra nuestros ideales de autosuficiencia. Libra sabe que eso es solo una ilusión."',
+   keyword:'EQUILIBRIO'},
+  {id:'escorpio',icon:'♏︎',nameES:'Escorpio',element:'WATER',quality:'FIXED',
+   descSol:'Energía de transformación y profundidad. La conciencia se sumerge para regenerar lo que fue. El poder como responsabilidad y la muerte simbólica como puerta al renacimiento.',
+   rudhyarSol:'La conciencia se sumerge para regenerar lo que fue en Escorpio.',
+   descLuna:'La Luna en Escorpio enfrenta la brecha más grande entre posibilidad energética e historia psicológica. La experiencia arquetípica es el momento prenatal: el ámbito protector se transforma en encierro del que hay que emerger. La seguridad profunda reside en la capacidad de transformación continua: morir para renacer.',
+   rudhyarLuna:'Carutti: "Lo vital y lo mortal alternan sus posiciones instante a instante hasta que se produce la entrada en un nuevo estado. El talento profundo de la Luna en Escorpio es transformar aquello que la protegía, dejándolo morir para que una nueva forma renazca."',
+   descAsc:'El Ascendente en Escorpio trae la experiencia de la transferencia de energía que implica pérdida de la forma anterior y surgimiento de algo nuevo. La danza donde la vida circula unida a la muerte es la matriz de este Ascendente: los antagónicos se atraen fatalmente para desaparecer en una síntesis.',
+   rudhyarAsc:'Carutti: "El choque de los antagónicos —aquellos que estando a máxima distancia se ven fatalmente atraídos para desaparecer en una nueva realidad— es la esencia del Ascendente en Escorpio. La muerte de la forma es el requisito del renacimiento."',
+   keyword:'TRANSFORMACIÓN'},
+  {id:'sagitario',icon:'♐︎',nameES:'Sagitario',element:'FIRE',quality:'MUTABLE',
+   descSol:'Energía de búsqueda de significado. La expansión hacia la comprensión de leyes universales. La filosofía como brújula interior y la confianza en el flujo de la vida.',
+   rudhyarSol:'La expansión hacia la comprensión de leyes universales en Sagitario.',
+   descLuna:'La Luna en Sagitario es abundante, expansiva y confiada. La persona experimenta la existencia con una disposición básica gozosa: amplitud, libertad y optimismo. La familia transmitió fuertes creencias que tiñeron todo de sentido. Es muy raro que alguien con esta Luna describa su infancia marcada por la carencia.',
+   rudhyarLuna:'Carutti: "Solo es necesario entregarse al río de la vida porque ella, alegremente, siempre encontrará su camino hacia el mar. La sensación de confianza básica en las interacciones es el presupuesto emocional desde el cual experimentar la existencia."',
+   descAsc:'El Ascendente en Sagitario surge como gozosa liberación de energía retenida que se expande superando dualidades. Expresa un orden multidimensional articulado en niveles de amplitud creciente, como el jinete, el caballo y la flecha: una sola realidad desplegada en diferentes planos simultáneos.',
+   rudhyarAsc:'Carutti: "Sagitario expresa ese orden desplegado en múltiples niveles en sentido vertical. El Ascendente en Sagitario necesita experimentar situaciones que amplíen su comprensión y lo fuercen a integrar niveles de sentido cada vez más vastos."',
+   keyword:'SIGNIFICADO'},
+  {id:'capricornio',icon:'♑︎',nameES:'Capricornio',element:'EARTH',quality:'CARDINAL',
+   descSol:'Energía de responsabilidad social y estructura. La conciencia asume su lugar en el orden colectivo. La madurez como logro y la forma definitiva como expresión del ciclo cumplido.',
+   rudhyarSol:'La conciencia asume su lugar en el orden colectivo en Capricornio.',
+   descLuna:'La Luna en Capricornio trae al interior de la protección lo que está concluido. Donde debiera aparecer lo cálido y nutriente, se manifiesta lo frío, duro y austero. El capullo de energía puede imaginarse como un pequeño habitáculo de piedra muy antigua: una ermita solitaria, sin colores ni adornos.',
+   rudhyarLuna:'Carutti: "La Luna en Capricornio sostuvo demasiado desde el inicio. Su desafío profundo es aprender a recibir, a permitir que otros la cuiden, después de toda una vida cuidando y autososteniéndose."',
+   descAsc:'El destino del Ascendente en Capricornio es el sendero que lleva de la multiplicidad a la síntesis, tanto en el plano de la conciencia como en el de la acción. La carta natal es un texto que describe con un mínimo de caracteres la matriz de una existencia; este Ascendente aprende a leerla en profundidad.',
+   rudhyarAsc:'Carutti: "La carta natal aparece como un mapa. El Ascendente en Capricornio aprende a leer ese mapa con profundidad creciente, pasando de la forma al símbolo, del acontecimiento concreto al patrón que lo organiza."',
+   keyword:'RESPONSABILIDAD'},
+  {id:'acuario',icon:'♒︎',nameES:'Acuario',element:'AIR',quality:'FIXED',
+   descSol:'Energía de renovación colectiva. La visión transpersonal que rompe moldes para el futuro de la humanidad. La diferencia como don y la libertad como condición esencial.',
+   rudhyarSol:'La visión transpersonal que rompe moldes para el futuro de la humanidad en Acuario.',
+   descLuna:'La Luna en Acuario: el único refugio es la ausencia de refugio. La única seguridad es la confianza en un espacio indeterminado donde la renovación es la única constante. "Mi madre es el cielo", parece decir esta energía. El único techo son las estrellas, todo puede suceder dentro de esta casa infinita y transparente.',
+   rudhyarLuna:'Carutti: "La Luna en Acuario posee la capacidad de renovarse en interacciones creativas e impredecibles. A lo largo de su vida, participará de súbitas transformaciones que la lanzan a lo desconocido con máxima libertad, arrancándola de improviso de su pasado."',
+   descAsc:'Entre Capricornio y Acuario se abre un abismo: hay que dar un salto. El Ascendente en Acuario enfrenta lanzarse al vacío, abrirse al espacio donde desaparecen todas las formas. Emergen estructuras desconocidas, se abren discontinuidades imprevisibles y se rompen todas las simetrías anteriores.',
+   rudhyarAsc:'Carutti: "El Ascendente en Acuario se encuentra en el límite del caos. Desde allí, súbitamente y sin una única causa, emergen estructuras desconocidas. Esa creatividad que surge del límite es su don más profundo y su misión."',
+   keyword:'RENOVACIÓN'},
+  {id:'piscis',icon:'♓︎',nameES:'Piscis',element:'WATER',quality:'MUTABLE',
+   descSol:'Energía de disolución y síntesis. El ciclo zodiacal se completa: el individuo se funde de nuevo con lo universal. La compasión como sabiduría y la entrega como forma suprema de poder.',
+   rudhyarSol:'El ciclo zodiacal se completa: el individuo se funde de nuevo con lo universal en Piscis.',
+   descLuna:'La Luna en Piscis no nos dice cómo construir un refugio. Solo se entrega a la omnipresente inteligencia compasiva de la totalidad. En un océano de sensibilidad, cada punto resuena con los demás. La sensibilidad es la característica central; implica una entrega donde deja de tener sentido la autodefensa.',
+   rudhyarLuna:'Carutti: "La Luna en Piscis focaliza sus atributos al servicio de aquéllos a quienes se les debe protección y cuidado. La omnipresente inteligencia compasiva de la totalidad es su única guía y su hogar más profundo."',
+   descAsc:'El Ascendente en Piscis simboliza la reabsorción de lo manifestado. Como el Zodíaco se cierra con Piscis, la energía apunta a la disipación de toda fuerza cohesiva. La conciencia se desprende de los lazos que la ataban a las formas particulares y se identifica con el campo creativo del cual surgieron.',
+   rudhyarAsc:'Carutti: "Así como Aries se corresponde con el Big-Bang, Piscis se corresponde con el inexorable incremento de la entropía que desemboca en la disolución del sistema. Desde el punto de vista de la forma, esto es el caos. Desde el de la conciencia, es la liberación final."',
+   keyword:'SÍNTESIS'},
+];
+
+const PLANETS_DATA = [
+  {id:'sol',type:'planet',icon:'☉',nameES:'Sol',power:10,role:'INTEGRADOR',element:'FIRE',descES:'El Sol es el principio integrador de la personalidad. Es el centro del mandala natal, el propósito central del ser. No es solo tu "signo solar", es la dirección hacia la que toda tu vida apunta.',rudhyar:'"El Sol no es meramente un planeta más; es el centro organizador de todo el sistema solar y, simbólicamente, de toda la personalidad." — Rudhyar'},
+  {id:'luna',type:'planet',icon:'☽',nameES:'Luna',power:9,role:'RECEPTORA',element:'WATER',descES:'La Luna representa la respuesta instintiva, la memoria emocional y el ritmo biológico. El puente entre el pasado colectivo y el individuo presente.',rudhyar:'"La Luna es el reflejo de la luz solar en el nivel de la experiencia emocional y corporal." — Rudhyar'},
+  {id:'mercurio',type:'planet',icon:'☿',nameES:'Mercurio',power:6,role:'COMUNICADOR',element:'AIR',descES:'Mercurio articula el mundo interior al exterior. No es solo inteligencia sino la función de relacionar y hacer consciente la experiencia.',rudhyar:'"Mercurio es el mensajero entre los dioses y los hombres, entre lo inconsciente y la conciencia." — Rudhyar'},
+  {id:'venus',type:'planet',icon:'♀',nameES:'Venus',power:7,role:'ARMONIZADORA',element:'EARTH',descES:'Venus es el principio de atracción, valor y relación. La función de crear puentes de significado entre el yo y el otro.',rudhyar:'"Venus representa la capacidad de reconocer valor y de relacionarse armoniosamente con el entorno." — Rudhyar'},
+  {id:'marte',type:'planet',icon:'♂',nameES:'Marte',power:7,role:'INICIADOR',element:'FIRE',descES:'Marte es la energía de la voluntad y la afirmación del yo. No es solo agresión sino la capacidad de comenzar, de actuar en el mundo.',rudhyar:'"Marte es la fuerza que afirma la existencia individual frente al mundo." — Rudhyar'},
+  {id:'jupiter',type:'planet',icon:'♃',nameES:'Júpiter',power:8,role:'EXPANSOR',element:'FIRE',descES:'Júpiter expande la conciencia más allá de los límites del ego. Principio de significado, sabiduría y participación en algo mayor.',rudhyar:'"Júpiter es la función de dar sentido y expansión a la experiencia individual." — Rudhyar'},
+  {id:'saturno',type:'planet',icon:'♄',nameES:'Saturno',power:8,role:'ESTRUCTURADOR',element:'EARTH',descES:'Saturno es el principio de estructura, límite y madurez. No es el planeta del karma negativo sino la necesidad de cristalizar la forma del yo en el tiempo.',rudhyar:'"Saturno define los contornos del yo individual, separándolo de la marea colectiva." — Rudhyar'},
+  {id:'urano',type:'planet',icon:'⛢',nameES:'Urano',power:9,role:'LIBERADOR',element:'AIR',descES:'Urano representa la ruptura con el pasado y la innovación. Impulso transpersonal que irrumpe en la conciencia individual para renovarla.',rudhyar:'"Urano actúa como el rayo que ilumina la oscuridad de la consciencia habitual." — Rudhyar'},
+  {id:'neptuno',type:'planet',icon:'♆',nameES:'Neptuno',power:8,role:'DISOLVENTE',element:'WATER',descES:'Neptuno disuelve los límites del ego para conectar con algo universal. Es el principio de compasión, imaginación y trascendencia.',rudhyar:'"Neptuno representa la aspiración mística del ser hacia su fuente universal." — Rudhyar'},
+  {id:'pluton',type:'planet',icon:'♇',nameES:'Plutón',power:9,role:'TRANSFORMADOR',element:'WATER',descES:'Plutón representa la muerte simbólica y la regeneración. La fuerza colectiva de transformación que opera a través del individuo.',rudhyar:'"Plutón es el agente de la transformación colectiva que opera en la conciencia individual." — Rudhyar'},
+];
+
+const HOUSES_DATA = [
+  {id:'casa1',num:1,icon:'🌅',nameES:'Casa I — Identidad',element:'FIRE',natural:'Aries',domainES:'El ascendente, la máscara, el comienzo del ser individual. El punto donde el cosmos se hace persona.',rudhyar:'"La Casa 1 es el punto de nacimiento del individuo como ser consciente de sí mismo." — Rudhyar'},
+  {id:'casa2',num:2,icon:'💎',nameES:'Casa II — Recursos',element:'EARTH',natural:'Tauro',domainES:'Valores, posesiones, sustancia propia. Lo que el ser necesita para mantenerse en el mundo material.',rudhyar:'"La Casa 2 revela cómo el individuo consolida su existencia a través de sus recursos y valores." — Rudhyar'},
+  {id:'casa3',num:3,icon:'📡',nameES:'Casa III — Mente',element:'AIR',natural:'Géminis',domainES:'Comunicación, entorno cercano, aprendizaje inmediato. La mente que conecta el yo con su mundo próximo.',rudhyar:'"En la Casa 3 la energía sigue al pensamiento y condiciona lo que somos capaces de llegar a ser." — Rudhyar'},
+  {id:'casa4',num:4,icon:'🏡',nameES:'Casa IV — Hogar',element:'WATER',natural:'Cáncer',domainES:'Raíces, familia, pasado, el fondo del ser. El punto más interior de la carta natal.',rudhyar:'"La Casa 4 es el fundamento invisible sobre el que se construye toda la vida consciente." — Rudhyar'},
+  {id:'casa5',num:5,icon:'✨',nameES:'Casa V — Creación',element:'FIRE',natural:'Leo',domainES:'Autoexpresión, creatividad, amor, hijos. El ser que irradia hacia afuera su esencia más genuina.',rudhyar:'"La Casa 5 muestra las ocasiones particulares para exteriorizar y realizar la propia genialidad." — Rudhyar'},
+  {id:'casa6',num:6,icon:'⚕️',nameES:'Casa VI — Servicio',element:'EARTH',natural:'Virgo',domainES:'Salud, rutinas, trabajo cotidiano. La integración del ego a través del servicio y la purificación.',rudhyar:'"La Casa 6 enseña al individuo a adaptar su naturaleza a las exigencias de la realidad." — Rudhyar'},
+  {id:'casa7',num:7,icon:'🤝',nameES:'Casa VII — Relación',element:'AIR',natural:'Libra',domainES:'El otro, las asociaciones, el matrimonio. El yo se descubre a través del espejo del tú.',rudhyar:'"La Casa 7 revela cómo el individuo se completa a través del contacto consciente con el otro." — Rudhyar'},
+  {id:'casa8',num:8,icon:'🌀',nameES:'Casa VIII — Transformación',element:'WATER',natural:'Escorpio',domainES:'Muerte simbólica, regeneración, recursos compartidos. La psique que se sumerge para renacer.',rudhyar:'"La Casa 8 es el umbral de la transformación donde el ego antiguo muere para que nazca uno nuevo." — Rudhyar'},
+  {id:'casa9',num:9,icon:'🔭',nameES:'Casa IX — Sabiduría',element:'FIRE',natural:'Sagitario',domainES:'Filosofía, viajes largos, religión, ley. La búsqueda del significado más allá de lo inmediato.',rudhyar:'"La Casa 9 representa la aspiración del individuo hacia una comprensión más vasta de la existencia." — Rudhyar'},
+  {id:'casa10',num:10,icon:'🏔️',nameES:'Casa X — Vocación',element:'EARTH',natural:'Capricornio',domainES:'Carrera, reputación, el Medio Cielo. El punto más alto de la carta: el propósito social del ser.',rudhyar:'"La Casa 10 muestra el destino social del individuo: lo que está llamado a ser para el mundo." — Rudhyar'},
+  {id:'casa11',num:11,icon:'🌐',nameES:'Casa XI — Comunidad',element:'AIR',natural:'Acuario',domainES:'Amistades, grupos, ideales sociales. El individuo que trasciende el ego para contribuir al colectivo.',rudhyar:'"La Casa 11 simboliza la participación del individuo en la vida de la sociedad y en la visión colectiva." — Rudhyar'},
+  {id:'casa12',num:12,icon:'🌊',nameES:'Casa XII — Trascendencia',element:'WATER',natural:'Piscis',domainES:'Lo inconsciente, el retiro, la disolución. El umbral entre el individuo y lo universal.',rudhyar:'"La Casa 12 es donde el individuo se enfrenta a lo que ha sido reprimido o disuelto, para trascenderlo." — Rudhyar'},
+];
+
+const ASPECTS_DATA = [
+  {id:'conjuncion',icon:'☌',nameES:'Conjunción',angle:0,nature:'NEUTRAL',descES:'Dos planetas fusionan sus energías. Es el inicio de un nuevo ciclo entre esas dos fuerzas. Alta intensidad, potencial creador o destructivo según los planetas.',rudhyar:'"La conjunción marca el inicio de un nuevo ciclo de relación entre dos principios planetarios." — Rudhyar'},
+  {id:'sextil',icon:'⚹',nameES:'Sextil',angle:60,nature:'ARMÓNICO',descES:'Relación de oportunidad entre dos planetas. Una invitación al desarrollo consciente que requiere acción deliberada.',rudhyar:'"El sextil ofrece oportunidades que el individuo debe aprovechar conscientemente." — Rudhyar'},
+  {id:'cuadrado',icon:'□',nameES:'Cuadratura',angle:90,nature:'TENSO',descES:'Tensión dinámica entre dos planetas. La cuadratura no es "mala" sino la fricción necesaria para el crecimiento real.',rudhyar:'"Las cuadraturas representan los desafíos que el individuo debe resolver para crecer." — Rudhyar'},
+  {id:'trino',icon:'△',nameES:'Trino',angle:120,nature:'ARMÓNICO',descES:'Fluidez natural entre dos planetas del mismo elemento. Talento natural que puede volverse inconsciente si no se cultiva.',rudhyar:'"El trino indica talentos heredados que fluyen naturalmente, pero que requieren conciencia para ser plenamente expresados." — Rudhyar'},
+  {id:'oposicion',icon:'☍',nameES:'Oposición',angle:180,nature:'TENSO',descES:'Polaridad máxima entre dos planetas. La oposición invita a la integración de opuestos — el camino más poderoso de individuación.',rudhyar:'"La oposición es la invitación a la conciencia plena a través del reconocimiento del otro polar." — Rudhyar'},
+  {id:'quincuncio',icon:'⚻',nameES:'Quincuncio',angle:150,nature:'NEUTRAL',descES:'Ajuste incómodo entre dos principios que no se entienden naturalmente. Invita a la adaptación creativa y la flexibilidad.',rudhyar:'"El quincuncio demanda un ajuste continuo entre dos áreas de la vida que no se comunican fácilmente." — Rudhyar'},
+];
+
+// ═══════════════════════════════════════════
+// SLA SELECTOR
+// ═══════════════════════════════════════════
+let currentSLA = 'sol';
+let selectedSign = null;
+let selectedHouse = null;
+
+const SLA_CONFIG = {
+  sol:  { label:'☉ SOL — Elige tu signo solar:',       houseLabel:'☉ SOL — ¿En qué casa se encuentra? (opcional)',  planet: PLANETS_DATA[0] },
+  luna: { label:'☽ LUNA — Elige tu signo lunar:',      houseLabel:'☽ LUNA — ¿En qué casa se encuentra? (opcional)', planet: PLANETS_DATA[1] },
+  asc:  { label:'⬆ ASCENDENTE — ¿Cuál es tu signo ascendente?', houseLabel:'⬆ ASC — El Ascendente siempre es Casa I', planet: null },
+};
+
+function selectSLA(type, btn) {
+  currentSLA = type;
+  selectedSign = null;
+  selectedHouse = null;
+  document.querySelectorAll('.sla-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('sla-label').textContent = SLA_CONFIG[type].label;
+  document.getElementById('house-label').textContent = SLA_CONFIG[type].houseLabel;
+  renderSignGrid();
+  renderHouseGrid();
+  renderResult();
+}
+
+function renderSignGrid() {
+  document.getElementById('signs-grid').innerHTML = SIGNS_DATA.map(s =>
+    `<div class="sign-btn ${selectedSign===s.id?'selected':''}" onclick="selectSign('${s.id}')">
+      <span class="sb-icon">${s.icon}</span>
+      <span class="sb-name">${s.nameES}</span>
+    </div>`
+  ).join('');
+}
+
+function renderHouseGrid() {
+  document.getElementById('houses-grid-sel').innerHTML = HOUSES_DATA.map(h =>
+    `<div class="house-btn ${selectedHouse===h.id?'selected':''}" onclick="selectHouse('${h.id}')">
+      <span class="hb-icon">${h.icon}</span>
+      <span class="hb-name">C.${h.num}</span>
+    </div>`
+  ).join('');
+}
+
+function selectSign(id) { selectedSign = selectedSign===id?null:id; renderSignGrid(); renderResult(); }
+function selectHouse(id) { selectedHouse = selectedHouse===id?null:id; renderHouseGrid(); renderResult(); }
+
+const ELEM_BADGE = {
+  FIRE:  '<span class="rc-badge badge-fire">🔥 FUEGO</span>',
+  EARTH: '<span class="rc-badge badge-earth">🌍 TIERRA</span>',
+  AIR:   '<span class="rc-badge badge-air">💨 AIRE</span>',
+  WATER: '<span class="rc-badge badge-water">💧 AGUA</span>',
+};
+
+function renderResult() {
+  const c = document.getElementById('info-result');
+  if (!selectedSign) {
+    c.innerHTML = `<div class="no-selection"><span class="ns-icon">🌌</span>Selecciona un signo arriba para ver tu información</div>`;
+    return;
+  }
+  const sign = SIGNS_DATA.find(s => s.id === selectedSign);
+  const house = selectedHouse ? HOUSES_DATA.find(h => h.id === selectedHouse) : null;
+  const slaMap = {
+    sol: {icon:'☉', label:'TU SOL EN', color:'var(--gold)', src:'Astrología Transpersonal — Rudhyar', bookLabel:'☉ EL SOL — PRINCIPIO INTEGRADOR'},
+    luna: {icon:'☽', label:'TU LUNA EN', color:'#c8d8ff', src:'Carutti — Las Lunas: El refugio de la memoria', bookLabel:'📖 CARUTTI — LAS LUNAS'},
+    asc: {icon:'⬆', label:'TU ASCENDENTE EN', color:'var(--rose)', src:'Carutti — Los Ascendentes', bookLabel:'📖 CARUTTI — LOS ASCENDENTES'}
+  };
+  const cfg = slaMap[currentSLA];
+
+  // Choose correct desc and quote based on SLA
+  const desc = currentSLA === 'sol' ? sign.descSol : currentSLA === 'luna' ? sign.descLuna : sign.descAsc;
+  const quote = currentSLA === 'sol' ? sign.rudhyarSol : currentSLA === 'luna' ? sign.rudhyarLuna : sign.rudhyarAsc;
+
+  let html = `<div class="result-card">
+    <div class="rc-header">
+      <span class="rc-icon">${sign.icon}</span>
+      <div>
+        <div class="rc-type">${cfg.label}</div>
+        <div class="rc-name" style="color:${cfg.color}">${cfg.icon} ${sign.nameES}</div>
+        <div class="rc-badges">${ELEM_BADGE[sign.element]}<span class="rc-badge badge-violet">${sign.quality}</span><span class="rc-badge badge-gold">${sign.keyword}</span></div>
+      </div>
+    </div>
+    <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--dim);margin-bottom:14px;padding:5px 10px;border:1px solid var(--border);display:inline-block;letter-spacing:1px;">${cfg.bookLabel}</div>
+    <p class="rc-desc">${desc}</p>
+    <div class="rc-rudhyar">${quote}</div>`;
+
+  html += '</div>';
+
+  if (house) {
+    html += `<div class="house-result-card">
+      <div class="hrc-header">
+        <span class="hrc-icon">${house.icon}</span>
+        <div><div class="hrc-type">EN LA CASA</div><div class="hrc-name">${house.nameES}</div></div>
+      </div>
+      <p class="hrc-desc">${house.domainES}</p>
+      <div class="hrc-rudhyar">${house.rudhyar}</div>
+    </div>`;
+  }
+  c.innerHTML = html;
+}
+
+// ═══════════════════════════════════════════
+// BIBLIOTECA
+// ═══════════════════════════════════════════
+function selectBiblioTab(tab, btn) {
+  document.querySelectorAll('.biblio-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.biblio-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('biblio-' + tab).classList.add('active');
+}
+
+function elemBadge(elem) {
+  const map = { FIRE:'badge-fire', EARTH:'badge-earth', AIR:'badge-air', WATER:'badge-water' };
+  const icons = { FIRE:'🔥 FUEGO', EARTH:'🌍 TIERRA', AIR:'💨 AIRE', WATER:'💧 AGUA' };
+  return elem ? `<span class="rc-badge ${map[elem]}" style="font-size:7px;padding:3px 8px;border:1px solid">${icons[elem]}</span>` : '';
+}
+
+function renderBiblioGrid(containerId, data, type) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = data.map(item => {
+    let extra = '';
+    if (type==='planet') extra = `<div class="bcard-stat"><span class="bcard-stat-lbl">Rol</span><span class="bcard-stat-val">${item.role}</span></div><div style="margin-top:5px;">${elemBadge(item.element)}</div>`;
+    else if (type==='sign') extra = `<div class="bcard-stat"><span class="bcard-stat-lbl">Modalidad</span><span class="bcard-stat-val">${item.quality}</span></div><div style="margin-top:5px;">${elemBadge(item.element)}<span class="rc-badge badge-violet" style="font-size:7px;padding:3px 8px;border:1px solid;margin-left:4px;">${item.keyword}</span></div>`;
+    else if (type==='house') extra = `<div class="bcard-stat"><span class="bcard-stat-lbl">Natural</span><span class="bcard-stat-val">${item.natural}</span></div><div style="margin-top:5px;">${elemBadge(item.element)}</div>`;
+    else if (type==='aspect') {
+      const nc={'ARMÓNICO':'badge-teal','TENSO':'badge-rose','NEUTRAL':'badge-gold'};
+      extra = `<div class="bcard-stat"><span class="bcard-stat-lbl">Ángulo</span><span class="bcard-stat-val">${item.angle}°</span></div><div style="margin-top:5px;"><span class="rc-badge ${nc[item.nature]}" style="font-size:7px;padding:3px 8px;border:1px solid;">${item.nature}</span></div>`;
+    }
+    const desc = item.descES || item.domainES || '';
+    return `<div class="bcard ${type}">
+      <div class="bcard-type">${type.toUpperCase()}</div>
+      <span class="bcard-icon">${item.icon}</span>
+      <div class="bcard-name">${item.nameES}</div>
+      <div class="bcard-desc">${desc}</div>
+      <div class="bcard-quote">${item.rudhyar}</div>
+      ${extra}
+    </div>`;
+  }).join('');
+}
+
+// INIT
+renderSignGrid();
+renderHouseGrid();
+renderResult();
+renderBiblioGrid('planets-grid', PLANETS_DATA, 'planet');
+renderBiblioGrid('signs-grid-biblio', SIGNS_DATA, 'sign');
+renderBiblioGrid('houses-grid-biblio', HOUSES_DATA, 'house');
+renderBiblioGrid('aspects-grid-biblio', ASPECTS_DATA, 'aspect');
+</script>
+</body>
+</html>
